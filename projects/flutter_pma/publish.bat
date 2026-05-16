@@ -1,0 +1,1 @@
+cls & cd android & bundle exec fastlane android deploy
