@@ -1,3 +1,0 @@
-# taluxi
-
-Taluxi For passengers
