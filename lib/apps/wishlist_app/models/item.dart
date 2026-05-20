@@ -1,0 +1,13 @@
+import 'package:flutter/foundation.dart';
+class Item {
+  final String name;
+  final String description;
+  final String url;
+  final String? id;
+  const Item({
+    required this.name,
+    required this.description,
+    required this.url,
+    this.id,
+  });
+}

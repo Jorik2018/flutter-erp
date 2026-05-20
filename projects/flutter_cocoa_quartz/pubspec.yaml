@@ -1,0 +1,65 @@
+name: modal_dashboard
+description: A new Flutter project.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  logger: ^0.8.3
+  flutter_icons: ^1.1.0
+  fluro: ^1.6.3
+  guard: ^1.0.3
+  dio: ^3.0.7
+  json_annotation: ^3.0.0
+  key_value_store_web: ^1.0.0
+  equatable: ^1.0.0
+  flutter_bloc: ^3.2.0
+  date_format: ^1.0.8
+  responsive_builder: ^0.1.5
+  timeago: ^2.0.26
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^1.8.1
+  json_serializable: ^3.2.3
+  dio_cookie_manager: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icons/explore.png
+    - assets/icons/home.png
+    - assets/icons/preferences.png
+    - assets/icons/timeline.png
+    - assets/icons/social_facebook.png
+    - assets/icons/social_google.png
+    - assets/logo.png
+    - assets/images/login_bg.png
+    - assets/images/forgot_password_bg.png
+    - assets/images/create_account_bg.png
+
+fonts:
+  - family: Poppins
+    fonts:
+      - asset: fonts/Poppins-ThinItalic.ttf
+      - asset: fonts/Poppins-Thin.ttf
+      - asset: fonts/Poppins-SemiBoldItalic.ttf
+      - asset: fonts/Poppins-SemiBold.ttf
+      - asset: fonts/Poppins-Regular.ttf
+      - asset: fonts/Poppins-MediumItalic.ttf
+      - asset: fonts/Poppins-Medium.ttf
+      - asset: fonts/Poppins-LightItalic.ttf
+      - asset: fonts/Poppins-Light.ttf
+      - asset: fonts/Poppins-Italic.ttf
+      - asset: fonts/Poppins-ExtraLightItalic.ttf
+      - asset: fonts/Poppins-ExtraLight.ttf
+      - asset: fonts/Poppins-ExtraBoldItalic.ttf
+      - asset: fonts/Poppins-ExtraBold.ttf
+      - asset: fonts/Poppins-BoldItalic.ttf
+      - asset: fonts/Poppins-Bold.ttf

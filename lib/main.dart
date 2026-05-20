@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/apps/fu_uber/main.dart';
+import 'package:flutter_erp/apps/travel_app/screens/home_screen.dart';
+import 'package:flutter_erp/apps/ubereats/pages/root_app.dart';
+import 'package:flutter_erp/apps/voice_recording_to_text/home_page_screen.dart';
 
 void main() {
+  
+  //runApp(const FuUberApp());
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
+      /*theme: ThemeData(
         // This is the theme of your application.
         //
         // TRY THIS: Try running your application with "flutter run". You'll see
@@ -29,8 +36,12 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      ),*/
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomePageScreen(),
+      // nTravelAppScreen()
+      // RootApp()
+      // const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

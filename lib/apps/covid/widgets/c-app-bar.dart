@@ -1,0 +1,26 @@
+import 'package:flutter_erp/apps/covid/config/palette.dart';
+import 'package:flutter/material.dart';
+
+/**error:The class 'PreferredSizeWidget' can't be used as a mixin because it's neither a mixin class nor a mixin. */
+class CAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CAppBar({Key? key}) : super(key: key);
+
+  @override
+  AppBar build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Palette.primaryColor,
+      elevation: 0.0,
+      leading: IconButton(
+        icon: const Icon(Icons.menu),
+        iconSize: 28.0,
+        onPressed: () {},
+      ),
+      actions: <Widget> [
+        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_none))
+      ],
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
