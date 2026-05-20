@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_home_decor_app_ui/common/color_constants.dart';
-import 'package:flutter_home_decor_app_ui/screen/social_page_screen.dart';
+import 'package:flutter_erp/apps/flutter_home_decor_app_ui/common/color_constants.dart';
+import 'package:flutter_erp/apps/flutter_home_decor_app_ui/screen/social_page_screen.dart';
 
 class HomePageScreen extends StatelessWidget {
   @override
@@ -200,7 +200,7 @@ class HomePageScreen extends StatelessWidget {
                   Row(
                     children: [
                       Stack(
-                        overflow: Overflow.visible,
+                        clipBehavior: Clip.none,
                         children: [
                           Container(
                             color: ColorConstants.kredaccentColor,
@@ -229,7 +229,7 @@ class HomePageScreen extends StatelessWidget {
                         ],
                       ),
                       Stack(
-                        overflow: Overflow.visible,
+                        clipBehavior: Clip.none,
                         children: [
                           Container(
                             color: ColorConstants.kredaccentColor,
@@ -262,7 +262,7 @@ class HomePageScreen extends StatelessWidget {
                   Row(
                     children: [
                       Stack(
-                        overflow: Overflow.visible,
+                        clipBehavior: Clip.none,
                         children: [
                           Container(
                             color: ColorConstants.kredaccentColor,
@@ -291,7 +291,7 @@ class HomePageScreen extends StatelessWidget {
                         ],
                       ),
                       Stack(
-                        overflow: Overflow.visible,
+                        clipBehavior: Clip.none,
                         children: [
                           Container(
                             color: ColorConstants.kredaccentColor,
@@ -326,7 +326,7 @@ class HomePageScreen extends StatelessWidget {
             ),
           ),
           Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: [
               Container(
                 height: 400,

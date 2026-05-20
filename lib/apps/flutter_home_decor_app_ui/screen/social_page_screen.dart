@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_home_decor_app_ui/common/color_constants.dart';
+import 'package:flutter_erp/apps/flutter_home_decor_app_ui/common/color_constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SocialPageScreen extends StatelessWidget {

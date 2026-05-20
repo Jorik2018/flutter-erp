@@ -34,7 +34,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-# For information on the generic Dart part of this file, see the
+# For information on the generic Dart part of "pubspec.yaml""../flutter_home_decor"this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
