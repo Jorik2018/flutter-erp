@@ -19,3 +19,9 @@ samples, guidance on mobile development, and a full API reference.
 flutter run -d chrome
 
 flutter run -d web-server --web-port 8810
+
+
+-to regenerated json
+flutter pub add --dev build_runner
+flutter pub add --dev json_serializable
+flutter pub run build_runner build --delete-conflicting-outputs

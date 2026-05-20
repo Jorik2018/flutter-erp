@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_mates/ui/friends/friends_list_page.dart';
 
-void main() {
-  runApp( MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class FlutterMatesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
