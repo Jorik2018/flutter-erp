@@ -139,7 +139,6 @@ class _TffCurrency {
   _TffCurrency({
     required this.intSymbol,
   });
-
-  factory _TffCurrency.fromJson(Map<String, dynamic> json) =>
-      _$_TffCurrencyFromJson(json);
+factory _TffCurrency.fromJson(Map<String, dynamic> json) =>
+    _$TffCurrencyFromJson(json);
 }
