@@ -1,19 +1,19 @@
 import 'dart:convert';
 
-import 'package:cryptomarket/Model/models.dart';
-import 'package:cryptomarket/Page/CoinDescription.dart';
-import 'package:cryptomarket/Page/Dashboard.dart';
-import 'package:cryptomarket/Page/MarketCoins.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
+import '../Model/models.dart';
+import 'CoinDescription.dart';
+import 'Dashboard.dart';
+import 'MarketCoins.dart';
+import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
-import 'package:cryptomarket/Model/GetCoinsAdd.dart';
+import '../Model/GetCoinsAdd.dart';
 
-import 'package:cryptomarket/bloc/bloc.dart';
-import 'package:cryptomarket/flutter_bloc.dart';
+import '../bloc/bloc.dart';
+import '../flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
 class Markets_Screen extends StatefulWidget {
-  const Markets_Screen({Key key}) : super(key: key);
+  const Markets_Screen({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -27,15 +27,14 @@ class markets extends State<Markets_Screen> {
 
   //final PostBloc _postBloc = PostBloc(httpClient: http.Client());
   final _scrollThreshold = 200.0;
-  TextEditingController controller = new TextEditingController();
-  List<GetCoinsAdd> search_coin_list = new List();
+  TextEditingController controller = TextEditingController();
+  List<GetCoinsAdd> search_coin_list = [];
 
-  List<GetCoinsAdd> coinList = new List();
+  List<GetCoinsAdd> coinList = [];
   var isLoading = false;
   bool _value = false;
 
-  List _selecteCategorys = List();
-
+  List _selecteCategorys = [];
 
   @override
   void initState() {
@@ -48,161 +47,175 @@ class markets extends State<Markets_Screen> {
     _selecteCategorys = await SharedPreferencesHelper.getCoinList();
     fetchCurrencies();
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('Markets'),
-        centerTitle: true,
-      ),
-      body: new Column(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(title: Text('Markets'), centerTitle: true),
+      body: Column(
         children: <Widget>[
-          new Container(
+          Container(
             color: Theme.of(context).primaryColor,
-            child: new Padding(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new Card(
+              child: Card(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                child: new ListTile(
-                  leading: new Icon(Icons.search),
-                  title: new TextField(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: ListTile(
+                  leading: Icon(Icons.search),
+                  title: TextField(
                     controller: controller,
-                    decoration: new InputDecoration(
-                        hintText: 'Search Coins', border: InputBorder.none),
+                    decoration: InputDecoration(
+                      hintText: 'Search Coins',
+                      border: InputBorder.none,
+                    ),
                     onChanged: onSearchTextChanged,
                   ),
                 ),
               ),
             ),
           ),
-          new Expanded(
+          Expanded(
             child: search_coin_list.length != 0 || controller.text.isNotEmpty
-                ? new ListView.separated(
-              separatorBuilder: (context, index) => Divider(
-
-              ),
-              itemCount: search_coin_list.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => CoinDescription(search_coin_list[index])));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0,
-                                top: 5.0,
-                                right: 10.0,
-                                bottom: 5.0),
-                            child: new Image.network(
-                              "https://www.cryptocompare.com" +
-                                  search_coin_list[index].CoinInfo.ImageUrl,
-                              height: 50.0,
-                              width: 50.0,
+                ? ListView.separated(
+                    separatorBuilder: (context, index) => Divider(),
+                    itemCount: search_coin_list.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CoinDescription(search_coin_list[index]),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 6,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0,
-                                top: 5.0,
-                                right: 10.0,
-                                bottom: 5.0),
-                            child: new Text(
-                                search_coin_list[index].CoinInfo.FullName,
-                                style: new TextStyle(
+                          );
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 5.0,
+                                  right: 10.0,
+                                  bottom: 5.0,
+                                ),
+                                child: Image.network(
+                                  "https://www.cryptocompare.com" +
+                                      search_coin_list[index].coinInfo.imageUrl,
+                                  height: 50.0,
+                                  width: 50.0,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 6,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 5.0,
+                                  right: 10.0,
+                                  bottom: 5.0,
+                                ),
+                                child: Text(
+                                  search_coin_list[index].coinInfo.fullName,
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 18.0)),
-                          ),
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-
-                      ],
-                    ));
-              },
-            )
+                      );
+                    },
+                  )
                 : isLoading
-                ? Center(
-              child: CircularProgressIndicator(),
-            )
+                ? Center(child: CircularProgressIndicator())
                 : ListView.separated(
-              separatorBuilder: (context, index) => Divider(
-
-              ),
-              itemCount: coinList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => CoinDescription(coinList[index])));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0,
-                                top: 5.0,
-                                right: 10.0,
-                                bottom: 5.0),
-                            child: new Image.network(
-                              "https://www.cryptocompare.com" +
-                                  coinList[index].CoinInfo.ImageUrl,
-                              height: 50.0,
-                              width: 50.0,
+                    separatorBuilder: (context, index) => Divider(),
+                    itemCount: coinList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CoinDescription(coinList[index]),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 6,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20.0,
-                                top: 5.0,
-                                right: 10.0,
-                                bottom: 5.0),
-                            child: new Text(
-                                coinList[index].CoinInfo.FullName,
-                                style: new TextStyle(
+                          );
+                        },
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 5.0,
+                                  right: 10.0,
+                                  bottom: 5.0,
+                                ),
+                                child: Image.network(
+                                  "https://www.cryptocompare.com" +
+                                      coinList[index].coinInfo.imageUrl,
+                                  height: 50.0,
+                                  width: 50.0,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 6,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 20.0,
+                                  top: 5.0,
+                                  right: 10.0,
+                                  bottom: 5.0,
+                                ),
+                                child: Text(
+                                  coinList[index].coinInfo.fullName,
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 18.0)),
-                          ),
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-
-                      ],
-                    ));
-              },
-            ),
-          )
+                      );
+                    },
+                  ),
+          ),
         ],
       ),
 
       /* Column(
         children: <Widget>[
-          new Container(
+          Container(
             color: Theme.of(context).primaryColor,
-            child: new Padding(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new Card(
-                child: new ListTile(
-                  leading: new Icon(Icons.search),
-                  title: new TextField(
+              child: Card(
+                child: ListTile(
+                  leading: Icon(Icons.search),
+                  title: TextField(
                     controller: controller,
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                         hintText: 'Search product', border: InputBorder.none),
                     onChanged: onSearchTextChanged,
                   ),
-                */ /*  trailing: new IconButton(
-                    icon: new Icon(Icons.cancel),
+                */
+      /*  trailing: IconButton(
+                    icon: Icon(Icons.cancel),
                     onPressed: () {
                       controller.clear();
                       onSearchTextChanged('');
@@ -211,7 +224,8 @@ class markets extends State<Markets_Screen> {
                           MaterialPageRoute(
                               builder: (context) => Brand_SearchList()));
                     },
-                  ),*/ /*
+                  ),*/
+      /*
                 ),
               ),
             ),
@@ -251,7 +265,7 @@ class markets extends State<Markets_Screen> {
                           children: <Widget>[
                             Expanded(
                               flex: 2,
-                              child: new Image.network(
+                              child: Image.network(
                                 "https://www.cryptocompare.com" + state.posts[index].CoinInfo.ImageUrl,
                                 height: 50.0,
                                 width: 50.0,
@@ -260,10 +274,10 @@ class markets extends State<Markets_Screen> {
                             Expanded(
                                 flex: 8,
                                 child: CheckboxListTile(
-                                  value: _selecteCategorys.contains(state.posts[index].CoinInfo.Name),
+                                  value: _selecteCategorys.contains(state.posts[index].CoinInfo.name),
                                   onChanged: (bool selected) {
                                     _onCategorySelected(selected,
-                                        state.posts[index].CoinInfo.Name);
+                                        state.posts[index].CoinInfo.name);
                                   },
                                   title: Text(state.posts[index].CoinInfo.FullName),
                                 )
@@ -284,18 +298,22 @@ class markets extends State<Markets_Screen> {
   Widget _serarch() {
     return Container(
       color: Theme.of(context).primaryColor,
-      child: new Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: new Card(
-              child: new ListTile(
-                leading: new Icon(Icons.search),
-                title: new TextField(
-                  controller: controller,
-                  decoration: new InputDecoration(
-                      hintText: 'Search product', border: InputBorder.none),
-                  onChanged: onSearchTextChanged,
-                ),
-              ))),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
+          child: ListTile(
+            leading: Icon(Icons.search),
+            title: TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                hintText: 'Search product',
+                border: InputBorder.none,
+              ),
+              onChanged: onSearchTextChanged,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -311,24 +329,24 @@ class markets extends State<Markets_Screen> {
 */
     String apiUrl =
         'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym=' +
-            currency;
+        currency;
 
     // Make a HTTP GET request to the CoinMarketCap API.
     // Await basically pauses execution until the get() function returns a Response
-    http.Response response = await http.get(apiUrl);
+    http.Response response = await http.get(Uri.parse(apiUrl));
     var responseBody = json.decode(response.body);
     List data = responseBody['Data'];
 
     final statusCode = response.statusCode;
     if (statusCode != 200 || responseBody == null) {
-      throw new Exception("An error ocurred : [Status Code : $statusCode]");
+      throw Exception("An error ocurred : [Status Code : $statusCode]");
     }
 
-    coinList = (data).map((data) => new GetCoinsAdd.fromMap(data)).toList();
+    coinList = (data).map((data) => GetCoinsAdd.fromMap(data)).toList();
     setState(() {
       isLoading = false;
     });
-    return data.map((c) => new GetCoinsAdd.fromMap(c)).toList();
+    return data.map((c) => GetCoinsAdd.fromMap(c)).toList();
   }
 
   onSearchTextChanged(String text) async {
@@ -339,12 +357,13 @@ class markets extends State<Markets_Screen> {
     }
 
     coinList.forEach((userDetail) {
-      if (userDetail.CoinInfo.FullName
-          .toLowerCase()
-          .contains(text.toLowerCase()) ||
-          userDetail.CoinInfo.FullName
-              .toLowerCase()
-              .contains(text.toLowerCase())) search_coin_list.add(userDetail);
+      if (userDetail.coinInfo.fullName.toLowerCase().contains(
+            text.toLowerCase(),
+          ) ||
+          userDetail.coinInfo.fullName.toLowerCase().contains(
+            text.toLowerCase(),
+          ))
+        search_coin_list.add(userDetail);
     });
 
     setState(() {});

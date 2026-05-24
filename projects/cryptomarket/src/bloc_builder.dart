@@ -24,13 +24,8 @@ class BlocBuilder<E, S> extends BlocBuilderBase<E, S> {
   /// This is analogous to the `builder` function in [StreamBuilder].
   final BlocWidgetBuilder<S> builder;
 
-  const BlocBuilder({
-    Key key,
-    @required this.bloc,
-    @required this.builder,
-  })  : assert(bloc != null),
-        assert(builder != null),
-        super(key: key, bloc: bloc);
+  const BlocBuilder({Key? key, required this.bloc, required this.builder})
+    : super(key: key, bloc: bloc);
 
   @override
   Widget build(BuildContext context, S state) => builder(context, state);
@@ -43,7 +38,7 @@ class BlocBuilder<E, S> extends BlocBuilderBase<E, S> {
 /// so far. The type of the state and how it is updated with each interaction
 /// is defined by sub-classes.
 abstract class BlocBuilderBase<E, S> extends StatefulWidget {
-  const BlocBuilderBase({Key key, this.bloc}) : super(key: key);
+  const BlocBuilderBase({Key? key, this.bloc}) : super(key: key);
 
   /// The [Bloc] that the [BlocBuilderBase] will interact with.
   final Bloc<E, S> bloc;

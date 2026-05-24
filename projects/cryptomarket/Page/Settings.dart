@@ -1,16 +1,16 @@
-import 'package:cryptomarket/Page/CurrencyList_Screen.dart';
-import 'package:cryptomarket/Page/ExchangeList_Screen.dart';
-import 'package:cryptomarket/Page/Home.dart';
-import 'package:cryptomarket/Page/NewsList_Screen.dart';
-import 'package:cryptomarket/Page/Notification_Screen.dart';
-import 'package:cryptomarket/Page/Theme_Screen.dart';
-import 'package:cryptomarket/Theme/MyThemes.dart';
-import 'package:cryptomarket/Theme/_CustomTheme.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
+import 'CurrencyList_Screen.dart';
+import 'ExchangeList_Screen.dart';
+import 'Home.dart';
+import 'NewsList_Screen.dart';
+import 'Notification_Screen.dart';
+import 'Theme_Screen.dart';
+import '../Theme/MyThemes.dart';
+import '../Theme/_CustomTheme.dart';
+import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({Key key}) : super(key: key);
+  const Settings({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -27,7 +27,7 @@ class settings extends State<Settings> {
 
   bool isSwitched = false;
 
-  List newsList = new List();
+  List newsList = new [];
 
   void _changeTheme(BuildContext buildContext, MyThemeKeys key) {
     CustomTheme.instanceOf(buildContext).changeTheme(key);

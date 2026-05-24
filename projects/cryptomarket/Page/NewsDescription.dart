@@ -1,4 +1,4 @@
-import 'package:cryptomarket/Model/models.dart';
+import '../Model/models.dart';
 import 'package:flutter/material.dart';
 
 class NewsDescription extends StatelessWidget{

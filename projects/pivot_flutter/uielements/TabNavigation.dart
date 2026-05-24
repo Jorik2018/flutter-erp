@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pivot_flutter/examples/PivotTableDemo.dart';
-import 'package:pivot_flutter/examples/UsingApiCalls.dart';
-import 'package:pivot_flutter/examples/UsingEvents.dart';
+import '../PivotTableDemo.dart';
+import '../UsingApiCalls.dart';
+import '../UsingEvents.dart';
 
 class TabNavigation extends StatelessWidget {
   @override

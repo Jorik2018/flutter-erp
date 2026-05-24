@@ -11,7 +11,6 @@ import 'package:flutter_taxi_booking_driver_app/common/viiticons_icons.dart';
 import 'package:flutter_taxi_booking_driver_app/features/language/language_screen.dart';
 import 'package:flutter_taxi_booking_driver_app/route_generator.dart';
 
-
 import 'bloc/bloc.dart';
 
 ///The main landing screen where we can write code for app main door.

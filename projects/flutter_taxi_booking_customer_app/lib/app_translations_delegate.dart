@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_taxi_booking_customer_app/application.dart';
 
-
 import './app_translations.dart';
 
 class AppTranslationsDelegate extends LocalizationsDelegate<AppTranslations> {

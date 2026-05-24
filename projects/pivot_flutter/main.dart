@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pivot_flutter/uielements/TabNavigation.dart';
+import 'uielements/TabNavigation.dart';
 
 void main() {
   runApp(TabNavigation());

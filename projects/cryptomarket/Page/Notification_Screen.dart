@@ -1,7 +1,7 @@
-import 'package:cryptomarket/Page/Home.dart';
-import 'package:cryptomarket/Theme/MyThemes.dart';
-import 'package:cryptomarket/Theme/_CustomTheme.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
+import 'Home.dart';
+import '../Theme/MyThemes.dart';
+import '../Theme/_CustomTheme.dart';
+import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 

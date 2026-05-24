@@ -1,10 +1,10 @@
-import 'package:cryptomarket/Page/AddCoin.dart';
-import 'package:cryptomarket/Page/Home.dart';
-import 'package:cryptomarket/Page/Markets.dart';
-import 'package:cryptomarket/Page/News.dart';
-import 'package:cryptomarket/Page/Settings.dart';
-import 'package:cryptomarket/Theme/fab_bottom_app_bar.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
+import 'AddCoin.dart';
+import 'Home.dart';
+import 'Markets.dart';
+import 'News.dart';
+import 'Settings.dart';
+import '../Theme/fab_bottom_app_bar.dart';
+import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {

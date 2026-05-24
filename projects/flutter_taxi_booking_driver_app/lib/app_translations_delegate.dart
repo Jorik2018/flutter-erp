@@ -1,7 +1,6 @@
 import 'dart:async';
 
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_taxi_booking_driver_app/application.dart';
 

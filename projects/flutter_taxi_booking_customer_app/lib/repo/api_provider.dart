@@ -6,7 +6,6 @@ import 'package:flutter_taxi_booking_customer_app/common/model/common_response.d
 import 'package:flutter_taxi_booking_customer_app/common/my_const.dart';
 import 'package:flutter_taxi_booking_customer_app/features/loginsignup/login/model/LoginResponse.dart';
 
-
 abstract class APIProvider {
   Future<Either<DioError, LoginResponse>> login({
     String mobileCountryCode,

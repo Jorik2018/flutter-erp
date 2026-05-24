@@ -1,16 +1,16 @@
 import 'dart:convert';
 
-import 'package:cryptomarket/Model/GetCoinsAdd.dart';
-import 'package:cryptomarket/Page/Dashboard.dart';
-import 'package:cryptomarket/Page/Home.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
-import 'package:cryptomarket/bloc/bloc.dart';
-import 'package:cryptomarket/flutter_bloc.dart';
+import '../Model/GetCoinsAdd.dart';
+import 'Dashboard.dart';
+import 'Home.dart';
+import '../Util/SharedPreferencesHelper.dart';
+import '../bloc/bloc.dart';
+import '../flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AddCoin extends StatefulWidget {
-  const AddCoin({Key key}) : super(key: key);
+  const AddCoin({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -24,14 +24,14 @@ class addCoin extends State<AddCoin> {
 
   //final PostBloc _postBloc = PostBloc(httpClient: http.Client());
   final _scrollThreshold = 200.0;
-  TextEditingController controller = new TextEditingController();
-  List<GetCoinsAdd> search_coin_list = new List();
+  TextEditingController controller = TextEditingController();
+  List<GetCoinsAdd> search_coin_list = [];
 
-  List<GetCoinsAdd> coinList = new List();
+  List<GetCoinsAdd> coinList = [];
   var isLoading = false;
   bool _value = false;
 
-  List _selecteCategorys = List();
+  List _selecteCategorys = [];
 
   void _onCategorySelected(selected, category_id) {
     if (selected == true) {
@@ -84,26 +84,26 @@ class addCoin extends State<AddCoin> {
               ))),
           onTap: () async {
             await SharedPreferencesHelper.setCoinsList(
-                _selecteCategorys.toList());
+                _selecteCategorys.toList() as List<String>);
             Navigator.of(context).pushAndRemoveUntil(
-                new MaterialPageRoute(
+                MaterialPageRoute(
                     builder: (BuildContext context) => Dashboard()),
                 (Route<dynamic> route) => false);
           }),
-      body: new Column(
+      body: Column(
         children: <Widget>[
-          new Container(
+          Container(
             color: Theme.of(context).primaryColor,
-            child: new Padding(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new Card(
+              child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0)),
-                child: new ListTile(
-                  leading: new Icon(Icons.search),
-                  title: new TextField(
+                child: ListTile(
+                  leading: Icon(Icons.search),
+                  title: TextField(
                     controller: controller,
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                         hintText: 'Search Coins', border: InputBorder.none),
                     onChanged: onSearchTextChanged,
                   ),
@@ -111,9 +111,9 @@ class addCoin extends State<AddCoin> {
               ),
             ),
           ),
-          new Expanded(
+          Expanded(
             child: search_coin_list.length != 0 || controller.text.isNotEmpty
-                ? new ListView.separated(
+                ? ListView.separated(
                     separatorBuilder: (context, index) => Divider(
 
                         ),
@@ -123,10 +123,10 @@ class addCoin extends State<AddCoin> {
                           onTap: () {
                             setState(() {
                               _value = _selecteCategorys
-                                  .contains(search_coin_list[index].CoinInfo.Name);
+                                  .contains(search_coin_list[index].coinInfo.name);
                               _value = !_value;
                               _onCategorySelected(
-                                  _value, search_coin_list[index].CoinInfo.Name);
+                                  _value, search_coin_list[index].coinInfo.name);
                             });
                           },
                           child: Row(
@@ -139,9 +139,9 @@ class addCoin extends State<AddCoin> {
                                       top: 5.0,
                                       right: 10.0,
                                       bottom: 5.0),
-                                  child: new Image.network(
+                                  child: Image.network(
                                     "https://www.cryptocompare.com" +
-                                        search_coin_list[index].CoinInfo.ImageUrl,
+                                        search_coin_list[index].coinInfo.imageUrl,
                                     height: 50.0,
                                     width: 50.0,
                                   ),
@@ -155,9 +155,9 @@ class addCoin extends State<AddCoin> {
                                       top: 5.0,
                                       right: 10.0,
                                       bottom: 5.0),
-                                  child: new Text(
-                                      search_coin_list[index].CoinInfo.FullName,
-                                      style: new TextStyle(
+                                  child: Text(
+                                      search_coin_list[index].coinInfo.fullName,
+                                      style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 18.0)),
                                 ),
@@ -173,7 +173,7 @@ class addCoin extends State<AddCoin> {
                                             right: 20.0,
                                             bottom: 10.0),
                                         child: _selecteCategorys.contains(
-                                            search_coin_list[index].CoinInfo.Name)
+                                            search_coin_list[index].coinInfo.name)
                                             ? Icon(
                                                 Icons.check,
                                                 size: 30.0,
@@ -198,10 +198,10 @@ class addCoin extends State<AddCoin> {
                               onTap: () {
                                 setState(() {
                                   _value = _selecteCategorys
-                                      .contains(coinList[index].CoinInfo.Name);
+                                      .contains(coinList[index].coinInfo.name);
                                   _value = !_value;
                                   _onCategorySelected(
-                                      _value, coinList[index].CoinInfo.Name);
+                                      _value, coinList[index].coinInfo.name);
                                 });
                               },
                               child: Row(
@@ -214,9 +214,9 @@ class addCoin extends State<AddCoin> {
                                           top: 5.0,
                                           right: 10.0,
                                           bottom: 5.0),
-                                      child: new Image.network(
+                                      child: Image.network(
                                         "https://www.cryptocompare.com" +
-                                            coinList[index].CoinInfo.ImageUrl,
+                                            coinList[index].coinInfo.imageUrl,
                                         height: 50.0,
                                         width: 50.0,
                                       ),
@@ -230,9 +230,9 @@ class addCoin extends State<AddCoin> {
                                           top: 5.0,
                                           right: 10.0,
                                           bottom: 5.0),
-                                      child: new Text(
-                                          coinList[index].CoinInfo.FullName,
-                                          style: new TextStyle(
+                                      child: Text(
+                                          coinList[index].coinInfo.fullName,
+                                          style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 18.0)),
                                     ),
@@ -249,8 +249,8 @@ class addCoin extends State<AddCoin> {
                                                 bottom: 10.0),
                                             child: _selecteCategorys.contains(
                                                     coinList[index]
-                                                        .CoinInfo
-                                                        .Name)
+                                                        .coinInfo
+                                                        .name)
                                                 ? Icon(
                                                     Icons.check,
                                                     size: 30.0,
@@ -268,28 +268,28 @@ class addCoin extends State<AddCoin> {
 
       /* Column(
         children: <Widget>[
-          new Container(
+          Container(
             color: Theme.of(context).primaryColor,
-            child: new Padding(
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: new Card(
-                child: new ListTile(
-                  leading: new Icon(Icons.search),
-                  title: new TextField(
+              child: Card(
+                child: ListTile(
+                  leading: Icon(Icons.search),
+                  title: TextField(
                     controller: controller,
-                    decoration: new InputDecoration(
+                    decoration: InputDecoration(
                         hintText: 'Search product', border: InputBorder.none),
                     onChanged: onSearchTextChanged,
                   ),
-                */ /*  trailing: new IconButton(
-                    icon: new Icon(Icons.cancel),
+                */ /*  trailing: IconButton(
+                    icon: Icon(Icons.cancel),
                     onPressed: () {
                       controller.clear();
                       onSearchTextChanged('');
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Brand_SearchList()));
+                              builder: (context) => Brand_Search[]));
                     },
                   ),*/ /*
                 ),
@@ -331,7 +331,7 @@ class addCoin extends State<AddCoin> {
                           children: <Widget>[
                             Expanded(
                               flex: 2,
-                              child: new Image.network(
+                              child: Image.network(
                                 "https://www.cryptocompare.com" + state.posts[index].CoinInfo.ImageUrl,
                                 height: 50.0,
                                 width: 50.0,
@@ -340,12 +340,12 @@ class addCoin extends State<AddCoin> {
                             Expanded(
                                 flex: 8,
                                 child: CheckboxListTile(
-                                  value: _selecteCategorys.contains(state.posts[index].CoinInfo.Name),
+                                  value: _selecteCategorys.contains(state.posts[index].CoinInfo.name),
                                   onChanged: (bool selected) {
                                     _onCategorySelected(selected,
-                                        state.posts[index].CoinInfo.Name);
+                                        state.posts[index].CoinInfo.name);
                                   },
-                                  title: Text(state.posts[index].CoinInfo.FullName),
+                                  title: Text(state.posts[index].coinInfo.fullName),
                                 )
                             ),
                           ],
@@ -364,14 +364,14 @@ class addCoin extends State<AddCoin> {
   Widget _serarch() {
     return Container(
       color: Theme.of(context).primaryColor,
-      child: new Padding(
+      child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: new Card(
-              child: new ListTile(
-            leading: new Icon(Icons.search),
-            title: new TextField(
+          child: Card(
+              child: ListTile(
+            leading: Icon(Icons.search),
+            title: TextField(
               controller: controller,
-              decoration: new InputDecoration(
+              decoration: InputDecoration(
                   hintText: 'Search product', border: InputBorder.none),
               onChanged: onSearchTextChanged,
             ),
@@ -383,32 +383,27 @@ class addCoin extends State<AddCoin> {
     setState(() {
       isLoading = true;
     });
-    // TODO: implement fetchCurrencies
     String currency = await SharedPreferencesHelper.getCurrency();
-    List coins = await SharedPreferencesHelper.getCoinList();
-    /*  String coinsdata = coins.toString().replaceAll('[', '').replaceAll(']', '');
-    String Baseurl = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=" + coinsdata + "&tsyms=" + currency + "&extraParams=your_app_name";
-*/
     String apiUrl =
         'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym=' +
             currency;
 
     // Make a HTTP GET request to the CoinMarketCap API.
     // Await basically pauses execution until the get() function returns a Response
-    http.Response response = await http.get(apiUrl);
+    http.Response response = await http.get(Uri.parse(apiUrl));
     var responseBody = json.decode(response.body);
     List data = responseBody['Data'];
 
     final statusCode = response.statusCode;
     if (statusCode != 200 || responseBody == null) {
-      throw new Exception("An error ocurred : [Status Code : $statusCode]");
+      throw Exception("An error ocurred : [Status Code : $statusCode]");
     }
 
-    coinList = (data).map((data) => new GetCoinsAdd.fromMap(data)).toList();
+    coinList = (data).map((data) => GetCoinsAdd.fromMap(data)).toList();
     setState(() {
       isLoading = false;
     });
-    return data.map((c) => new GetCoinsAdd.fromMap(c)).toList();
+    return data.map((c) => GetCoinsAdd.fromMap(c)).toList();
   }
 
   onSearchTextChanged(String text) async {
@@ -419,10 +414,10 @@ class addCoin extends State<AddCoin> {
     }
 
     coinList.forEach((userDetail) {
-      if (userDetail.CoinInfo.FullName
+      if (userDetail.coinInfo.fullName
               .toLowerCase()
               .contains(text.toLowerCase()) ||
-          userDetail.CoinInfo.FullName
+          userDetail.coinInfo.fullName
               .toLowerCase()
               .contains(text.toLowerCase())) search_coin_list.add(userDetail);
     });

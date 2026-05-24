@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:cryptomarket/flutter_bloc.dart';
+import '../flutter_bloc.dart';
 
 /// A Flutter [Widget] that merges multiple [BlocProvider] widgets into one widget tree.
 ///
@@ -50,9 +50,9 @@ class BlocProviderTree extends StatelessWidget {
   final Widget child;
 
   const BlocProviderTree({
-    Key key,
-    @required this.blocProviders,
-    @required this.child,
+    Key? key,
+    required this.blocProviders,
+    required this.child,
   })  : assert(blocProviders != null),
         assert(child != null),
         super(key: key);

@@ -13,8 +13,8 @@ class BlocProvider<T extends Bloc<dynamic, dynamic>> extends InheritedWidget {
   final Widget child;
 
   BlocProvider({
-    Key key,
-    @required this.bloc,
+    Key? key,
+    required this.bloc,
     this.child,
   })  : assert(bloc != null),
         super(key: key, child: child);

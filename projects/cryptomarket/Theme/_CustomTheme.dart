@@ -1,4 +1,4 @@
-import 'package:cryptomarket/Theme/MyThemes.dart';
+import 'MyThemes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -7,8 +7,8 @@ class _CustomTheme extends InheritedWidget {
 
   _CustomTheme({
     this.data,
-    Key key,
-    @required Widget child,
+    Key? key,
+    required Widget child,
   }) : super(key: key, child: child);
 
   @override
@@ -19,16 +19,16 @@ class _CustomTheme extends InheritedWidget {
 
 class CustomTheme extends StatefulWidget {
   final Widget child;
-  final MyThemeKeys initialThemeKey;
+  final MyThemeKeys? initialThemeKey;
 
   const CustomTheme({
-    Key key,
+    Key? key,
     this.initialThemeKey,
-    @required this.child,
+    required this.child,
   }) : super(key: key);
 
   @override
-  CustomThemeState createState() => new CustomThemeState();
+  CustomThemeState createState() => CustomThemeState();
 
   static ThemeData of(BuildContext context) {
     _CustomTheme inherited =
@@ -64,7 +64,7 @@ class CustomThemeState extends State<CustomTheme> {
 
   @override
   Widget build(BuildContext context) {
-    return new _CustomTheme(
+    return _CustomTheme(
       data: this,
       child: widget.child,
     );

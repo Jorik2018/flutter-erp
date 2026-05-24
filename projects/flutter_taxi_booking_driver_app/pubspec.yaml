@@ -41,6 +41,7 @@ dependencies:
   # Device info
   device_info: ^0.4.1+4
   # Rating bar
+  
   flutter_rating_bar: ^3.0.1+1
   # Google map
   google_maps_flutter: ^0.5.21+15

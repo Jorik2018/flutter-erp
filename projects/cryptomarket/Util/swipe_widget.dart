@@ -7,7 +7,7 @@ import 'size_change_notifier.dart';
 
 
 class ActionItems extends Object{
-  ActionItems({@required this.icon,@required this.onPress, this.backgroudColor:Colors.grey}){
+  ActionItems({required this.icon,required this.onPress, this.backgroudColor=Colors.grey}){
     assert(icon != null);
     assert(onPress != null);
   }
@@ -19,7 +19,7 @@ class ActionItems extends Object{
 }
 
 class OnSlide extends StatefulWidget {
-  OnSlide({Key key, @required this.items, @required this.child, this.backgroundColor:Colors.white}):super(key:key){
+  OnSlide({Key? key, required this.items, required this.child, this.backgroundColor=Colors.white}):super(key:key){
     assert(items.length <= 2);
   }
 
@@ -29,14 +29,14 @@ class OnSlide extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new _OnSlideState();
+    return _OnSlideState();
   }
 }
 class _OnSlideState extends State<OnSlide> {
-  ScrollController controller = new ScrollController();
+  ScrollController controller = ScrollController();
   bool isOpen = false;
 
-  Size childSize;
+  Size? childSize;
 
   @override
   void initState() {
@@ -50,11 +50,11 @@ class _OnSlideState extends State<OnSlide> {
           && notification.metrics.pixels < widget.items.length * 70.0){
         scheduleMicrotask((){
           controller.animateTo(widget.items.length * 60.0,
-              duration: new Duration(milliseconds: 600), curve: Curves.decelerate);
+              duration: Duration(milliseconds: 600), curve: Curves.decelerate);
         });
       }else if (notification.metrics.pixels > 0.0 && notification.metrics.pixels < (widget.items.length * 70.0)/2){
         scheduleMicrotask((){
-          controller.animateTo(0.0, duration: new Duration(milliseconds: 600), curve: Curves.decelerate);
+          controller.animateTo(0.0, duration: Duration(milliseconds: 600), curve: Curves.decelerate);
         });
       }
     }
@@ -65,8 +65,8 @@ class _OnSlideState extends State<OnSlide> {
   @override
   Widget build(BuildContext context) {
     if (childSize == null){
-      return new NotificationListener(
-        child: new LayoutSizeChangeNotifier(
+      return NotificationListener(
+        child: LayoutSizeChangeNotifier(
           child: widget.child,
         ),
         onNotification: (LayoutSizeChangeNotification notification){
@@ -75,14 +75,15 @@ class _OnSlideState extends State<OnSlide> {
           scheduleMicrotask((){
             setState((){});
           });
+          return true;
         },
 
       );
     }
 
-    List<Widget> above = <Widget>[new Container(
-      width: childSize.width,
-      height: childSize.height,
+    List<Widget> above = <Widget>[Container(
+      width: childSize!.width,
+      height: childSize!.height,
       color: widget.backgroundColor,
       child: widget.child,
     ),];
@@ -90,7 +91,7 @@ class _OnSlideState extends State<OnSlide> {
 
     for (ActionItems item in widget.items){
       under.add(
-          new Container(
+          Container(
             alignment: Alignment.center,
             color: item.backgroudColor,
             width: 60.0,
@@ -101,8 +102,8 @@ class _OnSlideState extends State<OnSlide> {
       );
 
       above.add(
-          new InkWell(
-              child: new Container(
+          InkWell(
+              child: Container(
                 alignment: Alignment.center,
                 width: 60.0,
                 height:60.0,
@@ -115,18 +116,18 @@ class _OnSlideState extends State<OnSlide> {
       );
     }
 
-    Widget items = new Container(
-      width: childSize.width,
-      height: childSize.height,
+    Widget items = Container(
+      width: childSize!.width,
+      height: childSize!.height,
       color: widget.backgroundColor,
-      child: new Row(
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: under,
       ),
     );
 
-    Widget scrollview = new NotificationListener(
-      child: new ListView(
+    Widget scrollview = NotificationListener(
+      child: ListView(
         controller: controller,
         scrollDirection: Axis.horizontal,
         children: above,
@@ -134,10 +135,10 @@ class _OnSlideState extends State<OnSlide> {
       onNotification: _handleScrollNotification,
     );
 
-    return new Stack(
+    return Stack(
       children: <Widget>[
         items,
-        new Positioned(child: scrollview, left: 0.0, bottom: 0.0, right: 0.0, top: 0.0,)
+        Positioned(child: scrollview, left: 0.0, bottom: 0.0, right: 0.0, top: 0.0,)
       ],
     );
   }

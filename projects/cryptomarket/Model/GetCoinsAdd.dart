@@ -1,112 +1,111 @@
-
-
 class GetCoinsAdd {
-  CoinInfo1 CoinInfo;
-  Display1 Display;
+  CoinInfo1 coinInfo;
 
+  Display1 display;
 
-  GetCoinsAdd(this.CoinInfo, this.Display);
+  GetCoinsAdd(this.coinInfo, this.display);
 
   Map<String, dynamic> toMap() {
-    var map = new Map<String, dynamic>();
-
-    map['CoinInfo'] = CoinInfo;
-    map['DISPLAY'] = Display;
-
-    return map;
+    return {'CoinInfo': coinInfo.toMap(), 'DISPLAY': display.toMap()};
   }
 
-  GetCoinsAdd.fromMap(Map<String, dynamic> map) {
-    this.CoinInfo = new CoinInfo1.fromMap(map['CoinInfo']);
-    this.Display = new Display1.fromMap(map['DISPLAY']);//.map((i) => Pickup_order.fromMap(i));
-  }
+  GetCoinsAdd.fromMap(Map<String, dynamic> map)
+    : coinInfo = CoinInfo1.fromMap(map['CoinInfo']),
+      display = Display1.fromMap(map['DISPLAY']);
 }
 
 class CoinInfo1 {
-  String FullName;
-  String Name;
-  String ImageUrl;
+  String fullName;
+  String name;
+  String imageUrl;
 
-  CoinInfo1(this.FullName,this.Name, this.ImageUrl);
+  CoinInfo1(this.fullName, this.name, this.imageUrl);
 
-  CoinInfo1.fromMap(Map map) {
-    this.FullName = map['FullName'];
-    this.Name = map['Name'];
-    this.ImageUrl = map['ImageUrl'];
+  Map<String, dynamic> toMap() {
+    return {'FullName': fullName, 'Name': name, 'ImageUrl': imageUrl};
   }
+
+  CoinInfo1.fromMap(Map<String, dynamic> map)
+    : fullName = map['FullName'] ?? '',
+      name = map['Name'] ?? '',
+      imageUrl = map['ImageUrl'] ?? '';
 }
 
-
-
 class Display1 {
-  USD1 USD;
+  String currency;
+  USD1 usd;
 
-  Display1(this.USD,  );
+  Display1(this.currency, this.usd);
 
-  Display1.fromMap(Map map)  {
-   // var _list = map.values.toList();
-
-    String mapdata = map.keys.toString();
-
-    if(mapdata == "(USD)"){
-      this.USD = new USD1.fromMap(map['USD']);
-    }
-    else if(mapdata == "(EUR)"){
-
-      this.USD = new USD1.fromMap(map['EUR']);
-    }
-    else if(mapdata == "(AED)"){
-
-      this.USD = new USD1.fromMap(map['AED']);
-    }
-    else if(mapdata == "(CAD)"){
-
-      this.USD = new USD1.fromMap(map['CAD']);
-    }
-    else if(mapdata == "(GBP)"){
-
-      this.USD = new USD1.fromMap(map['GBP']);
-    }
-
-
+  Map<String, dynamic> toMap() {
+    return {
+      /**The method 'toMap' isn't defined for the type 'USD1'.
+Try correcting the name to the name of an existing method, or defining a method named 'toMap' */
+      currency: usd.toMap(), // 👈 dinámico
+    };
   }
+
+  Display1.fromMap(Map<String, dynamic> map)
+    : currency = map.keys.first,
+      usd = USD1.fromMap(map.values.first);
 }
 
 class USD1 {
-  String PRICE;
-  String CHANGEPCT24HOUR;
-  String MARKET;
-  String CHANGE24HOUR;
-  String HIGH24HOUR;
-  String LOW24HOUR;
-  String MKTCAP;
-  String VOLUME24HOUR;
-  String VOLUME24HOURTO;
-  String TOSYMBOL;
-  String SUPPLY;
+  String price;
+  String changePct24Hour;
+  String market;
+  String change24Hour;
+  String high24Hour;
+  String low24Hour;
+  String mktCap;
+  String volume24Hour;
+  String volume24HourTo;
+  String toSymbol;
+  String supply;
 
+  USD1(
+    this.price,
+    this.changePct24Hour,
+    this.market,
+    this.change24Hour,
+    this.high24Hour,
+    this.low24Hour,
+    this.mktCap,
+    this.volume24Hour,
+    this.volume24HourTo,
+    this.toSymbol,
+    this.supply,
+  );
 
-  USD1(this.PRICE, this.CHANGEPCT24HOUR, this.MARKET, this.CHANGE24HOUR,
-      this.HIGH24HOUR, this.LOW24HOUR, this.MKTCAP, this.VOLUME24HOUR,
-      this.VOLUME24HOURTO, this.TOSYMBOL,this.SUPPLY);
-
-  USD1.fromMap(Map map) {
-    this.PRICE = map['PRICE'];
-    this.CHANGEPCT24HOUR = map['CHANGEPCT24HOUR'];
-    this.MARKET = map['MARKET'];
-    this.CHANGE24HOUR = map['CHANGE24HOUR'];
-    this.HIGH24HOUR = map['HIGH24HOUR'];
-    this.LOW24HOUR = map['LOW24HOUR'];
-    this.MKTCAP = map['MKTCAP'];
-    this.VOLUME24HOUR = map['VOLUME24HOUR'];
-    this.VOLUME24HOURTO = map['VOLUME24HOURTO'];
-    this.TOSYMBOL = map['TOSYMBOL'];
-    this.SUPPLY = map['SUPPLY'];
-
+  Map<String, dynamic> toMap() {
+    return {
+      'PRICE': price,
+      'CHANGEPCT24HOUR': changePct24Hour,
+      'MARKET': market,
+      'CHANGE24HOUR': change24Hour,
+      'HIGH24HOUR': high24Hour,
+      'LOW24HOUR': low24Hour,
+      'MKTCAP': mktCap,
+      'VOLUME24HOUR': volume24Hour,
+      'VOLUME24HOURTO': volume24HourTo,
+      'TOSYMBOL': toSymbol,
+      'SUPPLY': supply,
+    };
   }
+
+  USD1.fromMap(Map<String, dynamic> map)
+    : price = map['PRICE']?.toString() ?? '',
+      changePct24Hour = map['CHANGEPCT24HOUR']?.toString() ?? '',
+      market = map['MARKET']?.toString() ?? '',
+      change24Hour = map['CHANGE24HOUR']?.toString() ?? '',
+      high24Hour = map['HIGH24HOUR']?.toString() ?? '',
+      low24Hour = map['LOW24HOUR']?.toString() ?? '',
+      mktCap = map['MKTCAP']?.toString() ?? '',
+      volume24Hour = map['VOLUME24HOUR']?.toString() ?? '',
+      volume24HourTo = map['VOLUME24HOURTO']?.toString() ?? '',
+      toSymbol = map['TOSYMBOL']?.toString() ?? '',
+      supply = map['SUPPLY']?.toString() ?? '';
 }
-
-
 
 abstract class CryptoRepository {
   Future<List<GetCoinsAdd>> fetchCurrencies();

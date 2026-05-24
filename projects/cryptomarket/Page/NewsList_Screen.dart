@@ -1,4 +1,4 @@
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
+import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class NewsList_Screen extends StatefulWidget{

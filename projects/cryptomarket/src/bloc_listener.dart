@@ -28,9 +28,9 @@ class BlocListener<E, S> extends BlocListenerBase<E, S> {
   final Widget child;
 
   const BlocListener({
-    Key key,
-    @required this.bloc,
-    @required this.listener,
+    Key? key,
+    required this.bloc,
+    required this.listener,
     this.child,
   })  : assert(bloc != null),
         assert(listener != null),
@@ -69,9 +69,9 @@ abstract class BlocListenerBase<E, S> extends StatefulWidget {
   final BlocWidgetListener<S> listener;
 
   const BlocListenerBase({
-    Key key,
-    @required this.bloc,
-    @required this.listener,
+    Key? key,
+    required this.bloc,
+    required this.listener,
   }) : super(key: key);
 
   State<BlocListenerBase<E, S>> createState() => _BlocListenerBaseState<E, S>();

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:cryptomarket/flutter_bloc.dart';
+import '../flutter_bloc.dart';
 
 /// A Flutter [Widget] that merges multiple [BlocListener] widgets into one widget tree.
 ///
@@ -61,9 +61,9 @@ class BlocListenerTree extends StatelessWidget {
   final Widget child;
 
   const BlocListenerTree({
-    Key key,
-    @required this.blocListeners,
-    @required this.child,
+    Key? key,
+    required this.blocListeners,
+    required this.child,
   })  : assert(blocListeners != null),
         assert(child != null),
         super(key: key);

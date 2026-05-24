@@ -1,48 +1,37 @@
 import 'package:bloc/bloc.dart';
-import 'package:cryptomarket/Page/Splash_screen.dart';
-import 'package:cryptomarket/Theme/MyThemes.dart';
-import 'package:cryptomarket/Theme/_CustomTheme.dart';
-import 'package:cryptomarket/Theme/themes.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
-import 'package:cryptomarket/bloc/bloc.dart';
+import 'Page/Splash_screen.dart';
+import 'Theme/MyThemes.dart';
+import 'Theme/_CustomTheme.dart';
+import 'Theme/themes.dart';
+import 'Util/SharedPreferencesHelper.dart';
+import 'bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
-void main()async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // 👈 importante ahora
 
-  BlocSupervisor().delegate = SimpleBlocDelegate();
+  Bloc.observer = SimpleBlocObserver();
 
-String theme = await SharedPreferencesHelper.getTheme();
-  if(theme == "Light"){
-    runApp(
-      CustomTheme(
-        initialThemeKey: MyThemeKeys.LIGHT,
-        child: MyApp(),
-      ),
-    );
+  String theme = await SharedPreferencesHelper.getTheme();
+  if (theme == "Light") {
+    runApp(CustomTheme(initialThemeKey: MyThemeKeys.LIGHT, child: MyApp()));
+  } else {
+    runApp(CustomTheme(initialThemeKey: MyThemeKeys.DARK, child: MyApp()));
   }
-  else{
-    runApp(
-      CustomTheme(
-        initialThemeKey: MyThemeKeys.DARK,
-        child: MyApp(),
-      ),
-    );
-  }
-
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-   /* MaterialApp(
+    /* MaterialApp(
         theme: snapshot.data ? ThemeData.dark() : ThemeData.light(),*/
     return MaterialApp(
       title: 'Dynamic themes demo',
       theme: CustomTheme.of(context),
       home: Splash_screen(),
     );
-   /* final ThemeBloc themeBloc = ThemeBloc();
+    /* final ThemeBloc themeBloc = ThemeBloc();
      return StreamBuilder<ThemeData>(
       initialData: themeBloc.initialTheme().data,
       stream: themeBloc.themeDataStream,
@@ -50,9 +39,9 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Theme Switcher',
           theme: snapshot.data,
-          home: Splash_screen()*//*(
+          home: Splash_screen()*/ /*(
             themeBloc: themeBloc,
-          ),*//*
+          ),*/ /*
         );
       },
     );*/
@@ -62,8 +51,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   final ThemeBloc themeBloc;
 
-
-  MyHomePage({Key key, this.title,this.themeBloc}) : super(key: key);
+  MyHomePage({Key? key, required this.title, required this.themeBloc}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -128,13 +116,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            Text('You have pushed the button this many times:'),
+            Text('$_counter', style: Theme.of(context).textTheme.displayMedium),
           ],
         ),
       ),

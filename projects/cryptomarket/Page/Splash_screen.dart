@@ -1,7 +1,7 @@
 
-import 'package:cryptomarket/Page/Dashboard.dart';
-import 'package:cryptomarket/Page/Home.dart';
-import 'package:cryptomarket/Theme/MyThemes.dart';
+import 'Dashboard.dart';
+import 'Home.dart';
+import '../Theme/MyThemes.dart';
 import 'package:flutter/material.dart';
 
 class Splash_screen extends StatefulWidget {

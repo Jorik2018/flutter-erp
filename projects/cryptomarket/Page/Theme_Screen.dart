@@ -1,6 +1,6 @@
-import 'package:cryptomarket/Theme/MyThemes.dart';
-import 'package:cryptomarket/Theme/_CustomTheme.dart';
-import 'package:cryptomarket/Util/SharedPreferencesHelper.dart';
+import '../Theme/MyThemes.dart';
+import '../Theme/_CustomTheme.dart';
+import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class Theme_Screen extends StatefulWidget {

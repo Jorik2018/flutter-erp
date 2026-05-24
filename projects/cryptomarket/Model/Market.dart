@@ -1,15 +1,10 @@
-class Market{
+class Market {
+  String name;
+  String logoUrl;
 
-  String Name;
-  String LogoUrl;
+  Market(this.name, this.logoUrl);
 
-  Market(this.Name, this.LogoUrl);
-
-  Market.fromMap(Map map) {
-    this.Name = map['Name'];
-    this.LogoUrl = map['LogoUrl'];
-
-  }
-
-
+  Market.fromMap(Map<String, dynamic> map)
+      : name = map['Name'] ?? '',
+        logoUrl = map['LogoUrl'] ?? '';
 }

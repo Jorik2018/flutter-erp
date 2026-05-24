@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_erp/apps/delivery_app/main.dart';
-import 'package:flutter_erp/apps/flutter_mates/main.dart';
-import 'package:flutter_erp/apps/fu_uber/main.dart';
-import 'package:flutter_erp/apps/travel_app/screens/home_screen.dart';
-import 'package:flutter_erp/apps/ubereats/pages/root_app.dart';
 import 'package:flutter_erp/apps/voice_recording_to_text/home_page_screen.dart';
 
 void main() {
-  runApp(DeliveryApp());
+
+  runApp(const ProviderScope(child: ERPApp()));
+  //runApp(DeliveryApp());
   //runApp(FlutterMatesApp());
   //runApp(const FuUberApp());
   //runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class ERPApp extends ConsumerWidget {
+  const ERPApp({super.key});
 
-  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
+    );
+  }
+}
+
+class MyApp2 extends StatelessWidget {
+
+  const MyApp2({super.key});
 
   // This widget is the root of your application.
   @override
@@ -40,7 +54,6 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),*/
-      theme: ThemeData(primarySwatch: Colors.blue),
       home: HomePageScreen(),
       // nTravelAppScreen()
       // RootApp()
