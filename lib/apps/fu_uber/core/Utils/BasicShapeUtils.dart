@@ -7,12 +7,15 @@ class ShapeUtils {
     topRight: Radius.circular(24.0),
   );
   static RoundedRectangleBorder selectedCardShape = RoundedRectangleBorder(
-      side: new BorderSide(color: Colors.grey, width: 2.0),
-      borderRadius: BorderRadius.circular(4.0));
+    side: BorderSide(color: Colors.grey, width: 2.0),
+    borderRadius: BorderRadius.circular(4.0),
+  );
   static RoundedRectangleBorder notSelectedCardShape = RoundedRectangleBorder(
-      side: new BorderSide(color: Colors.white, width: 2.0),
-      borderRadius: BorderRadius.circular(4.0));
+    side: BorderSide(color: Colors.white, width: 2.0),
+    borderRadius: BorderRadius.circular(4.0),
+  );
 
   static RoundedRectangleBorder rounderCard = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0));
+    borderRadius: BorderRadius.circular(10.0),
+  );
 }

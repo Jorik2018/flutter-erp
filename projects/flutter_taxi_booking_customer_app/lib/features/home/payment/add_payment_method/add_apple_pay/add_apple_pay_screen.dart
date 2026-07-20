@@ -5,7 +5,6 @@ import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dar
 import 'package:flutter_taxi_booking_customer_app/widgets/square_textfield_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/viit_appbar.dart';
 
-
 import 'bloc/bloc.dart';
 
 class AddApplePayScreen extends StatelessWidget {
@@ -35,12 +34,7 @@ class AddApplePay extends StatefulWidget {
   final String hintText;
   final String promoteMsg;
 
-  AddApplePay(
-    this.toolbarTitle,
-    this.titleMsg,
-    this.hintText,
-    this.promoteMsg,
-  );
+  AddApplePay(this.toolbarTitle, this.titleMsg, this.hintText, this.promoteMsg);
 
   @override
   _AddApplePayState createState() => _AddApplePayState();
@@ -115,27 +109,22 @@ class _AddApplePayState extends State<AddApplePay> {
             children: <Widget>[
               Text(
                 widget.titleMsg,
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kLoginBlack,
-                      fontSize: 15,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 15),
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               SquareTextFieldWidget(
                 onSubmited: (str) {},
                 hintText: widget.hintText,
                 inputType: TextInputType.emailAddress,
                 inputAction: TextInputAction.done,
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: FlatButtonWidget(
+                    child: TextButtonWidget(
                       btnTxt: "Save",
                       btnOnTap: () {},
                       btnColor: kAccentColor,
@@ -144,16 +133,14 @@ class _AddApplePayState extends State<AddApplePay> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 36,
-              ),
+              SizedBox(height: 36),
               Text(
                 widget.promoteMsg,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kDottedBorder,
-                      fontSize: 15,
-                      letterSpacing: 0.6,
-                    ),
+                  color: kDottedBorder,
+                  fontSize: 15,
+                  letterSpacing: 0.6,
+                ),
               ),
             ],
           ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class FlatButtonWidget extends StatelessWidget {
+class TextButtonWidget extends StatelessWidget {
   final Color btnColor;
   final String btnTxt;
   final Function btnOnTap;
   double height;
 
-  FlatButtonWidget({
+  TextButtonWidget({
     Key key,
     this.btnColor,
     @required this.btnTxt,
@@ -18,23 +18,19 @@ class FlatButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height,
-      child: FlatButton(
+      child: TextButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(28.0),
         ),
         color: btnColor,
         onPressed: btnOnTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 0,
-            horizontal: 12,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           child: Text(
             btnTxt,
-            style: Theme.of(context).textTheme.caption.copyWith(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.caption.copyWith(fontSize: 18, color: Colors.white),
           ),
         ),
       ),

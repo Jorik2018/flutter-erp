@@ -5,16 +5,12 @@ void main() {
   runApp(new MyApp());
 }
 
-class MyApp extends StatelessWidget
-{
+class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context)
-  {
-    return new MaterialApp
-    (
+  Widget build(BuildContext context) {
+    return new MaterialApp(
       title: 'Travel Guide',
-      theme: new ThemeData
-      (
+      theme: ThemeData(
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -25,7 +21,7 @@ class MyApp extends StatelessWidget
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.grey,
       ),
-      home: new ListaCittaScreen()
+      home: ListaCittaScreen(),
     );
   }
 }

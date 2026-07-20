@@ -71,19 +71,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   TextFormField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: "E-mail",
-                        labelStyle: TextStyle(fontSize: 14),
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                      style: TextStyle(fontSize: 18),
-                      validator: (text) {
-                        if (text.isEmpty || !text.contains("@")) {
-                          return "Digite e email";
-                        }
-                      }),
+                    controller: emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: "E-mail",
+                      labelStyle: TextStyle(fontSize: 14),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                    style: TextStyle(fontSize: 18),
+                    validator: (text) {
+                      if (text.isEmpty || !text.contains("@")) {
+                        return "Digite e email";
+                      }
+                    },
+                  ),
                   SizedBox(height: 10),
                   TextFormField(
                     controller: phoneController,
@@ -102,42 +103,44 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                      controller: passwordController,
-                      obscureText: true,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: "Senha",
-                        labelStyle: TextStyle(fontSize: 14),
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                      style: TextStyle(fontSize: 18),
-                      validator: (text) {
-                        if (text.isEmpty || text.length < 6) {
-                          return "Digite a senha";
-                        }
-                      }),
+                    controller: passwordController,
+                    obscureText: true,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: "Senha",
+                      labelStyle: TextStyle(fontSize: 14),
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                    style: TextStyle(fontSize: 18),
+                    validator: (text) {
+                      if (text.isEmpty || text.length < 6) {
+                        return "Digite a senha";
+                      }
+                    },
+                  ),
                   SizedBox(height: 40),
                   TaxiButton(
                     title: "Cadastrar",
                     color: BrandColors.colorGreen,
                     onPressed: () async {
-
-
                       if (_formKey.currentState.validate()) {
                         registerUser();
                       }
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(25),
                     ),
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, LoginPage.id, (route) => false);
+                        context,
+                        LoginPage.id,
+                        (route) => false,
+                      );
                     },
                     child: Text("Tem uma conta Motorista? Entrar"),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -148,38 +151,43 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void registerUser() async {
-
     showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) =>
-            ProgressDialog(status: "Cadastrando"));
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) => ProgressDialog(status: "Cadastrando"),
+    );
 
-    final FirebaseUser user = (await _auth
-            .createUserWithEmailAndPassword(
-                email: emailController.text, password: passwordController.text)
-            .catchError((onError) {
-      //Verificando erro e mostrando message
-      Navigator.pop(context);
-      PlatformException thisEx = onError;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(thisEx.message),
-        backgroundColor: Colors.redAccent,
-        duration: Duration(seconds: 2),
-      ));
-    }))
-        .user;
+    final FirebaseUser user =
+        (await _auth
+                .createUserWithEmailAndPassword(
+                  email: emailController.text,
+                  password: passwordController.text,
+                )
+                .catchError((onError) {
+                  //Verificando erro e mostrando message
+                  Navigator.pop(context);
+                  PlatformException thisEx = onError;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(thisEx.message),
+                      backgroundColor: Colors.redAccent,
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }))
+            .user;
     // verifica se o reistro é feito cm successo
     Navigator.pop(context);
     if (user != null) {
-      DatabaseReference newUserRef =
-          FirebaseDatabase.instance.reference().child("users/${user.uid}");
+      DatabaseReference newUserRef = FirebaseDatabase.instance
+          .reference()
+          .child("users/${user.uid}");
 
       //preparando dos dados paraa salvar
       Map userMap = {
         "fullname": fullnameController.text,
         "email": emailController.text,
-        "phone": phoneController.text
+        "phone": phoneController.text,
       };
 
       newUserRef.set(userMap);

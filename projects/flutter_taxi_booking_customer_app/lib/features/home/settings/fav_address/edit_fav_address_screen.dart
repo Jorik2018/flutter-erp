@@ -27,49 +27,37 @@ class EditFavAddressScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 "Address Name",
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kLoginBlack,
-                      fontSize: 15,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 15),
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               SquareTextFieldWidget(
                 hintText: "Rue des Lacs",
                 inputType: TextInputType.text,
                 inputAction: TextInputAction.next,
               ),
-              SizedBox(
-                height: 8,
-              ),
-              SizedBox(
-                height: 8,
-              ),
+              SizedBox(height: 8),
+              SizedBox(height: 8),
               Text(
                 "Address",
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kLoginBlack,
-                      fontSize: 15,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 15),
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               SquareTextFieldWidget(
                 hintText: "50, rue des Lacs, 83400 HYÈRES",
                 inputType: TextInputType.text,
                 inputAction: TextInputAction.done,
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               Row(
                 children: <Widget>[
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: FlatButtonWidget(
+                      child: TextButtonWidget(
                         height: 52,
                         btnTxt: "Save",
                         btnColor: kAccentColor,

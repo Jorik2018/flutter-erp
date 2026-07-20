@@ -29,8 +29,10 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   void initState() {
     super.initState();
-    facebookSignInSuggestionTimer =
-        Timer(Duration(milliseconds: 1100), _showFacebookSignInSuggestion);
+    facebookSignInSuggestionTimer = Timer(
+      Duration(milliseconds: 1100),
+      _showFacebookSignInSuggestion,
+    );
   }
 
   @override
@@ -58,18 +60,15 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: height * .14),
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30), color: Colors.white),
-            padding: const EdgeInsets.all(4),
-            child: const Text(
-              "Inscription ",
-              textScaleFactor: 1.7,
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.white,
             ),
+            padding: const EdgeInsets.all(4),
+            child: const Text("Inscription ", textScaleFactor: 1.7),
           ),
           SizedBox(height: 30),
           _form(),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           FormValidatorButton(
             onClick: () async {
               if (_formKey.currentState.validate())
@@ -80,8 +79,11 @@ class _SignUpFormState extends State<SignUpForm> {
                       firstName: firstName,
                       lastName: lastName,
                     )
-                    .then((_) => Navigator.of(context)
-                        .popUntil((route) => route.isFirst))
+                    .then(
+                      (_) => Navigator.of(
+                        context,
+                      ).popUntil((route) => route.isFirst),
+                    )
                     .catchError(_onSignUpError);
             },
           ),
@@ -105,7 +107,7 @@ class _SignUpFormState extends State<SignUpForm> {
           content: Text(error.message),
           actions: [
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -144,12 +146,8 @@ class _SignUpFormState extends State<SignUpForm> {
             fieldType: TextInputType.emailAddress,
             validator: emailFieldValidator,
           ),
-          SizedBox(
-            height: 16,
-          ),
-          PasswordField(
-            onChanged: (value) => password = value,
-          ),
+          SizedBox(height: 16),
+          PasswordField(onChanged: (value) => password = value),
         ],
       ),
     );
@@ -163,26 +161,30 @@ class _SignUpFormState extends State<SignUpForm> {
         return AlertDialog(
           title: Text("Recommendation"),
           content: Text(
-              "Cher utilisateur, si vous avez un compte Facebook il n'est pas nécessaire de créer un compte Taluxi, vous pouvez vous connecter à Taluxi à l'aide de votre compte Facebook. C'est plus facile et plus rapide,\nMerci de votre compréhension."),
+            "Cher utilisateur, si vous avez un compte Facebook il n'est pas nécessaire de créer un compte Taluxi, vous pouvez vous connecter à Taluxi à l'aide de votre compte Facebook. C'est plus facile et plus rapide,\nMerci de votre compréhension.",
+          ),
           actions: [
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () async {
                   await authProvider
                       .signInWithFacebook()
-                      .then((_) => Navigator.of(context)
-                          .popUntil((route) => route.isFirst))
+                      .then(
+                        (_) => Navigator.of(
+                          context,
+                        ).popUntil((route) => route.isFirst),
+                      )
                       .catchError(_onSignUpError);
                 },
                 child: Text("Me connecter à l'aide de Facebook"),
               ),
             ),
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text("Créer un nouveau compte"),
                 onPressed: () => Navigator.pop(context),
               ),
-            )
+            ),
           ],
         );
       },
@@ -199,9 +201,7 @@ class _SignUpFormState extends State<SignUpForm> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              height: 27,
-            ),
+            SizedBox(height: 27),
             Text(
               'Déjà inscrit ?  ',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
@@ -209,9 +209,10 @@ class _SignUpFormState extends State<SignUpForm> {
             Text(
               'Cliquez ici pour vous connecter',
               style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
+                color: Color(0xfff79c4f),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),

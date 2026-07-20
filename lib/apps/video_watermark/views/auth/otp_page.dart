@@ -111,8 +111,8 @@ class _OTPPageState extends State<OTPPage> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 5),
-                  /**error:The method 'FlatButton' isn't defined for the type '_OTPPageState'.
-Try correcting the name to the name of an existing method, or defining a method named 'FlatButton' */
+                  /**error:The method 'TextButton' isn't defined for the type '_OTPPageState'.
+Try correcting the name to the name of an existing method, or defining a method named 'TextButton' */
                   child: TextButton(
                     style: TextButton.styleFrom(
                       minimumSize: Size(SizeConfig.screenWidth! * 0.33, 38),

@@ -3,7 +3,6 @@ import 'package:flutter_taxi_booking_driver_app/common/my_colors.dart';
 import 'package:flutter_taxi_booking_driver_app/common/viiticons_icons.dart';
 import 'package:flutter_taxi_booking_driver_app/widgets/flat_button_widget.dart';
 
-
 class DialogBoxWidget extends StatelessWidget {
   final bool isIconShow;
   final bool isCloseIconShow;
@@ -40,19 +39,9 @@ class DialogBoxWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            isCloseIconShow
-                ? SizedBox(
-                    height: 12,
-                  )
-                : SizedBox(
-                    height: 25,
-                  ),
+            isCloseIconShow ? SizedBox(height: 12) : SizedBox(height: 25),
             isIconShow
-                ? Icon(
-                    Viiticons.face,
-                    size: 86,
-                    color: kTextLoginfaceid,
-                  )
+                ? Icon(Viiticons.face, size: 86, color: kTextLoginfaceid)
                 : SizedBox(),
             isCloseIconShow
                 ? Row(
@@ -61,17 +50,12 @@ class DialogBoxWidget extends StatelessWidget {
                       GestureDetector(
                         onTap: myOnCloseTap,
                         child: Container(
-                          margin: const EdgeInsets.only(
-                            right: 12,
-                            top: 4,
-                          ),
+                          margin: const EdgeInsets.only(right: 12, top: 4),
                           width: 21,
                           height: 21,
                           decoration: BoxDecoration(
                             color: kPrimaryColor,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(18),
-                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
                           ),
                           child: Icon(
                             Icons.close,
@@ -84,19 +68,15 @@ class DialogBoxWidget extends StatelessWidget {
                   )
                 : SizedBox(),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-                top: 15,
-              ),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
               child: Text(
                 titleText,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17,
-                      color: kBlack,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17,
+                  color: kBlack,
+                ),
               ),
             ),
             Padding(
@@ -105,18 +85,14 @@ class DialogBoxWidget extends StatelessWidget {
                 descriptionText,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      fontSize: 15,
-                      color: kTextLoginfaceid,
-                    ),
+                  fontSize: 15,
+                  color: kTextLoginfaceid,
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-                top: 25,
-              ),
-              child: FlatButtonWidget(
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 25),
+              child: TextButtonWidget(
                 btnColor: kAccentColor,
                 btnTxt: primaryBtnTxt,
                 btnOnTap: onPrimaryTap,
@@ -135,14 +111,14 @@ class DialogBoxWidget extends StatelessWidget {
                   child: Text(
                     secondaryBtnTxt,
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: kAccentColor,
-                        ),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: kAccentColor,
+                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

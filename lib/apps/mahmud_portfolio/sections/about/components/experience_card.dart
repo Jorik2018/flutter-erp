@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../constants.dart';
 
 class ExperienceCard extends StatelessWidget {
-  const ExperienceCard({
-    Key? key,
-    required this.numOfExp,
-  }) : super(key: key);
+  const ExperienceCard({Key? key, required this.numOfExp}) : super(key: key);
 
   final String numOfExp;
 
@@ -43,7 +40,7 @@ class ExperienceCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 100,
                     fontWeight: FontWeight.bold,
-                    /* foreground: new Paint()
+                    /* foreground:Paint()
                       ..style = PaintingStyle.stroke
                       ..strokeWidth = 6
                       ..color = Color(0xFFDFA3FF).withOpacity(0.5), */
@@ -63,16 +60,14 @@ class ExperienceCard extends StatelessWidget {
                     fontSize: 100,
                     color: Colors.white,
                   ),
-                )
+                ),
               ],
             ),
             SizedBox(height: kDefaultPadding / 2),
             Text(
               "Years of Experience",
-              style: TextStyle(
-                color: Color(0xFF09385e),
-              ),
-            )
+              style: TextStyle(color: Color(0xFF09385e)),
+            ),
           ],
         ),
       ),

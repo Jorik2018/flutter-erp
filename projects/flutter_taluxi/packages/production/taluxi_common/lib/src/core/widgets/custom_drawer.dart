@@ -16,8 +16,10 @@ class _CustomDrowerState extends State<CustomDrower> {
   final menuTextStyle = TextStyle(color: Color(0xFF373737), fontSize: 16.5);
   @override
   Widget build(BuildContext context) {
-    final authProvider =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthenticationProvider>(
+      context,
+      listen: false,
+    );
     _user = authProvider.user;
     return Drawer(
       child: Stack(
@@ -61,22 +63,14 @@ class _CustomDrowerState extends State<CustomDrower> {
                   "Voir l'historique de vos trajets",
                   style: menuTextStyle,
                 ),
-                trailing: Icon(
-                  Icons.history,
-                  color: Colors.black38,
-                ),
+                trailing: Icon(Icons.history, color: Colors.black38),
                 onTap: () => _showScrollableDialog(
-                  ListView(
-                    children: _buildHistoryListTiles(),
-                  ),
+                  ListView(children: _buildHistoryListTiles()),
                   'Historique de trajets',
                 ),
               ),
               ListTile(
-                title: Text(
-                  'Voir vos médailles',
-                  style: menuTextStyle,
-                ),
+                title: Text('Voir vos médailles', style: menuTextStyle),
                 trailing: SvgPicture.asset(
                   'assets/images/medal.svg',
                   width: 24,
@@ -90,7 +84,7 @@ class _CustomDrowerState extends State<CustomDrower> {
                   ),
                   'Médailles',
                 ),
-              )
+              ),
             ],
           ),
           Align(
@@ -101,15 +95,15 @@ class _CustomDrowerState extends State<CustomDrower> {
                 showWaitDialog('Déconnexion en cours', context);
                 await authProvider
                     .signOut()
-                    .then((_) => Navigator.of(context)
-                        .popUntil((route) => route.isFirst))
+                    .then(
+                      (_) => Navigator.of(
+                        context,
+                      ).popUntil((route) => route.isFirst),
+                    )
                     .catchError((e) => _onSignOutFailed(e, context));
               },
               title: Text("Se déconnecter"),
-              trailing: Icon(
-                Icons.logout,
-                color: Colors.black54,
-              ),
+              trailing: Icon(Icons.logout, color: Colors.black54),
             ),
           ),
         ],
@@ -122,15 +116,8 @@ class _CustomDrowerState extends State<CustomDrower> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          title,
-          style: textStyle,
-        ),
-        Text(
-          count,
-          textScaleFactor: 1.2,
-          style: textStyle,
-        ),
+        Text(title, style: textStyle),
+        Text(count, textScaleFactor: 1.2, style: textStyle),
       ],
     );
   }
@@ -145,7 +132,7 @@ class _CustomDrowerState extends State<CustomDrower> {
           title: Text('Une erreur est survenue lors de la déconnexion'),
           content: Text(exception.message),
           actions: [
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -160,10 +147,9 @@ class _CustomDrowerState extends State<CustomDrower> {
   List<ListTile> _buildHistoryListTiles() {
     var menuItems = <ListTile>[];
     _user.rideCountHistory.forEach((historyDate, rideCount) {
-      menuItems.add(ListTile(
-        title: Text(historyDate),
-        trailing: Text('$rideCount'),
-      ));
+      menuItems.add(
+        ListTile(title: Text(historyDate), trailing: Text('$rideCount')),
+      );
     });
     return menuItems;
   }
@@ -174,17 +160,14 @@ class _CustomDrowerState extends State<CustomDrower> {
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(
-          title,
-          textAlign: TextAlign.center,
-        ),
+        title: Text(title, textAlign: TextAlign.center),
         content: Container(
           width: screenSize.width * .9,
           height: screenSize.height * .4,
           child: child,
         ),
         actions: [
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -200,10 +183,12 @@ class _CustomDrowerState extends State<CustomDrower> {
   List<Trophy> _buildTrophiesList() {
     var trophiesList = <Trophy>[];
     UserDataRepository.trophiesList.forEach((trophyLevel, trophy) {
-      trophiesList.add(Trophy(
-        level: trophyLevel,
-        active: _user.trophies.contains(trophyLevel),
-      ));
+      trophiesList.add(
+        Trophy(
+          level: trophyLevel,
+          active: _user.trophies.contains(trophyLevel),
+        ),
+      );
     });
     return trophiesList;
   }

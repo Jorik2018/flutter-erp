@@ -3,7 +3,6 @@ import 'package:flutter_taxi_booking_customer_app/common/my_colors.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/square_textfield_widget.dart';
 
-
 class PromoBoxWidget extends StatelessWidget {
   final String titleText;
   final String primaryBtnTxt;
@@ -32,31 +31,21 @@ class PromoBoxWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SizedBox(
-              height: 25,
-            ),
+            SizedBox(height: 25),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-                top: 0,
-              ),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
               child: Text(
                 titleText,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
-                      color: kBlack,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                  color: kBlack,
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-                top: 21,
-              ),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 21),
               child: SquareTextFieldWidget(
                 hintText: "Enter Promo Code",
                 inputType: TextInputType.text,
@@ -64,12 +53,8 @@ class PromoBoxWidget extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 15,
-                top: 12,
-              ),
-              child: FlatButtonWidget(
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 12),
+              child: TextButtonWidget(
                 btnColor: kAccentColor,
                 btnTxt: primaryBtnTxt,
                 btnOnTap: onPrimaryTap,
@@ -89,14 +74,14 @@ class PromoBoxWidget extends StatelessWidget {
                   child: Text(
                     secondaryBtnTxt,
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: kAccentColor,
-                        ),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: kAccentColor,
+                    ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

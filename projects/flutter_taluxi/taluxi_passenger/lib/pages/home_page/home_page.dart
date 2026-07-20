@@ -45,27 +45,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final floatingActionButtonSize = deviceSize.height * 0.084;
-    final userHasPhoto = (_authProvider.user.photoUrl != null &&
+    final userHasPhoto =
+        (_authProvider.user.photoUrl != null &&
         _authProvider.user.photoUrl.isNotEmpty);
     return Scaffold(
       body: Builder(
-        builder: (BuildContext context) => Stack(children: [
-          Container(
-            decoration: BoxDecoration(gradient: mainLinearGradient),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _headerContainer(deviceSize),
-                BottomRoundedContainer(
-                  deviceSize: deviceSize,
-                  topBorderRadius: Radius.circular(40),
-                )
-              ],
+        builder: (BuildContext context) => Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(gradient: mainLinearGradient),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _headerContainer(deviceSize),
+                  BottomRoundedContainer(
+                    deviceSize: deviceSize,
+                    topBorderRadius: Radius.circular(40),
+                  ),
+                ],
+              ),
             ),
-          ),
-          _userPhoto(userHasPhoto),
-          _menuButton(context)
-        ]),
+            _userPhoto(userHasPhoto),
+            _menuButton(context),
+          ],
+        ),
       ),
       endDrawer: CustomDrower(),
       floatingActionButton: Container(
@@ -114,7 +117,7 @@ class _HomePageState extends State<HomePage> {
               blurRadius: 5,
               offset: Offset(0, 2),
               color: Colors.black12,
-            )
+            ),
           ],
           image: userHasPhoto
               ? DecorationImage(
@@ -135,9 +138,10 @@ class _HomePageState extends State<HomePage> {
   Widget _headerContainer(Size deviceSize) {
     return Padding(
       padding: EdgeInsets.only(
-          top: deviceSize.width * 0.35,
-          right: deviceSize.width * 0.11,
-          left: 10),
+        top: deviceSize.width * 0.35,
+        right: deviceSize.width * 0.11,
+        left: 10,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -190,14 +194,11 @@ class _HomePageState extends State<HomePage> {
             "Désolé, aucun conducteur n'est connecté dans la zone où vous vous trouvez actuellement, mais vous pouvez élargir la zone de recherche.",
           ),
           actions: [
-            RaisedButton(
-              child: Text('Élargir la zone'),
-              onPressed: () {},
-            ),
-            RaisedButton(
+            ElevatedButton(child: Text('Élargir la zone'), onPressed: () {}),
+            ElevatedButton(
               child: Text('Fermer'),
               onPressed: () => Navigator.of(context).pop(),
-            )
+            ),
           ],
         );
       },
@@ -230,18 +231,13 @@ class BottomRoundedContainer extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.only(top: 34),
         padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: Padding(
           padding: EdgeInsets.only(left: deviceSize.width * 0.025),
           child: Text(
             "Pour trouver un taxi, vous avez juste à cliquez sur le bouton ci-dessous on s'occupera de vous mettre en contact avec le taxi le plus proche de l'endroit où vous vous trouvez actuellement.",
             textScaleFactor: 1.55,
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              color: Colors.black54,
-            ),
+            style: TextStyle(fontFamily: 'Roboto', color: Colors.black54),
           ),
         ),
       ),

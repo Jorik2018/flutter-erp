@@ -5,28 +5,28 @@ import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dar
 class SquareScheduleTextFieldWidget extends StatelessWidget {
   final double myHeight;
 
-//  final TextEditingController myController;
+  //  final TextEditingController myController;
   final String hintText;
 
-//  final TextInputType inputType;
-//  final TextInputAction inputAction;
+  //  final TextInputType inputType;
+  //  final TextInputAction inputAction;
   final EdgeInsetsGeometry myMargin;
 
-//  final Function(String) onChanged;
-//  final Function(String) onSubmited;
+  //  final Function(String) onChanged;
+  //  final Function(String) onSubmited;
   final VoidCallback onScheduleTap;
   final VoidCallback onWhereToTap;
 
   SquareScheduleTextFieldWidget({
     Key key,
     this.myHeight = 51,
-//    this.myController,
+    //    this.myController,
     this.myMargin = const EdgeInsets.all(0),
     this.hintText,
-//    this.inputType = TextInputType.text,
-//    this.inputAction = TextInputAction.done,
-//    this.onChanged,
-//    this.onSubmited,
+    //    this.inputType = TextInputType.text,
+    //    this.inputAction = TextInputAction.done,
+    //    this.onChanged,
+    //    this.onSubmited,
     this.onScheduleTap,
     this.onWhereToTap,
   }) : super(key: key);
@@ -38,10 +38,7 @@ class SquareScheduleTextFieldWidget extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.only(
-              left: 8,
-              right: 8,
-            ),
+            padding: const EdgeInsets.only(left: 8, right: 8),
             margin: myMargin,
             height: myHeight,
             decoration: BoxDecoration(
@@ -63,10 +60,10 @@ class SquareScheduleTextFieldWidget extends StatelessWidget {
                       child: Text(
                         hintText,
                         style: Theme.of(context).textTheme.caption.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: kLoginBlack,
-                            ),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: kLoginBlack,
+                        ),
                       ),
                     ) /*TextField(
                       style: Theme.of(context).textTheme.caption.copyWith(
@@ -95,8 +92,7 @@ class SquareScheduleTextFieldWidget extends StatelessWidget {
                       onSubmitted: (str) {
                         onSubmited(str);
                       },
-                    )*/
-                    ,
+                    )*/,
                   ),
                 ),
               ],
@@ -106,14 +102,14 @@ class SquareScheduleTextFieldWidget extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: Padding(
               padding: const EdgeInsets.only(top: 0, right: 8),
-              child: FlatButtonWidget(
+              child: TextButtonWidget(
                 btnTxt: "Schedule",
                 height: 38,
                 btnOnTap: onScheduleTap,
                 btnColor: kAccentColor,
               ),
             ),
-          )
+          ),
         ],
       ),
     );

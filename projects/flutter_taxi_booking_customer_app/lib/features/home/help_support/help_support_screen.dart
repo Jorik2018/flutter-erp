@@ -7,7 +7,6 @@ import 'package:flutter_taxi_booking_customer_app/features/home/help_support/hel
 import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/my_listtile_widget.dart';
 
-
 import 'bloc/bloc.dart';
 
 class HelpSupportScreen extends StatelessWidget {
@@ -30,18 +29,13 @@ class _HelpSupportState extends State<HelpSupport> {
     "Popular Questions",
     "Payment Methods",
     "Cancelling and booking",
-    "Coupons and credits"
+    "Coupons and credits",
   ];
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 12,
-        bottom: 12,
-        left: 8,
-        right: 8,
-      ),
+      padding: const EdgeInsets.only(top: 12, bottom: 12, left: 8, right: 8),
       child: Stack(
         children: <Widget>[
           Align(
@@ -53,9 +47,9 @@ class _HelpSupportState extends State<HelpSupport> {
                 child: MyListTitle(
                   title: title[index],
                   myOnTap: () {
-                    Navigator.of(context).pushNamed(
-                      HelpSupportQuestionsScreen.routeName,
-                    );
+                    Navigator.of(
+                      context,
+                    ).pushNamed(HelpSupportQuestionsScreen.routeName);
                   },
                 ),
               ),
@@ -64,35 +58,31 @@ class _HelpSupportState extends State<HelpSupport> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    child: FlatButtonWidget(
+                    child: TextButtonWidget(
                       btnTxt: "Contact Us",
                       btnColor: kAccentColor,
                       btnOnTap: () {
-                        Navigator.of(context).pushNamed(
-                          ContactUsScreen.routeName,
-                        );
+                        Navigator.of(
+                          context,
+                        ).pushNamed(ContactUsScreen.routeName);
                       },
                     ),
                     flex: 1,
                   ),
-                  SizedBox(
-                    width: 32,
-                  ),
+                  SizedBox(width: 32),
                   Expanded(
-                    child: FlatButtonWidget(
+                    child: TextButtonWidget(
                       btnTxt: "Feedback",
                       btnColor: kPrimaryColor,
                       btnOnTap: () {
-                        Navigator.of(context).pushNamed(
-                          FeedBackScreen.routeName,
-                        );
+                        Navigator.of(
+                          context,
+                        ).pushNamed(FeedBackScreen.routeName);
                       },
                     ),
                     flex: 1,

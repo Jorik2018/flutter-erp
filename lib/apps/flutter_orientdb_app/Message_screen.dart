@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_erp/apps/flutter_orientdb_app/List_Screen.dart';
 import 'package:flutter_erp/apps/flutter_orientdb_app/Message_Model.dart';
 
-
 class Message_screen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -17,17 +16,16 @@ class Message_screen extends StatefulWidget {
 }
 
 class message_screen extends State<Message_screen> {
-
   bool _isConpomess = false;
-  
+
   String sender_id = '', sender_name = '', receive_id = '', receive_name = '';
 
   List<MessageModel> messagedata = [];
-  
+
   StreamController? _controller;
-  
+
   SharedPreferences? prf;
-  
+
   TextEditingController chatmessagetext = new TextEditingController();
 
   @override
@@ -48,7 +46,6 @@ class message_screen extends State<Message_screen> {
     loadPosts();
   }
 
-
   loadPosts() async {
     getItem().then((res) async {
       _controller!.add(res);
@@ -56,9 +53,7 @@ class message_screen extends State<Message_screen> {
     });
   }
 
-
-  Future<MessageModel> getItem() async{
-
+  Future<MessageModel> getItem() async {
     String db_User = 'root';
 
     String db_Password = 'orientdb';
@@ -70,153 +65,181 @@ class message_screen extends State<Message_screen> {
     var Headers = {
       'Accept-Encoding': 'gzip,deflate',
       'Content-Length': '0',
-      'Authorization': 'Basic $cre'
+      'Authorization': 'Basic $cre',
     };
 
     var postDataurl =
         "http://192.168.1.4:2480/command/chat_db/sql/select from tbl_message/20/*:-1";
 
-    http.Response response = await http.post(Uri.parse(postDataurl), headers: Headers);
+    http.Response response = await http.post(
+      Uri.parse(postDataurl),
+      headers: Headers,
+    );
 
-     var st_code = response.statusCode;
+    var st_code = response.statusCode;
 
-     var res1 = json.decode(response.body);
+    var res1 = json.decode(response.body);
 
-     return MessageModel.fromJson(res1);
-
-
+    return MessageModel.fromJson(res1);
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return WillPopScope(
-        child: Scaffold(
-          appBar: new AppBar(
-            title: Text('Chats'),
-            leading: GestureDetector(
-              child: Icon(Icons.arrow_back),
-              onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> List_data()));
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Chats'),
+          leading: GestureDetector(
+            child: Icon(Icons.arrow_back),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => List_data()),
+              );
+            },
+          ),
+          actions: <Widget>[
+            new IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                loadPosts();
               },
             ),
-            actions: <Widget>[
-              new IconButton(icon: Icon(Icons.refresh), onPressed: () {
-                loadPosts();
-              })
-            ],
-          ),
-          body: Column(
-            children: <Widget>[
-              new Flexible(
-                  child: StreamBuilder(
-                      stream: _controller!.stream,
-                      builder: (BuildContext con, AsyncSnapshot snapshot) {
-                        if (!snapshot.hasData) return new Container();
-
-                        return ListView.builder(
-                            padding: EdgeInsets.all(10.0),
-                            reverse: true,
-                            itemCount: snapshot.data.result.length,
-                            itemBuilder: (context, index) {
-                              bool isOwnMessage = false;
-                              if (snapshot.data.result[index].sender_id == sender_id.replaceAll('#', '') && snapshot.data.result[index].reciver_id == receive_id.replaceAll('#', '')) {
-                                isOwnMessage = true;
-
-                                return getMessageSendLayout(
-                                    snapshot.data.result[index].message_text,
-                                    "",
-                                    snapshot.data.result[index].sender_name,
-
-                                    snapshot.data.result[index].sender_id,
-                                    snapshot.data.result[index].reciver_id);
-                              }
-                              else if (snapshot.data.result[index].reciver_id == sender_id.replaceAll('#', '') && snapshot.data.result[index].sender_id == receive_id.replaceAll('#', '')) {
-                                return getMessageReceiverLayout(
-                                    snapshot.data.result[index].message_text,
-                                    "",
-                                    snapshot.data.result[index].sender_name,
-
-                                    snapshot.data.result[index].sender_id,
-                                    snapshot.data.result[index].reciver_id);
-                              }
-
-                              return new Container();
-
-
-                            });
-                      })),
-              Divider(
-                height: 1.0,
-              ),
-              Container(
-                child: Text_compond(),
-              )
-            ],
-          ),
+          ],
         ),
-        onWillPop: () async {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => List_data()),
-  );
-  return false;
-},);
+        body: Column(
+          children: <Widget>[
+            new Flexible(
+              child: StreamBuilder(
+                stream: _controller!.stream,
+                builder: (BuildContext con, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) return new Container();
+
+                  return ListView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    reverse: true,
+                    itemCount: snapshot.data.result.length,
+                    itemBuilder: (context, index) {
+                      bool isOwnMessage = false;
+                      if (snapshot.data.result[index].sender_id ==
+                              sender_id.replaceAll('#', '') &&
+                          snapshot.data.result[index].reciver_id ==
+                              receive_id.replaceAll('#', '')) {
+                        isOwnMessage = true;
+
+                        return getMessageSendLayout(
+                          snapshot.data.result[index].message_text,
+                          "",
+                          snapshot.data.result[index].sender_name,
+
+                          snapshot.data.result[index].sender_id,
+                          snapshot.data.result[index].reciver_id,
+                        );
+                      } else if (snapshot.data.result[index].reciver_id ==
+                              sender_id.replaceAll('#', '') &&
+                          snapshot.data.result[index].sender_id ==
+                              receive_id.replaceAll('#', '')) {
+                        return getMessageReceiverLayout(
+                          snapshot.data.result[index].message_text,
+                          "",
+                          snapshot.data.result[index].sender_name,
+
+                          snapshot.data.result[index].sender_id,
+                          snapshot.data.result[index].reciver_id,
+                        );
+                      }
+
+                      return new Container();
+                    },
+                  );
+                },
+              ),
+            ),
+            Divider(height: 1.0),
+            Container(child: Text_compond()),
+          ],
+        ),
+      ),
+      onWillPop: () async {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => List_data()),
+        );
+        return false;
+      },
+    );
   }
 
-  Widget getMessageSendLayout(String message, String attechment,
-      String Sendername, String sender_id, String reciver_id) {
+  Widget getMessageSendLayout(
+    String message,
+    String attechment,
+    String Sendername,
+    String sender_id,
+    String reciver_id,
+  ) {
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       child: Row(
         children: <Widget>[
           new Expanded(
-              child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              new Text(
-                sender_name,
-                style: TextStyle(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                new Text(
+                  sender_name,
+                  style: TextStyle(
                     fontSize: 14.0,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              new Container(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                new Container(
                   margin: EdgeInsets.only(top: 5.0),
                   child: attechment != ""
                       ? new Image.network('')
-                      : new Text(message))
-            ],
-          ))
+                      : Text(message),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget getMessageReceiverLayout(String message, String attechment,
-      String Sendername, String sender_id, String reciver_id) {
+  Widget getMessageReceiverLayout(
+    String message,
+    String attechment,
+    String Sendername,
+    String sender_id,
+    String reciver_id,
+  ) {
     return Container(
       margin: EdgeInsets.only(top: 5.0),
       child: Row(
         children: <Widget>[
           new Expanded(
-              child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(
-                Sendername,
-                style: TextStyle(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  Sendername,
+                  style: TextStyle(
                     fontSize: 14.0,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              new Container(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                new Container(
                   margin: EdgeInsets.only(top: 5.0),
                   child: attechment != ""
                       ? new Image.network('')
-                      : new Text(message))
-            ],
-          ))
+                      : Text(message),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -224,19 +247,19 @@ class message_screen extends State<Message_screen> {
 
   Widget Text_compond() {
     return new IconTheme(
-        data: IconThemeData(
-          color: _isConpomess
-          /**error:The getter 'accentColor' isn't defined for the type 'ThemeData'.
+      data: IconThemeData(
+        color: _isConpomess
+            /**error:The getter 'accentColor' isn't defined for the type 'ThemeData'.
 Try importing the library that defines 'accentColor', correcting the name to the name of an existing getter, or defining a getter or field named 'accentColor'. */
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).disabledColor,
-        ),
-        child: new Container(
-          margin: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: <Widget>[
-              new Flexible(
-                  child: new TextField(
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).disabledColor,
+      ),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(
+          children: <Widget>[
+            new Flexible(
+              child: TextField(
                 controller: chatmessagetext,
                 onChanged: (String messag) {
                   setState(() {
@@ -244,20 +267,24 @@ Try importing the library that defines 'accentColor', correcting the name to the
                   });
                 },
                 onSubmitted: _submited,
-                decoration:
-                    InputDecoration.collapsed(hintText: 'Send a message'),
-              )),
-              new Container(
-                margin: EdgeInsets.symmetric(horizontal: 4.0),
-                child: IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: _isConpomess
-                        ? () => _submited(chatmessagetext.text)
-                        : null),
-              )
-            ],
-          ),
-        ));
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Send a message',
+                ),
+              ),
+            ),
+            new Container(
+              margin: EdgeInsets.symmetric(horizontal: 4.0),
+              child: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: _isConpomess
+                    ? () => _submited(chatmessagetext.text)
+                    : null,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _submited(String message) async {
@@ -272,30 +299,32 @@ Try importing the library that defines 'accentColor', correcting the name to the
     var Headers = {
       'Accept-Encoding': 'gzip,deflate',
       'Content-Length': '0',
-      'Authorization': 'Basic $cre'
+      'Authorization': 'Basic $cre',
     };
 
     var postMesasage =
         "http://192.168.1.4:2480/command/chat_db/sql/INSERT INTO tbl_message SET message_text ='" +
-            chatmessagetext.text +
-            "'," +
-            "reciver_id='" +
-            receive_id.replaceAll("#", '') +
-            "'," +
-            "reciver_name='" +
-            receive_name +
-            "'," +
-            "sender_id='" +
-            sender_id.replaceAll("#", '') +
-            "'," +
-            "sender_name='" +
-            sender_name +
-            "'";
+        chatmessagetext.text +
+        "'," +
+        "reciver_id='" +
+        receive_id.replaceAll("#", '') +
+        "'," +
+        "reciver_name='" +
+        receive_name +
+        "'," +
+        "sender_id='" +
+        sender_id.replaceAll("#", '') +
+        "'," +
+        "sender_name='" +
+        sender_name +
+        "'";
 
-    http.Response response = await http.post(Uri.parse(postMesasage), headers: Headers);
+    http.Response response = await http.post(
+      Uri.parse(postMesasage),
+      headers: Headers,
+    );
 
     if (response.statusCode == 200) {
-
       chatmessagetext.clear();
       loadPosts();
     } else {

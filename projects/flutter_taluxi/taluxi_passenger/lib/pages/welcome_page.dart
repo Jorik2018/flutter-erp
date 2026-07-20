@@ -36,8 +36,10 @@ class _WelcomePageState extends State<WelcomePage> {
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             image: DecorationImage(
-              colorFilter:
-                  ColorFilter.mode(Color(0x65010101), BlendMode.luminosity),
+              colorFilter: ColorFilter.mode(
+                Color(0x65010101),
+                BlendMode.luminosity,
+              ),
               fit: BoxFit.cover,
               image: AssetImage('assets/images/bg.jpg'),
             ),
@@ -59,14 +61,19 @@ class _WelcomePageState extends State<WelcomePage> {
                 _signUpButton(),
                 SizedBox(height: 20),
                 CustomDivider(),
-                FacebookLoginButton(onClick: () async {
-                  signInRequested = true;
-                  await authProvider
-                      .signInWithFacebook()
-                      .then((_) => Navigator.of(context)
-                          .popUntil((route) => route.isFirst))
-                      .catchError(_onSignInError);
-                }),
+                FacebookLoginButton(
+                  onClick: () async {
+                    signInRequested = true;
+                    await authProvider
+                        .signInWithFacebook()
+                        .then(
+                          (_) => Navigator.of(
+                            context,
+                          ).popUntil((route) => route.isFirst),
+                        )
+                        .catchError(_onSignInError);
+                  },
+                ),
               ],
             ),
           ),
@@ -89,7 +96,7 @@ class _WelcomePageState extends State<WelcomePage> {
           content: Text(error.message),
           actions: [
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -110,9 +117,9 @@ class _WelcomePageState extends State<WelcomePage> {
           MaterialPageRoute(
             builder: (context) =>
                 ChangeNotifierProvider<AuthenticationProvider>.value(
-              value: authProvider,
-              child: AuthenticationPage(authType: AuthType.login),
-            ),
+                  value: authProvider,
+                  child: AuthenticationPage(authType: AuthType.login),
+                ),
           ),
         );
       },
@@ -132,10 +139,7 @@ class _WelcomePageState extends State<WelcomePage> {
           ],
           gradient: mainLinearGradient,
         ),
-        child: Text(
-          'Se connecter',
-          style: _buttonTextStyle,
-        ),
+        child: Text('Se connecter', style: _buttonTextStyle),
       ),
     );
   }
@@ -148,9 +152,9 @@ class _WelcomePageState extends State<WelcomePage> {
           MaterialPageRoute(
             builder: (context) =>
                 ChangeNotifierProvider<AuthenticationProvider>.value(
-              value: authProvider,
-              child: AuthenticationPage(authType: AuthType.signUp),
-            ),
+                  value: authProvider,
+                  child: AuthenticationPage(authType: AuthType.signUp),
+                ),
           ),
         );
       },
@@ -163,39 +167,30 @@ class _WelcomePageState extends State<WelcomePage> {
           borderRadius: BorderRadius.all(Radius.circular(5)),
           border: Border.all(color: Colors.white, width: 2),
         ),
-        child: Text(
-          'Créer un compte',
-          style: _buttonTextStyle,
-        ),
+        child: Text('Créer un compte', style: _buttonTextStyle),
       ),
     );
   }
 }
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({
-    Key key,
-  }) : super(key: key);
+  const CustomDivider({Key key}) : super(key: key);
 
   final divider = const Expanded(
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Divider(
-        color: Colors.white,
-        thickness: 1,
-      ),
+      child: Divider(color: Colors.white, thickness: 1),
     ),
   );
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      divider,
-      Text(
-        "ou",
-        style: TextStyle(color: Colors.white),
-      ),
-      divider
-    ]);
+    return Row(
+      children: [
+        divider,
+        Text("ou", style: TextStyle(color: Colors.white)),
+        divider,
+      ],
+    );
   }
 }

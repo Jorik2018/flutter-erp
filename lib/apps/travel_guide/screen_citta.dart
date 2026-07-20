@@ -2,50 +2,42 @@ import 'package:flutter/material.dart';
 import 'lista_citta.dart';
 import 'screen_cerca_biglietto.dart';
 
-class ScreenCitta extends StatefulWidget
-{
+class ScreenCitta extends StatefulWidget {
   Citta _citta;
 
   ScreenCitta(this._citta);
 
   @override
   State createState() => new ScreenCittaState();
-
 }
 
-class ScreenCittaState extends State<ScreenCitta>
-{
-  Widget build(BuildContext context)
-  {
-    return new Scaffold
-    (
-      appBar: new AppBar
-      (
+class ScreenCittaState extends State<ScreenCitta> {
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        title: new Text("${widget._citta.nome}"),
-        actions: <Widget>
-        [
-          new IconButton(icon: new Icon(Icons.search), onPressed: () => null)
+        title: Text("${widget._citta.nome}"),
+        actions: <Widget>[
+          new IconButton(icon: Icon(Icons.search), onPressed: () => null),
         ],
       ),
-      body: new ListView.builder
-      (
+      body: ListView.builder(
         itemBuilder: (_, int i) => new TileLuogo(widget._citta.luoghi![i]),
         itemCount: widget._citta.luoghi!.length,
         scrollDirection: Axis.vertical,
       ),
-      floatingActionButton: new FloatingActionButton
-      (
-        onPressed: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) => new ScreenCercaBiglietto())),
-        child: new Icon(Icons.flight_takeoff),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).push(
+          new MaterialPageRoute(builder: (_) => new ScreenCercaBiglietto()),
+        ),
+        child: Icon(Icons.flight_takeoff),
         backgroundColor: Colors.pinkAccent,
       ),
     );
   }
 }
 
-class TileLuogo extends StatefulWidget
-{
+class TileLuogo extends StatefulWidget {
   final Luogo _luogo;
   TileLuogo(this._luogo);
 
@@ -55,82 +47,77 @@ class TileLuogo extends StatefulWidget
   State createState() => new TileLuogoState();
 }
 
-class TileLuogoState extends State<TileLuogo>
-{
-  Widget build(BuildContext context)
-  {
-    return new GestureDetector
-    (
+class TileLuogoState extends State<TileLuogo> {
+  Widget build(BuildContext context) {
+    return new GestureDetector(
       onTap: () => setState(() => widget.selected = !widget.selected),
       onLongPress: () => _longPress(context),
-      child: new Material
-      (
+      child: Material(
         elevation: 8.0,
-        child: new Container
-        (
-          margin: new EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          decoration: new BoxDecoration
-          (
-            borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-            image: new DecorationImage
-            (
-              image: new AssetImage(widget._luogo.img!),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(new Radius.circular(20.0)),
+            image: DecorationImage(
+              image: AssetImage(widget._luogo.img!),
               fit: BoxFit.cover,
-              colorFilter: new ColorFilter.mode(Colors.black45, BlendMode.luminosity)
-            )
+              colorFilter: ColorFilter.mode(
+                Colors.black45,
+                BlendMode.luminosity,
+              ),
+            ),
           ),
-          child: new SizedBox.fromSize
-          (
+          child: SizedBox.fromSize(
             size: Size.fromHeight(180.0),
-            child: Stack
-            (
-              children: <Widget>
-              [
-                 Align
-                (
+            child: Stack(
+              children: <Widget>[
+                Align(
                   alignment: FractionalOffset.topRight,
-                  child: Container
-                  (
+                  child: Container(
                     margin: EdgeInsets.all(8.0),
-                    child: Checkbox
-                    (
+                    child: Checkbox(
                       value: widget.selected,
-                      onChanged: (bool? newValue) => setState(() => widget.selected = newValue??false),
-                    )
-                  )
+                      onChanged: (bool? newValue) =>
+                          setState(() => widget.selected = newValue ?? false),
+                    ),
+                  ),
                 ),
-               Align
-                (
+                Align(
                   alignment: FractionalOffset.bottomLeft,
-                  child: new Container
-                  (
-                    margin: new EdgeInsets.all(16.0),
-                    child: new Text(widget._luogo.nome!, style: new TextStyle(color: Colors.white, fontSize: 24.0, fontWeight: FontWeight.bold)),
-                  )
+                  child: Container(
+                    margin: EdgeInsets.all(16.0),
+                    child: Text(
+                      widget._luogo.nome!,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 
-  void _longPress(BuildContext context)
-  {
-    showDialog
-    (
-      builder: (context) => new SimpleDialog
-      (
-        contentPadding: new EdgeInsets.all(0.0),
-        children: <Widget>
-        [
+  void _longPress(BuildContext context) {
+    showDialog(
+      builder: (context) => new SimpleDialog(
+        contentPadding: EdgeInsets.all(0.0),
+        children: <Widget>[
           new Image.asset(widget._luogo.img!),
-          new Text(widget._luogo.nome!/*, style: Theme.of(context).textTheme.title*/),
+          new Text(
+            widget._luogo.nome! /*, style: Theme.of(context).textTheme.title*/,
+          ),
           new Text(widget._luogo.descrizione!),
           //new Text(_luogo.posizione)
         ],
-      ), context: context
+      ),
+      context: context,
     );
   }
 }

@@ -11,7 +11,6 @@ import 'package:flutter_taxi_booking_driver_app/widgets/password_textfield.dart'
 import 'package:flutter_taxi_booking_driver_app/widgets/square_textfield_widget.dart';
 import 'package:flutter_taxi_booking_driver_app/widgets/viit_appbar.dart';
 
-
 import 'bloc/bloc.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -19,10 +18,7 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      child: Signup(),
-      create: (context) => SignupBloc(),
-    );
+    return BlocProvider(child: Signup(), create: (context) => SignupBloc());
   }
 }
 
@@ -84,9 +80,7 @@ class _SignupState extends State<Signup> {
               } else if (state is ErrorState) {
                 return buildErrorState(state.errorMsg);
               } else {
-                return Center(
-                  child: Text("Unhandled state"),
-                );
+                return Center(child: Text("Unhandled state"));
               }
             },
           ),
@@ -97,10 +91,11 @@ class _SignupState extends State<Signup> {
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
     if (picked != null && picked != selectedDate)
       setState(() {
         selectedDate = picked;
@@ -115,15 +110,10 @@ class _SignupState extends State<Signup> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: 18,
-              ),
+              SizedBox(height: 18),
               Stack(
                 children: <Widget>[
-                  Container(
-                    height: 128,
-                    width: 135,
-                  ),
+                  Container(height: 128, width: 135),
                   DottedBorder(
                     color: kDottedBorder,
                     borderType: BorderType.RRect,
@@ -164,7 +154,7 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               Opacity(
@@ -172,38 +162,30 @@ class _SignupState extends State<Signup> {
                 child: Text(
                   "Upload your photo",
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        color: kLoginBlack,
-                        fontSize: 16,
-                      ),
+                    color: kLoginBlack,
+                    fontSize: 16,
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               SquareTextFieldWidget(
                 hintText: "First Name",
                 inputAction: TextInputAction.next,
                 inputType: TextInputType.text,
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               SquareTextFieldWidget(
                 hintText: "Last Name",
                 inputAction: TextInputAction.next,
                 inputType: TextInputType.text,
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               SquareTextFieldWidget(
                 hintText: "Nick Name",
                 inputAction: TextInputAction.next,
                 inputType: TextInputType.text,
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -212,9 +194,9 @@ class _SignupState extends State<Signup> {
                     child: Text(
                       "Gender",
                       style: Theme.of(context).textTheme.caption.copyWith(
-                            color: kLoginBlack,
-                            fontSize: 17,
-                          ),
+                        color: kLoginBlack,
+                        fontSize: 17,
+                      ),
                     ),
                   ),
                 ],
@@ -234,9 +216,9 @@ class _SignupState extends State<Signup> {
                   Text(
                     "Male",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: kTextLoginfaceid,
-                          fontSize: 17,
-                        ),
+                      color: kTextLoginfaceid,
+                      fontSize: 17,
+                    ),
                   ),
                   Radio(
                     value: 2,
@@ -251,9 +233,9 @@ class _SignupState extends State<Signup> {
                   Text(
                     "Female",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: Colors.grey,
-                          fontSize: 17,
-                        ),
+                      color: Colors.grey,
+                      fontSize: 17,
+                    ),
                   ),
                   Radio(
                     value: 3,
@@ -268,31 +250,25 @@ class _SignupState extends State<Signup> {
                   Text(
                     "Other",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: Colors.grey,
-                          fontSize: 17,
-                        ),
+                      color: Colors.grey,
+                      fontSize: 17,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               CountrySelectionTextField(
                 inputType: TextInputType.number,
                 inputAction: TextInputAction.next,
                 hintText: "Enter mobile number",
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               SquareTextFieldWidget(
                 hintText: "Email Address",
                 inputType: TextInputType.emailAddress,
                 inputAction: TextInputAction.next,
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               DatePickerContainer(
                 selectDate: () => _selectDate(context),
                 date: selectedDate == null
@@ -300,21 +276,11 @@ class _SignupState extends State<Signup> {
                     : "${selectedDate.year.toString()}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}",
                 icon: Viiticons.calendar,
               ),
-              SizedBox(
-                height: 15,
-              ),
-              PasswordFormField(
-                hintText: "Password",
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              PasswordFormField(
-                hintText: "Confirm password",
-              ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
+              PasswordFormField(hintText: "Password"),
+              SizedBox(height: 15),
+              PasswordFormField(hintText: "Confirm password"),
+              SizedBox(height: 15),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -323,16 +289,14 @@ class _SignupState extends State<Signup> {
                     child: Text(
                       "Do you wanna maximise your number of rides?",
                       style: Theme.of(context).textTheme.caption.copyWith(
-                            color: kLoginBlack,
-                            fontSize: 17,
-                          ),
+                        color: kLoginBlack,
+                        fontSize: 17,
+                      ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 6,
-              ),
+              SizedBox(height: 6),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -350,9 +314,9 @@ class _SignupState extends State<Signup> {
                   ),
                   Text(
                     "Accept Vitt Teen ?",
-                    style: Theme.of(context).textTheme.caption.copyWith(
-                          fontSize: 16,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.caption.copyWith(fontSize: 16),
                   ),
                 ],
               ),
@@ -372,9 +336,9 @@ class _SignupState extends State<Signup> {
                   ),
                   Text(
                     "Accept Ride for Handicap",
-                    style: Theme.of(context).textTheme.caption.copyWith(
-                          fontSize: 16,
-                        ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.caption.copyWith(fontSize: 16),
                   ),
                 ],
               ),
@@ -410,49 +374,44 @@ class _SignupState extends State<Signup> {
                         children: <TextSpan>[
                           TextSpan(
                             text: 'I agree with ',
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontSize: 16,
-                                ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.caption.copyWith(fontSize: 16),
                           ),
                           TextSpan(
                             text: 'Terms of Condition ',
                             style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontSize: 16,
-                                  color: kPrimaryColor,
-                                ),
+                              fontSize: 16,
+                              color: kPrimaryColor,
+                            ),
                           ),
                           TextSpan(
-                              text: 'as well as ',
-                              style:
-                                  Theme.of(context).textTheme.caption.copyWith(
-                                        fontSize: 16,
-                                      )),
+                            text: 'as well as ',
+                            style: Theme.of(
+                              context,
+                            ).textTheme.caption.copyWith(fontSize: 16),
+                          ),
                           TextSpan(
                             text: 'Privacy Policy.',
                             style: Theme.of(context).textTheme.caption.copyWith(
-                                  fontSize: 16,
-                                  color: kPrimaryColor,
-                                ),
-                          )
+                              fontSize: 16,
+                              color: kPrimaryColor,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Row(
                 children: <Widget>[
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 24,
-                        right: 24,
-                      ),
-                      child: FlatButtonWidget(
+                      padding: const EdgeInsets.only(left: 24, right: 24),
+                      child: TextButtonWidget(
                         btnOnTap: () {},
                         btnTxt: "Sign Up",
                         btnColor: kAccentColor,
@@ -462,12 +421,8 @@ class _SignupState extends State<Signup> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 21,
-              ),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 21),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -480,8 +435,6 @@ class _SignupState extends State<Signup> {
   }
 
   buildErrorState(errorMsg) {
-    return Center(
-      child: Icon(Icons.sync_problem),
-    );
+    return Center(child: Icon(Icons.sync_problem));
   }
 }

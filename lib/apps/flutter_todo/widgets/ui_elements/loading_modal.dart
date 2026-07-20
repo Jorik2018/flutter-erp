@@ -9,9 +9,7 @@ class LoadingModal extends StatelessWidget {
           opacity: 0.3,
           child: const ModalBarrier(dismissible: false, color: Colors.grey),
         ),
-        Center(
-          child: new CircularProgressIndicator(),
-        ),
+        Center(child: CircularProgressIndicator()),
       ],
     );
   }

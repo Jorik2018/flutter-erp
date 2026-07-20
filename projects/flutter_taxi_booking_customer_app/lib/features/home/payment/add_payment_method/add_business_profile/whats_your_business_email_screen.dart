@@ -5,7 +5,6 @@ import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dar
 import 'package:flutter_taxi_booking_customer_app/widgets/square_textfield_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/viit_appbar.dart';
 
-
 class WhatsYourBusinessEmailScreen extends StatelessWidget {
   static const String routeName = "whatsyourbusinessemail";
 
@@ -29,37 +28,31 @@ class WhatsYourBusinessEmailScreen extends StatelessWidget {
             children: <Widget>[
               Text(
                 "What’s your business email?",
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kLoginBlack,
-                      fontSize: 15,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 15),
               ),
-              SizedBox(
-                height: 12,
-              ),
+              SizedBox(height: 12),
               SquareTextFieldWidget(
                 inputAction: TextInputAction.done,
                 inputType: TextInputType.emailAddress,
                 hintText: "Enter business email",
               ),
-              SizedBox(
-                height: 18,
-              ),
+              SizedBox(height: 18),
               Row(
                 children: <Widget>[
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                      ),
-                      child: FlatButtonWidget(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: TextButtonWidget(
                         btnTxt: "Next",
                         btnColor: kAccentColor,
                         btnOnTap: () {
                           Navigator.of(context).pushNamed(
                             ChoosePaymentMethodScreen.routeName,
                             arguments: ChoosePaymentMethodScreenArguments(
-                                paymentMethodScreenFor: "business"),
+                              paymentMethodScreenFor: "business",
+                            ),
                           );
                         },
                       ),

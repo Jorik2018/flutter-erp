@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_taxi_booking_customer_app/common/my_colors.dart';
 
-
 class LanguageButton extends StatelessWidget {
   final Color btnColor;
   final Color btnBorderColor;
@@ -27,7 +26,7 @@ class LanguageButton extends StatelessWidget {
         Container(
           width: 220,
           height: 49,
-          child: FlatButton(
+          child: TextButton(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24.0),
               side: BorderSide(color: Colors.white),
@@ -35,17 +34,14 @@ class LanguageButton extends StatelessWidget {
             color: btnColor,
             onPressed: btnOnTap,
             child: Padding(
-              padding: const EdgeInsets.only(
-                left: 32,
-                right: 32,
-              ),
+              padding: const EdgeInsets.only(left: 32, right: 32),
               child: Text(
                 btnTxt,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -58,16 +54,14 @@ class LanguageButton extends StatelessWidget {
                   height: 25,
                   width: 25,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25 / 2),
-                      color: Colors.white),
+                    borderRadius: BorderRadius.circular(25 / 2),
+                    color: Colors.white,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Icon(
-                        Icons.chevron_right,
-                        color: Color(0XFF275687),
-                      )
+                      Icon(Icons.chevron_right, color: Color(0XFF275687)),
                     ],
                   ),
                 ),

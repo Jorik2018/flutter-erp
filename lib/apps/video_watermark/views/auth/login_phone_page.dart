@@ -85,8 +85,8 @@ class _LoginPhonePageState extends State<LoginPhonePage> {
                 _loginForm(),
                 Container(
                   margin: EdgeInsets.only(top: 80),
-                  /**The method 'FlatButton' isn't defined for the type '_LoginPhonePageState'.
-Try correcting the name to the name of an existing method, or defining a method named 'FlatButton' */
+                  /**The method 'TextButton' isn't defined for the type '_LoginPhonePageState'.
+Try correcting the name to the name of an existing method, or defining a method named 'TextButton' */
                   child: ElevatedButton(
                     clipBehavior: Clip.antiAlias,
                     onPressed: () async {
@@ -259,5 +259,4 @@ Try correcting the name to the name of an existing method, or defining a method 
 
     return null;
   }
-
 }

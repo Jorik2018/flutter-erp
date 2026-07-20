@@ -4,19 +4,16 @@ import 'package:flutter/services.dart';
 
 void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget
-{
+class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context)
-  {
+  Widget build(BuildContext context) {
     //SystemChrome.setEnabledSystemUIOverlays([]); // Enter fullscreen
     //SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values); // Exit fullscreen
-    
-    return new MaterialApp
-    (
+
+    return new MaterialApp(
       title: 'Plantly',
-      theme: new ThemeData(primarySwatch: Colors.green),
-      home: new PlantsListPage(),
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: PlantsListPage(),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uber_clone/widget/progressdialog.dart';
 
-
 import '../../main.dart';
 import '../homepage.dart';
 import 'register.dart';
@@ -24,18 +23,14 @@ class LoginPage extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(
-                height: 35.0,
-              ),
+              SizedBox(height: 35.0),
               Image(
                 image: AssetImage("assets/images/logo.png"),
                 width: 390.0,
                 height: 250.0,
                 alignment: Alignment.center,
               ),
-              SizedBox(
-                height: 1.0,
-              ),
+              SizedBox(height: 1.0),
               Text(
                 " Login as a Rider",
                 textAlign: TextAlign.center,
@@ -45,40 +40,42 @@ class LoginPage extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 1.0,
-                    ),
+                    SizedBox(height: 1.0),
                     TextField(
                       controller: txtEmail,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                          labelText: "Email",
-                          labelStyle:
-                              TextStyle(color: Colors.grey, fontSize: 10.0)),
+                        labelText: "Email",
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10.0,
+                        ),
+                      ),
                       style: TextStyle(fontSize: 14.0),
                     ),
-                    SizedBox(
-                      height: 1.0,
-                    ),
+                    SizedBox(height: 1.0),
                     TextField(
                       controller: txtPassword,
                       obscureText: true,
                       decoration: InputDecoration(
-                          labelText: "Password",
-                          labelStyle:
-                              TextStyle(color: Colors.grey, fontSize: 10.0)),
+                        labelText: "Password",
+                        labelStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10.0,
+                        ),
+                      ),
                       style: TextStyle(fontSize: 14.0),
                     ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    RaisedButton(
+                    SizedBox(height: 20.0),
+                    ElevatedButton(
                       onPressed: () {
                         if (!txtEmail.text.contains('@')) {
                           displayMessage(context, 'Email Address is not Valid');
                         } else if (txtPassword.text.length < 4) {
-                          displayMessage(context,
-                              'Password must be at least 6 Characters');
+                          displayMessage(
+                            context,
+                            'Password must be at least 6 Characters',
+                          );
                         } else {
                           loginUser(context);
                         }
@@ -91,25 +88,29 @@ class LoginPage extends StatelessWidget {
                           child: Text(
                             "Login",
                             style: TextStyle(
-                                fontSize: 18.0, fontFamily: "Brand Bold"),
+                              fontSize: 18.0,
+                              fontFamily: "Brand Bold",
+                            ),
                           ),
                         ),
                       ),
                       shape: new RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(24.0),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, RegisterPage.idScreen, (route) => false);
-                  },
-                  child: Text(
-                    "Do not have an Account? Register Here.",
-                  ))
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    RegisterPage.idScreen,
+                    (route) => false,
+                  );
+                },
+                child: Text("Do not have an Account? Register Here."),
+              ),
             ],
           ),
         ),
@@ -117,37 +118,44 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-// Come back to Catch Auth Errors
+  // Come back to Catch Auth Errors
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Future<void> loginUser(context) async {
-    showDialog(context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context){
-      return ProgressDialog(message: "Authenticating, Please Wait...");
-    }
-    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return ProgressDialog(message: "Authenticating, Please Wait...");
+      },
     );
     try {
-      final User firebaseUser = (await _firebaseAuth
-              .signInWithEmailAndPassword(
-                  email: txtEmail.text, password: txtPassword.text)
-              .catchError((err) {
-                Navigator.pop(context);
-        displayMessage(context, "Error: $err");
-        return null;
-      }).catchError((onError) {
-        Navigator.pop(context);
-        displayMessage(context, "Errors: $onError");
-          return null;
-      }))
-          .user;
+      final User firebaseUser =
+          (await _firebaseAuth
+                  .signInWithEmailAndPassword(
+                    email: txtEmail.text,
+                    password: txtPassword.text,
+                  )
+                  .catchError((err) {
+                    Navigator.pop(context);
+                    displayMessage(context, "Error: $err");
+                    return null;
+                  })
+                  .catchError((onError) {
+                    Navigator.pop(context);
+                    displayMessage(context, "Errors: $onError");
+                    return null;
+                  }))
+              .user;
       if (firebaseUser != null) {
         //save user info to firebase database
 
         usersRef.child(firebaseUser.uid).once().then((DataSnapshot snapshot) {
           if (snapshot.value != null) {
             Navigator.pushNamedAndRemoveUntil(
-                context, MyHomePage.idScreen, (route) => false);
+              context,
+              MyHomePage.idScreen,
+              (route) => false,
+            );
             displayMessage(context, "Successfully Logged In");
           } else {
             Navigator.pop(context);
@@ -157,7 +165,7 @@ class LoginPage extends StatelessWidget {
         });
       } else {
         Navigator.pop(context);
-         _firebaseAuth.signOut();
+        _firebaseAuth.signOut();
         displayMessage(context, "Error Occur, Could Not be signed-in");
       }
     } on PlatformException catch (e) {

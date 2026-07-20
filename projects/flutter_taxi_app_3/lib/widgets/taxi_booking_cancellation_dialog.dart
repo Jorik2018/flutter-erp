@@ -10,26 +10,21 @@ class TaxiBookingCancellationDialog extends StatelessWidget {
       title: Text("Cancel Ride"),
       content: Text("Do you want to cancel ride?"),
       actions: <Widget>[
-        FlatButton(
-          child: Text(
-            "Cancel",
-            style: TextStyle(fontSize: 16.0),
-          ),
+        TextButton(
+          child: Text("Cancel", style: TextStyle(fontSize: 16.0)),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
-          child: Text(
-            "Ok",
-            style: TextStyle(fontSize: 16.0),
-          ),
+        TextButton(
+          child: Text("Ok", style: TextStyle(fontSize: 16.0)),
           onPressed: () {
-            BlocProvider.of<TaxiBookingBloc>(context)
-                .add(TaxiBookingCancelEvent());
+            BlocProvider.of<TaxiBookingBloc>(
+              context,
+            ).add(TaxiBookingCancelEvent());
             Navigator.of(context).pop();
           },
-        )
+        ),
       ],
     );
   }

@@ -121,9 +121,7 @@ class WaitWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SpinKitCubeGrid(
-            color: Color(0xFFFFAE16),
-          ),
+          SpinKitCubeGrid(color: Color(0xFFFFAE16)),
           Text(
             "   Veuillez patiantez un instant s'il vous plait.   ",
             textAlign: TextAlign.center,
@@ -135,63 +133,64 @@ class WaitWidget extends StatelessWidget {
 }
 
 Future<void> showTrophiesWonDialog(
-    String trophies, BuildContext context) async {
+  String trophies,
+  BuildContext context,
+) async {
   final screenSize = MediaQuery.of(context).size;
   var trophiesWidgets = <Trophy>[];
   trophies.split('').forEach((trophyLevel) {
-    trophiesWidgets.add(Trophy(
-      level: trophyLevel,
-      active: true,
-      size: screenSize.width * .38,
-      namePrefix: 'Vous avez éffectué ',
-      spaceBetweenImageAndText: 15,
-    ));
+    trophiesWidgets.add(
+      Trophy(
+        level: trophyLevel,
+        active: true,
+        size: screenSize.width * .38,
+        namePrefix: 'Vous avez éffectué ',
+        spaceBetweenImageAndText: 15,
+      ),
+    );
   });
   final isSingleTrophy = trophiesWidgets.length == 1;
   final trophiesCountText = isSingleTrophy ? 'une' : trophiesWidgets.length;
   return await showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            'Félicitaion, vous avez gagné $trophiesCountText médaille' +
-                (isSingleTrophy ? '' : 's'),
-            textAlign: TextAlign.center,
-            textScaleFactor: .94,
-          ),
-          content: Container(
-            height: screenSize.height * .34,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                if (!isSingleTrophy)
-                  Text(
-                    'Faites défiler vers la droite pour voir la suivante',
-                    textScaleFactor: .83,
-                  ),
-                SizedBox(
-                  height: screenSize.height * .009,
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return AlertDialog(
+        title: Text(
+          'Félicitaion, vous avez gagné $trophiesCountText médaille' +
+              (isSingleTrophy ? '' : 's'),
+          textAlign: TextAlign.center,
+          textScaleFactor: .94,
+        ),
+        content: Container(
+          height: screenSize.height * .34,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              if (!isSingleTrophy)
+                Text(
+                  'Faites défiler vers la droite pour voir la suivante',
+                  textScaleFactor: .83,
                 ),
-                Container(
-                  width: screenSize.width * .9,
-                  height: screenSize.height * .3,
-                  child: PageView(
-                    children: trophiesWidgets,
-                  ),
-                ),
-              ],
-            ),
+              SizedBox(height: screenSize.height * .009),
+              Container(
+                width: screenSize.width * .9,
+                height: screenSize.height * .3,
+                child: PageView(children: trophiesWidgets),
+              ),
+            ],
           ),
-          contentPadding: EdgeInsets.only(bottom: 0, top: 10),
-          actions: [
-            RaisedButton(
-              child: Text('Fermer'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        );
-      });
+        ),
+        contentPadding: EdgeInsets.only(bottom: 0, top: 10),
+        actions: [
+          ElevatedButton(
+            child: Text('Fermer'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    },
+  );
 }
 
 // ignore: must_be_immutable
@@ -207,7 +206,8 @@ class Logo extends StatelessWidget {
     this.luxeColor,
     Color taxiColor,
   }) : super(key: key) {
-    _taxiColor = taxiColor ??
+    _taxiColor =
+        taxiColor ??
         (backgroundColorIsOrange ? Colors.white : mainLightLessColor);
   }
   @override
@@ -223,9 +223,12 @@ class Logo extends StatelessWidget {
         ),
         children: [
           TextSpan(
-              text: 'lu',
-              style: TextStyle(
-                  fontSize: fontSize, color: luxeColor ?? Color(0xFF424141))),
+            text: 'lu',
+            style: TextStyle(
+              fontSize: fontSize,
+              color: luxeColor ?? Color(0xFF424141),
+            ),
+          ),
           TextSpan(
             text: 'xi',
             style: TextStyle(color: _taxiColor, fontSize: fontSize),
@@ -253,40 +256,41 @@ class Trophy extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/images/trophies/$level.svg',
-              width: size,
-              height: size,
-            ),
-            if (!active)
-              Container(
-                width: size + 22,
-                height: size + 7,
-                color: Colors.black38,
-                child: Text(
-                  'Bloquée',
-                  style: TextStyle(
-                      color: Color(0xFFFDFDFD), fontWeight: FontWeight.w600),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SvgPicture.asset(
+                'assets/images/trophies/$level.svg',
+                width: size,
+                height: size,
+              ),
+              if (!active)
+                Container(
+                  width: size + 22,
+                  height: size + 7,
+                  color: Colors.black38,
+                  child: Text(
+                    'Bloquée',
+                    style: TextStyle(
+                      color: Color(0xFFFDFDFD),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  alignment: Alignment.center,
                 ),
-                alignment: Alignment.center,
-              )
-          ],
-        ),
-        SizedBox(
-          height: spaceBetweenImageAndText,
-        ),
-        Text(
-          namePrefix + trophies[level].name,
-          textScaleFactor: .97,
-          textAlign: TextAlign.center,
-        )
-      ],
-    ));
+            ],
+          ),
+          SizedBox(height: spaceBetweenImageAndText),
+          Text(
+            namePrefix + trophies[level].name,
+            textScaleFactor: .97,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 }

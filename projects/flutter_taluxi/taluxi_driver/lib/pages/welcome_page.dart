@@ -38,24 +38,26 @@ class _WelcomePageState extends State<WelcomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Logo(
-                fontSize: 60,
-                backgroundColorIsOrange: true,
-              ),
+              Logo(fontSize: 60, backgroundColorIsOrange: true),
               SizedBox(height: screenSize.height * .16),
               _loginButton(),
               SizedBox(height: 25),
               _signUpButton(),
               SizedBox(height: 24),
               CustomDivider(),
-              FacebookLoginButton(onClick: () async {
-                signInRequested = true;
-                await authProvider
-                    .signInWithFacebook()
-                    .then((_) => Navigator.of(context)
-                        .popUntil((route) => route.isFirst))
-                    .catchError(_onSignInError);
-              }),
+              FacebookLoginButton(
+                onClick: () async {
+                  signInRequested = true;
+                  await authProvider
+                      .signInWithFacebook()
+                      .then(
+                        (_) => Navigator.of(
+                          context,
+                        ).popUntil((route) => route.isFirst),
+                      )
+                      .catchError(_onSignInError);
+                },
+              ),
             ],
           ),
         ),
@@ -77,7 +79,7 @@ class _WelcomePageState extends State<WelcomePage> {
           content: Text(error.message),
           actions: [
             Center(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -98,9 +100,9 @@ class _WelcomePageState extends State<WelcomePage> {
           MaterialPageRoute(
             builder: (context) =>
                 ChangeNotifierProvider<AuthenticationProvider>.value(
-              value: authProvider,
-              child: AuthenticationPage(authType: AuthType.login),
-            ),
+                  value: authProvider,
+                  child: AuthenticationPage(authType: AuthType.login),
+                ),
           ),
         );
       },
@@ -136,9 +138,9 @@ class _WelcomePageState extends State<WelcomePage> {
           MaterialPageRoute(
             builder: (context) =>
                 ChangeNotifierProvider<AuthenticationProvider>.value(
-              value: authProvider,
-              child: AuthenticationPage(authType: AuthType.signUp),
-            ),
+                  value: authProvider,
+                  child: AuthenticationPage(authType: AuthType.signUp),
+                ),
           ),
         );
       },
@@ -160,29 +162,23 @@ class _WelcomePageState extends State<WelcomePage> {
 }
 
 class CustomDivider extends StatelessWidget {
-  const CustomDivider({
-    Key key,
-  }) : super(key: key);
+  const CustomDivider({Key key}) : super(key: key);
 
   final divider = const Expanded(
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Divider(
-        color: Colors.white,
-        thickness: 1,
-      ),
+      child: Divider(color: Colors.white, thickness: 1),
     ),
   );
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      divider,
-      Text(
-        "ou",
-        style: TextStyle(color: Colors.white),
-      ),
-      divider
-    ]);
+    return Row(
+      children: [
+        divider,
+        Text("ou", style: TextStyle(color: Colors.white)),
+        divider,
+      ],
+    );
   }
 }

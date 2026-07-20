@@ -8,10 +8,9 @@ import '../../db/bloc/authentication/bloc.dart';
 class LoginForm extends StatefulWidget {
   final UserRepository userRepository;
 
-
   LoginForm({Key key, @required this.userRepository})
-      : assert(userRepository != null),
-        super(key: key);
+    : assert(userRepository != null),
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => LoginFormState();
@@ -38,31 +37,38 @@ class LoginFormState extends State<LoginForm> {
         if (state is FailureState) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text("Error Occurre..!"), Icon(Icons.error)],
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Error Occurre..!"),
+                    Icon(Icons.error),
+                  ],
+                ),
+                backgroundColor: Colors.red,
               ),
-              backgroundColor: Colors.red,
-            ));
+            );
         }
         if (state is SuccessState) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text("Wait account is in progress..!"),
-                  CircularProgressIndicator(),
-                ],
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Wait account is in progress..!"),
+                    CircularProgressIndicator(),
+                  ],
+                ),
+                backgroundColor: Colors.green,
               ),
-              backgroundColor: Colors.green,
-            ));
+            );
 
-          BlocProvider.of<AuthenticationBloc>(context).dispatch(
-            LoggedInEvent(),
-          );
+          BlocProvider.of<AuthenticationBloc>(
+            context,
+          ).dispatch(LoggedInEvent());
         }
       },
       child: buildFormListView(),
@@ -79,18 +85,21 @@ class LoginFormState extends State<LoginForm> {
           obscureText: false,
         ),
         buildTextField(
-            hint: "password",
-            icon: Icons.lock,
-            controller: _passwordController,
-            obscureText: true),
+          hint: "password",
+          icon: Icons.lock,
+          controller: _passwordController,
+          obscureText: true,
+        ),
         ButtonBar(
           children: <Widget>[
-            LoginButton(onPressed: () {
-              onSubmitted();
-            }),
-            CreateAnAccount(userRepository: _userRepository,),
+            LoginButton(
+              onPressed: () {
+                onSubmitted();
+              },
+            ),
+            CreateAnAccount(userRepository: _userRepository),
           ],
-        )
+        ),
       ],
     );
   }
@@ -118,7 +127,10 @@ class LoginFormState extends State<LoginForm> {
         autocorrect: false,
         textDirection: TextDirection.ltr,
         decoration: InputDecoration(
-            hintText: hint, border: InputBorder.none, suffixIcon: Icon(icon)),
+          hintText: hint,
+          border: InputBorder.none,
+          suffixIcon: Icon(icon),
+        ),
       ),
     );
   }
@@ -128,33 +140,32 @@ class LoginButton extends StatelessWidget {
   final VoidCallback _onPressed;
 
   LoginButton({Key key, @required VoidCallback onPressed})
-      : _onPressed = onPressed,
-        super(key: key);
+    : _onPressed = onPressed,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(onPressed: _onPressed, child: Text('Login'));
+    return ElevatedButton(onPressed: _onPressed, child: Text('Login'));
   }
 }
 
-
 class CreateAnAccount extends StatelessWidget {
- final UserRepository _userRepository;
-  CreateAnAccount({Key key,@required  UserRepository userRepository})
- :assert(userRepository!=null),
-  _userRepository=userRepository,
- super(key :key);
+  final UserRepository _userRepository;
+  CreateAnAccount({Key key, @required UserRepository userRepository})
+    : assert(userRepository != null),
+      _userRepository = userRepository,
+      super(key: key);
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      child: Text(
-        'Create an Account',
-      ),
+    return TextButton(
+      child: Text('Create an Account'),
       onPressed: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) {
-            return RegistorScreen(userRepository: _userRepository,);
-          }),
+          MaterialPageRoute(
+            builder: (context) {
+              return RegistorScreen(userRepository: _userRepository);
+            },
+          ),
         );
       },
     );

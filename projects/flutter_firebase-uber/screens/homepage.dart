@@ -54,26 +54,29 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     ApiMethods.getCurrentOnlineUserInfo();
   }
 
-  void saveRiderRequest(){
-    rideRequestRef = FirebaseDatabase.instance.reference().child('Ride Requests').push();
-    var pickUp = Provider.of<AppData>(context, listen: false).pickUpLocation; 
-    var dropOff = Provider.of<AppData>(context, listen: false).dropOfflocation; 
+  void saveRiderRequest() {
+    rideRequestRef = FirebaseDatabase.instance
+        .reference()
+        .child('Ride Requests')
+        .push();
+    var pickUp = Provider.of<AppData>(context, listen: false).pickUpLocation;
+    var dropOff = Provider.of<AppData>(context, listen: false).dropOfflocation;
     Map pickUplocMap = {
-      "latitude" : pickUp.latitude.toString(),
+      "latitude": pickUp.latitude.toString(),
       "longitude": pickUp.longitude.toString(),
     };
 
-     Map dropOffMap = {
-      "latitude" : dropOff.latitude.toString(),
+    Map dropOffMap = {
+      "latitude": dropOff.latitude.toString(),
       "longitude": dropOff.longitude.toString(),
     };
 
     Map rideinfoMap = {
-      "driver_id" : "waiting",
-      "payment_method":"cash",
+      "driver_id": "waiting",
+      "payment_method": "cash",
       "pickup": pickUplocMap,
       "dropoff": dropOffMap,
-      "created_at":DateTime.now().toString(),
+      "created_at": DateTime.now().toString(),
       "rider_name": currentUser.name,
       "rider_phone": currentUser.phone,
       "pickup_address": pickUp.placeName,
@@ -82,11 +85,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     rideRequestRef.set(rideinfoMap);
   }
 
-
-  void cancelRideRequest(){
+  void cancelRideRequest() {
     rideRequestRef.remove();
   }
-  void displayRequestContainer(){
+
+  void displayRequestContainer() {
     setState(() {
       requestRideContainerHeight = 250.0;
       rideDetailsContainerHeight = 0;
@@ -123,15 +126,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
     currentPosition = position;
 
     LatLng latlngPosition = LatLng(position.latitude, position.longitude);
 
-    CameraPosition cameraPosition =
-        new CameraPosition(target: latlngPosition, zoom: 14);
-    newGoogleMapController
-        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    CameraPosition cameraPosition = new CameraPosition(
+      target: latlngPosition,
+      zoom: 14,
+    );
+    newGoogleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(cameraPosition),
+    );
     String address = await ApiMethods.seachCoordinateAddress(position, context);
     print("this is Your address $address");
   }
@@ -147,9 +154,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
-      appBar: AppBar(
-        title: Text("Home"),
-      ),
+      appBar: AppBar(title: Text("Home")),
       drawer: Container(
         color: Colors.white,
         width: 255.0,
@@ -167,29 +172,27 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         height: 65.0,
                         width: 65.0,
                       ),
-                      SizedBox(
-                        width: 16.0,
-                      ),
+                      SizedBox(width: 16.0),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Profile Name",
-                              style: TextStyle(
-                                  fontFamily: "Brand-bold", fontSize: 16.0)),
-                          SizedBox(
-                            height: 6.0,
+                          Text(
+                            "Profile Name",
+                            style: TextStyle(
+                              fontFamily: "Brand-bold",
+                              fontSize: 16.0,
+                            ),
                           ),
+                          SizedBox(height: 6.0),
                           Text("Visit Profile"),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
               DividerWidget(),
-              SizedBox(
-                height: 12.0,
-              ),
+              SizedBox(height: 12.0),
               //Drawer Body
               ListTile(
                 leading: Icon(Icons.history),
@@ -204,16 +207,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 title: Text('About', style: TextStyle(fontSize: 15.0)),
               ),
 
-               GestureDetector(
-                 onTap: (){
-                   FirebaseAuth.instance.signOut();
-                   Navigator.pushNamedAndRemoveUntil(context, LoginPage.idScreen, (route) => false);
-                 },
-                                child: ListTile(
+              GestureDetector(
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    LoginPage.idScreen,
+                    (route) => false,
+                  );
+                },
+                child: ListTile(
                   leading: Icon(Icons.lock),
                   title: Text('Logout', style: TextStyle(fontSize: 15.0)),
+                ),
               ),
-               ),
             ],
           ),
         ),
@@ -254,15 +261,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(22.0),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black,
-                          blurRadius: 6.0,
-                          spreadRadius: 0.5,
-                          offset: Offset(0.7, 0.7)),
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(22.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 6.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
+                    ),
+                  ],
+                ),
                 child: CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Icon(
@@ -284,144 +293,138 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               curve: Curves.bounceIn,
               duration: new Duration(microseconds: 160),
               child: Container(
-                  height: searchContainerHeight,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(18.0),
-                        topRight: Radius.circular(18.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        blurRadius: 16.0,
-                        spreadRadius: 0.5,
-                        offset: Offset(0.7, 0.7),
-                      ),
-                    ],
+                height: searchContainerHeight,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.0),
+                    topRight: Radius.circular(18.0),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 24.0, vertical: 18.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 6.0),
-                        Text(
-                          "Hi There",
-                          style: TextStyle(fontSize: 12.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 16.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 18.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 6.0),
+                      Text("Hi There", style: TextStyle(fontSize: 12.0)),
+                      Text(
+                        "Where to ?",
+                        style: TextStyle(
+                          fontSize: 10.0,
+                          fontFamily: "Brand-Bold",
                         ),
-                        Text(
-                          "Where to ?",
-                          style: TextStyle(
-                              fontSize: 10.0, fontFamily: "Brand-Bold"),
-                        ),
-                        SizedBox(height: 20.0),
-                        GestureDetector(
-                          onTap: () async {
-                            var res = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage()));
-                            if (res == "obtainDirection") {
-                              displayRideDetailsContainer();
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black,
-                                  blurRadius: 6.0,
-                                  spreadRadius: 0.5,
-                                  offset: Offset(0.7, 0.7),
-                                ),
-                              ],
+                      ),
+                      SizedBox(height: 20.0),
+                      GestureDetector(
+                        onTap: () async {
+                          var res = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchPage(),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.search, color: Colors.blueAccent),
-                                  SizedBox(
-                                    width: 10.0,
-                                  ),
-                                  Text("Search Drop Off")
-                                ],
+                          );
+                          if (res == "obtainDirection") {
+                            displayRideDetailsContainer();
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black,
+                                blurRadius: 6.0,
+                                spreadRadius: 0.5,
+                                offset: Offset(0.7, 0.7),
                               ),
+                            ],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.search, color: Colors.blueAccent),
+                                SizedBox(width: 10.0),
+                                Text("Search Drop Off"),
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 24.0,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.home,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(width: 12.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(Provider.of<AppData>(context)
-                                                .pickUpLocation !=
+                      ),
+                      SizedBox(height: 24.0),
+                      Row(
+                        children: [
+                          Icon(Icons.home, color: Colors.grey),
+                          SizedBox(width: 12.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    Provider.of<AppData>(
+                                              context,
+                                            ).pickUpLocation !=
                                             null
-                                        ? Provider.of<AppData>(context)
-                                            .pickUpLocation
-                                            .placeName
-                                        : "Add Home"),
-                                  ],
+                                        ? Provider.of<AppData>(
+                                            context,
+                                          ).pickUpLocation.placeName
+                                        : "Add Home",
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 4.0),
+                              Text(
+                                'Your Living Home Address',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12.0,
                                 ),
-                                SizedBox(
-                                  height: 4.0,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.0),
+                      DividerWidget(),
+                      SizedBox(height: 16.0),
+                      Row(
+                        children: [
+                          Icon(Icons.work, color: Colors.grey),
+                          SizedBox(width: 12.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Add Work"),
+                              SizedBox(height: 4.0),
+                              Text(
+                                'Your Office Address',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12.0,
                                 ),
-                                Text(
-                                  'Your Living Home Address',
-                                  style: TextStyle(
-                                      color: Colors.black54, fontSize: 12.0),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        DividerWidget(),
-                        SizedBox(
-                          height: 16.0,
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.work,
-                              color: Colors.grey,
-                            ),
-                            SizedBox(width: 12.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Add Work"),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                Text(
-                                  'Your Office Address',
-                                  style: TextStyle(
-                                      color: Colors.black54, fontSize: 12.0),
-                                )
-                              ],
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  )),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
           Positioned(
@@ -435,18 +438,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               child: Container(
                 height: rideDetailsContainerHeight,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16.0),
-                        topRight: Radius.circular(16.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black,
-                        blurRadius: 16.0,
-                        spreadRadius: 0.5,
-                        offset: Offset(0.7, 0.7),
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16.0),
+                    topRight: Radius.circular(16.0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black,
+                      blurRadius: 16.0,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
+                    ),
+                  ],
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 17.0),
                   child: Column(
@@ -455,70 +460,75 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         width: double.infinity,
                         color: Colors.tealAccent[100],
                         child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/images/taxi.png",
-                                  height: 70.0,
-                                  width: 80.0,
-                                ),
-                                SizedBox(
-                                  width: 16.0,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("car",
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontFamily: "Brand Bold")),
-                                    Text(
-                                        ((tripdirectionDetails != null)
-                                            ? tripdirectionDetails.distanceText
-                                            : ''),
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.grey)),
-                                  ],
-                                ),
-                                Expanded(child: Container()),
-                                Text(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/taxi.png",
+                                height: 70.0,
+                                width: 80.0,
+                              ),
+                              SizedBox(width: 16.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "car",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontFamily: "Brand Bold",
+                                    ),
+                                  ),
+                                  Text(
                                     ((tripdirectionDetails != null)
-                                        ? 'N${ApiMethods.calculateFares(tripdirectionDetails)}'
+                                        ? tripdirectionDetails.distanceText
                                         : ''),
                                     style: TextStyle(
-                                        fontSize: 18.0, color: Colors.grey))
-                              ],
-                            )),
+                                      fontSize: 18.0,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Expanded(child: Container()),
+                              Text(
+                                ((tripdirectionDetails != null)
+                                    ? 'N${ApiMethods.calculateFares(tripdirectionDetails)}'
+                                    : ''),
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                      SizedBox(height: 20.0),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
                           children: [
-                            Icon(FontAwesomeIcons.moneyCheckAlt,
-                                size: 18.0, color: Colors.black54),
-                            SizedBox(
-                              width: 16.0,
+                            Icon(
+                              FontAwesomeIcons.moneyCheckAlt,
+                              size: 18.0,
+                              color: Colors.black54,
                             ),
+                            SizedBox(width: 16.0),
                             Text('Cash'),
-                            SizedBox(
-                              width: 6.0,
+                            SizedBox(width: 6.0),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 16.0,
+                              color: Colors.black54,
                             ),
-                            Icon(Icons.keyboard_arrow_down,
-                                size: 16.0, color: Colors.black54),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 24.0,
-                      ),
+                      SizedBox(height: 24.0),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             displayRequestContainer();
                           },
@@ -528,21 +538,24 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("Request",
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white)),
+                                Text(
+                                  "Request",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
                                 Icon(
                                   FontAwesomeIcons.taxi,
                                   color: Colors.white,
                                   size: 26.0,
-                                )
+                                ),
                               ],
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -554,28 +567,28 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
-                      child: Container(
+            child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.0),
-                      topRight: Radius.circular(16.0)),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 0.5,
-                      color: Colors.black54,
-                      offset: Offset(0.7, 0.7),
-                      blurRadius: 16.0,
-                    )
-                  ]),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16.0),
+                  topRight: Radius.circular(16.0),
+                ),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 0.5,
+                    color: Colors.black54,
+                    offset: Offset(0.7, 0.7),
+                    blurRadius: 16.0,
+                  ),
+                ],
+              ),
               height: requestRideContainerHeight,
               child: Padding(
                 padding: const EdgeInsets.all(30.0),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 12.0,
-                    ),
+                    SizedBox(height: 12.0),
                     SizedBox(
                       width: double.infinity,
                       child: ColorizeAnimatedTextKit(
@@ -587,7 +600,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                           "Please wait...",
                           "Finding a driver",
                         ],
-                        textStyle: TextStyle(fontSize: 55.0, fontFamily: "Signatra"),
+                        textStyle: TextStyle(
+                          fontSize: 55.0,
+                          fontFamily: "Signatra",
+                        ),
                         colors: [
                           Colors.green,
                           Colors.purple,
@@ -601,53 +617,66 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                     ),
                     SizedBox(height: 22.0),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         cancelRideRequest();
                         resetApp();
                       },
-                             child: Container(
+                      child: Container(
                         height: 60.0,
                         width: 60.0,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(26.0),
-                          border: Border.all(width: 2.0, color: Colors.grey[300]), 
+                          border: Border.all(
+                            width: 2.0,
+                            color: Colors.grey[300],
+                          ),
                         ),
                         child: Icon(Icons.close, size: 36.0),
                       ),
                     ),
-                       SizedBox(height: 10.0),
-                       Container(
-                         width: double.infinity,
-                         child: Text("Cancel Ride", textAlign: TextAlign.center, style: TextStyle(fontSize: 12.0)),
-                       )
+                    SizedBox(height: 10.0),
+                    Container(
+                      width: double.infinity,
+                      child: Text(
+                        "Cancel Ride",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 12.0),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
   Future<void> getPlaceDirection() async {
-    var initialPos =
-        Provider.of<AppData>(context, listen: false).pickUpLocation;
-    var finialPos =
-        Provider.of<AppData>(context, listen: false).dropOfflocation;
+    var initialPos = Provider.of<AppData>(
+      context,
+      listen: false,
+    ).pickUpLocation;
+    var finialPos = Provider.of<AppData>(
+      context,
+      listen: false,
+    ).dropOfflocation;
 
     var pickUpLapLng = LatLng(initialPos.latitude, initialPos.longitude);
     var dropOffLapLng = LatLng(finialPos.latitude, finialPos.longitude);
 
     showDialog(
-        context: context,
-        builder: (BuildContext context) => ProgressDialog(
-              message: "Please Wait..",
-            ));
+      context: context,
+      builder: (BuildContext context) =>
+          ProgressDialog(message: "Please Wait.."),
+    );
 
-    var details =
-        await ApiMethods.obtainDirections(pickUpLapLng, dropOffLapLng);
+    var details = await ApiMethods.obtainDirections(
+      pickUpLapLng,
+      dropOffLapLng,
+    );
 
     setState(() {
       tripdirectionDetails = details;
@@ -656,60 +685,73 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
     PolylinePoints polyLinePoints = PolylinePoints();
 
-    List<PointLatLng> decodePolyLinePointsResult =
-        polyLinePoints.decodePolyline(details.encodedPoints);
+    List<PointLatLng> decodePolyLinePointsResult = polyLinePoints
+        .decodePolyline(details.encodedPoints);
     pLineCordinates.clear();
     if (decodePolyLinePointsResult.isNotEmpty) {
       decodePolyLinePointsResult.forEach((PointLatLng pointLatLng) {
-        pLineCordinates
-            .add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
+        pLineCordinates.add(
+          LatLng(pointLatLng.latitude, pointLatLng.longitude),
+        );
       });
     }
     polylineSet.clear();
     setState(() {
       Polyline polyline = Polyline(
-          color: Colors.pink,
-          polylineId: PolylineId('PolylineID'),
-          jointType: JointType.round,
-          points: pLineCordinates,
-          width: 5,
-          startCap: Cap.roundCap,
-          endCap: Cap.roundCap,
-          geodesic: true);
+        color: Colors.pink,
+        polylineId: PolylineId('PolylineID'),
+        jointType: JointType.round,
+        points: pLineCordinates,
+        width: 5,
+        startCap: Cap.roundCap,
+        endCap: Cap.roundCap,
+        geodesic: true,
+      );
       polylineSet.add(polyline);
     });
     LatLngBounds latLngBounds;
     if (pickUpLapLng.latitude > dropOffLapLng.latitude &&
         pickUpLapLng.longitude > dropOffLapLng.longitude) {
-      latLngBounds =
-          LatLngBounds(southwest: dropOffLapLng, northeast: pickUpLapLng);
+      latLngBounds = LatLngBounds(
+        southwest: dropOffLapLng,
+        northeast: pickUpLapLng,
+      );
     } else if (pickUpLapLng.longitude > dropOffLapLng.longitude) {
       latLngBounds = LatLngBounds(
-          southwest: LatLng(pickUpLapLng.latitude, dropOffLapLng.longitude),
-          northeast: LatLng(dropOffLapLng.latitude, pickUpLapLng.longitude));
+        southwest: LatLng(pickUpLapLng.latitude, dropOffLapLng.longitude),
+        northeast: LatLng(dropOffLapLng.latitude, pickUpLapLng.longitude),
+      );
     } else if (pickUpLapLng.latitude > dropOffLapLng.latitude) {
       latLngBounds = LatLngBounds(
-          southwest: LatLng(dropOffLapLng.latitude, pickUpLapLng.longitude),
-          northeast: LatLng(pickUpLapLng.latitude, dropOffLapLng.longitude));
+        southwest: LatLng(dropOffLapLng.latitude, pickUpLapLng.longitude),
+        northeast: LatLng(pickUpLapLng.latitude, dropOffLapLng.longitude),
+      );
     } else {
-      latLngBounds =
-          LatLngBounds(southwest: pickUpLapLng, northeast: dropOffLapLng);
+      latLngBounds = LatLngBounds(
+        southwest: pickUpLapLng,
+        northeast: dropOffLapLng,
+      );
     }
-    newGoogleMapController
-        .animateCamera(CameraUpdate.newLatLngBounds(latLngBounds, 70));
+    newGoogleMapController.animateCamera(
+      CameraUpdate.newLatLngBounds(latLngBounds, 70),
+    );
 
     Marker pickUpMarker = Marker(
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-        infoWindow:
-            InfoWindow(title: initialPos.placeName, snippet: "My location"),
-        position: pickUpLapLng,
-        markerId: MarkerId("pickUpId"));
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+      infoWindow: InfoWindow(
+        title: initialPos.placeName,
+        snippet: "My location",
+      ),
+      position: pickUpLapLng,
+      markerId: MarkerId("pickUpId"),
+    );
 
     Marker dropOffMarker = Marker(
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        infoWindow: InfoWindow(title: finialPos.placeName, snippet: "Drop Off"),
-        position: dropOffLapLng,
-        markerId: MarkerId("dropOffId"));
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow: InfoWindow(title: finialPos.placeName, snippet: "Drop Off"),
+      position: dropOffLapLng,
+      markerId: MarkerId("dropOffId"),
+    );
 
     setState(() {
       markerSet.add(pickUpMarker);
@@ -717,20 +759,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     });
 
     Circle pickUpCircle = Circle(
-        fillColor: Colors.blueAccent,
-        center: pickUpLapLng,
-        radius: 12,
-        strokeColor: Colors.blueAccent,
-        strokeWidth: 4,
-        circleId: CircleId("pickUpId"));
+      fillColor: Colors.blueAccent,
+      center: pickUpLapLng,
+      radius: 12,
+      strokeColor: Colors.blueAccent,
+      strokeWidth: 4,
+      circleId: CircleId("pickUpId"),
+    );
 
     Circle dropOffCircle = Circle(
-        fillColor: Colors.deepPurple,
-        center: dropOffLapLng,
-        radius: 12,
-        strokeColor: Colors.deepPurple,
-        strokeWidth: 4,
-        circleId: CircleId("dropOffId"));
+      fillColor: Colors.deepPurple,
+      center: dropOffLapLng,
+      radius: 12,
+      strokeColor: Colors.deepPurple,
+      strokeWidth: 4,
+      circleId: CircleId("dropOffId"),
+    );
 
     setState(() {
       circleSet.add(pickUpCircle);

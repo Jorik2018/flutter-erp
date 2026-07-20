@@ -111,16 +111,14 @@ class _LoginFaceIDState extends State<LoginFaceID> {
         Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: const EdgeInsets.only(
-              top: 32,
-            ),
+            padding: const EdgeInsets.only(top: 32),
             child: Text(
               "Allow sign in with Face ID?",
               style: Theme.of(context).textTheme.title.copyWith(
-                    color: kLoginBlack,
-                    letterSpacing: 0.47,
-                    fontSize: 20,
-                  ),
+                color: kLoginBlack,
+                letterSpacing: 0.47,
+                fontSize: 20,
+              ),
             ),
           ),
         ),
@@ -131,32 +129,19 @@ class _LoginFaceIDState extends State<LoginFaceID> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Icon(
-                  Viiticons.face,
-                  size: 92,
-                  color: kTextLoginfaceid,
-                ),
-                SizedBox(
-                  height: 48,
-                ),
+                Icon(Viiticons.face, size: 92, color: kTextLoginfaceid),
+                SizedBox(height: 48),
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 52,
-                    right: 52,
-                  ),
-                  child: FlatButtonWidget(
+                  padding: const EdgeInsets.only(left: 52, right: 52),
+                  child: TextButtonWidget(
                     btnColor: kAccentColor,
                     btnTxt: "Use Face ID",
                     btnOnTap: () {
-                      loginFaceidBloc.add(
-                        UserFaceidEvent(),
-                      );
+                      loginFaceidBloc.add(UserFaceidEvent());
                     },
                   ),
                 ),
-                SizedBox(
-                  height: 21,
-                ),
+                SizedBox(height: 21),
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -165,9 +150,9 @@ class _LoginFaceIDState extends State<LoginFaceID> {
                     child: Text(
                       "Maybe later",
                       style: Theme.of(context).textTheme.button.copyWith(
-                            color: kAccentColor,
-                            fontSize: 16,
-                          ),
+                        color: kAccentColor,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                 ),
@@ -178,18 +163,14 @@ class _LoginFaceIDState extends State<LoginFaceID> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.only(
-              left: 32,
-              right: 32,
-              bottom: 24,
-            ),
+            padding: const EdgeInsets.only(left: 32, right: 32, bottom: 24),
             child: Text(
               "We will require face recognition after 2 minutes of inactivity. You can change the frequency in app settings.",
               style: Theme.of(context).textTheme.body2.copyWith(
-                    color: kTextLoginfaceid,
-                    fontSize: 15,
-                    letterSpacing: 0.17,
-                  ),
+                color: kTextLoginfaceid,
+                fontSize: 15,
+                letterSpacing: 0.17,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -199,14 +180,10 @@ class _LoginFaceIDState extends State<LoginFaceID> {
   }
 
   _buildLoadingState() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: CircularProgressIndicator());
   }
 
   _buildErrorState(errorMsg) {
-    return Center(
-      child: Icon(Icons.sync_problem),
-    );
+    return Center(child: Icon(Icons.sync_problem));
   }
 }

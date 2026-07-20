@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_taxi_booking_customer_app/common/my_colors.dart';
@@ -14,16 +13,11 @@ class WhereToScreen extends StatelessWidget {
   static const String routeName = "whereto";
   WhereToScreenArguments arguments;
 
-  WhereToScreen({
-    this.arguments,
-  });
+  WhereToScreen({this.arguments});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      child: WhereTo(),
-      create: (context) => WhereToBloc(),
-    );
+    return BlocProvider(child: WhereTo(), create: (context) => WhereToBloc());
   }
 }
 
@@ -51,7 +45,7 @@ class _WhereToState extends State<WhereTo> {
     "Rue La",
     "Beauchesne",
     "Rue des Lacs",
-    "Rue des Lacs"
+    "Rue des Lacs",
   ];
   List<String> addAdd = [
     "66, avenue Ferdinand de Lesseps 33170 GRADIGNAN",
@@ -60,7 +54,7 @@ class _WhereToState extends State<WhereTo> {
     "19, rue La Boétie 75016 PARIS",
     "52, rue Gouin de Beauchesne NAZAIRE",
     "50, rue des Lacs, 83400 HYÈRES",
-    "50, rue des Lacs, 83400 HYÈRES"
+    "50, rue des Lacs, 83400 HYÈRES",
   ];
 
   @override
@@ -95,10 +89,7 @@ class _WhereToState extends State<WhereTo> {
               height: 140,
               color: kPrimaryColor,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  top: 8,
-                ),
+                padding: const EdgeInsets.only(left: 8, top: 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -112,11 +103,11 @@ class _WhereToState extends State<WhereTo> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12,right: 2),
+                      padding: const EdgeInsets.only(top: 12, right: 2),
                       child: FromToLocationCard(
                         fromLocation: "54, rue du Gue Jacquet",
                         toLocation: "Destination",
-                        onTapSwitch: (){
+                        onTapSwitch: () {
                           print("Switch address");
                         },
                       ),
@@ -135,18 +126,21 @@ class _WhereToState extends State<WhereTo> {
                   itemBuilder: (context, index) => Column(
                     children: <Widget>[
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Navigator.of(context).pop(true);
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 21, vertical: 8),
+                            horizontal: 21,
+                            vertical: 8,
+                          ),
                           child: RecentAddressItemList(
                             addressTitle: addTitles[index],
                             myBackgrounColor: index == 0 ? kAccentColor : kGrey,
                             myIcon: addIcons[index],
-                            myIconColor:
-                                index == 0 ? Colors.white : kTextLoginfaceid,
+                            myIconColor: index == 0
+                                ? Colors.white
+                                : kTextLoginfaceid,
                             address: addAdd[index],
                           ),
                         ),
@@ -154,24 +148,21 @@ class _WhereToState extends State<WhereTo> {
                       index == addTitles.length - 1
                           ? SizedBox()
                           : index == 1
-                              ? Container(
-                                  height: 6,
-                                  margin: const EdgeInsets.only(
-                                    top: 6,
-                                    bottom: 6,
-                                  ),
-                                  color: kSettingDivider,
-                                )
-                              : Container(
-                                  height: 0.5,
-                                  margin: const EdgeInsets.only(
-                                    top: 6,
-                                    left: 62,
-                                    right: 16,
-                                    bottom: 6,
-                                  ),
-                                  color: kGrey,
-                                ),
+                          ? Container(
+                              height: 6,
+                              margin: const EdgeInsets.only(top: 6, bottom: 6),
+                              color: kSettingDivider,
+                            )
+                          : Container(
+                              height: 0.5,
+                              margin: const EdgeInsets.only(
+                                top: 6,
+                                left: 62,
+                                right: 16,
+                                bottom: 6,
+                              ),
+                              color: kGrey,
+                            ),
                     ],
                   ),
                 ),
@@ -188,7 +179,7 @@ class _WhereToState extends State<WhereTo> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: FlatButtonWidget(
+                    child: TextButtonWidget(
                       btnColor: kAccentColor,
                       btnTxt: "Next",
                       btnOnTap: () {

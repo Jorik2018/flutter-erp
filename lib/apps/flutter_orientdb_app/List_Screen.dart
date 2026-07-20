@@ -69,7 +69,10 @@ Try making the call conditional (using '?.') or adding a null check to the targe
                           'reciver_id',
                           useData[index].rid!.replaceAll('#', ''),
                         );
-                        prf!.setString('reciver_name', useData[index].Username!);
+                        prf!.setString(
+                          'reciver_name',
+                          useData[index].Username!,
+                        );
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -80,7 +83,7 @@ Try making the call conditional (using '?.') or adding a null check to the targe
                     );
                   },
                 )
-              : new Center(child: Container()),
+              : Center(child: Container()),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

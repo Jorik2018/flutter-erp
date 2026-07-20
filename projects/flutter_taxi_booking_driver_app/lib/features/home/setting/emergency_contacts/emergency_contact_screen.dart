@@ -5,8 +5,6 @@ import 'package:flutter_taxi_booking_driver_app/common/viiticons_icons.dart';
 import 'package:flutter_taxi_booking_driver_app/widgets/flat_button_widget.dart';
 import 'package:flutter_taxi_booking_driver_app/widgets/viit_appbar.dart';
 
-
-
 class EmergencyContactScreen extends StatefulWidget {
   static const String routeName = "emergencycontact";
 
@@ -39,28 +37,18 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                  height: 32,
-                ),
-                Icon(
-                  Viiticons.vitt_assistance,
-                  size: 120,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  height: 21,
-                ),
+                SizedBox(height: 32),
+                Icon(Viiticons.vitt_assistance, size: 120, color: Colors.red),
+                SizedBox(height: 21),
                 Text(
                   "In case you have emergency during your trip , you can call on SOS button and saved contact will be called.",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        color: kTextLoginfaceid,
-                        fontSize: 16,
-                      ),
+                    color: kTextLoginfaceid,
+                    fontSize: 16,
+                  ),
                 ),
-                SizedBox(
-                  height: 21,
-                ),
+                SizedBox(height: 21),
                 isContactAdded
                     ? Container(
                         height: 180,
@@ -77,16 +65,14 @@ class _EmergencyContactScreenState extends State<EmergencyContactScreen> {
                   children: <Widget>[
                     Expanded(
                       flex: 1,
-                      child: FlatButtonWidget(
+                      child: TextButtonWidget(
                         btnTxt: "Choose Contact",
                         btnColor: kAccentColor,
                         btnOnTap: () {
                           print("Choose contact");
-                          setState(
-                            () {
-                              isContactAdded = true;
-                            },
-                          );
+                          setState(() {
+                            isContactAdded = true;
+                          });
                         },
                       ),
                     ),
@@ -134,9 +120,7 @@ class ContactsWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 15,
-              ),
+              SizedBox(width: 15),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,29 +128,25 @@ class ContactsWidget extends StatelessWidget {
                   Text(
                     nameTxt,
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: kLoginBlack,
-                          fontSize: 16,
-                        ),
+                      color: kLoginBlack,
+                      fontSize: 16,
+                    ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5),
                   Text(
                     mobileTxt,
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: kTextLoginfaceid,
-                          fontSize: 14,
-                        ),
-                  )
+                      color: kTextLoginfaceid,
+                      fontSize: 14,
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
-          isDeleteIcon ? Icon(
-            CupertinoIcons.delete,
-            color: Colors.grey,
-            size: 25,
-          ):SizedBox(),
+          isDeleteIcon
+              ? Icon(CupertinoIcons.delete, color: Colors.grey, size: 25)
+              : SizedBox(),
         ],
       ),
     );

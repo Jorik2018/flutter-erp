@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
   var emailController = TextEditingController();
 
   var passwordController = TextEditingController();
-  final _formKey=GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,35 +27,43 @@ class LoginPage extends StatelessWidget {
       //mostra progress dialog
 
       showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (BuildContext context) =>
-              ProgressDialog(status: "Acessando"));
-      final FirebaseUser user = (await _auth
-              .signInWithEmailAndPassword(
-                  email: emailController.text,
-                  password: passwordController.text)
-              .catchError((onError) {
-        //Verificando erro e mostrando message
-        Navigator.pop(context);
-        PlatformException thisEx = onError;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(thisEx.message),
-          backgroundColor: Colors.redAccent,
-          duration: Duration(seconds: 2),
-        ));
-      }))
-          .user;
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => ProgressDialog(status: "Acessando"),
+      );
+      final FirebaseUser user =
+          (await _auth
+                  .signInWithEmailAndPassword(
+                    email: emailController.text,
+                    password: passwordController.text,
+                  )
+                  .catchError((onError) {
+                    //Verificando erro e mostrando message
+                    Navigator.pop(context);
+                    PlatformException thisEx = onError;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(thisEx.message),
+                        backgroundColor: Colors.redAccent,
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  }))
+              .user;
 
       if (user != null) {
-        DatabaseReference userRef =
-            FirebaseDatabase.instance.reference().child("users/${user.uid}");
+        DatabaseReference userRef = FirebaseDatabase.instance.reference().child(
+          "users/${user.uid}",
+        );
 
         userRef.once().then((DataSnapshot snapshot) {
           if (snapshot.value != null) {
             //apos verificar, ir para main page
             Navigator.pushNamedAndRemoveUntil(
-                context, MainPage.id, (route) => false);
+              context,
+              MainPage.id,
+              (route) => false,
+            );
           }
         });
       }
@@ -79,8 +87,10 @@ class LoginPage extends StatelessWidget {
                     image: AssetImage("images/logo.png"),
                   ),
                   SizedBox(height: 40),
-                  Text("Login Motorista",
-                      style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold')),
+                  Text(
+                    "Login Motorista",
+                    style: TextStyle(fontSize: 25, fontFamily: 'Brand-Bold'),
+                  ),
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -90,8 +100,8 @@ class LoginPage extends StatelessWidget {
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                     style: TextStyle(fontSize: 18),
-                    validator: (text){
-                      if(text.isEmpty||!text.contains("@")){
+                    validator: (text) {
+                      if (text.isEmpty || !text.contains("@")) {
                         return "email invalido";
                       }
                     },
@@ -107,32 +117,35 @@ class LoginPage extends StatelessWidget {
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                     style: TextStyle(fontSize: 18),
-                      validator: (text){
-                        if(text.length<6){
-                          return "Senha invalida";
-                        }
+                    validator: (text) {
+                      if (text.length < 6) {
+                        return "Senha invalida";
                       }
+                    },
                   ),
                   SizedBox(height: 40),
                   TaxiButton(
                     title: "LOGIN",
                     color: BrandColors.colorGreen,
                     onPressed: () {
-                     if(_formKey.currentState.validate()){
-                       login();
-                     }
+                      if (_formKey.currentState.validate()) {
+                        login();
+                      }
                     },
                   ),
-                  FlatButton(
+                  TextButton(
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(25),
                     ),
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, RegisterPage.id, (route) => false);
+                        context,
+                        RegisterPage.id,
+                        (route) => false,
+                      );
                     },
                     child: Text("Não tem uma conta?, Criar agora"),
-                  )
+                  ),
                 ],
               ),
             ),

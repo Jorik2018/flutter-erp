@@ -28,8 +28,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-    final realtimerLocation =
-        Provider.of<RealTimeLocation>(context, listen: false);
+    final realtimerLocation = Provider.of<RealTimeLocation>(
+      context,
+      listen: false,
+    );
     _user = _authProvider.user;
     _stateManager = sm.StateManager(
       context: context,
@@ -46,7 +48,9 @@ class _HomePageState extends State<HomePage> {
       _showErrorDialog(state.reason, 'Échec de la déconnection');
     } else if (state is sm.LocationUpdateFailed) {
       _showErrorDialog(
-          state.reason, 'Échec de la mis à jour de votre localisation.');
+        state.reason,
+        'Échec de la mis à jour de votre localisation.',
+      );
     }
   }
 
@@ -58,10 +62,10 @@ class _HomePageState extends State<HomePage> {
         title: Text(title),
         content: Text(errorMessage),
         actions: [
-          RaisedButton(
+          ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
             child: Text("Ok"),
-          )
+          ),
         ],
       ),
     );
@@ -70,43 +74,46 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final userHasPhoto = (_authProvider.user.photoUrl != null &&
+    final userHasPhoto =
+        (_authProvider.user.photoUrl != null &&
         _authProvider.user.photoUrl.isNotEmpty);
     return Scaffold(
       body: Builder(
-        builder: (BuildContext context) => Stack(children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _headerContainer(deviceSize),
-              BottomRoundedContainer(
-                deviceSize: deviceSize,
-                topBorderRadius: Radius.circular(40),
-              ),
-              SizedBox(),
-              CustomSwitch(
-                onChanged: (value) async {
-                  if (_connected) {
-                    await _stateManager.disconnectsDriver();
-                  } else {
-                    await _stateManager.connectsDriver();
-                  }
-                  setState(() => _connected = value);
-                },
-                value: _connected,
-                activeText: '  CONNECTÉ',
-                inactiveText: 'DÉCONNECTÉ',
-                height: deviceSize.height * .062,
-                width: deviceSize.width * .48,
-                activeColor: Colors.green,
-                inactiveColor: Color(0x8EFF0000),
-              ),
-              SizedBox()
-            ],
-          ),
-          _userPhoto(userHasPhoto),
-          _menuButton(context)
-        ]),
+        builder: (BuildContext context) => Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _headerContainer(deviceSize),
+                BottomRoundedContainer(
+                  deviceSize: deviceSize,
+                  topBorderRadius: Radius.circular(40),
+                ),
+                SizedBox(),
+                CustomSwitch(
+                  onChanged: (value) async {
+                    if (_connected) {
+                      await _stateManager.disconnectsDriver();
+                    } else {
+                      await _stateManager.connectsDriver();
+                    }
+                    setState(() => _connected = value);
+                  },
+                  value: _connected,
+                  activeText: '  CONNECTÉ',
+                  inactiveText: 'DÉCONNECTÉ',
+                  height: deviceSize.height * .062,
+                  width: deviceSize.width * .48,
+                  activeColor: Colors.green,
+                  inactiveColor: Color(0x8EFF0000),
+                ),
+                SizedBox(),
+              ],
+            ),
+            _userPhoto(userHasPhoto),
+            _menuButton(context),
+          ],
+        ),
       ),
       endDrawer: CustomDrower(),
     );
@@ -142,7 +149,7 @@ class _HomePageState extends State<HomePage> {
               blurRadius: 5,
               offset: Offset(0, 2),
               color: Colors.black12,
-            )
+            ),
           ],
           image: userHasPhoto
               ? DecorationImage(
@@ -206,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                         Text("Ratio"),
                         Text("100%", textScaleFactor: 1.1),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -241,10 +248,7 @@ class BottomRoundedContainer extends StatelessWidget {
           child: Text(
             "Pour trouver un taxi, vous avez juste à cliquez sur le bouton ci-dessous on s'occupera de vous mettre en contact avec le taxi le plus proche de l'endroit où vous vous trouvez actuellement.    Pour trouver un taxi, vous avez juste à cliquez sur le bouton ci-dessous on s'occupera de vous mettre en contact avec le taxi le plus proche de l'endroit où vous vous trouvez actuellement.",
             textScaleFactor: 1.35,
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              color: Colors.black54,
-            ),
+            style: TextStyle(fontFamily: 'Roboto', color: Colors.black54),
           ),
         ),
       ),

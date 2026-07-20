@@ -7,7 +7,7 @@ class InputField extends StatelessWidget {
   Color textFieldColor, iconColor;
   bool obscureText;
   double bottomMargin;
-  TextStyle? textStyle,hintStyle;
+  TextStyle? textStyle, hintStyle;
   Key? key;
 
   String? Function(String?)? validateFunction;
@@ -25,35 +25,34 @@ class InputField extends StatelessWidget {
     required this.textStyle,
     this.validateFunction,
     this.onSaved,
-    this.hintStyle
+    this.hintStyle,
   });
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return (new Container(
-        margin: new EdgeInsets.only(bottom: bottomMargin),
-        child: new DecoratedBox(
-          decoration: new BoxDecoration(
-              borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
-              color: textFieldColor),
-          child: new TextFormField(
-            style: textStyle,
-            key: key,
-            obscureText: obscureText,
-            //keyboardType: textInputType,
-            validator: validateFunction,
-            onSaved: onSaved,
-            decoration: new InputDecoration(
-                hintText: hintText,
-                //hintStyle: hintStyle,
-                icon: new Icon(
-                  icon,
-                  color: Colors.brown[150],
-                ),
-//                hideDivider: true,
-            ),
+      margin: EdgeInsets.only(bottom: bottomMargin),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(new Radius.circular(30.0)),
+          color: textFieldColor,
+        ),
+        child: TextFormField(
+          style: textStyle,
+          key: key,
+          obscureText: obscureText,
+          //keyboardType: textInputType,
+          validator: validateFunction,
+          onSaved: onSaved,
+          decoration: InputDecoration(
+            hintText: hintText,
+            //hintStyle: hintStyle,
+            icon: Icon(icon, color: Colors.brown[150]),
+            //                hideDivider: true,
           ),
-        )));
+        ),
+      ),
+    ));
   }
 }

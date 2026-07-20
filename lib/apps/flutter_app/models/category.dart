@@ -68,17 +68,17 @@ class Category extends StatelessWidget {
           onTap: () {},
           child: Container(
             padding: EdgeInsets.all(20.0),
-            child: new Row(
+            child: Row(
               children: <Widget>[
                 Icon(iconLocation, size: 70.0),
                 Expanded(
-                  child: new Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         name,
-                        style: new TextStyle(
+                        style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -90,15 +90,15 @@ class Category extends StatelessWidget {
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       new Container(
-                        decoration: new BoxDecoration(
+                        decoration: BoxDecoration(
                           color: isActive == true
                               ? Colors.green[300]
                               : Colors.grey,
                         ),
-                        child: new Text(
+                        child: Text(
                           promoCode,
                           textAlign: TextAlign.left,
-                          style: new TextStyle(
+                          style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.normal,
                             color: Colors.white,

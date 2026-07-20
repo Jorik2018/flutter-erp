@@ -263,29 +263,29 @@ class SigninFormState extends State<SignInForm>
 
     return new Scaffold(
       key: _scaffoldKey,
-      body: new SingleChildScrollView(
+      body: SingleChildScrollView(
         controller: scrollController,
-        child: new Container(
-          decoration: new BoxDecoration(
-            image: new DecorationImage(
-              image: new AssetImage('pink_house.png'),
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('pink_house.png'),
               fit: BoxFit.cover,
               alignment: Alignment.topLeft,
             ),
           ),
-          child: new Column(
+          child: Column(
             children: <Widget>[
               new Container(
                 height: screenSize.height / 4,
-                child: new Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new Container(
-                      child: new Text(
+                      child: Text(
                         Strings.appName,
                         textAlign: TextAlign.center,
-                        style: new TextStyle(fontSize: 50.0),
+                        style: TextStyle(fontSize: 50.0),
                       ),
                     ),
                   ],
@@ -293,17 +293,17 @@ class SigninFormState extends State<SignInForm>
               ),
               new Container(
                 height: 3 * screenSize.height / 4,
-                child: new Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     new Form(
                       key: _formKey,
                       //autovalidate: _autovalidate,
-                      child: new Column(
+                      child: Column(
                         children: <Widget>[
                           new Container(
-                            child: new InputField(
+                            child: InputField(
                               hintText: 'Email',
                               obscureText: false,
                               textInputType: TextInputType.text,
@@ -379,8 +379,8 @@ class SigninFormState extends State<SignInForm>
                         //                                onPressed: _handleSubmitted1,
                         //                                backgroundColor: Colors.white,
                         //                              )
-                        //                            : new FloatingActionButton(
-                        //                                child: new CircularProgressIndicator(
+                        //                            :FloatingActionButton(
+                        //                                child:CircularProgressIndicator(
                         //                                  valueColor: animation,
                         //                                ),
                         //                                onPressed: _handleSubmitted1,

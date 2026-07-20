@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_home_decor_app_ui/common/color_constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -37,9 +36,10 @@ class SocialPageScreen extends StatelessWidget {
                 child: Text(
                   'Social',
                   style: TextStyle(
-                      fontSize: 70,
-                      fontWeight: FontWeight.w900,
-                      color: ColorConstants.kdblackColor),
+                    fontSize: 70,
+                    fontWeight: FontWeight.w900,
+                    color: ColorConstants.kdblackColor,
+                  ),
                 ),
               ),
             ),
@@ -79,18 +79,20 @@ class SocialPageScreen extends StatelessWidget {
                 child: Text(
                   'Home Decor Corp.',
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w900,
-                      color: ColorConstants.kdblackColor),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                    color: ColorConstants.kdblackColor,
+                  ),
                 ),
               ),
               Container(
                 child: Text(
                   'Add beauty around you',
                   style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w300,
-                      color: ColorConstants.kdblackColor),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w300,
+                    color: ColorConstants.kdblackColor,
+                  ),
                 ),
               ),
             ],
@@ -107,9 +109,7 @@ class SocialPageScreen extends StatelessWidget {
         color: ColorConstants.kwhiteColor,
         child: Row(
           children: [
-            SizedBox(
-              width: 20,
-            ),
+            SizedBox(width: 20),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -127,10 +127,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -140,10 +142,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/other.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/other.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -153,10 +157,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -166,11 +172,12 @@ class SocialPageScreen extends StatelessWidget {
                         child: Text(
                           'Lamp',
                           style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              color: ColorConstants.kwhiteColor),
+                            fontWeight: FontWeight.w900,
+                            color: ColorConstants.kwhiteColor,
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Stack(
@@ -221,8 +228,11 @@ class SocialPageScreen extends StatelessWidget {
                         child: FloatingActionButton(
                           heroTag: "btn_temp1",
                           onPressed: () {},
-                          child: new Icon(Icons.people,
-                              color: ColorConstants.kwhiteColor, size: 25),
+                          child: Icon(
+                            Icons.people,
+                            color: ColorConstants.kwhiteColor,
+                            size: 25,
+                          ),
                           backgroundColor: ColorConstants.kredColor,
                         ),
                       ),
@@ -249,10 +259,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -262,10 +274,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/other.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/other.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -275,10 +289,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -331,8 +347,11 @@ class SocialPageScreen extends StatelessWidget {
                         child: FloatingActionButton(
                           heroTag: "btn_hello2",
                           onPressed: () {},
-                          child: new Icon(Icons.people,
-                              color: ColorConstants.kwhiteColor, size: 25),
+                          child: Icon(
+                            Icons.people,
+                            color: ColorConstants.kwhiteColor,
+                            size: 25,
+                          ),
                           backgroundColor: ColorConstants.kredColor,
                         ),
                       ),
@@ -344,11 +363,12 @@ class SocialPageScreen extends StatelessWidget {
                         child: Text(
                           'Plant',
                           style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              color: ColorConstants.kdblackColor),
+                            fontWeight: FontWeight.w900,
+                            color: ColorConstants.kdblackColor,
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(width: 20),
@@ -371,10 +391,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -384,10 +406,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/other.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/other.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -397,10 +421,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -410,11 +436,12 @@ class SocialPageScreen extends StatelessWidget {
                         child: Text(
                           'Lamp',
                           style: TextStyle(
-                              fontWeight: FontWeight.w900,
-                              color: ColorConstants.kwhiteColor),
+                            fontWeight: FontWeight.w900,
+                            color: ColorConstants.kwhiteColor,
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 Stack(
@@ -465,8 +492,11 @@ class SocialPageScreen extends StatelessWidget {
                         child: FloatingActionButton(
                           heroTag: "btn_temp123",
                           onPressed: () {},
-                          child: new Icon(Icons.people,
-                              color: ColorConstants.kwhiteColor, size: 25),
+                          child: Icon(
+                            Icons.people,
+                            color: ColorConstants.kwhiteColor,
+                            size: 25,
+                          ),
                           backgroundColor: ColorConstants.kredColor,
                         ),
                       ),
@@ -493,10 +523,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -506,10 +538,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/other.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/other.png'),
+                          ),
+                        ),
                       ),
                     ),
                     Positioned(
@@ -519,10 +553,12 @@ class SocialPageScreen extends StatelessWidget {
                         height: 25,
                         width: 25,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/images/my_pic.png'))),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage('assets/images/my_pic.png'),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -575,8 +611,11 @@ class SocialPageScreen extends StatelessWidget {
                         child: FloatingActionButton(
                           heroTag: "btn_hello223",
                           onPressed: () {},
-                          child: new Icon(Icons.people,
-                              color: ColorConstants.kwhiteColor, size: 25),
+                          child: Icon(
+                            Icons.people,
+                            color: ColorConstants.kwhiteColor,
+                            size: 25,
+                          ),
                           backgroundColor: ColorConstants.kredColor,
                         ),
                       ),
@@ -593,7 +632,7 @@ class SocialPageScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -608,9 +647,7 @@ class SocialPageScreen extends StatelessWidget {
     return Container(
       color: ColorConstants.kwhiteColor,
       child: Padding(
-        padding: EdgeInsets.only(
-          top: 8.0,
-        ),
+        padding: EdgeInsets.only(top: 8.0),
         child: Row(
           children: [
             Padding(
@@ -629,30 +666,26 @@ class SocialPageScreen extends StatelessWidget {
             Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                    top: 32,
-                    left: 52,
-                  ),
+                  padding: EdgeInsets.only(top: 32, left: 52),
                   child: Container(
-                      height: 96,
-                      width: 170,
-                      child: Image.asset(
-                        'assets/images/table_cof.png',
-                        fit: BoxFit.fill,
-                      )),
+                    height: 96,
+                    width: 170,
+                    child: Image.asset(
+                      'assets/images/table_cof.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                    top: 25,
-                    left: 12,
-                  ),
+                  padding: EdgeInsets.only(top: 25, left: 12),
                   child: Container(
-                      height: 110,
-                      width: 199,
-                      child: Image.asset(
-                        'assets/images/table_cof.png',
-                        fit: BoxFit.fill,
-                      )),
+                    height: 110,
+                    width: 199,
+                    child: Image.asset(
+                      'assets/images/table_cof.png',
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 ),
                 Container(
                   height: 160,
@@ -686,17 +719,11 @@ class SocialPageScreen extends StatelessWidget {
             Container(
               height: 343,
               width: screenWidth,
-              child: Image.asset(
-                'assets/images/map_new.png',
-                fit: BoxFit.fill,
-              ),
+              child: Image.asset('assets/images/map_new.png', fit: BoxFit.fill),
             ),
             Positioned(
               child: Padding(
-                padding: EdgeInsets.only(
-                  left: 22,
-                  top: 80,
-                ),
+                padding: EdgeInsets.only(left: 22, top: 80),
                 child: Column(
                   children: [
                     Container(
@@ -758,9 +785,7 @@ class SocialPageScreen extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
-                        top: 50,
-                      ),
+                      padding: EdgeInsets.only(top: 50),
                       child: Row(
                         children: [
                           Image.asset(
@@ -769,9 +794,7 @@ class SocialPageScreen extends StatelessWidget {
                             height: 20,
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              left: 8,
-                            ),
+                            padding: EdgeInsets.only(left: 8),
                             child: Image.asset(
                               'assets/images/instagram_logo_org.png',
                               width: 20,
@@ -779,15 +802,13 @@ class SocialPageScreen extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                              left: 8,
-                            ),
+                            padding: EdgeInsets.only(left: 8),
                             child: Image.asset(
                               'assets/images/twitter_logo_org.png',
                               width: 20,
                               height: 20,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -796,7 +817,7 @@ class SocialPageScreen extends StatelessWidget {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

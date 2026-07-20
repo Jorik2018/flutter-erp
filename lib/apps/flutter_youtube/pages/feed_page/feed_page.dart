@@ -12,7 +12,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: new SafeArea(
+      body: SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
             SliverPersistentHeader(
@@ -20,17 +20,15 @@ class _FeedPageState extends State<FeedPage> {
               floating: true,
             ),
             SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  VideoTile(),
-                  VideoTile(),
-                  VideoTile(),
-                  VideoTile(),
-                  VideoTile(),
-                  VideoTile(),
-                ]
-              ),
-            )
+              delegate: SliverChildListDelegate([
+                VideoTile(),
+                VideoTile(),
+                VideoTile(),
+                VideoTile(),
+                VideoTile(),
+                VideoTile(),
+              ]),
+            ),
           ],
         ),
       ),
@@ -47,15 +45,16 @@ class _VideoTileState extends State<VideoTile> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ViewVideoPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ViewVideoPage()),
+      ),
       child: ElevatedCard(
         Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AspectRatio(aspectRatio: 16 / 9),
-          ],
+          children: <Widget>[AspectRatio(aspectRatio: 16 / 9)],
         ),
         color: Colors.black,
       ),

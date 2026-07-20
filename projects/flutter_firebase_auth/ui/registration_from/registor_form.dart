@@ -29,17 +29,23 @@ class RegistorFromState extends State<RegistorFrom> {
         if (state is FailureState) {
           Scaffold.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[Text("Error Occurre..!"), Icon(Icons.error)],
+            ..showSnackBar(
+              SnackBar(
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text("Error Occurre..!"),
+                    Icon(Icons.error),
+                  ],
+                ),
+                backgroundColor: Colors.red,
               ),
-              backgroundColor: Colors.red,
-            ));
+            );
         }
-        if (state is SuccessState){
-          BlocProvider.of<AuthenticationBloc>(context).dispatch(
-              LoggedInEvent());
+        if (state is SuccessState) {
+          BlocProvider.of<AuthenticationBloc>(
+            context,
+          ).dispatch(LoggedInEvent());
           Navigator.pop(context);
         }
       },
@@ -57,15 +63,12 @@ class RegistorFromState extends State<RegistorFrom> {
           obscureText: false,
         ),
         buildTextField(
-            hint: "password",
-            icon: Icons.lock,
-            controller: _passwordController,
-            obscureText: true),
-        ButtonBar(
-          children: <Widget>[
-            RegisterButton(onPressed: _onSubmit,)
-          ],
-        )
+          hint: "password",
+          icon: Icons.lock,
+          controller: _passwordController,
+          obscureText: true,
+        ),
+        ButtonBar(children: <Widget>[RegisterButton(onPressed: _onSubmit)]),
       ],
     );
   }
@@ -84,33 +87,35 @@ class RegistorFromState extends State<RegistorFrom> {
         autocorrect: false,
         textDirection: TextDirection.ltr,
         decoration: InputDecoration(
-            hintText: hint, border: InputBorder.none, suffixIcon: Icon(icon)),
+          hintText: hint,
+          border: InputBorder.none,
+          suffixIcon: Icon(icon),
+        ),
       ),
     );
   }
 
   void _onSubmit() {
-    _registorFromState.dispatch(SignUpWithCredentials(
-      email: _emailController.text,
-      password: _passwordController.text,
-    ));
+    _registorFromState.dispatch(
+      SignUpWithCredentials(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ),
+    );
   }
 }
-
 
 class RegisterButton extends StatelessWidget {
   final VoidCallback _onPressed;
 
   RegisterButton({Key key, VoidCallback onPressed})
-      : _onPressed = onPressed,
-        super(key: key);
+    : _onPressed = onPressed,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
-      ),
+    return ElevatedButton(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: _onPressed,
       child: Text('Register'),
     );

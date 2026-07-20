@@ -11,7 +11,6 @@ import 'package:flutter_taxi_booking_driver_app/widgets/flat_button_widget.dart'
 import 'package:flutter_taxi_booking_driver_app/widgets/help_widget.dart';
 import 'package:flutter_taxi_booking_driver_app/widgets/user_profile_widget.dart';
 
-
 class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,175 +29,128 @@ class _SettingState extends State<Setting> {
     return ListView(
       children: <Widget>[
         UserProfielWidget(),
-        SizedBox(
-          height: 30,
-        ),
+        SizedBox(height: 30),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  MyVehiclesScreen.routeName,
-                );
-              },
-              child: HelpWidget(
-                title: "My Vehicles",
-              ),
-            )),
-        SizedBox(
-          height: 15,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(MyVehiclesScreen.routeName);
+            },
+            child: HelpWidget(title: "My Vehicles"),
+          ),
         ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: Color(0xFFEAEAEB),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  MyDocunmentScreen.routeName,
-                );
-              },
-              child: HelpWidget(
-                title: "My Documents",
-              ),
-            )),
-        SizedBox(
-          height: 15,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(MyDocunmentScreen.routeName);
+            },
+            child: HelpWidget(title: "My Documents"),
+          ),
         ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: Color(0xFFEAEAEB),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  NavigationSettingScreen.routeName,
-                );
-              },
-              child: HelpWidget(
-                title: "Navigation Settings",
-              ),
-            )),
-        SizedBox(
-          height: 15,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(
+                context,
+              ).pushNamed(NavigationSettingScreen.routeName);
+            },
+            child: HelpWidget(title: "Navigation Settings"),
+          ),
         ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: Color(0xFFEAEAEB),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  PrivacySettingScreen.routeName,
-                );
-              },
-              child: HelpWidget(
-                title: "Privacy Settings",
-              ),
-            )),
-        SizedBox(
-          height: 15,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(PrivacySettingScreen.routeName);
+            },
+            child: HelpWidget(title: "Privacy Settings"),
+          ),
         ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: Color(0xFFEAEAEB),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                  AppSettingScreen.routeName,
-                );
-              },
-              child: HelpWidget(
-                title: "App Settings",
-              ),
-            )),
-        SizedBox(
-          height: 15,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(AppSettingScreen.routeName);
+            },
+            child: HelpWidget(title: "App Settings"),
+          ),
         ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: Color(0xFFEAEAEB),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: GestureDetector(
-              onTap: (){
-                Navigator.of(context).pushNamed(
-                  EmergencyContactScreen.routeName,
-                );
-              },
-              child: HelpWidget(
-                title: "Emergency Contacts",
-              ),
-            )),
-        SizedBox(
-          height: 15,
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(EmergencyContactScreen.routeName);
+            },
+            child: HelpWidget(title: "Emergency Contacts"),
+          ),
         ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: Color(0xFFEAEAEB),
         ),
-        SizedBox(
-          height: 30,
-        ),
+        SizedBox(height: 30),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Text(
             "Delet account",
             style: Theme.of(context).textTheme.caption.copyWith(
-                fontWeight: FontWeight.w500,
-                color: Color(0XFFDF2E21),
-                fontSize: 18),
+              fontWeight: FontWeight.w500,
+              color: Color(0XFFDF2E21),
+              fontSize: 18,
+            ),
           ),
         ),
-        SizedBox(
-          height: 25,
-        ),
+        SizedBox(height: 25),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
-          child: FlatButtonWidget(
+          child: TextButtonWidget(
             btnColor: Color(0XFFFFAA00),
             btnTxt: "Signout",
             btnOnTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                LoginScreen.routeName,
-              );
+              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
             },
           ),
         ),
-        SizedBox(
-          height: 20,
-        )
+        SizedBox(height: 20),
       ],
     );
   }

@@ -71,43 +71,42 @@ class MapSampleState extends State<MapSample> {
   }*/
 
   StreamSubscription? _getChangesSubscription;
-  
+
   @override
   void initState() {
     listenTochanges();
   }
+
   @override
   void dispose() {
     _getChangesSubscription?.cancel();
     print("Groups listener disposed");
     super.dispose();
   }
-  void listenTochanges(){
+
+  void listenTochanges() {
     print("Groups lister inistialised");
-    _getChangesSubscription = groupref.onChildChanged.listen((event) async{
+    _getChangesSubscription = groupref.onChildChanged.listen((event) async {
       Map value = event.snapshot.value as Map;
-      if(groupStatusGroupname == value["groupname"]){
+      if (groupStatusGroupname == value["groupname"]) {
         List<dynamic> groupMems = value["members"];
         print("groupMems -> ${groupMems}");
 
-        for(var grpmem in groupMems){
+        for (var grpmem in groupMems) {
           print("mem -> ${grpmem["locationShare"]}");
-          if(grpmem["locationShare"]==true) {
+          if (grpmem["locationShare"] == true) {
             for (var i = 0; i < widget.currentLocations.length; i++) {
               if (widget.currentLocations[i]["emailid"] == grpmem["emailid"]) {
                 widget.currentLocations[i] = {
                   "latitude": grpmem["location"]["latitude"],
                   "longitude": grpmem["location"]["longitude"],
-                  "emailid": grpmem["emailid"]
+                  "emailid": grpmem["emailid"],
                 };
               }
             }
           }
         }
-        setState(() {
-
-        });
-
+        setState(() {});
       }
     });
   }
@@ -116,39 +115,43 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: FutureBuilder(
-          future: getLocsOfMembers(),
-//          initialData: widget.currentLocations,
-          builder: (BuildContext context, snapshot) {
-            print("snapshot.data ${snapshot.data}");
-            if (snapshot.data == null || snapshot.data.length == 0) {
-              return Center(
-                child: Text(
-                    "No Live location sharing users, Go back and try again"),
-              );
-            } else {
-               widget.currentLocations.forEach((curr){
-                 markers = _add(curr);
-               });
-              return FlutterMap(
-                 options: MapOptions(
-                  initialCenter: LatLng(51.509364, -0.128928),
-                  initialZoom: 9.2,
+        future: getLocsOfMembers(),
+        //          initialData: widget.currentLocations,
+        builder: (BuildContext context, snapshot) {
+          print("snapshot.data ${snapshot.data}");
+          if (snapshot.data == null || snapshot.data.length == 0) {
+            return Center(
+              child: Text(
+                "No Live location sharing users, Go back and try again",
+              ),
+            );
+          } else {
+            widget.currentLocations.forEach((curr) {
+              markers = _add(curr);
+            });
+            return FlutterMap(
+              options: MapOptions(
+                initialCenter: LatLng(51.509364, -0.128928),
+                initialZoom: 9.2,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
                 ),
-                children: [
-                  TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.example.app',
-                  ),
-                  RichAttributionWidget(
-                    attributions: [
-                      TextSourceAttribution(
-                        'OpenStreetMap contributors',
-                        onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
+                RichAttributionWidget(
+                  attributions: [
+                    TextSourceAttribution(
+                      'OpenStreetMap contributors',
+                      onTap: () => launchUrl(
+                        Uri.parse('https://openstreetmap.org/copyright'),
                       ),
-                    ],
-                  ),
-                ],
-                /*mapType: MapType.normal,
+                    ),
+                  ],
+                ),
+              ],
+
+              /*mapType: MapType.normal,
                 initialCameraPosition: CameraPosition(
                   target: LatLng(snapshot.data[0]["latitude"], snapshot.data[0]["longitude"]),
                   zoom: 14.4746,
@@ -158,10 +161,10 @@ class MapSampleState extends State<MapSample> {
                   _controller.complete(controller);
                 },
                 markers: Set<Marker>.of(markers.values),*/
-
-              );
-            }
-          }),
+            );
+          }
+        },
+      ),
     );
   }
 
@@ -179,36 +182,46 @@ class MapSampleState extends State<MapSample> {
       }
     });
     for (var i = 0; i < memcount; i++) {
-      var response1 = await http.get(Uri.parse("https://trovami-bcd81.firebaseio.com/groups/${groupkey}/members/${i}.json"));
+      var response1 = await http.get(
+        Uri.parse(
+          "https://trovami-bcd81.firebaseio.com/groups/${groupkey}/members/${i}.json",
+        ),
+      );
       Map result1 = jsonDecode(response1.body);
       print(result1["emailid"]);
       print(result1["locationShare"]);
       if (result1["locationShare"] == true) {
-
-        if(widget.currentLocations.length == 0) {
-          widget.currentLocations.add({"latitude":result1["location"]["latitude"],"longitude":result1["location"]["longitude"],"emailid":result1["emailid"]});
+        if (widget.currentLocations.length == 0) {
+          widget.currentLocations.add({
+            "latitude": result1["location"]["latitude"],
+            "longitude": result1["location"]["longitude"],
+            "emailid": result1["emailid"],
+          });
           print("here 1 ${widget.currentLocations}");
-
-        }else{
+        } else {
           var flag = 0;
           for (var i = 0; i < widget.currentLocations.length; i++) {
             print("check hereee ${result1["emailid"]}");
             if (widget.currentLocations[i]["emailid"] == result1["emailid"]) {
-              flag=1;
+              flag = 1;
               print("curr loc ${widget.currentLocations}");
               print("${result1["emailid"]}");
               widget.currentLocations.removeAt(i);
-              widget.currentLocations.add({"latitude":result1["location"]["latitude"],"longitude":result1["location"]["longitude"],"emailid":result1["emailid"]});
-
+              widget.currentLocations.add({
+                "latitude": result1["location"]["latitude"],
+                "longitude": result1["location"]["longitude"],
+                "emailid": result1["emailid"],
+              });
             }
           }
-          if(flag==0){
-            widget.currentLocations.add({"latitude":result1["location"]["latitude"],"longitude":result1["location"]["longitude"],"emailid":result1["emailid"]});
+          if (flag == 0) {
+            widget.currentLocations.add({
+              "latitude": result1["location"]["latitude"],
+              "longitude": result1["location"]["longitude"],
+              "emailid": result1["emailid"],
+            });
           }
-
         }
-
-
       } else {
         print("works till here");
 
@@ -224,11 +237,10 @@ class MapSampleState extends State<MapSample> {
     return widget.currentLocations;
   }
 
-
-//  Future<void> _goToTheLake() async {
-//    final GoogleMapController controller = await _controller.future;
-//    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-//  }
+  //  Future<void> _goToTheLake() async {
+  //    final GoogleMapController controller = await _controller.future;
+  //    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+  //  }
 }
 
 //class loadingindlayout extends StatefulWidget {
@@ -270,15 +282,15 @@ class MapSampleState extends State<MapSample> {
 //      @override
 //      Widget build(BuildContext context) =>
 //      new Scaffold(
-//        appBar: new AppBar(
+//        appBar:AppBar(
 //          title:  new Text('Trovami'),
 //          backgroundColor: Colors.black,
-//          leading: new Container(),
+//          leading:Container(),
 //        ),
-//        body: new Center(
-//            child: new Container(
+//        body:Center(
+//            child:Container(
 //              child:new CircularProgressIndicator(
-//                valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+//                valueColor:AlwaysStoppedAnimation<Color>(Colors.black),
 //              ),
 //            )
 //        ),
@@ -420,7 +432,7 @@ class MapSampleState extends State<MapSample> {
 //        mapView.show(
 //            new MapOptions(
 //                showUserLocation: locationShare,
-//                initialCameraPosition: new CameraPosition(
+//                initialCameraPosition:CameraPosition(
 //                    new Location(lat, long), 14.0),
 //                title: "Live locator"),
 //            toolbarActions: [

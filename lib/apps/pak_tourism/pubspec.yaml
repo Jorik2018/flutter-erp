@@ -1,0 +1,14 @@
+name: pak_tourism
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cloud_firestore: ^3.1.4
+  firebase_auth: ^3.2.0
+  firebase_core: ^1.10.0
+  fluttertoast: ^8.0.8
+  google_maps_flutter: ^2.0.7
+  map_launcher: ^2.1.1
+  #state management
+  flutter_bloc: ^7.2.0
+  equatable: ^2.0.3

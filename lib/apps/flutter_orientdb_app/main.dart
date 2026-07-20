@@ -99,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             SizedBox(height: 50.0),
-            /**The name 'RaisedButton' isn't a class.
+            /**The name 'ElevatedButton' isn't a class.
 Try correcting the name to match an existing class. */
             ElevatedButton(
               onPressed: () {

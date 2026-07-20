@@ -40,91 +40,60 @@ class AddBusinessProfileScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Viiticons.work,
-                            color: kLoginBlack,
-                            size: 28,
-                          ),
-                          SizedBox(
-                            width: 18,
-                          ),
+                          Icon(Viiticons.work, color: kLoginBlack, size: 28),
+                          SizedBox(width: 18),
                           Container(
-                              child: Text(
-                            "Ride for business",
-                            style: Theme.of(context).textTheme.caption.copyWith(
-                                  color: kLoginBlack,
-                                  fontSize: 20,
-                                ),
-                          ))
+                            child: Text(
+                              "Ride for business",
+                              style: Theme.of(context).textTheme.caption
+                                  .copyWith(color: kLoginBlack, fontSize: 20),
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: 26,
-                      ),
+                      SizedBox(height: 26),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Icon(
-                            Icons.check,
-                            color: kPrimaryColor,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
+                          Icon(Icons.check, color: kPrimaryColor, size: 18),
+                          SizedBox(width: 6),
                           Text(
                             "Keep work rides separate ",
                             style: Theme.of(context).textTheme.caption.copyWith(
-                                  color: kPrimaryColor,
-                                  fontSize: 16,
-                                ),
-                          )
+                              color: kPrimaryColor,
+                              fontSize: 16,
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: 15),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Icon(
-                            Icons.check,
-                            color: kPrimaryColor,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
+                          Icon(Icons.check, color: kPrimaryColor, size: 18),
+                          SizedBox(width: 6),
                           Text(
                             "Get travel reports",
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption
-                                .copyWith(color: kPrimaryColor, fontSize: 16),
-                          )
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                              color: kPrimaryColor,
+                              fontSize: 16,
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: 15),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Icon(
-                            Icons.check,
-                            color: kPrimaryColor,
-                            size: 18,
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
+                          Icon(Icons.check, color: kPrimaryColor, size: 18),
+                          SizedBox(width: 6),
                           Text(
                             "Make expensing seamless & easy",
                             style: Theme.of(context).textTheme.caption.copyWith(
-                                  color: kPrimaryColor,
-                                  fontSize: 16,
-                                ),
-                          )
+                              color: kPrimaryColor,
+                              fontSize: 16,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -138,20 +107,20 @@ class AddBusinessProfileScreen extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: FlatButtonWidget(
+                        child: TextButtonWidget(
                           btnTxt: "Join Now",
                           btnColor: kAccentColor,
                           btnOnTap: () {
-                            Navigator.of(context).pushNamed(
-                              WhatsYourBusinessEmailScreen.routeName,
-                            );
+                            Navigator.of(
+                              context,
+                            ).pushNamed(WhatsYourBusinessEmailScreen.routeName);
                           },
                         ),
                       ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

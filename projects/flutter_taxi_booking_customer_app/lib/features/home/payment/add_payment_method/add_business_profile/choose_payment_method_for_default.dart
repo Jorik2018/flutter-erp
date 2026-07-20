@@ -5,7 +5,6 @@ import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dar
 import 'package:flutter_taxi_booking_customer_app/widgets/pay_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/viit_appbar.dart';
 
-
 class ChoosePaymentMethodScreen extends StatefulWidget {
   static const String routeName = "choosepaymentmethod";
   final ChoosePaymentMethodScreenArguments arguments;
@@ -50,44 +49,34 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                 Text(
                   "How would you like to pay when you ride for ${widget.arguments.paymentMethodScreenFor}? ",
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        fontWeight: FontWeight.w500,
-                        color: kLoginBlack,
-                        fontSize: 19,
-                      ),
+                    fontWeight: FontWeight.w500,
+                    color: kLoginBlack,
+                    fontSize: 19,
+                  ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
+                SizedBox(height: 16),
                 Text(
                   "Payment Method",
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        color: kTextLoginfaceid,
-                        fontSize: 15,
-                      ),
+                    color: kTextLoginfaceid,
+                    fontSize: 15,
+                  ),
                 ),
-                SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Icon(
-                          Viiticons.cash,
-                          size: 24,
-                          color: kDottedBorder,
-                        ),
-                        SizedBox(
-                          width: 18,
-                        ),
+                        Icon(Viiticons.cash, size: 24, color: kDottedBorder),
+                        SizedBox(width: 18),
                         Text(
                           "Cash",
                           style: Theme.of(context).textTheme.caption.copyWith(
-                                color: kDottedBorder,
-                                fontSize: 18,
-                              ),
-                        )
+                            color: kDottedBorder,
+                            fontSize: 18,
+                          ),
+                        ),
                       ],
                     ),
                     Transform.scale(
@@ -105,17 +94,13 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 Container(
                   height: 0.5,
                   width: MediaQuery.of(context).size.width,
                   color: kSettingDivider,
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -125,32 +110,28 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                         Text(
                           "Credit Card",
                           style: Theme.of(context).textTheme.caption.copyWith(
-                                color: kLoginBlack,
-                                fontSize: 16,
-                              ),
+                            color: kLoginBlack,
+                            fontSize: 16,
+                          ),
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         Icon(
                           Viiticons.visa_card,
                           size: 24,
                           color: kDottedBorder,
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
                               "**** **** **** 5967",
-                              style:
-                                  Theme.of(context).textTheme.caption.copyWith(
-                                        color: Color(0XFF8F92A1),
-                                        fontSize: 14,
-                                        letterSpacing: 1.1,
-                                      ),
+                              style: Theme.of(context).textTheme.caption
+                                  .copyWith(
+                                    color: Color(0XFF8F92A1),
+                                    fontSize: 14,
+                                    letterSpacing: 1.1,
+                                  ),
                             ),
                           ],
                         ),
@@ -171,17 +152,13 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                SizedBox(height: 15),
                 Container(
                   height: 0.5,
                   width: MediaQuery.of(context).size.width,
                   color: kSettingDivider,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Stack(
                   children: <Widget>[
                     PayWidget(
@@ -204,20 +181,16 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                           },
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Container(
                   height: 0.5,
                   width: MediaQuery.of(context).size.width,
                   color: kSettingDivider,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Stack(
                   children: <Widget>[
                     PayWidget(
@@ -240,49 +213,42 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                           },
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Container(
                   height: 0.5,
                   width: MediaQuery.of(context).size.width,
                   color: kSettingDivider,
                 ),
-                SizedBox(
-                  height: 30,
-                ),
+                SizedBox(height: 30),
                 GestureDetector(
                   child: Text(
                     "Add Payment Method",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: kPrimaryColor,
-                          fontSize: 16,
-                        ),
+                      color: kPrimaryColor,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Text(
                   "You can always switch to a different payment method",
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        color: kDottedBorder,
-                        fontSize: 15,
-                      ),
+                    color: kDottedBorder,
+                    fontSize: 15,
+                  ),
                 ),
-                SizedBox(
-                  height: 25,
-                ),
+                SizedBox(height: 25),
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: FlatButtonWidget(
+                      child: TextButtonWidget(
                         btnOnTap: () {
-                          Navigator.of(context)
-                              .popUntil((route) => route.isFirst);
+                          Navigator.of(
+                            context,
+                          ).popUntil((route) => route.isFirst);
                         },
                         btnTxt: "Done",
                         btnColor: kAccentColor,
@@ -290,9 +256,7 @@ class _ChoosePaymentMethodScreenState extends State<ChoosePaymentMethodScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 25,
-                ),
+                SizedBox(height: 25),
               ],
             ),
           ),

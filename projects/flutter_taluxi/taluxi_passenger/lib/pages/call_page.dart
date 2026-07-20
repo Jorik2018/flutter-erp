@@ -13,7 +13,7 @@ class CallPage extends StatefulWidget {
   final metadataTextColor = const Color(0xAD000000);
 
   const CallPage({Key key, this.callRecipients, this.currentUserId})
-      : super(key: key);
+    : super(key: key);
 
   @override
   _CallPageState createState() => _CallPageState();
@@ -209,7 +209,7 @@ class _CallPageState extends State<CallPage> {
             return AlertDialog(
               content: Text(text ?? "Le conducteur n'a pas pris l'appel"),
               actions: [
-                RaisedButton(
+                ElevatedButton(
                   onPressed: () {
                     autoCallTimer.cancel();
                     Navigator.of(context).pop();
@@ -217,14 +217,14 @@ class _CallPageState extends State<CallPage> {
                   },
                   child: Text('Annulé'),
                 ),
-                RaisedButton(
+                ElevatedButton(
                   color: mainLightColor,
                   onPressed: () {
                     Navigator.of(context).pop();
                     _callStateManager.callNextRecipient();
                   },
                   child: Text('Appeler un autre ($autoCallCounter)'),
-                )
+                ),
               ],
             );
           },
@@ -242,34 +242,39 @@ class _CallPageState extends State<CallPage> {
           title: Text(title ?? "Vous avez raccrochez l'appel"),
           content: Container(
             child: Text(
-                "Êtes vous tombés d'accord avec le conducteur avant la fin de l'appel pour qu'il vienne vous conduire à votre destination ?"),
+              "Êtes vous tombés d'accord avec le conducteur avant la fin de l'appel pour qu'il vienne vous conduire à votre destination ?",
+            ),
           ),
           actions: [
             Center(
               widthFactor: 2,
               child: Column(
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                       _callStateManager.callNextRecipient();
                     },
                     child: Text('Non, appeler un autre'),
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      final dataOfDriverToTrack = widget.callRecipients[
-                          _callStateManager.currentRecipientIndex];
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      final dataOfDriverToTrack =
+                          widget.callRecipients[_callStateManager
+                              .currentRecipientIndex];
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
                           builder: (context) =>
-                              TaxiTrackingPage(dataOfDriverToTrack)));
+                              TaxiTrackingPage(dataOfDriverToTrack),
+                        ),
+                      );
                     },
                     child: Text('Oui, afficher sa position sur la carte'),
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         );
       },
@@ -287,10 +292,10 @@ class _CallPageState extends State<CallPage> {
             'Nous avons tenté de joindre ${widget.callRecipients.length} conducteurs sans succès, veuillez réessayer plus tard.',
           ),
           actions: [
-            RaisedButton(
+            ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text('Ok'),
-            )
+            ),
           ],
         );
       },

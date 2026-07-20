@@ -6,11 +6,10 @@ import 'package:flutter_taxi_booking_driver_app/widgets/border_button_widget.dar
 import 'package:flutter_taxi_booking_driver_app/widgets/flat_button_widget.dart';
 import 'package:share/share.dart';
 
-
- class ReferDriverScreen extends StatelessWidget {
+class ReferDriverScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  ReferDriver();
+    return ReferDriver();
   }
 }
 
@@ -27,67 +26,60 @@ class _FreeRidesState extends State<ReferDriver> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Image.asset("assets/free_rides.png"),
-          SizedBox(
-            height: 6,
-          ),
+          SizedBox(height: 6),
           Center(
             child: Text(
               "Earn More ",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
-                    color: kLoginBlack,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
+                color: kLoginBlack,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-          SizedBox(
-            height: 4,
-          ),
+          SizedBox(height: 4),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
               "Share the Vitt love with other great drivers like you by sharing your personal referral code. Track the progress of your invitees and know when you will get your Vitt Referral Bonus!",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
-                    color: kTextLoginfaceid,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    height: 1.4,
-                  ),
+                color: kTextLoginfaceid,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                height: 1.4,
+              ),
             ),
           ),
-          SizedBox(
-            height: 8,
-          ),
+          SizedBox(height: 8),
           Center(
             child: BorderButtonWidget(
-                text: "How Invites Work",
-                myOnTap: () {
-                  Navigator.of(context)
-                      .pushNamed(HowWorkDetailsScreen.routeName);
-                }),
+              text: "How Invites Work",
+              myOnTap: () {
+                Navigator.of(context).pushNamed(HowWorkDetailsScreen.routeName);
+              },
+            ),
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
 
           Center(
             child: Container(
-              height:35,
+              height: 35,
               width: 177,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35/2),
+                borderRadius: BorderRadius.circular(35 / 2),
                 color: kPrimaryColor,
               ),
 
               child: GestureDetector(
-                onTap: (){
-                  Navigator.of(context)
-                      .pushNamed(YourReferralDriverScreen.routeName);
+                onTap: () {
+                  Navigator.of(
+                    context,
+                  ).pushNamed(YourReferralDriverScreen.routeName);
                 },
                 child: Center(
-                  child:  Text(
+                  child: Text(
                     "Your Referrals",
                     style: Theme.of(context).textTheme.caption.copyWith(
                       fontSize: 16,
@@ -95,22 +87,19 @@ class _FreeRidesState extends State<ReferDriver> {
                     ),
                   ),
                 ),
-              )
-
+              ),
             ),
           ),
-          SizedBox(
-            height: 6,
-          ),
+          SizedBox(height: 6),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
             child: Text(
               "Share your invite code",
               style: Theme.of(context).textTheme.caption.copyWith(
-                    color: kLoginBlack,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
+                color: kLoginBlack,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Padding(
@@ -118,9 +107,7 @@ class _FreeRidesState extends State<ReferDriver> {
             child: Container(
               decoration: BoxDecoration(
                 color: kShareCodeBg,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
               child: GestureDetector(
                 onTap: () {
@@ -136,17 +123,12 @@ class _FreeRidesState extends State<ReferDriver> {
                         child: Text(
                           "melissa9913ue",
                           style: Theme.of(context).textTheme.caption.copyWith(
-                                color: kLoginBlack,
-                                fontSize: 15,
-                              ),
+                            color: kLoginBlack,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
-                      Opacity(
-                        opacity: 0.90,
-                        child: Icon(
-                          Icons.share,
-                        ),
-                      )
+                      Opacity(opacity: 0.90, child: Icon(Icons.share)),
                     ],
                   ),
                 ),
@@ -159,7 +141,7 @@ class _FreeRidesState extends State<ReferDriver> {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: FlatButtonWidget(
+                  child: TextButtonWidget(
                     btnTxt: "Whatsapp",
                     btnColor: kAccentColor,
                     btnOnTap: () {},
@@ -169,9 +151,7 @@ class _FreeRidesState extends State<ReferDriver> {
               ),
             ],
           ),
-          SizedBox(
-            height: 21,
-          ),
+          SizedBox(height: 21),
         ],
       ),
     );

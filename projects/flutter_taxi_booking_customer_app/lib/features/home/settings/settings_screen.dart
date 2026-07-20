@@ -13,7 +13,6 @@ import 'package:flutter_taxi_booking_customer_app/widgets/privacy_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/recent_address_item_list.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/slide_menu_widget.dart';
 
-
 import 'bloc/bloc.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -21,10 +20,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SettingsBloc(),
-      child: Settings(),
-    );
+    return BlocProvider(create: (context) => SettingsBloc(), child: Settings());
   }
 }
 
@@ -41,7 +37,7 @@ class _SettingsState extends State<Settings> {
   List<String> favAddAddresses = [
     "50, rue des Lacs, 83400 HYERESS",
     "19, rue La Boétie 75016 PARIS",
-    "66, avenue Ferdinand de Lesseps 33170"
+    "66, avenue Ferdinand de Lesseps 33170",
   ];
 
   @override
@@ -65,54 +61,44 @@ class _SettingsState extends State<Settings> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(90 / 2),
                   image: DecorationImage(
-                    image: AssetImage(
-                      'assets/female_avtar.png',
-                    ),
+                    image: AssetImage('assets/female_avtar.png'),
                     fit: BoxFit.fitHeight,
                   ),
                 ),
               ),
-              SizedBox(
-                width: 15,
-              ),
+              SizedBox(width: 15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     "Melissa Brunt",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: kLoginBlack,
-                          fontSize: 18,
-                        ),
+                      color: kLoginBlack,
+                      fontSize: 18,
+                    ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5),
                   Text(
                     "+33 0464067013",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: kTextLoginfaceid,
-                          fontSize: 15,
-                        ),
+                      color: kTextLoginfaceid,
+                      fontSize: 15,
+                    ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5),
                   Text(
                     "melissa.brunt69@gmail.com",
                     style: Theme.of(context).textTheme.caption.copyWith(
-                          color: Colors.black38,
-                          fontSize: 15,
-                        ),
+                      color: Colors.black38,
+                      fontSize: 15,
+                    ),
                   ),
                 ],
               ),
             ],
           ),
         ),
-        SizedBox(
-          height: 30,
-        ),
+        SizedBox(height: 30),
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Column(
@@ -121,119 +107,102 @@ class _SettingsState extends State<Settings> {
             children: <Widget>[
               Text(
                 "Favourite Address",
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kLoginBlack,
-                      fontSize: 21,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 21),
               ),
             ],
           ),
         ),
-        SizedBox(
-          height: 18,
-        ),
+        SizedBox(height: 18),
         ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 3,
-            itemBuilder: (BuildContext context, int index) {
-              return SlideMenu(
-                child: ListTile(
-                  title: Column(
-                    children: <Widget>[
-                      RecentAddressItemList(
-                        addressTitle: favAddTitle[index],
-                        myIcon: favAddIcons[index],
-                        address: favAddAddresses[index],
-                        myBackgrounColor: kSettingFavAddAvtarBg,
-                        myIconColor: kTextLoginfaceid,
-                        isLastIndex: index == 2,
-                      ),
-                      index == 2
-                          ? SizedBox()
-                          : Container(
-                              height: 0.5,
-                              margin: const EdgeInsets.only(
-                                  top: 14, left: 46, right: 16),
-                              color: kGrey,
-                            )
-                    ],
-                  ),
-                ),
-                menuItems: <Widget>[
-                  Container(
-                    color: kDanger,
-                    child: Center(
-                      child: Text(
-                        "Delete",
-                        style: Theme.of(context).textTheme.caption.copyWith(
-                              color: Colors.white,
-                              fontSize: 16,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 3,
+          itemBuilder: (BuildContext context, int index) {
+            return SlideMenu(
+              child: ListTile(
+                title: Column(
+                  children: <Widget>[
+                    RecentAddressItemList(
+                      addressTitle: favAddTitle[index],
+                      myIcon: favAddIcons[index],
+                      address: favAddAddresses[index],
+                      myBackgrounColor: kSettingFavAddAvtarBg,
+                      myIconColor: kTextLoginfaceid,
+                      isLastIndex: index == 2,
+                    ),
+                    index == 2
+                        ? SizedBox()
+                        : Container(
+                            height: 0.5,
+                            margin: const EdgeInsets.only(
+                              top: 14,
+                              left: 46,
+                              right: 16,
                             ),
+                            color: kGrey,
+                          ),
+                  ],
+                ),
+              ),
+              menuItems: <Widget>[
+                Container(
+                  color: kDanger,
+                  child: Center(
+                    child: Text(
+                      "Delete",
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        color: Colors.white,
+                        fontSize: 16,
                       ),
                     ),
                   ),
-                ],
-              );
-            }),
+                ),
+              ],
+            );
+          },
+        ),
         Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            top: 8,
-          ),
+          padding: const EdgeInsets.only(left: 20, top: 8),
           child: Text(
             "Add Other Address",
-            style: Theme.of(context).textTheme.caption.copyWith(
-                  color: kPrimaryColor,
-                  fontSize: 16,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.caption.copyWith(color: kPrimaryColor, fontSize: 16),
           ),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: kSettingDivider,
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-          ),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 "Privacy",
-                style: Theme.of(context).textTheme.caption.copyWith(
-                      color: kLoginBlack,
-                      fontSize: 20,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 20),
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               PrivacyWidget(
                 myTitle: "Location",
                 mydeisc:
                     "Vitt use your device's loation screvice for more  reliable rides",
               ),
-              SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: 15),
               Container(
                 height: 0.5,
                 width: MediaQuery.of(context).size.width,
                 color: kGrey,
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 10),
               PrivacyWidget(
                 myTitle: "Notifications",
                 mydeisc: "Control what message your receive from Vitt",
@@ -241,36 +210,24 @@ class _SettingsState extends State<Settings> {
             ],
           ),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: kSettingDivider,
         ),
-        SizedBox(
-          height: 21,
-        ),
+        SizedBox(height: 21),
         Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-          ),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Text(
             "Currency",
-            style: Theme.of(context).textTheme.caption.copyWith(
-                  color: kLoginBlack,
-                  fontSize: 20,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 20),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            top: 6,
-            left: 10,
-            right: 28,
-          ),
+          padding: const EdgeInsets.only(top: 6, left: 10, right: 28),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -307,36 +264,24 @@ class _SettingsState extends State<Settings> {
             ],
           ),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
           color: kSettingDivider,
         ),
-        SizedBox(
-          height: 21,
-        ),
+        SizedBox(height: 21),
         Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-          ),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Text(
             "Language",
-            style: Theme.of(context).textTheme.caption.copyWith(
-                  color: kLoginBlack,
-                  fontSize: 20,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.caption.copyWith(color: kLoginBlack, fontSize: 20),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            top: 6,
-            left: 10,
-            right: 28,
-          ),
+          padding: const EdgeInsets.only(top: 6, left: 10, right: 28),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -350,9 +295,7 @@ class _SettingsState extends State<Settings> {
                   });
                 },
               ),
-              SizedBox(
-                width: 28,
-              ),
+              SizedBox(width: 28),
               MyRadioText(
                 text: "English",
                 myVal: 2,
@@ -366,9 +309,7 @@ class _SettingsState extends State<Settings> {
             ],
           ),
         ),
-        SizedBox(
-          height: 15,
-        ),
+        SizedBox(height: 15),
         Container(
           height: 4,
           width: MediaQuery.of(context).size.width,
@@ -385,9 +326,7 @@ class _SettingsState extends State<Settings> {
             title: "Emergency Contacts",
             isLastIndex: true,
             myOnTap: () {
-              Navigator.of(context).pushNamed(
-                EmergencyContactScreen.routeName,
-              );
+              Navigator.of(context).pushNamed(EmergencyContactScreen.routeName);
             },
           ),
         ),
@@ -407,9 +346,7 @@ class _SettingsState extends State<Settings> {
             title: "Favourite Address",
             isLastIndex: true,
             myOnTap: () {
-              Navigator.of(context).pushNamed(
-                FavAddressScreen.routeName,
-              );
+              Navigator.of(context).pushNamed(FavAddressScreen.routeName);
             },
           ),
         ),
@@ -428,9 +365,7 @@ class _SettingsState extends State<Settings> {
           child: MyListTitle(
             title: "Favourite Drivers",
             myOnTap: () {
-              Navigator.of(context).pushNamed(
-                FavDriverScreen.routeName,
-              );
+              Navigator.of(context).pushNamed(FavDriverScreen.routeName);
             },
             isLastIndex: true,
           ),
@@ -440,50 +375,35 @@ class _SettingsState extends State<Settings> {
           width: MediaQuery.of(context).size.width,
           color: kSettingDivider,
         ),
-        SizedBox(
-          height: 25,
-        ),
+        SizedBox(height: 25),
         Padding(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-          ),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 "Delete Account",
                 style: Theme.of(context).textTheme.caption.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: kDanger,
-                      fontSize: 16,
-                    ),
+                  fontWeight: FontWeight.w500,
+                  color: kDanger,
+                  fontSize: 16,
+                ),
               ),
-              SizedBox(
-                height: 25,
-              ),
+              SizedBox(height: 25),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            top: 8,
-            left: 18,
-            right: 18,
-          ),
-          child: FlatButtonWidget(
+          padding: const EdgeInsets.only(top: 8, left: 18, right: 18),
+          child: TextButtonWidget(
             btnOnTap: () {
-              Navigator.of(context).pushReplacementNamed(
-                LoginScreen.routeName,
-              );
+              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
             },
             btnTxt: "Signout",
             btnColor: kAccentColor,
           ),
         ),
-        SizedBox(
-          height: 25,
-        )
+        SizedBox(height: 25),
       ],
     );
   }

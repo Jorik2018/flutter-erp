@@ -39,10 +39,7 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(height: height * .27),
-          Text(
-            "Connexion",
-            textScaleFactor: 1.88,
-          ),
+          Text("Connexion", textScaleFactor: 1.88),
           SizedBox(height: height * .09),
           Form(
             key: _formKey,
@@ -55,37 +52,39 @@ class _LoginFormState extends State<LoginForm> {
                   fieldType: TextInputType.emailAddress,
                   validator: emailFieldValidator,
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                PasswordField(
-                  onChanged: (value) => password = value,
-                )
+                SizedBox(height: 16),
+                PasswordField(onChanged: (value) => password = value),
               ],
             ),
           ),
-          SizedBox(
-            height: 25,
+          SizedBox(height: 25),
+          FormValidatorButton(
+            onClick: () async {
+              if (_formKey.currentState.validate()) {
+                await authProvider
+                    .signInWithEmailAndPassword(
+                      email: email,
+                      password: password,
+                    )
+                    .then(
+                      (_) => Navigator.of(
+                        context,
+                      ).popUntil((route) => route.isFirst),
+                    )
+                    .catchError(_onSignInError);
+              }
+            },
           ),
-          FormValidatorButton(onClick: () async {
-            if (_formKey.currentState.validate()) {
-              await authProvider
-                  .signInWithEmailAndPassword(email: email, password: password)
-                  .then((_) =>
-                      Navigator.of(context).popUntil((route) => route.isFirst))
-                  .catchError(_onSignInError);
-            }
-          }),
-          SizedBox(
-            height: 5,
-          ),
+          SizedBox(height: 5),
           Container(
             margin: EdgeInsets.only(right: 7, top: 10),
             alignment: Alignment.centerRight,
             child: InkWell(
               onTap: () {},
-              child: Text('Mot de passe oublié ?',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+              child: Text(
+                'Mot de passe oublié ?',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              ),
             ),
           ),
           SizedBox(height: height * .055),
@@ -113,12 +112,15 @@ class _LoginFormState extends State<LoginForm> {
                 AuthenticationExceptionType
                     .accountExistsWithDifferentCredential)
               Center(
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () async {
                     await authProvider
                         .signInWithFacebook()
-                        .then((_) => Navigator.of(context)
-                            .popUntil((route) => route.isFirst))
+                        .then(
+                          (_) => Navigator.of(
+                            context,
+                          ).popUntil((route) => route.isFirst),
+                        )
                         .catchError(_onSignInError);
                   },
                   child: Text('Se connecter avec Facebook'),
@@ -126,7 +128,7 @@ class _LoginFormState extends State<LoginForm> {
               )
             else
               Center(
-                child: RaisedButton(
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -155,9 +157,10 @@ class _LoginFormState extends State<LoginForm> {
             Text(
               'Cliquez ici pour le faire',
               style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
+                color: Color(0xfff79c4f),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
         ),

@@ -5,16 +5,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/platform/platform_widget.dart';
 
-
 class PlatformAlertDialog extends PlatformWidget {
   PlatformAlertDialog({
     @required this.title,
     @required this.content,
     this.cancelText,
     @required this.confirmText,
-  })  : assert(title != null),
-        assert(content != null),
-        assert(confirmText != null);
+  }) : assert(title != null),
+       assert(content != null),
+       assert(confirmText != null);
 
   final String title;
   final String content;
@@ -27,7 +26,10 @@ class PlatformAlertDialog extends PlatformWidget {
       title: Text(title),
       content: Text(content),
       actions: _actions(
-          context, cancelText?.toUpperCase(), confirmText.toUpperCase()),
+        context,
+        cancelText?.toUpperCase(),
+        confirmText.toUpperCase(),
+      ),
     );
   }
 
@@ -41,18 +43,25 @@ class PlatformAlertDialog extends PlatformWidget {
   }
 
   List<Widget> _actions(
-      BuildContext context, String cancelText, String confirmText) {
+    BuildContext context,
+    String cancelText,
+    String confirmText,
+  ) {
     var actions = <Widget>[];
     if (cancelText != null) {
-      actions.add(PlatformAlertDialogAction(
-        child: Text(cancelText),
-        onPressed: () => _dismiss(context, false),
-      ));
+      actions.add(
+        PlatformAlertDialogAction(
+          child: Text(cancelText),
+          onPressed: () => _dismiss(context, false),
+        ),
+      );
     }
-    actions.add(PlatformAlertDialogAction(
-      child: Text(confirmText),
-      onPressed: () => _dismiss(context, true),
-    ));
+    actions.add(
+      PlatformAlertDialogAction(
+        child: Text(confirmText),
+        onPressed: () => _dismiss(context, true),
+      ),
+    );
     return actions;
   }
 
@@ -80,18 +89,12 @@ class PlatformAlertDialogAction extends PlatformWidget {
   final VoidCallback onPressed;
 
   @override
-  FlatButton buildMaterialWidget(BuildContext context) {
-    return FlatButton(
-      child: child,
-      onPressed: onPressed,
-    );
+  TextButton buildMaterialWidget(BuildContext context) {
+    return TextButton(child: child, onPressed: onPressed);
   }
 
   @override
   CupertinoDialogAction buildCupertinoWidget(BuildContext context) {
-    return CupertinoDialogAction(
-      child: child,
-      onPressed: onPressed,
-    );
+    return CupertinoDialogAction(child: child, onPressed: onPressed);
   }
 }

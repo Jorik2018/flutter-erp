@@ -4,7 +4,6 @@ import 'package:flutter_taxi_booking_customer_app/common/my_colors.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/flat_button_widget.dart';
 import 'package:flutter_taxi_booking_customer_app/widgets/viit_appbar.dart';
 
-
 class LoyaltyProgramDetailsScreen extends StatelessWidget {
   static const String routeName = "loyaltyprogramdetails";
 
@@ -42,39 +41,33 @@ class _LoyaltyProgramDetailsState extends State<LoyaltyProgramDetails> {
                   kLoremText,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        fontSize: 20,
-                        color: kLoginBlack,
-                      ),
+                    fontSize: 20,
+                    color: kLoginBlack,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 8,
                     horizontal: 16,
                   ),
-                  child: Image.asset(
-                    "assets/loyalty_program.png",
-                  ),
+                  child: Image.asset("assets/loyalty_program.png"),
                 ),
-                SizedBox(
-                  height: 6,
-                ),
+                SizedBox(height: 6),
                 Text(
                   "$kLoremText. $kLoremText. $kLoremText ",
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.caption.copyWith(
-                        color: kTextLoginfaceid,
-                        fontSize: 14,
-                        letterSpacing: 1.3,
-                      ),
+                    color: kTextLoginfaceid,
+                    fontSize: 14,
+                    letterSpacing: 1.3,
+                  ),
                 ),
-                SizedBox(
-                  height: 18,
-                ),
+                SizedBox(height: 18),
                 Row(
                   children: <Widget>[
                     Expanded(
                       flex: 1,
-                      child: FlatButtonWidget(
+                      child: TextButtonWidget(
                         btnOnTap: () {
                           Navigator.of(context).pop();
                         },

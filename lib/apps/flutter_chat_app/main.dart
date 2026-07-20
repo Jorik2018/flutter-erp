@@ -15,7 +15,7 @@ class FlutterChatApp extends StatelessWidget {
       theme: defaultTargetPlatform == TargetPlatform.iOS
           ? Themes.kIOSTheme
           : Themes.kDefaultTheme,
-      home: new ChatScreen(),
+      home: ChatScreen(),
     );
   }
 }
