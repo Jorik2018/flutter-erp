@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/singtaxi/Shared/Loading.dart';
 import 'package:flutter_erp/apps/singtaxi/services/auth.dart';
-import 'package:flutter_erp/apps/singtaxi/screens/authenticate/forgetpassword.dart';
 
 class LoginPage extends StatefulWidget {
-  final Function toggleView;
+  final Function? toggleView;
   LoginPage({this.toggleView});
 
   @override
@@ -31,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
               title: Text('DouDou'),
               backgroundColor: Colors.brown[600],
             ),
-            resizeToAvoidBottomPadding: false,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -82,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         TextFormField(
                           validator: (val) =>
-                              val.isEmpty ? 'Enter an Email' : null,
+                              val!.isEmpty ? 'Enter an Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           },
@@ -100,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          validator: (val) => val.length < 6
+                          validator: (val) => val!.length < 6
                               ? 'Enter a passowrd with 6 or more characters'
                               : null,
                           obscureText: true,
@@ -158,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               onPressed: () async {
-                                if (_formKey.currentState.validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   setState(() => loading = true);
 
                                   dynamic result = await _auth
@@ -238,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                     InkWell(
                       onTap: () {
                         // Navigator.of(context).pushNamed('/');
-                        widget.toggleView();
+                        widget.toggleView!();
                       },
                       child: Text(
                         'Register',

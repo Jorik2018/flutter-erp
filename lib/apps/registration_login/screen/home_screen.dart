@@ -14,13 +14,13 @@ class DrawerItem {
 
 class HomeScreen extends StatefulWidget {
   final drawerItems = [
-    new DrawerItem("Home", Icons.home),
-    new DrawerItem("Setting", Icons.settings),
-    new DrawerItem("About us", Icons.print),
-    new DrawerItem("Contact us", Icons.contacts),
+    DrawerItem("Home", Icons.home),
+    DrawerItem("Setting", Icons.settings),
+    DrawerItem("About us", Icons.print),
+    DrawerItem("Contact us", Icons.contacts),
   ];
   @override
-  _HomeScreenState createState() => new _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -32,9 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
       drawerOptions.add(
-        new Column(
+        Column(
           children: <Widget>[
-            new ListTile(
+            ListTile(
               leading: Icon(d.icon, color: Colors.deepPurple),
               title: Text(
                 d.title,
@@ -46,12 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
               selected: i == _selectedIndex,
               onTap: () => _onSelectItem(i),
             ),
-            new Divider(color: Colors.deepPurple, height: 2.0),
+            Divider(color: Colors.deepPurple, height: 2.0),
           ],
         ),
       );
     }
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text(widget.drawerItems[_selectedIndex].title),
         elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            new UserAccountsDrawerHeader(
+            UserAccountsDrawerHeader(
               accountName: Text(Util.userName),
               accountEmail: Text(Util.emailId),
 
@@ -76,8 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 // backgroundImage:Image.network(src),
               ),
             ),
-            new Column(children: drawerOptions),
-            /*  new ListTile(
+            Column(children: drawerOptions),
+            /*  ListTile(
               title:Text(
                   "Home",
                    style:TextStyle(
@@ -90,11 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
              // onTap: ()=>Navigator.of(context).pop(),
               onTap: ()=>NavigationRouter.switchToProfile(context),
             ),
-            new Divider(
+            Divider(
               color: Colors.deepPurple,
               height: 2.0,
             ),
-            new ListTile(
+            ListTile(
               title:Text(
                   "Profile",
                    style:TextStyle(
@@ -104,11 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               leading:Icon(Icons.person,color: Colors.deepPurple,),
             ),
-            new Divider(
+            Divider(
               color: Colors.deepPurple,
               height: 2.0,
             ),
-            new ListTile(
+            ListTile(
               title:Text(
                   "Setting",
                    style:TextStyle(
@@ -118,11 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               leading:Icon(Icons.settings,color: Colors.deepPurple,),
             ),
-            new Divider(
+            Divider(
               color: Colors.deepPurple,
               height: 2.0,
             ),
-            new ListTile(
+            ListTile(
               title:Text(
                 'Activity',
                 style:TextStyle(
@@ -142,16 +142,16 @@ class _HomeScreenState extends State<HomeScreen> {
   _setDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return new HomeFragment();
+        return HomeFragment();
       case 1:
-        return new SettingFragment();
+        return SettingFragment();
       case 2:
-        return new AboutUsFragment();
+        return AboutUsFragment();
       case 3:
-        return new ContactUsFragment();
+        return ContactUsFragment();
 
       default:
-        return new Text("Error");
+        return Text("Error");
     }
   }
 

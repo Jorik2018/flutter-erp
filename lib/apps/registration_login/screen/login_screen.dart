@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => new _LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginData {
@@ -22,14 +22,18 @@ class _LoginData {
 
 class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _fireBaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = new GoogleSignIn();
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
-  String _message = 'Log in/out by pressing the buttons below.';
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  _LoginData _data = new _LoginData();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  static final FacebookLogin facebookSignIn = FacebookLogin();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  _LoginData _data = _LoginData();
 
   Future<FirebaseUser> _googleSignInButton() async {
     GoogleSignInAccount _googleSignInAccount = await _googleSignIn.signIn();
+
     GoogleSignInAuthentication _googleSignInAuth =
         await _googleSignInAccount.authentication;
 
@@ -101,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
               print(src);
               Util.descriptionList.add(mm['description']);
               Util.mediaList.add(img['src']);
-              // Util.listItems.add(new ListItem(mm['description'], img['src']));
+              // Util.listItems.add(ListItem(mm['description'], img['src']));
             }
           }
           NavigationRouter.switchToHome(context);
@@ -156,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /* void _performLogin() {
    // This is just a demo, so no actual login here.
-   final snackbar = new SnackBar(
+   final snackbar = SnackBar(
      content:Text('Email: $_email, password: $_password'),
    );
 
@@ -167,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
     MediaQueryData media = MediaQuery.of(context);
 
     final Size screenSize = media.size;
-    return new Scaffold(
+    return Scaffold(
       //key: this.scaffoldKey,
       appBar: AppBar(title: Text('Login')),
       body: Container(
@@ -177,14 +181,14 @@ class _LoginScreenState extends State<LoginScreen> {
           key: this._formKey,
           child: ListView(
             children: <Widget>[
-              new Container(
+              Container(
                 padding: EdgeInsets.all(20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[FlutterLogo(size: 100.0)],
                 ),
               ),
-              new Container(
+              Container(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: TextFormField(
                   keyboardType: TextInputType
@@ -200,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
               ),
-              new Container(
+              Container(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: TextFormField(
                   obscureText: true, // Use secure text for passwords.
@@ -215,12 +219,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
               ),
-              new Container(
+              Container(
                 width: screenSize.width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Container(
+                    Container(
                       height: 50.0,
                       margin: const EdgeInsets.only(left: 10.0, top: 30.0),
                       child: ElevatedButton(
@@ -229,10 +233,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: this._submit,
-                        color: Colors.deepPurple,
                       ),
                     ),
-                    new Container(
+                    Container(
                       height: 50.0,
                       margin: const EdgeInsets.only(left: 20.0, top: 30.0),
                       child: ElevatedButton(
@@ -241,22 +244,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: _navigateRegistration,
-                        color: Colors.deepPurple,
                       ),
                     ),
                   ],
                 ),
               ),
-              new Container(
+              Container(
                 width: screenSize.width,
                 child: Column(
                   children: <Widget>[
-                    new Container(
+                    Container(
                       margin: const EdgeInsets.only(left: 10.0, top: 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Container(
+                          Container(
                             height: 50.0,
                             width: 210.0,
                             child: ElevatedButton.icon(
@@ -272,18 +274,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () => _googleSignInButton()
                                   .then((FirebaseUser user) => print(user))
                                   .catchError((e) => print(e)),
-                              color: Colors.red,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    new Container(
+                    Container(
                       margin: const EdgeInsets.only(left: 10.0, top: 20.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Container(
+                          Container(
                             height: 50.0,
                             width: 210.0,
                             child: ElevatedButton.icon(
@@ -299,7 +300,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                               // icon: const Icon(Icons.adjust, size: 28.0,color: Colors.white),
                               onPressed: this._facebookLogin,
-                              color: Colors.indigo,
                             ),
                           ),
                         ],

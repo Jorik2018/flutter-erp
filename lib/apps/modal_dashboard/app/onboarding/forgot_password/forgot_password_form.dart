@@ -24,9 +24,13 @@ class ForgotPasswordForm extends StatefulWidget {
 
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final TextEditingController _emailTextController = TextEditingController();
-  ForgotPasswordBloc _forgotPasswordBloc;
-  String _recoveryEmail;
+
+  late ForgotPasswordBloc _forgotPasswordBloc;
+
+  String? _recoveryEmail;
+
   double _errorToastHeight = 0;
+
   String _errorMessage = '';
 
   @override
@@ -76,9 +80,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                       imageWidth: MediaQuery.of(context).size.width * .6,
                       imageHeight: MediaQuery.of(context).size.height,
                       buttonWidth: MediaQuery.of(context).size.width * .3 - 88,
-                      onButtonClick: () => Navigator.of(context).pop(),
+                      onButtonPressed: () => Navigator.of(context).pop(),
                       buttonTitle: Strings.signIn,
-                      imageAssets: Assets.forgotPasswordBGPng,
+                      imageAsset: Assets.forgotPasswordBGPng,
                       title: Strings.rememberPassword,
                     ),
                   ),
@@ -101,7 +105,6 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.w300,
-                            color: AppColors.black.withOpacity(.8),
                             letterSpacing: .5,
                           ),
                         ),
@@ -124,9 +127,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                         const VerticalSpacer(space: 24),
                         OnboardingFormElevatedButton(
                           width: MediaQuery.of(context).size.width * .3 - 88,
-                          onClick:
+                          onPressed:
                               _recoveryEmail != null &&
-                                  _recoveryEmail.isValidEmail()
+                                  _recoveryEmail!.isValidEmail()
                               ? _handleRecoverPasswordButtonClick
                               : null,
                           text: Strings.send,
@@ -165,7 +168,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   void _handleRecoverPasswordButtonClick() {
     logger.i('_handleRecoverPasswordButtonClick clicked');
-    _forgotPasswordBloc.add(RecoverPassword(email: _recoveryEmail));
+    _forgotPasswordBloc.add(RecoverPassword(email: _recoveryEmail!));
   }
 
   void _handelInternetStateChange(InternetConnectionState state) {

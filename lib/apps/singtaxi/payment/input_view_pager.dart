@@ -62,7 +62,7 @@ class InputForm extends StatefulWidget {
   final FocusNode focusNode;
 
   InputForm({
-    @required this.title,
+    required this.title,
     this.index,
     this.pageController,
     this.focusNode,

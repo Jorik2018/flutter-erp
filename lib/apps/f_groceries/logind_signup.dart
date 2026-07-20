@@ -43,15 +43,18 @@ class Login_Screen extends StatefulWidget {
 }
 
 class login extends State<Login_Screen> {
-  ShapeBorder shape;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
   final formKey = GlobalKey<FormState>();
 
-  String _email;
-  String _password;
+  String? _email;
+
+  String? _password;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _autovalidate = false;
+
   bool _formWasEdited = false;
 
   String _validateName(String value) {
@@ -154,10 +157,10 @@ class login extends State<Login_Screen> {
                               labelStyle: TextStyle(color: Colors.black54),
                             ),
                             keyboardType: TextInputType.emailAddress,
-                            validator: (val) => !val.contains('@')
+                            validator: (val) => !val!.contains('@')
                                 ? 'Not a valid email.'
                                 : null,
-                            onSaved: (val) => _email = val,
+                            onSaved: (val) => _email = val!,
                           ),
                           const SizedBox(height: 24.0),
                           TextFormField(
@@ -269,7 +272,7 @@ class login extends State<Login_Screen> {
   void _submit() {
     final form = formKey.currentState;
 
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
 
       // Email & password matched our validation rules

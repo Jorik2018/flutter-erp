@@ -4,7 +4,7 @@ import 'provider/state_provider.dart';
 import 'package:provider/provider.dart';
 
 class RoundButton extends StatelessWidget {
-  final Function onTap;
+  final GestureTapCallback? onTap;
 
   RoundButton({this.onTap});
 

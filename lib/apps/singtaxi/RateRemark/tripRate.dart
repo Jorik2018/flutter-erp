@@ -43,7 +43,7 @@ class TripRatePage extends StatelessWidget {
                   date: "2020.3.30",
                   place: "Driver is Late",
                   price: "Cancel",
-                  color: Colors.redAccent[100],
+                  color: Colors.redAccent[100]!,
                 ),
               ),
               FadeAnimation(
@@ -56,7 +56,7 @@ class TripRatePage extends StatelessWidget {
                   date: "2020.2.21",
                   place: "Punggol -- Changi Beach Park",
                   price: "19.00\$",
-                  color: Colors.green[100],
+                  color: Colors.green[100]!,
                 ),
               ),
             ],
@@ -129,7 +129,7 @@ class TripRatePage extends StatelessWidget {
                   ),
                   FadeAnimation(
                     1.2,
-                    new Container(
+                    Container(
                       width: 150.0,
                       height: 150.0,
                       decoration: BoxDecoration(

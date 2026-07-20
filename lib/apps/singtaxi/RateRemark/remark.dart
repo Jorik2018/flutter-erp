@@ -9,11 +9,11 @@ class RemarkPage extends StatefulWidget {
 class _RemarkPageState extends State<RemarkPage> {
   var myFeedbackText = "COULD BE BETTER";
   var sliderValue = 0.0;
-  IconData myFeedback1 = FontAwesomeIcons.star,
-      myFeedback2 = FontAwesomeIcons.star,
-      myFeedback3 = FontAwesomeIcons.star,
-      myFeedback4 = FontAwesomeIcons.star,
-      myFeedback5 = FontAwesomeIcons.star;
+  IconData myFeedback1 = FontAwesomeIcons.star.data,
+      myFeedback2 = FontAwesomeIcons.star.data,
+      myFeedback3 = FontAwesomeIcons.star.data,
+      myFeedback4 = FontAwesomeIcons.star.data,
+      myFeedback5 = FontAwesomeIcons.star.data;
   Color myFeedbackColor1 = Colors.grey,
       myFeedbackColor2 = Colors.grey,
       myFeedbackColor3 = Colors.grey,
@@ -86,42 +86,47 @@ class _RemarkPageState extends State<RemarkPage> {
                                       sliderValue = newValue;
                                       if (sliderValue == 1.0) {
                                         myFeedback1 =
-                                            FontAwesomeIcons.solidStar;
-                                        myFeedbackColor1 = Colors.green[100];
+                                            FontAwesomeIcons.solidStar.data;
+                                        myFeedbackColor1 = Colors.green[100]!;
                                       } else if (sliderValue < 1.0) {
-                                        myFeedback1 = FontAwesomeIcons.star;
+                                        myFeedback1 =
+                                            FontAwesomeIcons.star.data;
                                         myFeedbackColor1 = Colors.grey;
                                       }
                                       if (sliderValue == 2.0) {
                                         myFeedback2 =
-                                            FontAwesomeIcons.solidStar;
-                                        myFeedbackColor2 = Colors.green[200];
+                                            FontAwesomeIcons.solidStar.data;
+                                        myFeedbackColor2 = Colors.green[200]!;
                                       } else if (sliderValue < 2.0) {
-                                        myFeedback2 = FontAwesomeIcons.star;
+                                        myFeedback2 =
+                                            FontAwesomeIcons.star.data;
                                         myFeedbackColor2 = Colors.grey;
                                       }
                                       if (sliderValue == 3.0) {
                                         myFeedback3 =
-                                            FontAwesomeIcons.solidStar;
-                                        myFeedbackColor3 = Colors.green[300];
+                                            FontAwesomeIcons.solidStar.data;
+                                        myFeedbackColor3 = Colors.green[300]!;
                                       } else if (sliderValue < 3.0) {
-                                        myFeedback3 = FontAwesomeIcons.star;
+                                        myFeedback3 =
+                                            FontAwesomeIcons.star.data;
                                         myFeedbackColor3 = Colors.grey;
                                       }
                                       if (sliderValue == 4.0) {
                                         myFeedback4 =
-                                            FontAwesomeIcons.solidStar;
-                                        myFeedbackColor4 = Colors.green[400];
+                                            FontAwesomeIcons.solidStar.data;
+                                        myFeedbackColor4 = Colors.green[400]!;
                                       } else if (sliderValue < 4.0) {
-                                        myFeedback4 = FontAwesomeIcons.star;
+                                        myFeedback4 =
+                                            FontAwesomeIcons.star.data;
                                         myFeedbackColor4 = Colors.grey;
                                       }
                                       if (sliderValue == 5.0) {
                                         myFeedback5 =
-                                            FontAwesomeIcons.solidStar;
+                                            FontAwesomeIcons.solidStar.data;
                                         myFeedbackColor5 = Colors.green;
                                       } else if (sliderValue < 5.0) {
-                                        myFeedback5 = FontAwesomeIcons.star;
+                                        myFeedback5 =
+                                            FontAwesomeIcons.star.data;
                                         myFeedbackColor5 = Colors.grey;
                                       }
                                     });
@@ -164,10 +169,6 @@ class _RemarkPageState extends State<RemarkPage> {
                                 child: Align(
                                   alignment: Alignment.bottomCenter,
                                   child: ElevatedButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    color: Color(0xffafb42b),
                                     child: Text(
                                       'Submit',
                                       style: TextStyle(
@@ -199,7 +200,7 @@ class _RemarkPageState extends State<RemarkPage> {
   }
 
   List<Widget> StarWidget() {
-    List<Widget> myContainer = new List();
+    List<Widget> myContainer = [];
     myContainer.add(
       Container(child: Icon(myFeedback1, color: myFeedbackColor1, size: 50.0)),
     );

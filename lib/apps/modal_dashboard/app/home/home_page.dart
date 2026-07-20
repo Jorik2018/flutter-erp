@@ -1,6 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
-
 import '../../constants/colors.dart';
 import '../../constants/constant.dart';
 import '../../models/models.dart';
@@ -129,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                             children: const [
                               HorizontalSpacer(space: 16),
                               Icon(
-                                MaterialIcons.person_add,
+                                CupertinoIcons.person_add,
                                 color: AppColors.inviteCardIcon,
                               ),
                               HorizontalSpacer(space: 12),

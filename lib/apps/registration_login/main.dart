@@ -10,15 +10,4 @@ var routes = <String, WidgetBuilder>{
   "/HomeScreen": (BuildContext context) => HomeScreen(),
 };
 
-void main() => runApp(
-  new MaterialApp(
-    theme: ThemeData(
-      primaryColor: Colors.deepPurple,
-      primarySwatch: Colors.deepPurple,
-      primaryColorDark: Colors.deepPurple,
-    ),
-    debugShowCheckedModeBanner: false,
-    home: SplashScreen(),
-    routes: routes,
-  ),
-);
+void main() => runApp(MaterialApp(home: SplashScreen(), routes: routes));

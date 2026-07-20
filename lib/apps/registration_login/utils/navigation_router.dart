@@ -12,6 +12,7 @@ class NavigationRouter {
   static void switchToHome(BuildContext context) {
     Navigator.pushNamed(context, "/HomeScreen");
   }
+
   static void switchToProfile(BuildContext context) {
     Navigator.pushNamed(context, "/ProfileScreen");
   }

@@ -92,7 +92,7 @@ class item extends State<Item_Screen> {
             Navigator.pop(context);
           },
         ),
-        title: Text(toolbarname),
+        title: Text(toolbarname!),
         backgroundColor: Colors.white,
         actions: <Widget>[
           IconButton(

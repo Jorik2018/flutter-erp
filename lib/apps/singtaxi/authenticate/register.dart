@@ -3,7 +3,7 @@ import 'package:flutter_erp/apps/singtaxi/services/auth.dart';
 import 'package:flutter_erp/apps/singtaxi/Shared/Loading.dart';
 
 class Register extends StatefulWidget {
-  final Function toggleView;
+  final Function? toggleView;
   Register({this.toggleView});
   @override
   _RegisterState createState() => _RegisterState();
@@ -28,7 +28,6 @@ class _RegisterState extends State<Register> {
               title: Text('DouDou'),
               backgroundColor: Colors.brown[600],
             ),
-            resizeToAvoidBottomPadding: false,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -77,7 +76,7 @@ class _RegisterState extends State<Register> {
                     children: <Widget>[
                       TextFormField(
                         validator: (val) =>
-                            val.isEmpty ? 'Enter an Email' : null,
+                            val!.isEmpty ? 'Enter an Email' : null,
                         onChanged: (val) {
                           setState(() => email = val);
                         },
@@ -95,7 +94,7 @@ class _RegisterState extends State<Register> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
-                        validator: (val) => val.length < 6
+                        validator: (val) => val!.length < 6
                             ? 'Enter a passowrd with 6 or more characters'
                             : null,
                         obscureText: true,
@@ -134,7 +133,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                             onPressed: () async {
-                              if (_formKey.currentState.validate()) {
+                              if (_formKey.currentState!.validate()) {
                                 setState(() => loading = true);
                                 dynamic result = await _auth
                                     .signInWithEmailAndPassword(
@@ -173,7 +172,7 @@ class _RegisterState extends State<Register> {
                     InkWell(
                       onTap: () {
                         // Navigator.of(context).pushNamed('/');
-                        widget.toggleView();
+                        widget.toggleView!();
                       },
                       child: Text(
                         'SignIn',

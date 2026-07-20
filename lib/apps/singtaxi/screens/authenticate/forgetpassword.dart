@@ -21,7 +21,6 @@ class _forgetpasswordState extends State<forgetpassword> {
               title: Text('DouDou'),
               backgroundColor: Colors.brown[600],
             ),
-            resizeToAvoidBottomPadding: false,
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -71,7 +70,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                       children: <Widget>[
                         TextFormField(
                           validator: (val) =>
-                              val.isEmpty ? 'Enter an Email' : null,
+                              val!.isEmpty ? 'Enter an Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           },

@@ -36,9 +36,9 @@ class _DropDownPageState extends State<DropDownPage> {
               elevation: 30,
               style: TextStyle(color: Colors.grey[900]),
               underline: Container(height: 2, color: Colors.grey[700]),
-              onChanged: (String newValue) {
+              onChanged: (String? newValue) {
                 setState(() {
-                  dropdownValue_1 = newValue;
+                  dropdownValue_1 = newValue!;
                 });
               },
               items:
@@ -62,9 +62,9 @@ class _DropDownPageState extends State<DropDownPage> {
               elevation: 30,
               style: TextStyle(color: Color(0xFF01579B)),
               underline: Container(height: 2, color: Colors.blueAccent),
-              onChanged: (String newValue) {
+              onChanged: (String? newValue) {
                 setState(() {
-                  dropdownValue_2 = newValue;
+                  dropdownValue_2 = newValue!;
                 });
               },
               items:
@@ -85,9 +85,9 @@ class _DropDownPageState extends State<DropDownPage> {
               elevation: 30,
               style: TextStyle(color: Color(0xFF01579B)),
               underline: Container(height: 2, color: Colors.blueAccent),
-              onChanged: (String newValue) {
+              onChanged: (String? newValue) {
                 setState(() {
-                  dropdownValue_3 = newValue;
+                  dropdownValue_3 = newValue!;
                 });
               },
               items:

@@ -1,7 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter_icons/flutter_icons.dart';
-
 import '../../../constants/colors.dart';
 import '../../../models/models.dart';
 import '../../common/common.dart';
@@ -70,7 +69,7 @@ class InviteCard extends StatelessWidget {
               Row(
                 children: [
                   const Icon(
-                    SimpleLineIcons.calendar,
+                    CupertinoIcons.calendar,
                     color: AppColors.inviteCardIcon,
                     size: 13,
                   ),

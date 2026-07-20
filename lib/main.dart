@@ -5,9 +5,7 @@ import 'package:flutter_erp/apps/delivery_app/main.dart';
 import 'package:flutter_erp/apps/voice_recording_to_text/home_page_screen.dart';
 
 void main() {
-
   runApp(const ProviderScope(child: ERPApp()));
-  //runApp(DeliveryApp());
   //runApp(FlutterMatesApp());
   //runApp(const FuUberApp());
   //runApp(const MyApp());
@@ -28,7 +26,6 @@ class ERPApp extends ConsumerWidget {
 }
 
 class MyApp2 extends StatelessWidget {
-
   const MyApp2({super.key});
 
   // This widget is the root of your application.

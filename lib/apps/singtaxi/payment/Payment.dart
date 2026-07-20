@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flip_card/flip_card.dart';
+import 'package:flip_card_plus/flip_card_plus.dart';
 import 'back_card_view.dart';
 import 'front_card_view.dart';
 import 'input_view_pager.dart';
 import 'my_appbar.dart';
 import 'round_button.dart';
-import 'package:flutter_erp/apps/singtaxi/constanst.dart';
 import 'provider/state_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +14,9 @@ class Payment extends StatefulWidget {
 }
 
 class _PaymentState extends State<Payment> {
-  PageController pageController;
+  late PageController pageController;
 
-  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
+  late FlipCardPlusController _controller = FlipCardPlusController();
 
   @override
   void initState() {
@@ -39,9 +38,9 @@ class _PaymentState extends State<Payment> {
             Padding(padding: const EdgeInsets.all(8.0), child: MyAppbar()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: FlipCard(
+              child: FlipCardPlus(
                 flipOnTouch: false,
-                key: cardKey,
+                controller: _controller,
                 front: FrondCardView(),
                 back: BackCardView(),
               ),
@@ -63,7 +62,7 @@ class _PaymentState extends State<Payment> {
                           context,
                           listen: false,
                         ).getCurrentState()) {
-                      cardKey.currentState.toggleCard();
+                      _controller.flip();
                     }
                     Provider.of<StateProvider>(
                       context,
@@ -87,8 +86,6 @@ class _PaymentState extends State<Payment> {
                 Navigator.of(context).pushNamed('/confirmBook');
               },
               //onPressed: () async {Navigator.of(context).pushNamed('/driverMap');},
-              textColor: Colors.white,
-              color: Colors.orangeAccent,
               child: Text(
                 "DONE",
                 textAlign: TextAlign.center,

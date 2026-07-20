@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/singtaxi/models/profile.dart';
 
 class DatabaseService {
-  final String uid;
+  final String? uid;
   DatabaseService({this.uid});
   // collection reference
   final CollectionReference userProfile = Firestore.instance.collection(

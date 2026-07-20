@@ -20,13 +20,18 @@ class SelectDest extends StatefulWidget {
 
 class _MyAppState1 extends State<SelectDest> {
   Completer<GoogleMapController> _completer = Completer();
+
   final Set<Marker> _markers = new Set();
+
   final Set<Polyline> _polyLines = new Set();
+
   GoogleMapsServices _googleMapsServices = GoogleMapsServices();
 
   Set<Polyline> get polyLines => _polyLines;
-  static LatLng latLng;
-  LocationData currentLocation;
+
+  static LatLng? latLng;
+
+  LocationData? currentLocation;
 
   @override
   void initState() {
@@ -138,7 +143,10 @@ class _MyAppState1 extends State<SelectDest> {
             child: GoogleMap(
               polylines: polyLines,
               markers: _markers,
-              initialCameraPosition: CameraPosition(target: latLng, zoom: 15.0),
+              initialCameraPosition: CameraPosition(
+                target: latLng!,
+                zoom: 15.0,
+              ),
               mapType: MapType.normal,
               onMapCreated: (GoogleMapController controller) {
                 _completer.complete(controller);
@@ -156,8 +164,6 @@ class _MyAppState1 extends State<SelectDest> {
                 onPressed: () async {
                   Navigator.of(context).pushNamed('/driverMap');
                 },
-                textColor: Colors.white,
-                color: Colors.deepOrange[800],
                 child: Text(
                   "DONE",
                   textAlign: TextAlign.center,

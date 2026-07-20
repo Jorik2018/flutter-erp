@@ -34,7 +34,6 @@ class _ChildStartFragmentState extends State<ChildStartFragment> {
 
   ButtonStyle buttonStyle = TextButton.styleFrom(
     padding: const EdgeInsets.all(16.0),
-    primary: Colors.white,
     backgroundColor: Colors.blue,
     textStyle: const TextStyle(fontSize: 20),
   );

@@ -4,16 +4,16 @@ import 'package:intl/intl.dart';
 
 class MyDialog extends StatefulWidget {
   @override
-  _MyDialogState createState() => new _MyDialogState();
+  _MyDialogState createState() => _MyDialogState();
 }
 
 class _MyDialogState extends State<MyDialog> {
-  var _date = DateFormat("EEEE, MMM d").format(new DateTime.now());
+  var _date = DateFormat("EEEE, MMM d").format(DateTime.now());
   var _time = TimeOfDay(
     hour: DateTime.now().hour,
     minute: DateTime.now().minute,
   );
-  var timet = DateFormat("jm").format(new DateTime.now());
+  var timet = DateFormat("jm").format(DateTime.now());
 
   /*
 
@@ -46,7 +46,7 @@ class _MyDialogState extends State<MyDialog> {
                     ),
                   ),
                 ),
-                new Padding(
+                Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Container(
                     height: 1.0,
@@ -79,7 +79,7 @@ class _MyDialogState extends State<MyDialog> {
                     },
                   ),
                 ),
-                new Padding(
+                Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Container(
                     height: 1.0,
@@ -105,7 +105,7 @@ class _MyDialogState extends State<MyDialog> {
                           minute: pick.minute,
                         );
                         final now = DateTime.now();
-                        final selectedTime = new DateTime(
+                        final selectedTime = DateTime(
                           now.year,
                           now.month,
                           now.day,
@@ -119,7 +119,7 @@ class _MyDialogState extends State<MyDialog> {
                     },
                   ),
                 ),
-                new Padding(
+                Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Container(
                     height: 1.0,

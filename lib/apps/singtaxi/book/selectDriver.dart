@@ -14,7 +14,7 @@ class _UsingDialogState extends State<UsingDialog> {
     (index) =>
         MultiSelectDialogItem(index + 1, 'Driver ${index + 1}: ${name[index]}'),
   );
-  Set<int> selectedValues;
+  Set<int>? selectedValues;
 
   void submit() {
     showDialog(
@@ -26,7 +26,7 @@ class _UsingDialogState extends State<UsingDialog> {
             color: Colors.grey[200],
             child: Wrap(
               spacing: 10.0,
-              children: selectedValues.map((item) {
+              children: selectedValues!.map((item) {
                 return Chip(
                   backgroundColor: Colors.white,
                   label: Text(
@@ -68,7 +68,7 @@ class _UsingDialogState extends State<UsingDialog> {
         return MultiSelectDialog(
           title: 'Select Driver(s)',
           items: items,
-          initialSelectedValues: selectedValues,
+          initialSelectedValues: selectedValues!,
         );
       },
     );
@@ -106,9 +106,9 @@ class _UsingDialogState extends State<UsingDialog> {
                           spacing: 10.0,
                           children:
                               selectedValues == null ||
-                                  selectedValues.length == 0
+                                  selectedValues!.length == 0
                               ? [Container()]
-                              : selectedValues.map((v) {
+                              : selectedValues!.map((v) {
                                   return Chip(
                                     label: Text('Driver$v ${name[v - 1]}'),
                                     labelStyle: TextStyle(
@@ -119,7 +119,7 @@ class _UsingDialogState extends State<UsingDialog> {
                                     elevation: 6,
                                     onDeleted: () {
                                       setState(() {
-                                        selectedValues.remove(v);
+                                        selectedValues!.remove(v);
                                       });
                                     },
                                   );
@@ -134,7 +134,7 @@ class _UsingDialogState extends State<UsingDialog> {
             ),
             ElevatedButton(
               child: Text('SUBMIT'),
-              onPressed: selectedValues == null || selectedValues.length == 0
+              onPressed: selectedValues == null || selectedValues!.length == 0
                   ? null
                   : submit,
             ),

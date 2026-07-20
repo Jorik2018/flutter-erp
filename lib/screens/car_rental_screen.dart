@@ -1,25 +1,24 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:meta/meta.dart';
-import 'package:flutter_erp/apps/car_rental_app/repository/repository.dart';
-import 'package:flutter_erp/apps/car_rental_app/screen/pages/car_detail_page.dart';
-import 'common/widgets.dart';
+import 'package:flutter_erp/repositories/repository.dart';
+import 'package:flutter_erp/screens/car_detail_page.dart';
+import '../commons/card_time_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class CarRentalScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _CarRentalScreenState createState() => _CarRentalScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _CarRentalScreenState extends State<CarRentalScreen> {
   int _navBarPageSelector = 0;
+
   int _rowButtonController = 0;
+
   int _sliderIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    double width=MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: _bottomNav(context),
       body: SingleChildScrollView(

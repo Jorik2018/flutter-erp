@@ -34,15 +34,22 @@ class DesktopCreateNewAccountForm extends StatefulWidget {
 class _DesktopCreateNewAccountFormState
     extends State<DesktopCreateNewAccountForm> {
   final TextEditingController _nameTextController = TextEditingController();
+
   final TextEditingController _emailTextController = TextEditingController();
+
   final TextEditingController _passwordTextController = TextEditingController();
-  String _name;
-  String _email;
-  String _password;
+
+  String? _name;
+
+  String? _email;
+
+  String? _password;
+
   double _errorToastHeight = 0;
+
   String _errorMessage = '';
 
-  CreateAccountBloc _createAccountBloc;
+  late CreateAccountBloc _createAccountBloc;
 
   @override
   void initState() {
@@ -99,9 +106,9 @@ class _DesktopCreateNewAccountFormState
                       imageWidth: MediaQuery.of(context).size.width * .6,
                       imageHeight: MediaQuery.of(context).size.height,
                       buttonWidth: MediaQuery.of(context).size.width * .3 - 88,
-                      onButtonClick: _handleSignInButtonClick,
+                      onButtonPressed: _handleSignInButtonClick,
                       buttonTitle: Strings.signIn,
-                      imageAssets: Assets.createAccountBGPng,
+                      imageAsset: Assets.createAccountBGPng,
                       title: Strings.alreadyHaveAnAccount,
                       titleTextColor: AppColors.white,
                       buttonColor: AppColors.white,
@@ -127,7 +134,6 @@ class _DesktopCreateNewAccountFormState
                           style: TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.w300,
-                            color: AppColors.black.withOpacity(.8),
                             letterSpacing: .5,
                           ),
                         ),
@@ -168,7 +174,7 @@ class _DesktopCreateNewAccountFormState
                         const VerticalSpacer(space: 24),
                         OnboardingFormElevatedButton(
                           width: MediaQuery.of(context).size.width * .3 - 88,
-                          onClick: _isValidInput
+                          onPressed: _isValidInput
                               ? _handleCreateNewAccount
                               : null,
                           text: Strings.signUp,
@@ -236,11 +242,11 @@ class _DesktopCreateNewAccountFormState
 
   bool get _isValidInput {
     return _name != null &&
-        _name.isNotEmpty &&
+        _name!.isNotEmpty &&
         _email != null &&
-        _email.isValidEmail() &&
+        _email!.isValidEmail() &&
         _password != null &&
-        _password.isNotEmpty;
+        _password!.isNotEmpty;
   }
 
   void _handleSignInButtonClick() {
@@ -251,9 +257,9 @@ class _DesktopCreateNewAccountFormState
     logger.i('Create new account clicked');
     _createAccountBloc.add(
       CreateAccountButtonPressed(
-        email: _email,
-        fullName: _name,
-        password: _password,
+        email: _email!,
+        fullName: _name!,
+        password: _password!,
       ),
     );
   }

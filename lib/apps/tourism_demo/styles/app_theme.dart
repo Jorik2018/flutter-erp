@@ -17,11 +17,7 @@ class AppTheme {
       primaryColor: Colors.orangeAccent,
       secondaryHeaderColor: AppColors.slateGrayColor,
       indicatorColor: Colors.yellow,
-      //accentColor: Colors.orangeAccent,
-      //buttonColor: Colors.white10,
       hintColor: grayNurseColor,
-      //textSelectionColor: Colors.cyan[100],
-      backgroundColor: Colors.white,
       scaffoldBackgroundColor: AppColors.solitudeColor,
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: Colors.orangeAccent),
@@ -34,36 +30,6 @@ class AppTheme {
       iconTheme: originalIconTheme.copyWith(
         color: AppColors.linkWaterColor,
         size: 18.0,
-      ),
-      textTheme: originalTextTheme.copyWith(
-        /*title: originalBody1.copyWith(
-                fontFamily: 'BJ Regular',
-                color: AppColors.whiteColor,
-                fontWeight: FontWeight.normal),
-            subhead: originalBody1.copyWith(
-                fontFamily: 'BJ Regular',
-                color: AppColors.whiteColor,
-                fontSize: 16.5),*/
-        /*button: originalBody1.copyWith(
-                fontFamily: 'BJ Bold',
-                color: AppColors.koromikoColor,
-                fontSize: 17.0,
-                fontWeight: FontWeight.normal),*/
-        /*display1: originalBody1.copyWith(
-                fontFamily: 'BJ Regular',
-                color: AppColors.whiteColor,
-                fontSize: 24.0),*/
-        /*body1: originalBody1.copyWith(
-              fontFamily: 'BJ Regular',
-              fontSize: 17.0,
-              color: AppColors.whiteColor,
-            ),
-            body2: originalBody1.copyWith(
-              fontFamily: 'BJ Regular',
-              fontSize: 14.0,
-              fontWeight: FontWeight.normal,
-              color: AppColors.whiteLinen,
-            )*/
       ),
     );
   }

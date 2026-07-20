@@ -29,7 +29,7 @@ class driverMapState extends State<driverMap> {
         title: Text("Select Driver"),
         actions: <Widget>[
           IconButton(
-            icon: Icon(FontAwesomeIcons.borderAll),
+            icon: Icon(FontAwesomeIcons.borderAll.data),
             onPressed: () async {
               Navigator.of(context).pushNamed('/confirmBook');
             },
@@ -51,7 +51,7 @@ class driverMapState extends State<driverMap> {
     return Align(
       alignment: Alignment.topLeft,
       child: IconButton(
-        icon: Icon(FontAwesomeIcons.searchMinus, color: Colors.orange[800]),
+        icon: Icon(FontAwesomeIcons.minimize.data, color: Colors.orange[800]),
         onPressed: () {
           zoomVal--;
           _minus(zoomVal);
@@ -64,7 +64,7 @@ class driverMapState extends State<driverMap> {
     return Align(
       alignment: Alignment.topRight,
       child: IconButton(
-        icon: Icon(FontAwesomeIcons.searchPlus, color: Colors.orange[800]),
+        icon: Icon(FontAwesomeIcons.maximize.data, color: Colors.orange[800]),
         onPressed: () {
           zoomVal++;
           _plus(zoomVal);
@@ -257,35 +257,35 @@ class driverMapState extends State<driverMap> {
               ),
               Container(
                 child: Icon(
-                  FontAwesomeIcons.solidStar,
+                  FontAwesomeIcons.solidStar.data,
                   color: Colors.amber,
                   size: 22.0,
                 ),
               ),
               Container(
                 child: Icon(
-                  FontAwesomeIcons.solidStar,
+                  FontAwesomeIcons.solidStar.data,
                   color: Colors.amber,
                   size: 22.0,
                 ),
               ),
               Container(
                 child: Icon(
-                  FontAwesomeIcons.solidStar,
+                  FontAwesomeIcons.solidStar.data,
                   color: Colors.amber,
                   size: 22.0,
                 ),
               ),
               Container(
                 child: Icon(
-                  FontAwesomeIcons.solidStar,
+                  FontAwesomeIcons.solidStar.data,
                   color: Colors.amber,
                   size: 22.0,
                 ),
               ),
               Container(
                 child: Icon(
-                  FontAwesomeIcons.solidStarHalf,
+                  FontAwesomeIcons.solidStarHalf.data,
                   color: Colors.amber,
                   size: 22.0,
                 ),

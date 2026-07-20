@@ -2,23 +2,23 @@ import 'package:flutter_erp/apps/f_groceries/logind_signup.dart';
 import 'package:flutter/material.dart';
 
 class Signup_Screen extends StatefulWidget {
-  final Key fieldKey;
-  final String hintText;
-  final String labelText;
-  final String helperText;
-  final FormFieldSetter<String> onSaved;
-  final FormFieldValidator<String> validator;
-  final ValueChanged<String> onFieldSubmitted;
+  final Key? fieldKey;
+  final String? hintText;
+  final String? labelText;
+  final String? helperText;
+  final FormFieldSetter<String>? onSaved;
+  final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const Signup_Screen({
     Key? key,
-    required this.fieldKey,
-    required this.hintText,
-    required this.labelText,
-    required this.helperText,
-    required this.onSaved,
-    required this.validator,
-    required this.onFieldSubmitted,
+    this.fieldKey,
+    this.hintText,
+    this.labelText,
+    this.helperText,
+    this.onSaved,
+    this.validator,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   ThemeData buildTheme() {
@@ -343,7 +343,7 @@ class signup extends State<Signup_Screen> {
   void _submit() {
     final form = formKey.currentState;
 
-    if (form.validate()) {
+    if (form!.validate()) {
       form.save();
 
       // Email & password matched our validation rules

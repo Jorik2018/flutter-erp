@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AlertPage extends StatefulWidget {
   AlertPage({Key? key, this.title}) : super(key: key);
-  final String title;
+  final String? title;
   @override
   State<StatefulWidget> createState() => AlertPageState();
 }

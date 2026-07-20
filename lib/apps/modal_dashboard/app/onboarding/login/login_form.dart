@@ -84,9 +84,9 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                       imageWidth: MediaQuery.of(context).size.width * .6,
                       imageHeight: MediaQuery.of(context).size.height * .7,
                       buttonWidth: MediaQuery.of(context).size.width * .3 - 88,
-                      onButtonClick: _handleCreateNewAccount,
+                      onButtonPressed: _handleCreateNewAccount,
                       buttonTitle: Strings.createAnAccount,
-                      imageAssets: Assets.loginBGPng,
+                      imageAsset: Assets.loginBGPng,
                       title: Strings.doNotHavenAnAccount,
                     ),
                   ),
@@ -149,7 +149,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                         const VerticalSpacer(space: 24),
                         OnboardingFormElevatedButton(
                           width: MediaQuery.of(context).size.width * .3 - 88,
-                          onClick: _isValidInput
+                          onPressed: _isValidInput
                               ? _handleLoginButtonClick
                               : null,
                           text: Strings.signIn,

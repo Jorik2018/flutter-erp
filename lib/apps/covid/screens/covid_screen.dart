@@ -2,20 +2,20 @@ import 'package:flutter_erp/apps/covid/screens/home.dart';
 import 'package:flutter_erp/apps/covid/screens/stats.dart';
 import 'package:flutter/material.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class CovidScreen extends StatefulWidget {
+  const CovidScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<CovidScreen> createState() => _CovidScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _CovidScreenState extends State<CovidScreen> {
   int _currentIndex = 0;
   final List<Widget> _screens = [
     HomeScreen(),
     StatsScreen(),
     Scaffold(),
-    Scaffold()
+    Scaffold(),
   ];
 
   @override
@@ -37,20 +37,27 @@ class _MainScreenState extends State<MainScreen> {
   dynamic _buildNavItems() {
     return [Icons.home, Icons.insert_chart, Icons.event_note, Icons.info]
         .asMap()
-        .map((key, value) => MapEntry(
+        .map(
+          (key, value) => MapEntry(
             key,
             BottomNavigationBarItem(
-                label: '',
-                icon: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
-                  decoration: BoxDecoration(
-                      color: _currentIndex == key
-                          ? Colors.blue[300]
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(20.0)),
-                  child: Icon(value),
-                ))))
+              label: '',
+              icon: Container(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 6,
+                  horizontal: 16,
+                ),
+                decoration: BoxDecoration(
+                  color: _currentIndex == key
+                      ? Colors.blue[300]
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Icon(value),
+              ),
+            ),
+          ),
+        )
         .values
         .toList();
   }

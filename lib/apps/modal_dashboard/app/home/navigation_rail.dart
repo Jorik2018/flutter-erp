@@ -5,13 +5,15 @@ import '../common/common.dart';
 import '../common/logo.dart';
 
 class MainNavigationRail extends StatelessWidget {
+  final int selectedIndex;
+
+  final ValueChanged<int>? onDestinationClick;
+
   const MainNavigationRail({
     this.selectedIndex = 0,
     this.onDestinationClick,
     Key? key,
   }) : super(key: key);
-  final int selectedIndex;
-  final ValueChanged<int> onDestinationClick;
 
   @override
   Widget build(BuildContext context) {

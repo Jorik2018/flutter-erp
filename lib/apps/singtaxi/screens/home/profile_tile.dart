@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/singtaxi/models/profile.dart';
 
 class ProfileTile extends StatelessWidget {
-  final Profile profile;
+  final Profile? profile;
   ProfileTile({this.profile});
 
   @override
@@ -16,7 +16,7 @@ class ProfileTile extends StatelessWidget {
             radius: 25.0,
             //backgroundColor: Colors.brown[Profile.name],
           ),
-          title: Text(profile.name),
+          title: Text(profile!.name!),
           subtitle: Text('lol'),
         ),
       ),
