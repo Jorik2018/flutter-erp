@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -38,7 +37,7 @@ class _TourismAppState extends State<TourismApp>
 
   @override
   void initState() {
-    fadeController = new AnimationController(
+    fadeController = AnimationController(
       duration: const Duration(milliseconds: 1000),
       debugLabel: 'preview banner',
       vsync: this,

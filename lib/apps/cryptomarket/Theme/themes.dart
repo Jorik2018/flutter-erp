@@ -15,9 +15,7 @@ class ThemeBloc {
 
   factory ThemeBloc() {
     final selectedTheme = PublishSubject<DemoTheme>();
-    final themeDataStream = selectedTheme
-        .distinct()
-        .map((theme) => theme.data);
+    final themeDataStream = selectedTheme.distinct().map((theme) => theme.data);
     return ThemeBloc._(themeDataStream, selectedTheme);
   }
 
@@ -25,11 +23,8 @@ class ThemeBloc {
 
   DemoTheme initialTheme() {
     return DemoTheme(
-        'initial',
-        ThemeData(
-          brightness: Brightness.light,
-          accentColor: Colors.black,
-          primaryColor: Colors.white,
-        ));
+      'initial',
+      ThemeData(brightness: Brightness.light, primaryColor: Colors.white),
+    );
   }
 }

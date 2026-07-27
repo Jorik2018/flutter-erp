@@ -4,7 +4,6 @@
 /// was not used yet then it is applied to current order in the cart.
 /// https://medium.com/@openflutterproject/open-flutter-project-e-commerce-app-use-cases-and-features-6b7414a6e708
 
-import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/cart_item.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/promo.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/cart_repository.dart';
@@ -21,7 +20,7 @@ class GetCartProductsUseCaseImpl implements GetCartProductsUseCase {
     try {
       CartRepository cartRepository = sl();
       if (params.appliedPromo != null) {
-        await cartRepository.setPromo(params.appliedPromo);
+        await cartRepository.setPromo(params.appliedPromo!);
       }
       List<CartItem> cartProducts =
           CartRepositoryImpl.cartProductDataStorage.items;
@@ -46,7 +45,7 @@ class GetCartProductsUseCaseImpl implements GetCartProductsUseCase {
 }
 
 class GetCartProductParams {
-  final Promo appliedPromo;
+  final Promo? appliedPromo;
 
   GetCartProductParams({this.appliedPromo});
 }
@@ -57,14 +56,14 @@ class GetCartProductsResult extends UseCaseResult {
   final List<CartItem> cartItems;
   final double totalPrice;
   final double calculatedPrice;
-  final Promo appliedPromo;
+  final Promo? appliedPromo;
 
   GetCartProductsResult({
-    @required this.cartItems,
-    @required this.totalPrice,
-    @required this.calculatedPrice,
+    required this.cartItems,
+    required this.totalPrice,
+    required this.calculatedPrice,
     this.appliedPromo,
-    Exception exception,
-    bool result,
+    Exception? exception,
+    bool? result,
   }) : super(exception: exception, result: result);
 }

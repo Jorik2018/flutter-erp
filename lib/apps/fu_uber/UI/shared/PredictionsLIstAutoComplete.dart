@@ -9,14 +9,16 @@ import 'package:flutter_erp/apps/fu_uber/UI/widgets/PredictionItemView.dart';
 typedef onListItemTap = void Function(Prediction prediction);
 
 class PredictionListAutoComplete extends StatefulWidget {
-
   late TextField textField;
   final List<Prediction>? data;
   final onListItemTap? itemTap;
 
-  PredictionListAutoComplete(
-      {Key? key, required this.textField, @required this.data, this.itemTap})
-      : super(key: key);
+  PredictionListAutoComplete({
+    Key? key,
+    required this.textField,
+    required this.data,
+    this.itemTap,
+  }) : super(key: key);
 
   @override
   _PredictionListAutoCompleteState createState() =>
@@ -35,25 +37,23 @@ class _PredictionListAutoCompleteState
         widget.textField,
         widget.data != null && widget.data!.isNotEmpty
             ? Column(
-          children: <Widget>[
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: widget.data!.length,
-                itemBuilder: (BuildContext ctxt, int index) {
-                  return InkResponse(
-                      onTap: () => widget.itemTap!(widget.data![index]),
-                      child: PredictionItemView(
-                          prediction: widget.data![index]));
-                }),
-            ListTile(
-              title: Text("Powered By Google"),
-            )
-          ],
-        )
-            : SizedBox(
-          height: 0,
-          width: 0,
-        ),
+                children: <Widget>[
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: widget.data!.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      return InkResponse(
+                        onTap: () => widget.itemTap!(widget.data![index]),
+                        child: PredictionItemView(
+                          prediction: widget.data![index],
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(title: Text("Powered By Google")),
+                ],
+              )
+            : SizedBox(height: 0, width: 0),
       ],
     );
   }

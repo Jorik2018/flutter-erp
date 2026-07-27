@@ -1,88 +1,122 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/config/routes.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/favorites_repository.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/data/model/filter_rules.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/product_repository.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/user_repository.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/locator.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/forget_password/forget_password_screen.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/sign_in/sign_in.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/filters/filters_screen.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/product_details/product_screen.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/products/products.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/sign_in/signin_screen.dart';
-import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/sign_up/signup_screen.dart';
 
 import 'config/routes.dart';
+import 'config/theme.dart';
+import 'data/model/filter_rules.dart';
 import 'data/repositories/abstract/cart_repository.dart';
 import 'data/repositories/abstract/category_repository.dart';
+import 'data/repositories/abstract/favorites_repository.dart';
+import 'data/repositories/abstract/product_repository.dart';
+import 'data/repositories/abstract/user_repository.dart';
+import 'locator.dart' as service_locator;
 import 'presentation/features/authentication/authentication.dart';
-import 'presentation/features/forget_password/forget_password.dart';
-import 'presentation/features/sign_up/sign_up_bloc.dart';
 import 'presentation/features/cart/cart.dart';
 import 'presentation/features/categories/categories.dart';
 import 'presentation/features/checkout/checkout.dart';
 import 'presentation/features/favorites/favorites.dart';
+import 'presentation/features/filters/filters_screen.dart';
+import 'presentation/features/forget_password/forget_password.dart';
+import 'presentation/features/forget_password/forget_password_screen.dart';
 import 'presentation/features/home/home.dart';
+import 'presentation/features/product_details/product_screen.dart';
+import 'presentation/features/products/products.dart';
 import 'presentation/features/profile/profile.dart';
+import 'presentation/features/sign_in/sign_in.dart';
+import 'presentation/features/sign_in/signin_screen.dart';
+import 'presentation/features/sign_up/sign_up_bloc.dart';
+import 'presentation/features/sign_up/signup_screen.dart';
 
-import 'locator.dart' as service_locator;
-
-class SimpleBlocDelegate extends BlocObserver {
+class AppBlocObserver extends BlocObserver {
   @override
-  void onEvent(Bloc bloc, Object event) {
+  void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
     super.onEvent(bloc, event);
-    print(event);
+
+    debugPrint('[EVENT] ${bloc.runtimeType}: $event');
   }
 
   @override
-  void onTransition(Bloc bloc, Transition transition) {
+  void onTransition(
+    Bloc<dynamic, dynamic> bloc,
+    Transition<dynamic, dynamic> transition,
+  ) {
     super.onTransition(bloc, transition);
-    print(transition);
+
+    debugPrint('[TRANSITION] ${bloc.runtimeType}: $transition');
   }
 
   @override
-  void onError(BlocBase bloc, Object error, StackTrace stacktrace) {
-    super.onError(bloc, error, stacktrace);
-    print(error);
+  void onChange(BlocBase<dynamic> bloc, Change<dynamic> change) {
+    super.onChange(bloc, change);
+
+    debugPrint('[CHANGE] ${bloc.runtimeType}: $change');
+  }
+
+  @override
+  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stackTrace) {
+    super.onError(bloc, error, stackTrace);
+
+    debugPrint('[ERROR] ${bloc.runtimeType}: $error');
+
+    debugPrintStack(stackTrace: stackTrace);
   }
 }
 
-void main() async {
-  await service_locator.init();
-
-  var delegate = await LocalizationDelegate.create(
-    fallbackLocale: 'en_US',
-    supportedLocales: ['en_US', 'de', 'fr'],
-  );
-
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
+
+  service_locator.init();
+
+  await SystemChrome.setPreferredOrientations(const [
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  Bloc.observer = SimpleBlocDelegate();
-  runApp(
-    BlocProvider<AuthenticationBloc>(
-      create: (context) => AuthenticationBloc()..add(AppStarted()),
-      child: MultiRepositoryProvider(
-        providers: [
-          RepositoryProvider<CategoryRepository>(create: (context) => sl()),
-          RepositoryProvider<ProductRepository>(create: (context) => sl()),
-          RepositoryProvider<FavoritesRepository>(create: (context) => sl()),
-          RepositoryProvider<UserRepository>(create: (context) => sl()),
-          RepositoryProvider<CartRepository>(create: (context) => sl()),
-        ],
-        child: LocalizedApp(delegate, OpenFlutterEcommerceApp()),
-      ),
-    ),
+  final localizationDelegate = await LocalizationDelegate.create(
+    fallbackLocale: 'en_US',
+    supportedLocales: const ['en_US', 'de', 'fr'],
   );
+
+  Bloc.observer = AppBlocObserver();
+
+  runApp(
+    LocalizedApp(localizationDelegate, const OpenFlutterEcommerceBootstrap()),
+  );
+}
+
+class OpenFlutterEcommerceBootstrap extends StatelessWidget {
+  const OpenFlutterEcommerceBootstrap({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<CategoryRepository>(
+          create: (_) => service_locator.sl<CategoryRepository>(),
+        ),
+        RepositoryProvider<ProductRepository>(
+          create: (_) => service_locator.sl<ProductRepository>(),
+        ),
+        RepositoryProvider<FavoritesRepository>(
+          create: (_) => service_locator.sl<FavoritesRepository>(),
+        ),
+        RepositoryProvider<UserRepository>(
+          create: (_) => service_locator.sl<UserRepository>(),
+        ),
+        RepositoryProvider<CartRepository>(
+          create: (_) => service_locator.sl<CartRepository>(),
+        ),
+      ],
+      child: BlocProvider<AuthenticationBloc>(
+        create: (_) => AuthenticationBloc()..add(AppStarted()),
+        child: OpenFlutterEcommerceApp(),
+      ),
+    );
+  }
 }
 
 class OpenFlutterEcommerceApp extends StatelessWidget {
@@ -166,33 +200,33 @@ class OpenFlutterEcommerceApp extends StatelessWidget {
   }
 
   Route _registerRoutesWithParameters(RouteSettings settings) {
+    final arguments = settings.arguments;
     if (settings.name == OpenFlutterEcommerceRoutes.shop) {
-      final CategoriesParameters args = settings.arguments;
       return MaterialPageRoute(
         builder: (context) {
-          return CategoriesScreen(parameters: args);
+          return CategoriesScreen(
+            parameters: arguments as CategoriesParameters?,
+          );
         },
       );
     } else if (settings.name == OpenFlutterEcommerceRoutes.productList) {
-      final ProductListScreenParameters productListScreenParameters =
-          settings.arguments;
       return MaterialPageRoute(
         builder: (context) {
-          return ProductsScreen(parameters: productListScreenParameters);
+          return ProductsScreen(
+            parameters: arguments as ProductListScreenParameters,
+          );
         },
       );
     } else if (settings.name == OpenFlutterEcommerceRoutes.product) {
-      final ProductDetailsParameters parameters = settings.arguments;
       return MaterialPageRoute(
         builder: (context) {
-          return ProductDetailsScreen(parameters);
+          return ProductDetailsScreen(arguments as ProductDetailsParameters);
         },
       );
     } else if (settings.name == OpenFlutterEcommerceRoutes.filters) {
-      final FilterRules filterRules = settings.arguments;
       return MaterialPageRoute(
         builder: (context) {
-          return FiltersScreen(filterRules);
+          return FiltersScreen(arguments as FilterRules);
         },
       );
     } else {

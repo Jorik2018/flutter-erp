@@ -27,7 +27,7 @@ class settings extends State<Settings> {
 
   bool isSwitched = false;
 
-  List newsList = new [];
+  List newsList = [];
 
   void _changeTheme(BuildContext buildContext, MyThemeKeys key) {
     CustomTheme.instanceOf(buildContext).changeTheme(key);
@@ -63,56 +63,55 @@ class settings extends State<Settings> {
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
-          title: Text(
-            'Settings',
-            style: TextStyle(fontSize: 20.0),
-          ),
+          title: Text('Settings', style: TextStyle(fontSize: 20.0)),
           elevation: 0.0,
         ),
         body: ListView(
           children: <Widget>[
-            new ListTile(
+            ListTile(
               title: const Text('Theme'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Theme_Screen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Theme_Screen()),
+                );
               },
             ),
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
+            Divider(height: 10.0),
+            ListTile(
               title: const Text('Currency'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CurrencyList_Screen()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CurrencyList_Screen(),
+                  ),
+                );
               },
             ),
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
+            Divider(height: 10.0),
+            ListTile(
               title: const Text('Exchange'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ExchangeList_Screen()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ExchangeList_Screen(),
+                  ),
+                );
               },
             ),
-            /*    new ListTile(
+            /*    ListTile(
               title: const Text('Exchange'),
               subtitle: Text(exchange),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                SimpleDialog dialog = new SimpleDialog(
+                SimpleDialog dialog = SimpleDialog(
                   children: <Widget>[
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                         //await SharedPreferencesHelper.s('Binance');
                         setState(() {
@@ -122,10 +121,10 @@ class settings extends State<Settings> {
                       },
                       child: Text('Binance'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                      //   await SharedPreferencesHelper.seCurrency('Bittrex');
                         setState(() {
@@ -135,10 +134,10 @@ class settings extends State<Settings> {
                       },
                       child: Text('Bittrex'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                      //   await SharedPreferencesHelper.seCurrency('Coinbase');
                         setState(() {
@@ -148,10 +147,10 @@ class settings extends State<Settings> {
                       },
                       child: Text('Coinbase'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                   //      await SharedPreferencesHelper.seCurrency('Kraken');
                         setState(() {
@@ -161,10 +160,10 @@ class settings extends State<Settings> {
                       },
                       child: Text('Kraken'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                    //     await SharedPreferencesHelper.seCurrency('OKEx');
                         setState(() {
@@ -181,25 +180,25 @@ class settings extends State<Settings> {
                 showDialog(context: context, child: dialog);
               },
             ),*/
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
+            Divider(height: 10.0),
+            ListTile(
               title: const Text('News'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => NewsList_Screen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NewsList_Screen()),
+                );
               },
             ),
-            /* new ListTile(
+            /* ListTile(
               title: const Text('News'),
               subtitle: Text(news),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
-                SimpleDialog dialog = new SimpleDialog(
+                SimpleDialog dialog = SimpleDialog(
                   children: <Widget>[
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                         await SharedPreferencesHelper.seNews('coindesk');
                         setState(() {
@@ -209,10 +208,10 @@ class settings extends State<Settings> {
                       },
                       child: const Text('Coindesk'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                         await SharedPreferencesHelper.seNews('cryptoslate');
                         setState(() {
@@ -222,10 +221,10 @@ class settings extends State<Settings> {
                       },
                       child: const Text('Cryptoslate'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                         await SharedPreferencesHelper.seNews('ccn');
                         setState(() {
@@ -235,10 +234,10 @@ class settings extends State<Settings> {
                       },
                       child: const Text('Ccn'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                         await SharedPreferencesHelper.seNews('cryptobriefing');
                         setState(() {
@@ -248,10 +247,10 @@ class settings extends State<Settings> {
                       },
                       child: const Text('Cryptobriefing'),
                     ),
-                    new Divider(
+                    Divider(
                       color: Colors.black,
                     ),
-                    new SimpleDialogOption(
+                    SimpleDialogOption(
                       onPressed: () async {
                         await SharedPreferencesHelper.seNews('cointelegraph');
                         setState(() {
@@ -267,19 +266,19 @@ class settings extends State<Settings> {
                 showDialog(context: context, child: dialog);
               },
             ),*/
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
+            Divider(height: 10.0),
+            ListTile(
               title: const Text('Push Notifications'),
               trailing: Switch(
                 value: isSwitched,
                 onChanged: (value) async {
                   if (value) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Notification_Screen()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationScreen(),
+                      ),
+                    );
                   } else {
                     await flutterLocalNotificationsPlugin.cancelAll();
                   }
@@ -290,30 +289,15 @@ class settings extends State<Settings> {
                   });
                 },
                 activeTrackColor: Colors.green,
-                activeColor: Colors.green,
               ),
             ),
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
-              title: const Text('Send Feedback'),
-            ),
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
-              title: const Text('Visit Website'),
-            ),
-            new Divider(
-              height: 10.0,
-            ),
-            new ListTile(
-              title: const Text('About Us'),
-            ),
-            new Divider(
-              height: 10.0,
-            ),
+            Divider(height: 10.0),
+            ListTile(title: const Text('Send Feedback')),
+            Divider(height: 10.0),
+            ListTile(title: const Text('Visit Website')),
+            Divider(height: 10.0),
+            ListTile(title: const Text('About Us')),
+            Divider(height: 10.0),
           ],
         ),
       ),

@@ -1,21 +1,23 @@
 part of 'create_account_bloc.dart';
 
-abstract class CreateAccountState extends Equatable {
+sealed class CreateAccountState extends Equatable {
   const CreateAccountState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-class CreateAccountInitial extends CreateAccountState {}
+final class CreateAccountInitial extends CreateAccountState {
+  const CreateAccountInitial();
+}
 
-class CreateAccountInProgress extends CreateAccountState {}
+final class CreateAccountInProgress extends CreateAccountState {
+  const CreateAccountInProgress();
+}
 
-class CreateAccountFailure extends CreateAccountState {
-  const CreateAccountFailure({
-    @required this.error,
-    this.errorCode,
-  });
+final class CreateAccountFailure extends CreateAccountState {
+  const CreateAccountFailure({required this.error, required this.errorCode});
+
   final String error;
   final int errorCode;
 
@@ -23,7 +25,14 @@ class CreateAccountFailure extends CreateAccountState {
   List<Object> get props => [error, errorCode];
 
   @override
-  String toString() => 'LoginFailure { error: $error, errorCode:$errorCode }';
+  String toString() {
+    return 'CreateAccountFailure('
+        'error: $error, '
+        'errorCode: $errorCode'
+        ')';
+  }
 }
 
-class CreateAccountSuccess extends CreateAccountState {}
+final class CreateAccountSuccess extends CreateAccountState {
+  const CreateAccountSuccess();
+}

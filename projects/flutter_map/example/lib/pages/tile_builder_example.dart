@@ -23,9 +23,7 @@ class _TileBuilderPageState extends State<TileBuilderPage> {
     final coords = tile.coords;
 
     return Container(
-      decoration: BoxDecoration(
-        border: grid ? Border.all() : null,
-      ),
+      decoration: BoxDecoration(border: grid ? Border.all() : null),
       child: Stack(
         fit: StackFit.passthrough,
         children: [
@@ -37,7 +35,7 @@ class _TileBuilderPageState extends State<TileBuilderPage> {
                 if (showCoords)
                   Text(
                     '${coords.x.floor()} : ${coords.y.floor()} : ${coords.z.floor()}',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlinelarge!,
                   ),
                 if (loadingTime)
                   Text(
@@ -45,7 +43,7 @@ class _TileBuilderPageState extends State<TileBuilderPage> {
                         ? 'Loading'
                         // sometimes result is negative which shouldn't happen, abs() corrects it
                         : '${(tile.loaded!.millisecond - tile.loadStarted.millisecond).abs()} ms',
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context).textTheme.headlinelarge!,
                   ),
               ],
             ),
@@ -107,18 +105,16 @@ class _TileBuilderPageState extends State<TileBuilderPage> {
       body: Padding(
         padding: const EdgeInsets.all(8),
         child: FlutterMap(
-          options: MapOptions(
-            center: LatLng(51.5, -0.09),
-            zoom: 5,
-          ),
+          options: MapOptions(center: LatLng(51.5, -0.09), zoom: 5),
           children: [
             TileLayer(
               urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
               subdomains: ['a', 'b', 'c'],
               userAgentPackageName: 'dev.fleaflet.flutter_map.example',
               tileBuilder: tileBuilder,
-              tilesContainerBuilder:
-                  darkMode ? darkModeTilesContainerBuilder : null,
+              tilesContainerBuilder: darkMode
+                  ? darkModeTilesContainerBuilder
+                  : null,
             ),
             MarkerLayer(
               markers: <Marker>[
@@ -126,9 +122,8 @@ class _TileBuilderPageState extends State<TileBuilderPage> {
                   width: 80,
                   height: 80,
                   point: LatLng(51.5, -0.09),
-                  builder: (ctx) => const FlutterLogo(
-                    key: ObjectKey(Colors.blue),
-                  ),
+                  builder: (ctx) =>
+                      const FlutterLogo(key: ObjectKey(Colors.blue)),
                 ),
               ],
             ),

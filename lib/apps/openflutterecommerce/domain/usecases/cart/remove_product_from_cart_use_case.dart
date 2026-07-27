@@ -30,6 +30,6 @@ class RemoveProductFromCartUseCaseImpl implements RemoveProductFromCartUseCase {
 class AddProductToCartException implements Exception {}
 
 class RemoveProductFromCartResult extends UseCaseResult {
-  RemoveProductFromCartResult({Exception exception, bool result})
+  RemoveProductFromCartResult({Exception? exception, bool? result})
     : super(exception: exception, result: result);
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
-import 'package:map_view/map_view.dart';
+//import 'package:map_view/map_view.dart';
 import 'history_page.dart';
 import 'info_page.dart';
 import 'help_page.dart';
@@ -11,29 +12,27 @@ import 'code_page.dart';
 import 'settings_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/floating_button.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'order_page.dart';
 import 'first_page.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:geocoding/geocoding.dart';
 import 'helpers/dialog_boxes.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter_erp/apps/taxiservice/profile_page.dart';
+import 'package:flutter_erp/apps/taxiservice/settings_page.dart';
 
-var Api_key = 'AIzaSyDrHKl8IxB4cGXIoELXQOzzZwiH1xtsRf4';
-String clientDocRef;
+var Api_key = '';
+String? clientDocRef;
 
-DocumentReference clientRef = Firestore.instance
+DocumentReference clientRef = FirebaseFirestore.instance
     .collection('data')
-    .document('$clientDocRef');
+    .doc('$clientDocRef');
 
-String savedUserName;
-String savedPhoneNumber;
-StaticMapViewType staticmaptype = StaticMapViewType.roadmap;
-MapViewType mapViewType = MapViewType.normal;
+String? savedUserName;
+String? savedPhoneNumber;
 
 void main() {
-  MapView.setApiKey(Api_key);
   runApp(MyApp());
 }
 
@@ -41,19 +40,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Taxi Service',
       home: StartApp(),
       routes: <String, WidgetBuilder>{
-        '/home': (BuildContext context) => new MainPage(),
-        '/login': (BuildContext context) => new StartApp(),
-        '/code': (BuildContext context) => new CodePage(),
-        '/settings': (BuildContext context) => new Settings(),
-        '/history': (BuildContext context) => new History(),
-        '/info': (BuildContext context) => new Info(),
-        '/help': (BuildContext context) => new Help(),
-        '/order': (BuildContext context) => new OrderPage(),
-        '/profile': (BuildContext context) => new ProfilePage(),
+        '/home': (BuildContext context) => MainPage(),
+        '/login': (BuildContext context) => StartApp(),
+        '/code': (BuildContext context) => CodePage(),
+        '/settings': (BuildContext context) => SettingsPage(),
+        '/history': (BuildContext context) => History(),
+        '/info': (BuildContext context) => Info(),
+        '/help': (BuildContext context) => Help(),
+        '/order': (BuildContext context) => OrderPage(),
+        '/profile': (BuildContext context) => ProfilePage(),
       },
       debugShowCheckedModeBanner: false,
     );
@@ -62,7 +61,7 @@ class MyApp extends StatelessWidget {
 
 class MainPage extends StatefulWidget {
   @override
-  State createState() => new MainPageState();
+  State createState() => MainPageState();
 }
 
 getClientId() async {
@@ -73,48 +72,194 @@ getClientId() async {
 }
 
 class MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  var mapView = new MapView();
-  var provider = new StaticMapProvider(Api_key);
-  CameraPosition cameraPosition;
-  var urimap;
-  showMap() {
-    mapView.show(
-      new MapOptions(
-        mapViewType: mapViewType,
-        showUserLocation: true,
-        initialCameraPosition: new CameraPosition(
-          new Location(41.311081, 69.240562),
-          14.0,
-        ),
-        title: "Map",
+  static const LatLng _initialPosition = LatLng(41.311081, 69.240562);
+
+  /// Mantiene el nombre mapView, pero cambia MapView por
+  /// GoogleMapController.
+  GoogleMapController? mapView;
+
+  /// StaticMapProvider ya no existe.
+  /// Conservamos el nombre para no romper referencias posteriores.
+  final String provider = Api_key;
+
+  late CameraPosition cameraPosition;
+
+  /// Ya no necesitamos una URL de mapa estático para mostrar el mapa.
+  Uri? urimap;
+
+  final Connectivity _connectivity = Connectivity();
+
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+
+  bool hasConnection = false;
+
+  double? latitude;
+  double? longitude;
+  double? fromLat;
+  double? fromLong;
+
+  final TextEditingController fromAddress = TextEditingController();
+
+  LatLng currentMapPosition = _initialPosition;
+
+  @override
+  void initState() {
+    super.initState();
+
+    cameraPosition = CameraPosition(target: _initialPosition, zoom: 14);
+
+    latitude = _initialPosition.latitude;
+    longitude = _initialPosition.longitude;
+
+    getUserInfo();
+    getClientId();
+    initConnectivity();
+    _getMapTypeLocal();
+
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+      _updateConnectionStatus,
+    );
+
+    // Ya no usamos provider.getStaticUri().
+    urimap = null;
+  }
+
+  Future<void> showMap() async {
+    final GoogleMapController? controller = mapView;
+
+    if (controller == null) {
+      debugPrint('El mapa todavía no ha sido creado.');
+      return;
+    }
+
+    await controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: currentMapPosition, zoom: 14),
       ),
     );
-
-    mapView.zoomToFit(padding: 100);
-    mapView.onLocationUpdated.listen(
-      (position) => this.onUserLocationUpdated(position, mapView),
-    );
   }
 
-  onUserLocationUpdated(position, MapView mapview) async {
-    double zoomLevel = await mapview.zoomLevel;
-    mapview.setCameraPosition(position.latitude, position.longitude, zoomLevel);
+  Future<void> initConnectivity() async {
+    try {
+      final List<ConnectivityResult> result = await _connectivity
+          .checkConnectivity();
+
+      await _updateConnectionStatus(result);
+    } on PlatformException catch (error) {
+      debugPrint('Error comprobando conectividad: $error');
+    }
+  }
+
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    final bool connected =
+        result.isNotEmpty && !result.contains(ConnectivityResult.none);
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      hasConnection = connected;
+    });
+  }
+
+  Future<void> onUserLocationUpdated(
+    LatLng position,
+    GoogleMapController mapview,
+  ) async {
+    final double zoomLevel = await mapview.getZoomLevel();
+
+    /*await mapview.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: position, zoom: zoomLevel),
+      ),
+    );*/
+
     latitude = position.latitude;
     longitude = position.longitude;
-    getCurrentAddress();
+    currentMapPosition = position;
+
+    await getCurrentAddress();
   }
 
+  Future<void> getCurrentAddress() async {
+    final double? currentLatitude = latitude;
+    final double? currentLongitude = longitude;
+
+    if (currentLatitude == null || currentLongitude == null) {
+      return;
+    }
+
+    debugPrint('Current location');
+
+    try {
+      final List<Placemark> address = await placemarkFromCoordinates(
+        currentLatitude,
+        currentLongitude,
+      );
+
+      if (address.isEmpty) {
+        fromAddress.clear();
+        return;
+      }
+
+      final Placemark place = address.first;
+
+      final String addressLine =
+          <String?>[
+                place.street,
+                place.subLocality,
+                place.locality,
+                place.administrativeArea,
+                place.country,
+              ]
+              .whereType<String>()
+              .where((String value) => value.trim().isNotEmpty)
+              .join(', ');
+
+      fromAddress.text = addressLine;
+      fromLat = currentLatitude;
+      fromLong = currentLongitude;
+
+      debugPrint(addressLine);
+    } catch (error, stackTrace) {
+      debugPrint('Error obteniendo la dirección: $error');
+      debugPrintStack(stackTrace: stackTrace);
+    }
+  }
+
+  Future<void> _getMapTypeLocal() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    final int mapType = pref.getInt('mapType') ?? 0;
+
+    final MapType selectedMapType = mapType == 0
+        ? MapType.normal
+        : MapType.hybrid;
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      staticmaptype = selectedMapType;
+      mapViewType = selectedMapType;
+    });
+  }
+
+  MapType? staticmaptype;
+  MapType? mapViewType;
   getUserInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      savedUserName = pref.getString('userName');
-      savedPhoneNumber = pref.getString('phoneNumber');
+      savedUserName = pref.getString('userName')!;
+      savedPhoneNumber = pref.getString('phoneNumber')!;
     });
   }
 
   Widget loadMap() {
     if (hasConnection) {
-      return new Stack(
+      return Stack(
         fit: StackFit.expand,
         children: <Widget>[
           Center(child: CircularProgressIndicator()),
@@ -137,58 +282,11 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
       );
   }
 
-  _getMapTypeLocal() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    int mapType = 0;
-    mapType = pref.getInt('mapType');
-
-    if (mapType == 0) {
-      staticmaptype = StaticMapViewType.roadmap;
-      mapViewType = MapViewType.normal;
-    } else {
-      staticmaptype = StaticMapViewType.hybrid;
-      mapViewType = MapViewType.hybrid;
-    }
-  }
-
-  @override
-  initState() {
-    super.initState();
-    getUserInfo();
-    getClientId();
-    initConnectivity();
-    _getMapTypeLocal();
-    urimap = provider.getStaticUri(
-      new Location(41.311081, 69.240562),
-      12,
-      width: 1000,
-      height: 1500,
-      mapType: staticmaptype,
-    );
-    cameraPosition = new CameraPosition(
-      new Location(41.311081, 69.240562),
-      2.0,
-    );
-    print(urimap.toString());
-  }
-
-  getCurrentAddress() async {
-    print('current location');
-    var coordinates = new Coordinates(latitude, longitude);
-    var address = await Geocoder.local.findAddressesFromCoordinates(
-      coordinates,
-    );
-    fromAddress.text = address.first.addressLine.toString();
-    fromLat = latitude;
-    fromLong = longitude;
-    print(address.first.addressLine.toString());
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     getUserInfo();
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.blue[20],
       bottomNavigationBar: Container(
         height: 60.0,
@@ -208,8 +306,8 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
             onPressed: () {
               if (hasConnection && (latitude != null && longitude != null)) {
                 toAddress.clear();
-                fromLat = latitude;
-                fromLong = longitude;
+                fromLat = latitude!;
+                fromLong = longitude!;
                 Navigator.pushNamed(context, '/order');
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => OrderPage()));
@@ -226,7 +324,7 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
         child: ListView(
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
-            new UserAccountsDrawerHeader(
+            UserAccountsDrawerHeader(
               accountName: Text(
                 '$savedUserName',
                 style: TextStyle(fontSize: 20.0),
@@ -258,10 +356,10 @@ class MainPageState extends State<MainPage> with TickerProviderStateMixin {
                 leading: Icon(Icons.person),
                 onTap: () {
                   Navigator.pop(context);
-                  print('Profile' + clientDocRef);
+                  print(clientDocRef);
                   // Navigator.push(
                   //   context,
-                  //new MaterialPageRoute(
+                  //MaterialPageRoute(
                   //  builder: (context) => ProfilePage()));
                   Navigator.pushNamed(context, '/profile');
                 },

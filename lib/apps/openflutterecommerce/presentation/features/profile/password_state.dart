@@ -35,7 +35,7 @@ class PasswordChangedState extends PasswordState {}
 class ChangePasswordErrorState extends PasswordState {
   final String errorMessage;
 
-  ChangePasswordErrorState({this.errorMessage}) : super();
+  ChangePasswordErrorState({required this.errorMessage}) : super();
 
   @override
   List<Object> get props => [errorMessage];

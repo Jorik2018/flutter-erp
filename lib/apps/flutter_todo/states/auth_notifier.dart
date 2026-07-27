@@ -4,9 +4,8 @@ import 'package:flutter_erp/apps/flutter_todo/states/auth_state.dart';
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_erp/apps/flutter_todo/.env.dart';
 
 class AuthNotifier extends Notifier<AuthState> {
   Timer? _authTimer;
@@ -30,15 +29,13 @@ class AuthNotifier extends Notifier<AuthState> {
     };
 
     try {
-      final res = await http.post(
-        Uri.parse(
-          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${Configure.ApiKey}',
-        ),
-        body: json.encode(formData),
-        headers: {'Content-Type': 'application/json'},
+      final res = await Dio().post(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key={Configure.ApiKey}',
+        data: json.encode(formData),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      final data = json.decode(res.body);
+      final data = res.data is String ? json.decode(res.data) : res.data;
 
       if (data.containsKey('idToken')) {
         final user = User(
@@ -72,15 +69,13 @@ class AuthNotifier extends Notifier<AuthState> {
     };
 
     try {
-      final res = await http.post(
-        Uri.parse(
-          'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${Configure.ApiKey}',
-        ),
-        body: json.encode(formData),
-        headers: {'Content-Type': 'application/json'},
+      final res = await Dio().post(
+        'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key={Configure.ApiKey}',
+        data: json.encode(formData),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      final data = json.decode(res.body);
+      final data = res.data is String ? json.decode(res.data) : res.data;
 
       if (data.containsKey('idToken')) {
         final user = User(
@@ -161,15 +156,13 @@ class AuthNotifier extends Notifier<AuthState> {
     };
 
     try {
-      final res = await http.post(
-        Uri.parse(
-          'https://securetoken.googleapis.com/v1/token?key=${Configure.ApiKey}',
-        ),
-        body: json.encode(formData),
-        headers: {'Content-Type': 'application/json'},
+      final res = await Dio().post(
+        'https://securetoken.googleapis.com/v1/token?key={Configure.ApiKey}',
+        data: json.encode(formData),
+        options: Options(headers: {'Content-Type': 'application/json'}),
       );
 
-      final data = json.decode(res.body);
+      final data = res.data is String ? json.decode(res.data) : res.data;
 
       if (data.containsKey('id_token')) {
         state = state.copyWith(

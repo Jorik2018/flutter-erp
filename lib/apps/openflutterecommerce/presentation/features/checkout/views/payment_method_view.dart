@@ -56,18 +56,18 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
     return BlocListener(
       bloc: bloc,
       listener: (BuildContext context, CheckoutState state) {
-        if (state is CheckoutErrorState) {
+        /*if (state is CheckoutErrorState) {
           return Container(
             padding: EdgeInsets.all(AppSizes.sidePadding),
             child: Text(
               'An error occured',
               style: _theme.textTheme.headlineLarge.copyWith(
-                color: _theme.errorColor,
+                color: _theme.colorScheme.error,
               ),
             ),
           );
         }
-        return Container();
+        return Container();*/
       },
       child: BlocBuilder(
         bloc: bloc,
@@ -75,8 +75,8 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
           var currentCardId = 0;
           var showAddNewCardForm = false;
           if (state is CheckoutProceedState) {
-            currentCardId = state.cardId;
-            showAddNewCardForm = state.showAddNewCardForm;
+            currentCardId = state.cardId!;
+            showAddNewCardForm = state.showAddNewCardForm!;
           }
 
           return SingleChildScrollView(
@@ -103,7 +103,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                         width: width,
                         title: 'Use as default payment method',
                         checked: currentCardId == 1,
-                        onTap: ((bool newValue) => {
+                        onTap: ((newValue) => {
                           _changeDefaultPaymentCard(bloc, 1),
                         }),
                       ),
@@ -119,7 +119,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                         width: width,
                         title: 'Use as default payment method',
                         checked: currentCardId == 2,
-                        onTap: ((bool newValue) => {
+                        onTap: ((newValue) => {
                           _changeDefaultPaymentCard(bloc, 2),
                         }),
                       ),
@@ -184,7 +184,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
                               width: width,
                               title: 'Use as default payment method',
                               checked: false,
-                              onTap: ((bool newValue) => {
+                              onTap: ((newValue) => {
                                 _changeDefaultPaymentCard(bloc, 3),
                               }),
                             ),
@@ -229,7 +229,7 @@ class _PaymentMethodViewState extends State<PaymentMethodView> {
 
   void _changeDefaultPaymentCard(CheckoutBloc bloc, int cardId) {
     bloc..add(CheckoutSetDefaultCardEvent(cardId));
-    widget.changeView(changeType: ViewChangeType.Exact, index: 0);
+    widget.changeView!(changeType: ViewChangeType.Exact, index: 0);
     //TODO: implement change of default payment card
   }
 }

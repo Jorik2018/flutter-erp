@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_erp/apps/openflutterecommerce/config/server_addresses.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/filter_rules.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/sort_rules.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/error/exceptions.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 
 class NetworkRequest {
   static const STATUS_OK = 200;
@@ -13,9 +13,8 @@ class NetworkRequest {
 
   final Map<String, String> _jsonHeaders = {'content-type': 'application/json'};
 
-  final http.Client client;
   final RequestType type;
-  final Uri address;
+  final String address;
   final Map<String, dynamic>? body;
   Map<String, String>? headers;
   final List<int>? listBody;
@@ -24,14 +23,13 @@ class NetworkRequest {
   NetworkRequest(
     this.type,
     this.address, {
-    required this.client,
     this.body,
     this.plainBody,
     this.listBody,
     this.headers,
   });
 
-  Future<http.Response> getResult() async {
+  Future<HttpResponse> getResult() async {
     print('ADDRESS: $address');
     if (listBody != null) {
       print('listBody: ${jsonEncode(listBody)}');
@@ -42,30 +40,35 @@ class NetworkRequest {
     if (body != null) {
       print('body: ${jsonEncode(body)}');
     }
-    http.Response response;
+    HttpResponse response;
     headers ??= _jsonHeaders;
     try {
-      Uri uri = address; //Uri.parse(address);
+      String uri = address; //Uri.parse(address);
       switch (type) {
         case RequestType.post:
-          response = await client.post(
-            uri,
-            headers: headers,
+          response = await HttpClient.send(
+            address,
             body: jsonEncode(body) ?? plainBody ?? listBody,
+            headers: headers,
           );
           break;
         case RequestType.get:
-          response = await client.get(uri, headers: headers);
+          response = await HttpClient.get(address, headers: headers);
           break;
         case RequestType.put:
-          response = await client.put(
-            uri,
+          response = await HttpClient.send(
+            address,
+            method: MethodType.put,
             body: body ?? plainBody ?? listBody,
             headers: headers,
           );
           break;
         case RequestType.delete:
-          response = await client.delete(uri, headers: headers);
+          response = await HttpClient.send(
+            address,
+            method: MethodType.delete,
+            headers: headers,
+          );
           break;
       }
       print('RESULT: ${response.body}');
@@ -83,7 +86,7 @@ class NetworkRequest {
   }
 
   factory NetworkRequest.productList(
-    http.Client client,
+    HttpClient client,
     int pageIndex,
     int pageSize,
     int categoryId,
@@ -105,10 +108,9 @@ class NetworkRequest {
       parameters.add('order=${sortRules.jsonOrder}');
     }
     //TODO add filter rules here
-    Uri serverAddress = Uri(
-      path: ServerAddresses.serverAddress + '?' + parameters.join('&'),
-    );
-    return NetworkRequest(RequestType.get, serverAddress, client: client);
+    String serverAddress =
+        ServerAddresses.serverAddress + '?' + parameters.join('&');
+    return NetworkRequest(RequestType.get, serverAddress);
   }
 }
 

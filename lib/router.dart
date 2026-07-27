@@ -1,45 +1,71 @@
 import 'package:flutter_erp/AppShell.dart';
 import 'package:flutter_erp/apps/covid/screens/covid_screen.dart';
+import 'package:flutter_erp/apps/flutter_chat_demo/GoogleContactScreen.dart';
 import 'package:flutter_erp/screens/HomeScreen.dart';
 import 'package:flutter_erp/screens/LoginScreen.dart';
 import 'package:flutter_erp/screens/car_rental_screen.dart';
 import 'package:flutter_erp/states/auth_state.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final auth = ref.watch(authProvider);
+  final authState = ref.watch(authProvider);
 
   return GoRouter(
-    initialLocation: "/",
-    redirect: (context, state) {
-      final loggingIn = state.uri.toString() == "/login";
+    initialLocation: '/',
 
-      if (!auth && !loggingIn) return "/login";
-      if (auth && loggingIn) return "/";
+    redirect: (context, state) {
+      final bool isGoingToLogin = state.matchedLocation == '/login';
+
+      // Mientras se comprueba la sesión, no redirigimos.
+      if (authState.isLoading) {
+        return null;
+      }
+
+      final bool isAuthenticated = authState.value ?? false;
+
+      if (!isAuthenticated && !isGoingToLogin) {
+        return '/login';
+      }
+
+      if (isAuthenticated && isGoingToLogin) {
+        return '/';
+      }
 
       return null;
     },
+
     routes: [
-      GoRoute(path: "/login", builder: (context, state) => const LoginScreen()),
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
 
       ShellRoute(
-        builder: (context, state, child) => AppShell(child: child),
+        builder: (context, state, child) {
+          return AppShell(child: child);
+        },
         routes: [
-          GoRoute(path: "/", builder: (context, state) => const HomeScreen()),
+          GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
           GoRoute(
-            path: "/screen1",
+            path: '/screen1',
             builder: (context, state) => const Screen1(),
           ),
           GoRoute(
-            path: "/screen2",
+            path: '/screen2',
             builder: (context, state) => const Screen2(),
           ),
           GoRoute(
-            path: "/car-rental",
+            path: '/car-rental',
             builder: (context, state) => CarRentalScreen(),
           ),
-          GoRoute(path: "/covid", builder: (context, state) => CovidScreen()),
+          GoRoute(path: '/covid', builder: (context, state) => CovidScreen()),
+
+          GoRoute(
+            path: '/google-contact/:currentUserId',
+            builder: (context, state) {
+              final currentUserId = state.pathParameters['currentUserId']!;
+
+              return GoogleContactScreen(currentUserId: currentUserId);
+            },
+          ),
         ],
       ),
     ],

@@ -8,10 +8,10 @@ part 'refresh_token_request.g.dart';
 @JsonSerializable(nullable: false)
 class RefreshTokenRequest {
   RefreshTokenRequest({
-    @required this.clientId,
-    @required this.clientSecret,
-    @required this.grantType,
-    @required this.refreshToken,
+    required this.clientId,
+    required this.clientSecret,
+    required this.grantType,
+    required this.refreshToken,
   });
 
   factory RefreshTokenRequest.fromJson(Map<String, dynamic> json) =>

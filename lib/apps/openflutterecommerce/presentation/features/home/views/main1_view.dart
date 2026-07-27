@@ -4,7 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+//import 'package:flutter_translate/flutter_translate.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/routes.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/product.dart';
@@ -16,8 +16,8 @@ import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/wrap
 import 'package:flutter_erp/apps/openflutterecommerce/presentation/widgets/widgets.dart';
 
 class Main1View extends StatefulWidget {
-  final Function changeView;
-  final List<Product> products;
+  final Function? changeView;
+  final List<Product>? products;
 
   const Main1View({Key? key, this.products, this.changeView}) : super(key: key);
 
@@ -55,7 +55,7 @@ class _Main1ViewState extends State<Main1View> {
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          translate('fashionSale'),
+                          "translate('fashionSale')",
                           style: _theme.textTheme.headlineLarge,
                         ),
                       ),
@@ -71,7 +71,7 @@ class _Main1ViewState extends State<Main1View> {
                         title: 'Check',
                         width: 160,
                         height: 48,
-                        onPressed: (() => widget.changeView(
+                        onPressed: (() => widget.changeView!(
                           changeType: ViewChangeType.Forward,
                         )),
                       ),
@@ -93,7 +93,7 @@ class _Main1ViewState extends State<Main1View> {
               ),
               OpenFlutterProductListView(
                 width: widgetWidth,
-                products: widget.products,
+                products: widget.products!,
                 onFavoritesTap: ((Product product) => {
                   BlocProvider.of<HomeBloc>(context).add(
                     HomeAddToFavoriteEvent(
@@ -108,7 +108,7 @@ class _Main1ViewState extends State<Main1View> {
                 width: 160,
                 height: 48,
                 onPressed: (() =>
-                    widget.changeView(changeType: ViewChangeType.Forward)),
+                    widget.changeView!(changeType: ViewChangeType.Forward)),
               ),
             ],
           ),

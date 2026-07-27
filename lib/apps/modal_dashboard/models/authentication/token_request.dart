@@ -8,11 +8,11 @@ part 'token_request.g.dart';
 @JsonSerializable(nullable: false)
 class TokenRequest {
   TokenRequest({
-    @required this.phone,
-    @required this.password,
-    @required this.clientId,
-    @required this.clientSecret,
-    @required this.grantType,
+    required this.phone,
+    required this.password,
+    required this.clientId,
+    required this.clientSecret,
+    required this.grantType,
   });
 
   factory TokenRequest.fromJson(Map<String, dynamic> json) =>

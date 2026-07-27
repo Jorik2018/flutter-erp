@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_erp/apps/flutter_chat_demo/const.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,12 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'SETTINGS',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
-        ),
+        title: Text('SETTINGS', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       body: SettingsScreen(),
@@ -28,25 +24,34 @@ class Settings extends StatelessWidget {
 
 class SettingsScreen extends StatefulWidget {
   @override
-  State createState() => new SettingsScreenState();
+  State createState() => SettingsScreenState();
 }
 
 class SettingsScreenState extends State<SettingsScreen> {
-  TextEditingController controllerNickname;
-  TextEditingController controllerAboutMe;
+  Color themeColor = Color.fromARGB(255, 0, 0, 0);
 
-  SharedPreferences prefs;
+  late TextEditingController controllerNickname;
+
+  late TextEditingController controllerAboutMe;
+
+  late SharedPreferences prefs;
 
   String id = '';
+
   String nickname = '';
+
   String aboutMe = '';
+
   String photoUrl = '';
 
   bool isLoading = false;
-  File avatarImageFile;
 
-  final FocusNode focusNodeNickname = new FocusNode();
-  final FocusNode focusNodeAboutMe = new FocusNode();
+  File? avatarImageFile;
+
+  final FocusNode focusNodeNickname = FocusNode();
+  final FocusNode focusNodeAboutMe = FocusNode();
+
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -61,80 +66,70 @@ class SettingsScreenState extends State<SettingsScreen> {
     aboutMe = prefs.getString('aboutMe') ?? '';
     photoUrl = prefs.getString('photoUrl') ?? '';
 
-    controllerNickname = new TextEditingController(text: nickname);
-    controllerAboutMe = new TextEditingController(text: aboutMe);
+    controllerNickname = TextEditingController(text: nickname);
+    controllerAboutMe = TextEditingController(text: aboutMe);
 
     // Force refresh input
     setState(() {});
   }
 
-  Future getImage() async {
-    File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> getImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    if (image != null) {
-      setState(() {
-        avatarImageFile = image;
-        isLoading = true;
-      });
-    }
-    uploadFile();
+    if (image == null) return;
+
+    setState(() {
+      avatarImageFile = File(image.path);
+      isLoading = true;
+    });
+
+    await uploadFile();
   }
 
-  Future uploadFile() async {
-    String fileName = id;
-    StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
-    StorageUploadTask uploadTask = reference.putFile(avatarImageFile);
-    StorageTaskSnapshot storageTaskSnapshot;
-    uploadTask.onComplete.then(
-      (value) {
-        if (value.error == null) {
-          storageTaskSnapshot = value;
-          storageTaskSnapshot.ref.getDownloadURL().then(
-            (downloadUrl) {
-              photoUrl = downloadUrl;
-              Firestore.instance
-                  .collection('users')
-                  .document(id)
-                  .updateData({
-                    'nickname': nickname,
-                    'aboutMe': aboutMe,
-                    'photoUrl': photoUrl,
-                  })
-                  .then((data) async {
-                    await prefs.setString('photoUrl', photoUrl);
-                    setState(() {
-                      isLoading = false;
-                    });
-                    Fluttertoast.showToast(msg: "Upload success");
-                  })
-                  .catchError((err) {
-                    setState(() {
-                      isLoading = false;
-                    });
-                    Fluttertoast.showToast(msg: err.toString());
-                  });
-            },
-            onError: (err) {
-              setState(() {
-                isLoading = false;
-              });
-              Fluttertoast.showToast(msg: 'This file is not an image');
-            },
-          );
-        } else {
-          setState(() {
-            isLoading = false;
-          });
-          Fluttertoast.showToast(msg: 'This file is not an image');
-        }
-      },
-      onError: (err) {
-        setState(() {
-          isLoading = false;
-        });
-        Fluttertoast.showToast(msg: err.toString());
-      },
-    );
+  Future<void> uploadFile() async {
+    try {
+      final String fileName = id;
+
+      final Reference reference = FirebaseStorage.instance.ref().child(
+        fileName,
+      );
+
+      final UploadTask uploadTask = reference.putFile(avatarImageFile!);
+
+      // Esperar a que termine la subida
+      final TaskSnapshot snapshot = await uploadTask;
+
+      // Obtener la URL
+      final String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      photoUrl = downloadUrl;
+
+      await FirebaseFirestore.instance.collection('users').doc(id).update({
+        'nickname': nickname,
+        'aboutMe': aboutMe,
+        'photoUrl': photoUrl,
+      });
+
+      await prefs.setString('photoUrl', photoUrl);
+
+      setState(() {
+        isLoading = false;
+      });
+
+      Fluttertoast.showToast(msg: "Upload success");
+    } on FirebaseException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      Fluttertoast.showToast(msg: e.message ?? e.toString());
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+
+      Fluttertoast.showToast(msg: e.toString());
+    }
   }
 
   void handleUpdateData() {
@@ -145,10 +140,10 @@ class SettingsScreenState extends State<SettingsScreen> {
       isLoading = true;
     });
 
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection('users')
-        .document(id)
-        .updateData({
+        .doc(id)
+        .update({
           'nickname': nickname,
           'aboutMe': aboutMe,
           'photoUrl': photoUrl,
@@ -211,14 +206,10 @@ class SettingsScreenState extends State<SettingsScreen> {
                                     ),
                                     clipBehavior: Clip.hardEdge,
                                   )
-                                : Icon(
-                                    Icons.account_circle,
-                                    size: 90.0,
-                                    color: greyColor,
-                                  ))
+                                : Icon(Icons.account_circle, size: 90.0))
                           : Material(
                               child: Image.file(
-                                avatarImageFile,
+                                avatarImageFile!,
                                 width: 90.0,
                                 height: 90.0,
                                 fit: BoxFit.cover,
@@ -229,14 +220,10 @@ class SettingsScreenState extends State<SettingsScreen> {
                               clipBehavior: Clip.hardEdge,
                             ),
                       IconButton(
-                        icon: Icon(
-                          Icons.camera_alt,
-                          color: primaryColor.withOpacity(0.5),
-                        ),
+                        icon: Icon(Icons.camera_alt),
                         onPressed: getImage,
                         padding: EdgeInsets.all(30.0),
                         splashColor: Colors.transparent,
-                        highlightColor: greyColor,
                         iconSize: 30.0,
                       ),
                     ],
@@ -256,7 +243,6 @@ class SettingsScreenState extends State<SettingsScreen> {
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.bold,
-                        color: primaryColor,
                       ),
                     ),
                     margin: EdgeInsets.only(left: 10.0, bottom: 5.0, top: 10.0),
@@ -265,12 +251,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                     child: Theme(
                       data: Theme.of(
                         context,
-                      ).copyWith(primaryColor: primaryColor),
+                      ).copyWith(primaryColor: Color.fromARGB(255, 0, 0, 0)),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Sweetie',
                           contentPadding: EdgeInsets.all(5.0),
-                          hintStyle: TextStyle(color: greyColor),
                         ),
                         controller: controllerNickname,
                         onChanged: (value) {
@@ -289,7 +274,6 @@ class SettingsScreenState extends State<SettingsScreen> {
                       style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.bold,
-                        color: primaryColor,
                       ),
                     ),
                     margin: EdgeInsets.only(left: 10.0, top: 30.0, bottom: 5.0),
@@ -298,12 +282,11 @@ class SettingsScreenState extends State<SettingsScreen> {
                     child: Theme(
                       data: Theme.of(
                         context,
-                      ).copyWith(primaryColor: primaryColor),
+                      ).copyWith(primaryColor: Color.fromARGB(255, 0, 0, 0)),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Fun, like travel and play PES...',
                           contentPadding: EdgeInsets.all(5.0),
-                          hintStyle: TextStyle(color: greyColor),
                         ),
                         controller: controllerAboutMe,
                         onChanged: (value) {
@@ -323,11 +306,6 @@ class SettingsScreenState extends State<SettingsScreen> {
                 child: TextButton(
                   onPressed: handleUpdateData,
                   child: Text('UPDATE', style: TextStyle(fontSize: 16.0)),
-                  color: primaryColor,
-                  highlightColor: Color(0xff8d93a0),
-                  splashColor: Colors.transparent,
-                  textColor: Colors.white,
-                  padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
                 ),
                 margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
               ),

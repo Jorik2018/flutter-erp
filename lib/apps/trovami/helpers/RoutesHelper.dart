@@ -20,56 +20,44 @@ class RoutesHelper {
     switch (settings.name) {
       case ROUTE_HOME:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? new CupertinoPageRoute(
-                builder: (_) => new Homepagelayout(),
+            ? CupertinoPageRoute(
+                builder: (_) => Homepagelayout(),
                 settings: settings,
               )
             : MyCustomRoute(
-                builder: (_) => new Homepagelayout(),
+                builder: (_) => Homepagelayout(),
                 settings: settings,
               );
 
       case ROUTE_SIGNUP:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? new CupertinoPageRoute(
-                builder: (_) => new SignupLayout(),
+            ? CupertinoPageRoute(
+                builder: (_) => SignupLayout(),
                 settings: settings,
               )
-            : MyCustomRoute(
-                builder: (_) => new SignupLayout(),
-                settings: settings,
-              );
+            : MyCustomRoute(builder: (_) => SignupLayout(), settings: settings);
 
       case ROUTE_ADD_GROUP:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? new CupertinoPageRoute(
-                builder: (_) => new AddGroup(),
-                settings: settings,
-              )
-            : new MyCustomRoute1(
-                builder: (_) => new AddGroup(),
-                settings: settings,
-              );
+            ? CupertinoPageRoute(builder: (_) => AddGroup(), settings: settings)
+            : MyCustomRoute1(builder: (_) => AddGroup(), settings: settings);
       case ROUTE_GROUP:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? new CupertinoPageRoute(
-                builder: (_) => new GroupStatusLayout(),
+            ? CupertinoPageRoute(
+                builder: (_) => GroupStatusLayout(),
                 settings: settings,
               )
-            : new MyCustomRoute1(
-                builder: (_) => new GroupStatusLayout(),
+            : MyCustomRoute1(
+                builder: (_) => GroupStatusLayout(),
                 settings: settings,
               );
       case ROUTE_MAP:
         return defaultTargetPlatform == TargetPlatform.iOS
-            ? new CupertinoPageRoute(
-                builder: (_) => new MapSample(),
+            ? CupertinoPageRoute(
+                builder: (_) => MapSample(),
                 settings: settings,
               )
-            : new MyCustomRoute1(
-                builder: (_) => new MapSample(),
-                settings: settings,
-              );
+            : MyCustomRoute1(builder: (_) => MapSample(), settings: settings);
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flexmonster/flutter_flexmonster.dart';
+//import 'package:flutter_flexmonster/flutter_flexmonster.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PivotTableDemo extends StatelessWidget {
@@ -7,7 +7,8 @@ class PivotTableDemo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Flexmonster pivot =
+    var pivot = Text("pivot");
+    /*Flexmonster pivot =
         Flexmonster(width: "100%", height: "500", toolbar: true, report: const {
       "dataSource": {
         "type": "json",
@@ -119,7 +120,7 @@ class PivotTableDemo extends StatelessWidget {
           "isPercent": false
         }
       ]
-    });
+    });*/
     return Column(children: [SizedBox(height: 500, child: pivot)]);
   }
 }

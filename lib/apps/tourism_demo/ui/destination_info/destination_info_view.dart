@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_erp/apps/tourism_demo/clippers.dart';
 import 'package:flutter_erp/apps/tourism_demo/i18n/translations.dart';
 import 'package:flutter_erp/apps/tourism_demo/networking/server_api.dart';
-import 'package:flutter_erp/apps/tourism_demo/redux/app/app_state.dart';
 import 'package:flutter_erp/apps/tourism_demo/styles/app_colors.dart';
 import 'package:flutter_erp/apps/tourism_demo/ui/destinations/destination_list_tile.dart';
 import 'package:flutter_erp/apps/tourism_demo/utils.dart';
@@ -16,7 +14,7 @@ class DestinationInfoView extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new _DestinationInfoState();
+    return _DestinationInfoState();
   }
 }
 
@@ -32,27 +30,27 @@ class _DestinationInfoState extends State<DestinationInfoView>
 
   @override
   initState() {
-    locationsAnimationController = new AnimationController(
+    locationsAnimationController = AnimationController(
       duration: const Duration(milliseconds: 400),
       vsync: this,
     );
 
-    servicesAnimationController = new AnimationController(
+    servicesAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
-    var curvedAnimation = new CurvedAnimation(
+    var curvedAnimation = CurvedAnimation(
       parent: locationsAnimationController!,
       curve: Curves.fastOutSlowIn,
     );
-    var curvedAnimation2 = new CurvedAnimation(
+    var curvedAnimation2 = CurvedAnimation(
       parent: servicesAnimationController!,
       curve: Curves.fastOutSlowIn,
     );
 
     servicesInfoAnimation =
-        new Tween<double>(begin: 90.0, end: 180.0).animate(curvedAnimation)
+        Tween<double>(begin: 90.0, end: 180.0).animate(curvedAnimation)
           ..addListener(() {
             setState(() {
               // the state that has changed here is the animation object’s value
@@ -68,7 +66,7 @@ class _DestinationInfoState extends State<DestinationInfoView>
       }
     });
     locationsAnimation =
-        new Tween<double>(begin: 270.0, end: 180.0).animate(curvedAnimation2)
+        Tween<double>(begin: 270.0, end: 180.0).animate(curvedAnimation2)
           ..addListener(() {
             setState(() {
               // the state that has changed here is the animation object’s value
@@ -90,11 +88,11 @@ class _DestinationInfoState extends State<DestinationInfoView>
   }
 
   Widget _imageAndDesc(String image, String desc) {
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        new Padding(
+        Padding(
           padding: const EdgeInsets.all(5.0),
           child: Container(
             height: 32.0,
@@ -107,7 +105,7 @@ class _DestinationInfoState extends State<DestinationInfoView>
             ),
           ),
         ),
-        new Padding(
+        Padding(
           padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
           child: Text(
             desc,
@@ -126,9 +124,9 @@ class _DestinationInfoState extends State<DestinationInfoView>
     double degrees,
     AlignmentGeometry alignment,
   ) {
-    bool isAr = StoreProvider.of<AppState>(context).state.isAr;
+    bool isAr = true; //StoreProvider.of<AppState>(context).state.isAr;
 
-    return new Transform(
+    return Transform(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: ClipPath(
@@ -177,10 +175,10 @@ class _DestinationInfoState extends State<DestinationInfoView>
   }
 
   Widget _buildLocations(BuildContext context) {
-    bool isAr = StoreProvider.of<AppState>(context).state.isAr;
+    bool isAr = true; //StoreProvider.of<AppState>(context).state.isAr;
 
     if (destinationCard!.destination!.activities!.length > 0) {
-      return new SizedBox(
+      return SizedBox(
         height: 120.0,
         child: ListView(
           scrollDirection: Axis.horizontal,
@@ -188,14 +186,12 @@ class _DestinationInfoState extends State<DestinationInfoView>
               .map(
                 (d) => (Column(
                   children: <Widget>[
-                    new Container(
+                    Container(
                       width: 75.0,
                       height: 75.0,
                       margin: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          new Radius.circular(75.0),
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(75.0)),
                       ),
                       child: ClipOval(
                         child: FadeInImage.assetNetwork(
@@ -231,7 +227,7 @@ class _DestinationInfoState extends State<DestinationInfoView>
     double degrees,
     AlignmentGeometry alignment,
   ) {
-    return new Transform(
+    return Transform(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: ClipPath(
@@ -266,7 +262,7 @@ class _DestinationInfoState extends State<DestinationInfoView>
   Widget buildInfo() {
     final double _height = MediaQuery.of(context).size.height;
 
-    return new Container(
+    return Container(
       child: Hero(
         tag: "destinationCard!.destination!.photo!",
         child: destinationCard!,
@@ -276,21 +272,21 @@ class _DestinationInfoState extends State<DestinationInfoView>
 
   @override
   Widget build(BuildContext context) {
-    destinationCard = StoreProvider.of<AppState>(
+    /*destinationCard = StoreProvider.of<AppState>(
       context,
-    ).state.destinationInfoState!.destinationCard!;
+    ).state.destinationInfoState!.destinationCard!;*/
 
-    return new Stack(
+    return Stack(
       fit: StackFit.expand,
       alignment: Alignment.bottomCenter,
       children: <Widget>[
-        new Container(decoration: gradientBackDecoration()),
-        new Scaffold(
+        Container(decoration: gradientBackDecoration()),
+        Scaffold(
           backgroundColor: Colors.transparent,
           body: Container(
             decoration: BoxDecoration(
               boxShadow: [
-                new BoxShadow(
+                BoxShadow(
                   color: Colors.black12,
                   blurRadius: 30.0,
                   offset: const Offset(0.0, 75.0),
@@ -308,7 +304,7 @@ class _DestinationInfoState extends State<DestinationInfoView>
     return CustomScrollView(
       // physics:PageScrollPhysics(),
       slivers: <Widget>[
-        new SliverAppBar(
+        SliverAppBar(
           floating: true,
           pinned: false,
           snap: true,
@@ -317,10 +313,10 @@ class _DestinationInfoState extends State<DestinationInfoView>
           automaticallyImplyLeading: true,
           leading: InkWell(
             onTap: () => _collapseAnimations(),
-            child: Icon(Icons.arrow_back, color: AppColors.accentColor),
+            child: Icon(Icons.arrow_back),
           ),
         ),
-        new SliverPadding(
+        SliverPadding(
           padding: const EdgeInsets.all(10.0),
           sliver: SliverList(
             delegate: SliverChildListDelegate([

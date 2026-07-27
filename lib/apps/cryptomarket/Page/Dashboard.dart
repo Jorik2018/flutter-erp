@@ -1,7 +1,8 @@
+import 'package:flutter_erp/apps/cryptomarket/Page/News.dart';
+
 import 'AddCoin.dart';
 import 'Home.dart';
 import 'Markets.dart';
-import 'News.dart';
 import 'Settings.dart';
 import '../Theme/fab_bottom_app_bar.dart';
 import '../Util/SharedPreferencesHelper.dart';
@@ -15,10 +16,7 @@ class Dashboard extends StatefulWidget {
   }
 }
 
-class dashbord extends State<Dashboard>  {
-
-
-
+class dashbord extends State<Dashboard> {
   @override
   void initState() {
     // TODO: implement initState
@@ -26,98 +24,76 @@ class dashbord extends State<Dashboard>  {
     getCoinsList();
   }
 
-  getCoinsList()async{
-
+  getCoinsList() async {
     List coins = await SharedPreferencesHelper.getCoinList();
-    if(coins.length == 0){
-
+    if (coins.length == 0) {
       coins.add('BTC');
       coins.add('XRP');
       coins.add('ETH');
-
     }
 
     List news = await SharedPreferencesHelper.getNewsList();
-    if(coins.length == 0){
-
+    if (coins.length == 0) {
       coins.add('BTC');
       coins.add('XRP');
       coins.add('ETH');
-
     }
-
   }
-  final List<Widget> pages = [
-    Home(
-      key: PageStorageKey('home'),
-    ),
-    Markets_Screen(
-      key: PageStorageKey('markets'),
-    ),
 
-    News_screen(
-      key: PageStorageKey('news'),
-    ),
-    Settings(
-      key: PageStorageKey('setting'),
-    ),
+  final List<Widget> pages = [
+    Home(key: PageStorageKey('home')),
+    Markets_Screen(key: PageStorageKey('markets')),
+
+    NewsScreen(key: PageStorageKey('news')),
+    Settings(key: PageStorageKey('setting')),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
 
   int _selectedIndex = 0;
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-
-    body: PageStorage(
-      child: pages[_selectedIndex],
-      bucket: bucket,
-    ),
+      body: PageStorage(child: pages[_selectedIndex], bucket: bucket),
       bottomNavigationBar: _bottomNavigationBar(_selectedIndex),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _buildFab(
-          context), // This trailing comma makes auto-formatting nicer for build methods.
+        context,
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   Widget _bottomNavigationBar(int selectedIndex) => FABBottomAppBar(
-  centerItemText: 'Add Coin',
-  color: Colors.grey,
-  selectedColor: Colors.black,
-  notchedShape: CircularNotchedRectangle(),
-  onTabSelected: _selectedTab,
-  items: [
-  FABBottomAppBarItem(iconData: Icons.home, text: 'Home'),
-  FABBottomAppBarItem(iconData: Icons.multiline_chart, text: 'Markets'),
-  FABBottomAppBarItem(iconData: Icons.assignment, text: 'News'),
-  FABBottomAppBarItem(iconData: Icons.settings, text: 'Settings'),
-  ],
+    centerItemText: 'Add Coin',
+    color: Colors.grey,
+    selectedColor: Colors.black,
+    notchedShape: CircularNotchedRectangle(),
+    onTabSelected: _selectedTab,
+    items: [
+      FABBottomAppBarItem(iconData: Icons.home, text: 'Home'),
+      FABBottomAppBarItem(iconData: Icons.multiline_chart, text: 'Markets'),
+      FABBottomAppBarItem(iconData: Icons.assignment, text: 'News'),
+      FABBottomAppBarItem(iconData: Icons.settings, text: 'Settings'),
+    ],
   );
 
-  void _selectedTab(int index) async{
-   await SharedPreferencesHelper.getCurrency();
+  void _selectedTab(int index) async {
+    await SharedPreferencesHelper.getCurrency();
     setState(() {
       _selectedIndex = index;
     });
   }
 
-
   Widget _buildFab(BuildContext context) {
     return FloatingActionButton(
-
-      onPressed: (){
+      onPressed: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddCoin()));
+          context,
+          MaterialPageRoute(builder: (context) => AddCoin()),
+        );
       },
       //onPressed: _selectedFab,
       tooltip: 'Increment',

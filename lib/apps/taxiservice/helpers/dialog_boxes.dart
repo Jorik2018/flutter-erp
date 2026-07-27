@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/taxiservice/profile_page.dart';
 import 'package:flutter_erp/apps/taxiservice/login_page.dart';
 import 'package:flutter_erp/apps/taxiservice/code_page.dart';
-import 'package:sms/sms.dart';
+//import 'package:sms/sms.dart';
 
-TextEditingController newData = new TextEditingController();
+TextEditingController newData = TextEditingController();
 
 void locationDialogBox(BuildContext context) {
-  AlertDialog alert = new AlertDialog(
+  AlertDialog alert = AlertDialog(
     contentPadding: const EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 20.0),
     content: SingleChildScrollView(
       child: Column(
@@ -37,11 +37,11 @@ void locationDialogBox(BuildContext context) {
       ),
     ),
   );
-  showDialog(context: context, child: alert);
+  //showDialog(context: context, child: alert);
 }
 
 void orderDialogBox(BuildContext context) {
-  AlertDialog alert = new AlertDialog(
+  AlertDialog alert = AlertDialog(
     contentPadding: const EdgeInsets.fromLTRB(20.0, 30.0, 10.0, 20.0),
     content: SingleChildScrollView(
       child: Column(
@@ -77,11 +77,11 @@ void orderDialogBox(BuildContext context) {
       ),
     ),
   );
-  showDialog(context: context, child: alert);
+  //showDialog(context: context, child: alert);
 }
 
 void connectionErrorDialogbox(BuildContext context) {
-  AlertDialog alert = new AlertDialog(
+  AlertDialog alert = AlertDialog(
     contentPadding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
     content: SingleChildScrollView(
       child: Column(
@@ -115,11 +115,11 @@ void connectionErrorDialogbox(BuildContext context) {
       ),
     ),
   );
-  showDialog(context: context, child: alert);
+  //showDialog(context: context, child: alert);
 }
 
 void profileDeleteDialogBox(BuildContext context) {
-  AlertDialog alert = new AlertDialog(
+  AlertDialog alert = AlertDialog(
     contentPadding: const EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 10.0),
     content: SingleChildScrollView(
       padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
@@ -170,9 +170,7 @@ void profileDeleteDialogBox(BuildContext context) {
                         numberController.clear();
                         nameController.clear();
                         Navigator.of(context).pushAndRemoveUntil(
-                          new MaterialPageRoute(
-                            builder: (context) => StartApp(),
-                          ),
+                          MaterialPageRoute(builder: (context) => StartApp()),
                           (Route<dynamic> route) => false,
                         );
                       },
@@ -186,12 +184,12 @@ void profileDeleteDialogBox(BuildContext context) {
       ),
     ),
   );
-  showDialog(context: context, child: alert);
+  //showDialog(context: context, child: alert);
 }
 
 void profileEditDialogBox(BuildContext context, String data) {
   newData.text = data;
-  AlertDialog alert = new AlertDialog(
+  AlertDialog alert = AlertDialog(
     title: Text(editMode == 1 ? 'Имя пользователя' : 'Номер телефона'),
     content: SingleChildScrollView(
       padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
@@ -256,9 +254,7 @@ void profileEditDialogBox(BuildContext context, String data) {
                           print('create profile $createnewProfile');
                           Navigator.push(
                             context,
-                            new MaterialPageRoute(
-                              builder: (context) => CodePage(),
-                            ),
+                            MaterialPageRoute(builder: (context) => CodePage()),
                           );
                         }
                       },
@@ -272,12 +268,12 @@ void profileEditDialogBox(BuildContext context, String data) {
       ),
     ),
   );
-  showDialog(context: context, child: alert);
+  //showDialog(context: context, child: alert);
 }
 
 void sendMessageCode() {
-  SmsSender smsSender = new SmsSender();
+  /*SmsSender smsSender = SmsSender();
   // String address = '+' + numberController.text;
-  smsSender.sendSms(new SmsMessage('+998' + newData.text, randomCode));
+  smsSender.sendSms(SmsMessage('+998' + newData.text, randomCode));*/
   print('message is sent');
 }

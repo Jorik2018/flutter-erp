@@ -44,12 +44,12 @@ class OpenFlutterProductRating extends StatelessWidget {
   final bool showDefaultStar;
 
   //callback when rating was selected
-  final Function(double rating) onRatingSelected;
+  final Function(double rating)? onRatingSelected;
 
   const OpenFlutterProductRating({
     Key? key,
-    this.rating,
-    this.ratingCount,
+    required this.rating,
+    required this.ratingCount,
     this.alignment = MainAxisAlignment.center,
     this.starCount = 5,
     this.iconSize = 24.0,
@@ -86,7 +86,7 @@ class OpenFlutterProductRating extends StatelessWidget {
     return GestureDetector(
       onTap: editable
           ? () {
-              onRatingSelected(_calculateRatingSelected(index));
+              onRatingSelected!(_calculateRatingSelected(index));
             }
           : null,
       child: Container(
@@ -140,7 +140,7 @@ class OpenFlutterProductRating extends StatelessWidget {
           ' (' + ratingCount.toInt().toString() + ')',
           style: Theme.of(
             context,
-          ).textTheme.bodyText1.copyWith(fontSize: labelFontSize),
+          ).textTheme.bodySmall!.copyWith(fontSize: labelFontSize),
           textAlign: TextAlign.center,
         ),
       ),

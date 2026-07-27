@@ -57,13 +57,13 @@ class _PaymentState extends State<Payment> {
                       curve: Curves.easeIn,
                     );
 
-                    if (InputState.validate ==
+                    /*if (InputState.validate ==
                         Provider.of<StateProvider>(
                           context,
                           listen: false,
                         ).getCurrentState()) {
                       _controller.flip();
-                    }
+                    }*/
                     Provider.of<StateProvider>(
                       context,
                       listen: false,

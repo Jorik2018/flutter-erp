@@ -39,11 +39,11 @@ class ChangeCartItemQuantityParams {
   final CartItem item;
   final int quantity;
 
-  ChangeCartItemQuantityParams({this.item, this.quantity});
+  ChangeCartItemQuantityParams({required this.item, required this.quantity});
 }
 
 class ChangeCartItemQuantityResult extends UseCaseResult {
-  ChangeCartItemQuantityResult({Exception exception, bool result})
+  ChangeCartItemQuantityResult({Exception? exception, bool? result})
     : super(exception: exception, result: result);
 }
 

@@ -14,7 +14,7 @@ import 'package:firebase_database/firebase_database.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 import 'groupstatus.dart';
 import 'homepage.dart';
@@ -52,7 +52,7 @@ class MapSampleState extends State<MapSample> {
     var markerIdVal = locData["emailid"];
     final MarkerId markerId = MarkerId(markerIdVal);
 
-    // creating a new MARKER
+    // creating a MARKER
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(
@@ -65,7 +65,7 @@ class MapSampleState extends State<MapSample> {
       },
     );
 
-      // adding a new marker to map
+      // adding a marker to map
       markers[markerId] = marker;
       return markers;
   }*/
@@ -113,7 +113,7 @@ class MapSampleState extends State<MapSample> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: FutureBuilder(
         future: getLocsOfMembers(),
         //          initialData: widget.currentLocations,
@@ -182,12 +182,10 @@ class MapSampleState extends State<MapSample> {
       }
     });
     for (var i = 0; i < memcount; i++) {
-      var response1 = await http.get(
-        Uri.parse(
-          "https://trovami-bcd81.firebaseio.com/groups/${groupkey}/members/${i}.json",
-        ),
+      var response1 = await Dio().get(
+        "https://trovami-bcd81.firebaseio.com/groups/${groupkey}/members/${i}.json",
       );
-      Map result1 = jsonDecode(response1.body);
+      Map result1 = jsonDecode(response1.data);
       print(result1["emailid"]);
       print(result1["locationShare"]);
       if (result1["locationShare"] == true) {
@@ -245,20 +243,20 @@ class MapSampleState extends State<MapSample> {
 
 //class loadingindlayout extends StatefulWidget {
 //  @override
-//  loadingindlayoutstate createState() => new loadingindlayoutstate();
+//  loadingindlayoutstate createState() => loadingindlayoutstate();
 //}
 //
 //class loadingindlayoutstate extends State<loadingindlayout> {
-//      MapView mapView = new MapView();
+//      MapView mapView = MapView();
 //      CameraPosition cameraPosition;
-//      var compositeSubscription = new CompositeSubscription();
+//      var compositeSubscription = CompositeSubscription();
 //      Timer tim;
 //      loadshowmap() async {
 //          _handleDismiss();
 //        await getlocsofmembers(0);
 //          if(currentLocations.isNotEmpty) {
-//            mapView = new MapView();
-//            compositeSubscription = new CompositeSubscription();
+//            mapView = MapView();
+//            compositeSubscription = CompositeSubscription();
 //            Navigator.of(context).pop();
 //            showMap(currentLocations);
 //          }
@@ -270,7 +268,7 @@ class MapSampleState extends State<MapSample> {
 //        super.initState();
 //        loadshowmap();
 //        twenty = const Duration(seconds: 10);
-//        t2=new Timer(sec, ()=>{});
+//        t2=Timer(sec, ()=>{});
 //      }
 //
 //      @override
@@ -281,15 +279,15 @@ class MapSampleState extends State<MapSample> {
 //
 //      @override
 //      Widget build(BuildContext context) =>
-//      new Scaffold(
+//      Scaffold(
 //        appBar:AppBar(
-//          title:  new Text('Trovami'),
+//          title:  Text('Trovami'),
 //          backgroundColor: Colors.black,
 //          leading:Container(),
 //        ),
 //        body:Center(
 //            child:Container(
-//              child:new CircularProgressIndicator(
+//              child:CircularProgressIndicator(
 //                valueColor:AlwaysStoppedAnimation<Color>(Colors.black),
 //              ),
 //            )
@@ -331,7 +329,7 @@ class MapSampleState extends State<MapSample> {
 //              final Map resmap1 = jsonCodec.decode(userlocresponse.body);
 //              for (var i = 0; i < currentLocations.length; i++) {
 //                if (currentLocations[i].EmailId == result1["emailid"]) {
-//                  currentLoc currentLocation = new currentLoc();
+//                  currentLoc currentLocation = currentLoc();
 //                  currentLocation.EmailId = result1["emailid"];
 //                  currentLocation.currentLocation = resmap1;
 //                  currentLocations.removeAt(i);
@@ -340,7 +338,7 @@ class MapSampleState extends State<MapSample> {
 //                }
 //              }
 //              if (flag == 0) {
-//                currentLoc currentLocation = new currentLoc();
+//                currentLoc currentLocation = currentLoc();
 //                currentLocation.EmailId = result1["emailid"];
 //                currentLocation.currentLocation = resmap1;
 //                currentLocations.add(currentLocation);
@@ -368,7 +366,7 @@ class MapSampleState extends State<MapSample> {
 //                          for (var i = 0; i < currentLocations.length; i++) {
 //                            if (currentLocations[i].EmailId ==
 //                                event.snapshot.value["emailid"]) {
-//                              currentLoc currentLocation = new currentLoc();
+//                              currentLoc currentLocation = currentLoc();
 //                              currentLocation.EmailId = event.snapshot.value["emailid"];
 //                              currentLocation.currentLocation =
 //                              event.snapshot.value["location"];
@@ -378,7 +376,7 @@ class MapSampleState extends State<MapSample> {
 //                            }
 //                          }
 //                          if (flag == 0) {
-//                            currentLoc currentLocation = new currentLoc();
+//                            currentLoc currentLocation = currentLoc();
 //                            currentLocation.EmailId = event.snapshot.value["emailid"];
 //                            currentLocation.currentLocation =
 //                            event.snapshot.value["location"];
@@ -387,16 +385,16 @@ class MapSampleState extends State<MapSample> {
 ////                          _handleDismiss();
 //
 ////                          var twenty = const Duration(seconds: 15);
-////                          new Timer(twenty, () {
+////                          Timer(twenty, () {
 //                            if(currentLocations.length!=0) {
 //                              for (var i = 0; i < currentLocations.length; i++) {
 //                                if(currentLocations[i].currentLocation!=null&&currentLocations[i].EmailId!=loggedinUser &&currentLocations[i].EmailId==event.snapshot.value["emailid"])
 //                                {
-//                                  mapView.removeMarker(new Marker("${currentLocations[i].EmailId}", "${currentLocations[i].EmailId}",
+//                                  mapView.removeMarker(Marker("${currentLocations[i].EmailId}", "${currentLocations[i].EmailId}",
 //                                      currentLocations[i].currentLocation["latitude"],
 //                                      currentLocations[i].currentLocation["longitude"],
 //                                      color: Colors.redAccent));
-//                                  mapView.addMarker(new Marker("${currentLocations[i].EmailId}", "${currentLocations[i].EmailId}",
+//                                  mapView.addMarker(Marker("${currentLocations[i].EmailId}", "${currentLocations[i].EmailId}",
 //                                      currentLocations[i].currentLocation["latitude"],
 //                                      currentLocations[i].currentLocation["longitude"],
 //                                      color: Colors.redAccent));
@@ -430,19 +428,19 @@ class MapSampleState extends State<MapSample> {
 //          long=77.5946;
 //        }
 //        mapView.show(
-//            new MapOptions(
+//            MapOptions(
 //                showUserLocation: locationShare,
 //                initialCameraPosition:CameraPosition(
-//                    new Location(lat, long), 14.0),
+//                    Location(lat, long), 14.0),
 //                title: "Live locator"),
 //            toolbarActions: [
-//              new ToolbarAction("Close", 1)
+//              ToolbarAction("Close", 1)
 //            ]);
 //        var sub1 = mapView.onMapReady.listen((_) async {
 //          if(currentLocations.isNotEmpty) {
 //            for (var i = 0; i < currentLocations.length; i++) {
 //              if(currentLocations[i].currentLocation!=null&&currentLocations[i].EmailId!=loggedinUser) {
-//                    mapView.addMarker(new Marker("${currentLocations[i].EmailId}", "${currentLocations[i].EmailId}",
+//                    mapView.addMarker(Marker("${currentLocations[i].EmailId}", "${currentLocations[i].EmailId}",
 //                    currentLocations[i].currentLocation["latitude"],
 //                    currentLocations[i].currentLocation["longitude"],
 //                    color: Colors.redAccent));
@@ -457,7 +455,7 @@ class MapSampleState extends State<MapSample> {
 //            .listen((location) async {
 //          print(1);
 //         if(!t2.isActive) {
-//        t2= new  Timer(twenty,await updateLocation(location)
+//        t2=  Timer(twenty,await updateLocation(location)
 //          );
 //          }
 //        });
@@ -498,13 +496,13 @@ class MapSampleState extends State<MapSample> {
 //      }
 //}
 //  class CompositeSubscription {
-//    Set<StreamSubscription> _subscriptions = new Set();
+//    Set<StreamSubscription> _subscriptions = Set();
 //
 //    void cancel() {
 //      for (var n in this._subscriptions) {
 //        n.cancel();
 //      }
-//      this._subscriptions = new Set();
+//      this._subscriptions = Set();
 //    }
 //
 //    void add(StreamSubscription subscription) {
@@ -532,7 +530,7 @@ class MapSampleState extends State<MapSample> {
 //  updateLocation(location) async{
 ////    var httpClient = createHttpClient();
 //    bool locationflag = true;
-//    locationclass loc = new locationclass();
+//    locationclass loc = locationclass();
 //    loc.latitude = location.latitude;
 //    loc.longitude = location.longitude;
 //    int decimals = 5;

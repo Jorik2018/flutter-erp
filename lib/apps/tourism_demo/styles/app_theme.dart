@@ -6,10 +6,10 @@ class AppTheme {
     final originalTextTheme = ThemeData.light().textTheme;
     final IconThemeData originalIconTheme = ThemeData.light().iconTheme;
     //final TextStyle originalBody1 = originalTextTheme.body1;
-    var grayNurseColor = new Color(
+    var grayNurseColor = Color(
       0xFFEAE9E7,
     ); // <color name="gray_nurse">#EAE9E7</color>
-    var lightGrayColor = new Color(
+    var lightGrayColor = Color(
       0xFFD6D6D6,
     ); // <color name="light_gray">#D6D6D6</color>
     return ThemeData.light().copyWith(

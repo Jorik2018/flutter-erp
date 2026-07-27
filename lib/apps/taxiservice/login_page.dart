@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'dart:math';
-import 'package:sms/sms.dart';
+//import 'package:sms/sms.dart';
 import 'code_page.dart';
 import 'dart:async';
 import 'dart:async';
-import 'package:connectivity/connectivity.dart';
+//import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/dialog_boxes.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/auth.dart';
 
-final numberController = new TextEditingController();
-final nameController = new TextEditingController();
-String userName;
-String phoneNumber;
+final numberController = TextEditingController();
+final nameController = TextEditingController();
+String? userName;
+String? phoneNumber;
 bool hasConnection = false;
-bool createnewProfile;
-String randomCode;
+bool? createnewProfile;
+String? randomCode;
 
 class StartApp extends StatefulWidget {
   @override
-  State createState() => new LoginPageState();
+  State createState() => LoginPageState();
 }
 
 class LoginPageState extends State<StartApp> implements AuthStateListener {
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   LoginPageState() {
     var authStateProvider = AuthStateProvider();
     authStateProvider.subscribe(this);
@@ -39,10 +39,10 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
   }
 
   void sendMessageCode() {
-    SmsSender smsSender = new SmsSender();
+    /*SmsSender smsSender = SmsSender();
     // String address = '+' + numberController.text;
 
-    SmsMessage message = new SmsMessage('+998972300209', 'Hello flutter!');
+    SmsMessage message = SmsMessage('+998972300209', 'Hello flutter!');
     message.onStateChanged.listen((state) {
       if (state == SmsMessageState.Sent) {
         print("SMS is sent!");
@@ -55,10 +55,10 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
     smsSender.sendSms(message);
     smsSender.onSmsDelivered.listen((SmsMessage message) {
       print('${message.address} received your message.');
-    });
+    });*/
     // sender.sendSms(message);
     //   smsSender
-    //       .sendSms(new SmsMessage('+998' + numberController.text, randomCode));
+    //       .sendSms(SmsMessage('+998' + numberController.text, randomCode));
     //   print('message is sent');
   }
 
@@ -83,7 +83,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
     );
     final phoneNumber = Row(
       children: <Widget>[
-        new Expanded(
+        Expanded(
           flex: 1,
           child: TextFormField(
             autofocus: false,
@@ -102,7 +102,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
           flex: 4,
           child: TextFormField(
             validator: (value) {
-              if (value.isEmpty) {
+              if (value!.isEmpty) {
                 return 'Пожалуйста введите ваш номер';
               }
             },
@@ -124,7 +124,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
 
     final fullname = TextFormField(
       validator: (value) {
-        if (value.isEmpty) {
+        if (value!.isEmpty) {
           return 'Пожалуйста введите ваше имя';
         }
       },
@@ -139,7 +139,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
     );
 
     // TODO: implement build
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.blue[20],
       appBar: AppBar(title: Text('Taxi Service')),
       body: Center(
@@ -166,7 +166,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
                     onPressed: () {
                       // Validate will return true if the form is valid, or false if
                       // the form is invalid.
-                      if (_formKey.currentState.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         initConnectivity();
                         if (hasConnection) {
                           generateRandomCode();
@@ -174,9 +174,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
                           createnewProfile = true;
                           Navigator.push(
                             context,
-                            new MaterialPageRoute(
-                              builder: (context) => CodePage(),
-                            ),
+                            MaterialPageRoute(builder: (context) => CodePage()),
                           );
                         } else {
                           connectionErrorDialogbox(context);
@@ -200,7 +198,7 @@ class LoginPageState extends State<StartApp> implements AuthStateListener {
 }
 
 Future<Null> initConnectivity() async {
-  final Connectivity _connectivity = new Connectivity();
+  /*final Connectivity _connectivity = Connectivity();
   var connectionStatus;
   try {
     connectionStatus = await (_connectivity.checkConnectivity());
@@ -215,12 +213,12 @@ Future<Null> initConnectivity() async {
       print(e.toString());
       connectionStatus = 'Failed to get connectivity.';
     }
-  }
+  }*/
   print('connection $hasConnection');
 }
 
 generateRandomCode() {
-  Random random = new Random();
+  Random random = Random();
   String messageCode = random.nextInt((100000 + 1 - 99999) + 99999).toString();
   print(messageCode);
   randomCode = messageCode;

@@ -5,7 +5,7 @@ import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/AppBarWidge
 import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/CircularProgress.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/models/ProductDetails.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/utils/Urls.dart';
-import 'package:http/http.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 
 ProductDetails? productDetails;
 
@@ -57,31 +57,25 @@ class BottomNavBar extends StatelessWidget {
           Icon(Icons.favorite_border, color: Color(0xFF5e5e5e)),
           Spacer(),
           ElevatedButton(
-  onPressed: () {},
-  style: ElevatedButton.styleFrom(
-    elevation: 0,
-    backgroundColor: const Color(0xFFfef2f2),
-    foregroundColor: const Color(0xFFff665e), // color del texto
-    padding: const EdgeInsets.symmetric(
-      horizontal: 5,
-      vertical: 15,
-    ),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(10),
-        bottomLeft: Radius.circular(10),
-      ),
-      side: BorderSide(color: Color(0xFFfef2f2)),
-    ),
-  ),
-  child: const Text(
-    "ADD TO CART",
-    style: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w400,
-    ),
-  ),
-),
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              backgroundColor: const Color(0xFFfef2f2),
+              foregroundColor: const Color(0xFFff665e), // color del texto
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+                side: BorderSide(color: Color(0xFFfef2f2)),
+              ),
+            ),
+            child: const Text(
+              "ADD TO CART",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+            ),
+          ),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -311,10 +305,9 @@ class _DetailScreenState extends State<DetailScreen> {
 }
 
 Future<ProductDetails?> getDetailData(String slug) async {
-  Response response;
-  response = await get(Uri.parse(Urls.ROOT_URL + slug));
+  HttpResponse response = await HttpClient.get(Urls.ROOT_URL + slug);
   int statusCode = response.statusCode;
-  final body = json.decode(response.body);
+  final body = json.decode(response.body!);
   if (statusCode == 200) {
     productDetails = ProductDetails.fromJson(body);
     return productDetails;

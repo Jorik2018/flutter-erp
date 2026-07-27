@@ -12,7 +12,7 @@ class Theme_Screen extends StatefulWidget {
 }
 
 class theme extends State<Theme_Screen> {
-  String lbl_theme;
+  late String lbl_theme;
 
   List<String> themeList = ['Light', 'Dark'];
 

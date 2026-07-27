@@ -20,7 +20,7 @@ class TripData {
   final LatLng location;
   final int timeStatus;
 
-  TripData({this.location, this.timeStatus});
+  TripData({required this.location, required this.timeStatus});
 
   factory TripData.fromJson(Map<String, dynamic> json) {
     return TripData(
@@ -35,31 +35,35 @@ class YourTrip extends StatefulWidget {
   final Function() onPressed;
   final String tooltip;
   final IconData icon;
-  YourTrip({this.onPressed, this.tooltip, this.icon});
+  YourTrip({
+    required this.onPressed,
+    required this.tooltip,
+    required this.icon,
+  });
   State<YourTrip> createState() => YourTripState();
 }
 
 class YourTripState extends State<YourTrip>
     with SingleTickerProviderStateMixin {
-  BitmapDescriptor pinLocationIcon;
+  BitmapDescriptor? pinLocationIcon;
   bool loading = true;
   bool flagFetchTripData = true;
-  final Set<Marker> _markers = {};
+  //final Set<Marker> _markers = {};
   final Set<Polyline> _polyLines = {};
   GoogleMapsServices _googleMapsServices = GoogleMapsServices();
   Set<Polyline> get polyLines => _polyLines;
   Completer<GoogleMapController> _controller = Completer();
-  static LatLng latLng;
-  LocationData currentLocation;
-  TripData destination_data;
+  static LatLng? latLng;
+  LocationData? currentLocation;
+  TripData? destination_data;
 
-  ImageConfiguration get configuration => null;
+  ImageConfiguration? get configuration => null;
 
   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<Color> _buttonColor;
-  Animation<double> _animateIcon;
-  Animation<double> _translateButton;
+  late AnimationController _animationController;
+  Animation<Color>? _buttonColor;
+  late Animation<double> _animateIcon;
+  late Animation<double> _translateButton;
   Curve _curve = Curves.easeOut;
   double _fabHeight = 56.0;
 
@@ -75,13 +79,13 @@ class YourTripState extends State<YourTrip>
     _animateIcon = Tween<double>(
       begin: 0.0,
       end: 1.0,
-    ).animate(_animationController);
-    _buttonColor = ColorTween(begin: Colors.blue, end: Colors.red).animate(
+    ).animate(_animationController!);
+    /*_buttonColor = ColorTween(begin: Colors.blue, end: Colors.red).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Interval(0.00, 1.00, curve: Curves.linear),
       ),
-    );
+    );*/
     _translateButton = Tween<double>(begin: _fabHeight, end: -14.0).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -100,7 +104,7 @@ class YourTripState extends State<YourTrip>
     );
   }
 
-  Future<TripData> fetchTripInfo(context) async {
+  Future<TripData?> fetchTripInfo(context) async {
     final String data = await DefaultAssetBundle.of(
       context,
     ).loadString("android/assets/data.json");
@@ -111,26 +115,26 @@ class YourTripState extends State<YourTrip>
   }
 
   getLocation() async {
-    var location = new Location();
-    location.onLocationChanged().listen((currentLocation) {
+    var location = Location();
+    /*location.onLocationChanged().listen((currentLocation) {
       setState(() {
         latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
       });
 
       _onAddMarkerButtonPressed();
       loading = false;
-    });
+    });*/
   }
 
   void _onAddMarkerButtonPressed() {
     setState(() {
-      _markers.add(
+      /*_markers.add(
         Marker(
           markerId: MarkerId("111"),
           position: latLng,
           icon: BitmapDescriptor.defaultMarker,
         ),
-      );
+      );*/
     });
   }
 
@@ -170,19 +174,19 @@ class YourTripState extends State<YourTrip>
   }
 
   void _addMarker(LatLng location, String address) {
-    _markers.add(
+    /*_markers.add(
       Marker(
         markerId: MarkerId("112"),
         position: location,
         infoWindow: InfoWindow(title: address, snippet: "call him"),
         icon: pinLocationIcon,
       ),
-    );
+    );*/
   }
 
   List _decodePoly(String poly) {
     var list = poly.codeUnits;
-    var lList = new List();
+    var lList = [];
     int index = 0;
     int len = poly.length;
     int c = 0;
@@ -250,7 +254,7 @@ class YourTripState extends State<YourTrip>
               return AlertDialog(
                 title: Row(
                   children: [
-                    new Container(
+                    Container(
                       child: Image.asset(
                         'android/assets/cryFace.png',
                         height: 50.0,
@@ -301,7 +305,7 @@ class YourTripState extends State<YourTrip>
               return AlertDialog(
                 title: Row(
                   children: [
-                    new Container(
+                    Container(
                       child: Image.asset(
                         'android/assets/Huang.jpg',
                         height: 50.0,
@@ -340,7 +344,7 @@ class YourTripState extends State<YourTrip>
       child: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
         onPressed: () {
-          sendRequest(latLng, destination_data.location);
+          //sendRequest(latLng, destination_data.location);
         },
         tooltip: 'CarLocation',
         child: Icon(Icons.directions_car),
@@ -351,7 +355,7 @@ class YourTripState extends State<YourTrip>
   Widget toggle() {
     return Container(
       child: FloatingActionButton(
-        backgroundColor: _buttonColor.value,
+        backgroundColor: _buttonColor!.value,
         onPressed: animate,
         tooltip: 'Toggle',
         child: AnimatedIcon(
@@ -385,13 +389,13 @@ class YourTripState extends State<YourTrip>
             body: Container(
               child: Stack(
                 children: <Widget>[
-                  new Container(
+                  Container(
                     child: GoogleMap(
                       polylines: polyLines,
-                      markers: _markers,
+                      //markers: _markers,
                       mapType: MapType.normal,
                       initialCameraPosition: CameraPosition(
-                        target: latLng,
+                        target: latLng!,
                         zoom: 14.4746,
                       ),
                       onCameraMove: onCameraMove,
@@ -400,7 +404,7 @@ class YourTripState extends State<YourTrip>
                       },
                     ),
                   ),
-                  new Column(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Transform(

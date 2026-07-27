@@ -33,18 +33,18 @@ class _CartViewState extends State<CartView> {
     return BlocListener(
       bloc: bloc,
       listener: (context, state) {
-        if (state is CheckoutErrorState) {
+        /*if (state is CheckoutErrorState) {
           return Container(
             padding: EdgeInsets.all(AppSizes.sidePadding),
             child: Text(
               'An error occured',
               style: _theme.textTheme.headlineLarge.copyWith(
-                color: _theme.errorColor,
+                color: _theme.colorScheme.error,
               ),
             ),
           );
         }
-        return Container();
+        return Container();*/
       },
       child: BlocBuilder(
         bloc: bloc,
@@ -58,10 +58,10 @@ class _CartViewState extends State<CartView> {
                     width: width,
                   ),
                   OpenFlutterActionCard(
-                    title: state.currentShippingAddress.fullName,
+                    title: state.currentShippingAddress!.fullName,
                     linkText: 'Change',
                     onLinkTap: (() => {
-                      widget.changeView(
+                      widget.changeView!(
                         changeType: ViewChangeType.Exact,
                         index: 2,
                       ),
@@ -69,9 +69,6 @@ class _CartViewState extends State<CartView> {
                     child: RichText(
                       text: TextSpan(
                         text: state.currentShippingAddress.toString(),
-                        style: _theme.textTheme.headline2.copyWith(
-                          color: _theme.primaryColor,
-                        ),
                       ),
                       maxLines: 2,
                     ),
@@ -81,7 +78,7 @@ class _CartViewState extends State<CartView> {
                     width: width,
                     linkText: 'Change',
                     onLinkTap: (() => {
-                      widget.changeView(changeType: ViewChangeType.Forward),
+                      widget.changeView!(changeType: ViewChangeType.Forward),
                     }),
                   ),
                   OpenFlutterPaymentCard(
@@ -99,23 +96,23 @@ class _CartViewState extends State<CartView> {
                   ),
                   OpenFlutterSummaryLine(
                     title: 'Order',
-                    summary: '\$' + state.orderPrice.toStringAsFixed(2),
+                    summary: '\$' + state.orderPrice!.toStringAsFixed(2),
                   ),
                   Padding(padding: EdgeInsets.only(top: AppSizes.sidePadding)),
                   OpenFlutterSummaryLine(
                     title: 'Delivery',
-                    summary: '\$' + state.deliveryPrice.toStringAsFixed(2),
+                    summary: '\$' + state.deliveryPrice!.toStringAsFixed(2),
                   ),
                   Padding(padding: EdgeInsets.only(top: AppSizes.sidePadding)),
                   OpenFlutterSummaryLine(
                     title: 'Summary',
-                    summary: '\$' + state.summaryPrice.toStringAsFixed(2),
+                    summary: '\$' + state.summaryPrice!.toStringAsFixed(2),
                   ),
                   Padding(padding: EdgeInsets.only(top: AppSizes.sidePadding)),
                   OpenFlutterButton(
                     title: 'SUBMIT ORDER',
                     onPressed: (() => {
-                      widget.changeView(
+                      widget.changeView!(
                         changeType: ViewChangeType.Exact,
                         index: 4,
                       ),

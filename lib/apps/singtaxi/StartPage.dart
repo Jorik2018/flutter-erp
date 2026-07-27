@@ -10,10 +10,10 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: Stack(
         children: <Widget>[
-          new Container(
+          Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("android/assets/HomePage.jpg"),
@@ -21,18 +21,11 @@ class _StartPageState extends State<StartPage> {
               ),
             ),
           ),
-          new Container(
+          Container(
             margin: const EdgeInsets.only(top: 550, left: 120),
             child: Column(
               children: <Widget>[
-                new ElevatedButton(
-                  elevation: 10,
-                  color: Colors.white,
-                  textColor: Colors.blueGrey,
-                  splashColor: Colors.yellowAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
+                ElevatedButton(
                   child: Text(
                     'Hello DouDou',
                     style: TextStyle(

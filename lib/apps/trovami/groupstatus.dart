@@ -39,21 +39,21 @@ bool togglestate = false;
 
 _reviver(key, value) {
   if (key != null && value is Map) {
-    return new OldUser.fromJson(value);
+    return OldUser.fromJson(value);
   } else
     return value;
 }
 
 _locationReviver(key, value) {
   if (key != null) {
-    return new UserLocation.fromJson(value);
+    return UserLocation.fromJson(value);
   } else
     return value;
 }
 
 _reviver1(key, value) {
   if (key != null && value is Map) {
-    return new Group.fromJson(value);
+    return Group.fromJson(value);
   } else
     return value;
 }
@@ -64,7 +64,7 @@ toggleMemberLocation(bool newValue) async {
   final DataSnapshot groupresmap = await getGroups();
   Map grps = groupresmap.value as Map;
 
-  var location = new Location();
+  var location = Location();
 
   Stream<LocationData> locationStream = location.onLocationChanged;
   StreamSubscription? locationSub;
@@ -169,26 +169,26 @@ updateDatabaseLocation(currLoc) async {
 
 class GroupStatusLayout extends StatefulWidget {
   @override
-  GroupStatusLayoutState createState() => new GroupStatusLayoutState();
+  GroupStatusLayoutState createState() => GroupStatusLayoutState();
 }
 
 class GroupStatusLayoutState extends State<GroupStatusLayout> {
   @override
   Widget build(BuildContext context) =>
-      new Scaffold(body: Container(child: new GroupStatus()));
+      Scaffold(body: Container(child: GroupStatus()));
 }
 
 class GroupStatus extends StatefulWidget {
   @override
-  GroupStatusState createState() => new GroupStatusState();
+  GroupStatusState createState() => GroupStatusState();
 }
 
 class GroupStatusState extends State<GroupStatus> {
   var getMemFlag = 0;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKeySecondary2 =
-      new GlobalKey<ScaffoldState>();
+      GlobalKey<ScaffoldState>();
   List<Widget> children = [];
   List<String> memberstoShowHomepage1 = [];
 
@@ -231,7 +231,7 @@ class GroupStatusState extends State<GroupStatus> {
 
   List<String> dedup(List<String> list) {
     List<String> list1 = [];
-    Set seen = new Set();
+    Set seen = Set();
     int unique = 0;
     for (int i = 0; i < list.length; i++) {
       String element = list[i];
@@ -255,18 +255,18 @@ class GroupStatusState extends State<GroupStatus> {
 
   @override
   Widget build(BuildContext context) {
-    children = new List.generate(
+    children = List.generate(
       memberstoShowHomepage1.length,
-      (int i) => new memberlist(memberstoShowHomepage1[i]),
+      (int i) => memberlist(memberstoShowHomepage1[i]),
     );
-    return new RefreshIndicator(
+    return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: getmembers1,
       child: Scaffold(
         key: _scaffoldKeySecondary2,
         appBar: AppBar(
           leading: defaultTargetPlatform == TargetPlatform.iOS
-              ? new CupertinoButton(
+              ? CupertinoButton(
                   child: Icon(Icons.keyboard_backspace),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -276,10 +276,10 @@ class GroupStatusState extends State<GroupStatus> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: new Icon(Icons.keyboard_backspace),
+                  child: Icon(Icons.keyboard_backspace),
                 ),
           actions: <Widget>[
-            new ElevatedButton(
+            ElevatedButton(
               onPressed: () async {
                 await Navigator.of(context).pushNamed(ROUTE_MAP);
               },
@@ -288,7 +288,7 @@ class GroupStatusState extends State<GroupStatus> {
           ],
           flexibleSpace: FlexibleSpaceBar(title: Text('Group Status')),
         ),
-        body: new Container(
+        body: Container(
           child: ListView(
             children: <Widget>[
               Container(
@@ -302,18 +302,18 @@ class GroupStatusState extends State<GroupStatus> {
                   ),
                 ),
               ),
-              new Row(
+              Row(
                 children: <Widget>[
-                  new Container(
+                  Container(
                     child: Text(
                       "Share Live Location:",
                       style: TextStyle(fontSize: 20.0),
                     ),
                     padding: const EdgeInsets.only(left: 10.0),
                   ),
-                  new Container(
+                  Container(
                     child: defaultTargetPlatform == TargetPlatform.iOS
-                        ? new CupertinoSwitch(
+                        ? CupertinoSwitch(
                             value: togglestate,
                             onChanged: (bool newValue) {
                               toggleMemberLocation(newValue);
@@ -334,17 +334,17 @@ class GroupStatusState extends State<GroupStatus> {
                   ),
                 ],
               ),
-              new Container(
+              Container(
                 child: Column(
                   children: <Widget>[
-                    new Row(
+                    Row(
                       children: <Widget>[
-                        new CircleAvatar(
-                          child: new Icon(Icons.group),
+                        CircleAvatar(
+                          child: Icon(Icons.group),
                           backgroundColor: const Color.fromRGBO(0, 0, 0, 0.2),
                         ),
-                        new Expanded(
-                          child: new Container(
+                        Expanded(
+                          child: Container(
                             child: Text(
                               "Group Name: ${groupStatusGroupname}",
                               style: TextStyle(
@@ -374,8 +374,8 @@ class GroupStatusState extends State<GroupStatus> {
                   ),
                 ),
               ),
-              new Container(
-                child: new Text("Members :", style: TextStyle(fontSize: 20.0)),
+              Container(
+                child: Text("Members :", style: TextStyle(fontSize: 20.0)),
                 padding: const EdgeInsets.only(
                   left: 10.0,
                   top: 10.0,
@@ -391,7 +391,7 @@ class GroupStatusState extends State<GroupStatus> {
                   ),
                 ),
               ),
-              new Column(children: children),
+              Column(children: children),
             ],
           ),
           padding: const EdgeInsets.only(top: 10.0),
@@ -406,17 +406,17 @@ class memberlist extends StatelessWidget {
   memberlist(this.mem);
 
   @override
-  Widget build(BuildContext context) => new Container(
+  Widget build(BuildContext context) => Container(
     child: Column(
       children: <Widget>[
-        new Row(
+        Row(
           children: <Widget>[
-            new CircleAvatar(
-              child: new Icon(Icons.person),
+            CircleAvatar(
+              child: Icon(Icons.person),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0.2),
             ),
-            new Container(
-              child: new Text("${mem}", style: TextStyle(fontSize: 20.0)),
+            Container(
+              child: Text("${mem}", style: TextStyle(fontSize: 20.0)),
               padding: EdgeInsets.only(left: 20.0),
             ),
           ],

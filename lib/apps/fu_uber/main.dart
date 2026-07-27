@@ -14,10 +14,9 @@ import 'package:flutter_erp/apps/fu_uber/UI/views/ProfileScreen.dart';
 import 'package:flutter_erp/apps/fu_uber/UI/views/SignIn.dart';
 import 'package:provider/provider.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class FuUberApp extends StatelessWidget {
-
   static const String TAG = "MyApp";
 
   const FuUberApp({super.key});
@@ -27,29 +26,21 @@ class FuUberApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-
         ChangeNotifierProvider<PermissionHandlerModel>(
           create: (context) => PermissionHandlerModel(),
         ),
 
-
-
-        ChangeNotifierProvider<MapModel>(
-          create: (context) => MapModel(),
-        ),
-
-
+        ChangeNotifierProvider<MapModel>(create: (context) => MapModel()),
 
         ChangeNotifierProxyProvider<MapModel, RideBookedModel>(
-            create: (_) => RideBookedModel(),
-            update: (_, mapModel, rideBookedModel) {
-              rideBookedModel!.originLatLng = mapModel.pickupPosition;
-              rideBookedModel.destinationLatLng = mapModel.destinationPosition;
-              return rideBookedModel;
-            }),
+          create: (_) => RideBookedModel(),
+          update: (_, mapModel, rideBookedModel) {
+            rideBookedModel!.originLatLng = mapModel.pickupPosition;
+            rideBookedModel.destinationLatLng = mapModel.destinationPosition;
+            return rideBookedModel;
+          },
+        ),
 
-
-            
         ChangeNotifierProvider<VerificationModel>(
           create: (context) => VerificationModel(),
         ),
@@ -65,25 +56,23 @@ class FuUberApp extends StatelessWidget {
 
         ChangeNotifierProvider<UINotifiersModel>(
           create: (context) => UINotifiersModel(),
-        )
-        
+        ),
       ],
       child: MaterialApp(
-          title: 'Fu_Uber',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          navigatorKey: navigatorKey,
-          initialRoute: '/',
-          routes: {
-            LocationPermissionScreen.route: (context) =>
-                LocationPermissionScreen(),
-            MainScreen.route: (context) => MainScreen(),
-            SignInPage.route: (context) => SignInPage(),
-            ProfileScreen.route: (context) => ProfileScreen(),
-            OnGoingRideScreen.route: (context) => OnGoingRideScreen()
-          },
-          home: Scaffold(body: LocationPermissionScreen())),
+        title: 'Fu_Uber',
+        theme: ThemeData(primarySwatch: Colors.blue),
+        navigatorKey: navigatorKey,
+        initialRoute: '/',
+        routes: {
+          LocationPermissionScreen.route: (context) =>
+              LocationPermissionScreen(),
+          MainScreen.route: (context) => MainScreen(),
+          SignInPage.route: (context) => SignInPage(),
+          ProfileScreen.route: (context) => ProfileScreen(),
+          OnGoingRideScreen.route: (context) => OnGoingRideScreen(),
+        },
+        home: Scaffold(body: LocationPermissionScreen()),
+      ),
     );
   }
 }

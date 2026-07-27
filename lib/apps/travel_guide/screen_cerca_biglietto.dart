@@ -4,7 +4,7 @@ import 'dart:math';
 
 class ScreenCercaBiglietto extends StatefulWidget {
   @override
-  State createState() => new ScreenCercaBigliettoState();
+  State createState() => ScreenCercaBigliettoState();
 }
 
 class ScreenCercaBigliettoState extends State<ScreenCercaBiglietto> {
@@ -12,7 +12,7 @@ class ScreenCercaBigliettoState extends State<ScreenCercaBiglietto> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: Center(
         child: Stack(
           alignment: FractionalOffset.center,
@@ -33,10 +33,10 @@ Try correcting the name to match an existing class. */
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Stack(
+                Stack(
                   alignment: FractionalOffset.center,
                   children: <Widget>[
-                    new RotatedBox(
+                    RotatedBox(
                       quarterTurns: 1,
                       child: Icon(
                         Icons.flight,
@@ -44,19 +44,19 @@ Try correcting the name to match an existing class. */
                         color: Colors.black,
                       ),
                     ),
-                    new SizedBox.fromSize(
+                    SizedBox.fromSize(
                       size: Size.fromRadius(48.0),
                       child: CircularProgressIndicator(),
                     ),
                   ],
                 ),
-                new Container(
+                Container(
                   margin: EdgeInsets.only(top: 64.0),
                   child: Text(
                     "3/64" /*, style: Theme.of(context).textTheme.title*/,
                   ),
                 ),
-                new Container(
+                Container(
                   margin: EdgeInsets.only(top: 32.0),
                   child: Text("Searching for the lowest plane ticket price..."),
                 ),

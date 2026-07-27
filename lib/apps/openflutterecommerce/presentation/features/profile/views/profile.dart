@@ -71,7 +71,7 @@ class _ProfileViewState extends State<ProfileView> {
               subtitle: 'Already Have 12 orders',
               onTap: (() => {
                 bloc..add(ProfileMyOrdersEvent()),
-                widget.changeView(changeType: ViewChangeType.Exact, index: 1),
+                widget.changeView!(changeType: ViewChangeType.Exact, index: 1),
               }),
             ),
             Divider(),
@@ -80,7 +80,7 @@ class _ProfileViewState extends State<ProfileView> {
               //TODO: make dynamic address count
               subtitle: '3 addresses',
               onTap: (() => {
-                widget.changeView(changeType: ViewChangeType.Exact, index: 2),
+                widget.changeView!(changeType: ViewChangeType.Exact, index: 2),
               }),
             ),
             Divider(),
@@ -89,7 +89,7 @@ class _ProfileViewState extends State<ProfileView> {
               //TODO: make short card info
               subtitle: 'visa **34',
               onTap: (() => {
-                widget.changeView(changeType: ViewChangeType.Exact, index: 3),
+                widget.changeView!(changeType: ViewChangeType.Exact, index: 3),
               }),
             ),
             Divider(),
@@ -98,7 +98,7 @@ class _ProfileViewState extends State<ProfileView> {
               //TODO: make dynamic later
               subtitle: 'You have special promocodes',
               onTap: (() => {
-                widget.changeView(changeType: ViewChangeType.Exact, index: 4),
+                widget.changeView!(changeType: ViewChangeType.Exact, index: 4),
               }),
             ),
             Divider(),
@@ -107,7 +107,7 @@ class _ProfileViewState extends State<ProfileView> {
               //TODO: make dynamic later
               subtitle: 'review for 4 items',
               onTap: (() => {
-                widget.changeView(changeType: ViewChangeType.Exact, index: 5),
+                widget.changeView!(changeType: ViewChangeType.Exact, index: 5),
               }),
             ),
             Divider(),
@@ -115,7 +115,7 @@ class _ProfileViewState extends State<ProfileView> {
               title: 'Settings',
               subtitle: 'Notification, Password',
               onTap: (() => {
-                widget.changeView(changeType: ViewChangeType.Exact, index: 6),
+                widget.changeView!(changeType: ViewChangeType.Exact, index: 6),
                 //Navigator.of(context).pushNamed(OpenFlutterEcommerceRoutes.settings)
               }),
             ),

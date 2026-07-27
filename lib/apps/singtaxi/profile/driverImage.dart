@@ -17,15 +17,15 @@ class DriverImageState extends State<DriverImage> {
   //
   static final String uploadEndPoint =
       'http://localhost/flutter_test/upload_image.php';
-  Future<File> file;
+  Future<File>? file;
   String status = '';
-  String base64Image;
-  File tmpFile;
+  String? base64Image;
+  File? tmpFile;
   String errMessage = 'Error Uploading Image';
 
   chooseImage() {
     setState(() {
-      file = ImagePicker.pickImage(source: ImageSource.gallery);
+      //file = ImagePicker.pickImage(source: ImageSource.gallery);
     });
     setStatus('');
   }
@@ -42,19 +42,19 @@ class DriverImageState extends State<DriverImage> {
       setStatus(errMessage);
       return;
     }
-    String fileName = tmpFile.path.split('/').last;
+    String fileName = tmpFile!.path.split('/').last;
     upload(fileName);
   }
 
   upload(String fileName) {
-    http
+    /*http
         .post(uploadEndPoint, body: {"image": base64Image, "name": fileName})
         .then((result) {
           setStatus(result.statusCode == 200 ? result.body : errMessage);
         })
         .catchError((error) {
           setStatus(error);
-        });
+        });*/
   }
 
   Widget showImage() {
@@ -63,9 +63,9 @@ class DriverImageState extends State<DriverImage> {
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             null != snapshot.data) {
-          tmpFile = snapshot.data;
-          base64Image = base64Encode(snapshot.data.readAsBytesSync());
-          return Flexible(child: Image.file(snapshot.data, fit: BoxFit.fill));
+          tmpFile = snapshot.data!;
+          base64Image = base64Encode(snapshot.data!.readAsBytesSync());
+          return Flexible(child: Image.file(snapshot.data!, fit: BoxFit.fill));
         } else if (null != snapshot.error) {
           return const Text('Error Picking Image', textAlign: TextAlign.center);
         } else {
@@ -87,12 +87,12 @@ class DriverImageState extends State<DriverImage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            new Container(
+            Container(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Text(
+                  Text(
                     'Upload Your Driving License\nto Become a Driver',
                     style: TextStyle(
                       fontSize: 25.0,
@@ -103,11 +103,11 @@ class DriverImageState extends State<DriverImage> {
                 ],
               ),
             ),
-            OutlineButton(onPressed: chooseImage, child: Text('Choose Image')),
+            OutlinedButton(onPressed: chooseImage, child: Text('Choose Image')),
             SizedBox(height: 20.0),
             showImage(),
             SizedBox(height: 20.0),
-            OutlineButton(onPressed: startUpload, child: Text('Upload Image')),
+            OutlinedButton(onPressed: startUpload, child: Text('Upload Image')),
             SizedBox(height: 20.0),
             Text(
               status,

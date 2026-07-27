@@ -15,7 +15,7 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/model/sort_rules.dart
 @immutable
 abstract class ProductsListEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 @immutable
@@ -72,7 +72,7 @@ class ProductSearchEvent extends ProductsListEvent {
 class ProductMakeFavoriteEvent extends ProductsListEvent {
   final bool isFavorite;
   final Product product;
-  final HashMap<ProductAttribute, String> favoriteAttributes;
+  final HashMap<ProductAttribute, String>? favoriteAttributes;
 
   ProductMakeFavoriteEvent(
     this.isFavorite,
@@ -81,5 +81,5 @@ class ProductMakeFavoriteEvent extends ProductsListEvent {
   });
 
   @override
-  List<Object> get props => [isFavorite, product, favoriteAttributes];
+  List<Object?> get props => [isFavorite, product, favoriteAttributes];
 }

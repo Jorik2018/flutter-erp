@@ -16,8 +16,8 @@ class ProductModel extends ProductEntity {
     required thumb,
     required selectableAttributes,
     rating,
-    List<ProductCategoryEntity> categories,
-    List<HashTagEntity> hashTags,
+    List<ProductCategoryEntity>? categories,
+    List<HashTagEntity>? hashTags,
     orderNumber,
     count,
   }) : super(
@@ -118,7 +118,7 @@ class ProductModel extends ProductEntity {
       'id': id,
       'name': title,
       'description': description,
-      'image': {'src': images.isNotEmpty ? images[0] : ''},
+      'image': {'src': images!.isNotEmpty ? images![0] : ''},
     };
   }
 

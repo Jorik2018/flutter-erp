@@ -1,5 +1,6 @@
-import '../Model/models.dart';
 import 'package:equatable/equatable.dart';
+
+import '../models/models.dart';
 
 abstract class PostState extends Equatable {
   const PostState();
@@ -13,9 +14,23 @@ class PostUninitialized extends PostState {
   String toString() => 'PostUninitialized';
 }
 
-class PostError extends PostState {
+class PostLoading extends PostState {
   @override
-  String toString() => 'PostError';
+  String toString() => 'PostLoading';
+}
+
+class PostError extends PostState {
+  final String message;
+
+  const PostError({
+    this.message = 'Ocurrió un error al cargar las criptomonedas.',
+  });
+
+  @override
+  List<Object?> get props => [message];
+
+  @override
+  String toString() => 'PostError { message: $message }';
 }
 
 class PostLoaded extends PostState {
@@ -35,23 +50,18 @@ class PostLoaded extends PostState {
   List<Object?> get props => [posts, hasReachedMax];
 
   @override
-  String toString() =>
-      'PostLoaded { posts: ${posts.length}, hasReachedMax: $hasReachedMax }';
+  String toString() {
+    return 'PostLoaded { posts: ${posts.length}, hasReachedMax: $hasReachedMax }';
+  }
 }
 
 class NewsLoaded extends PostState {
   final List<News> posts;
   final bool hasReachedMax;
 
-  const NewsLoaded({
-    required this.posts,
-    required this.hasReachedMax,
-  });
+  const NewsLoaded({required this.posts, required this.hasReachedMax});
 
-  NewsLoaded copyWith({
-    List<News>? posts,
-    bool? hasReachedMax,
-  }) {
+  NewsLoaded copyWith({List<News>? posts, bool? hasReachedMax}) {
     return NewsLoaded(
       posts: posts ?? this.posts,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -62,23 +72,18 @@ class NewsLoaded extends PostState {
   List<Object?> get props => [posts, hasReachedMax];
 
   @override
-  String toString() =>
-      'NewsLoaded { posts: ${posts.length}, hasReachedMax: $hasReachedMax }';
+  String toString() {
+    return 'NewsLoaded { posts: ${posts.length}, hasReachedMax: $hasReachedMax }';
+  }
 }
 
 class MarketLoaded extends PostState {
   final List<Market> market;
   final bool hasReachedMax;
 
-  const MarketLoaded({
-    required this.market,
-    required this.hasReachedMax,
-  });
+  const MarketLoaded({required this.market, required this.hasReachedMax});
 
-  MarketLoaded copyWith({
-    List<Market>? market,
-    bool? hasReachedMax,
-  }) {
+  MarketLoaded copyWith({List<Market>? market, bool? hasReachedMax}) {
     return MarketLoaded(
       market: market ?? this.market,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -89,8 +94,9 @@ class MarketLoaded extends PostState {
   List<Object?> get props => [market, hasReachedMax];
 
   @override
-  String toString() =>
-      'MarketLoaded { market: ${market.length}, hasReachedMax: $hasReachedMax }';
+  String toString() {
+    return 'MarketLoaded { market: ${market.length}, hasReachedMax: $hasReachedMax }';
+  }
 }
 
 class MarketCoinsLoaded extends PostState {
@@ -116,6 +122,7 @@ class MarketCoinsLoaded extends PostState {
   List<Object?> get props => [marketcoins, hasReachedMax];
 
   @override
-  String toString() =>
-      'MarketCoinsLoaded { posts: ${marketcoins.length}, hasReachedMax: $hasReachedMax }';
+  String toString() {
+    return 'MarketCoinsLoaded { posts: ${marketcoins.length}, hasReachedMax: $hasReachedMax }';
+  }
 }

@@ -23,7 +23,7 @@ double animValue = 0.0;
 List<OldUser> membersToShow = [];
 List<String> groupNamesToShow = [];
 List<Group> groupsToShow = [];
-Group grps = new Group();
+Group grps = Group();
 const jsonCodec2 = const JsonCodec();
 List<OldUser> membersToShowHomepage = [];
 final groupref = FirebaseDatabase.instance.ref().child('groups');
@@ -36,7 +36,7 @@ bool _first = true;
 
 _reviver(key, value) {
   if (key != null && value is Map && key.contains('-')) {
-    return new OldUser.fromJson(value);
+    return OldUser.fromJson(value);
   }
   return value;
 }
@@ -50,7 +50,7 @@ class Homepagelayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
 
-    return new Container(
+    return Container(
       child: Homepage(users: users),
       width: screenSize.width,
       height: screenSize.height,
@@ -67,7 +67,7 @@ class groupBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new SizeTransition(
+    return SizeTransition(
       sizeFactor: CurvedAnimation(parent: animation!, curve: Curves.easeOut),
       axisAlignment: 0.0,
       child: Container(
@@ -75,14 +75,14 @@ class groupBox extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Container(
+            Container(
               margin: const EdgeInsets.only(right: 16.0, bottom: 16.0),
               child: CircleAvatar(
                 child: IconButton(icon: Icon(Icons.group), onPressed: null),
                 backgroundColor: const Color.fromRGBO(0, 0, 0, 0.2),
               ),
             ),
-            new ElevatedButton(
+            ElevatedButton(
               onPressed: () {
                 groupStatusGroupname = snapshot!.value! as String;
                 RoutesHelper.pushRoute(context, ROUTE_GROUP);
@@ -109,7 +109,7 @@ class Homepage extends StatefulWidget {
   Homepage({this.users});
 
   @override
-  HomePageState createState() => new HomePageState(users: users);
+  HomePageState createState() => HomePageState(users: users);
 }
 
 class HomePageState extends State<Homepage> with TickerProviderStateMixin {
@@ -138,11 +138,11 @@ class HomePageState extends State<Homepage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         leading: Container(),
         actions: <Widget>[
-          new IconButton(
+          IconButton(
             icon: Icon(Icons.group_add),
             onPressed: () async {
               Navigator.of(context).push(
@@ -151,23 +151,23 @@ class HomePageState extends State<Homepage> with TickerProviderStateMixin {
             },
             iconSize: 42.0,
           ),
-          new IconButton(
+          IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
               //TODO
               Animation<double> alpha;
 
-              final AnimationController controller = new AnimationController(
+              final AnimationController controller = AnimationController(
                 duration: const Duration(milliseconds: 500),
                 vsync: this,
               );
-              alpha = new Tween(begin: 0.0, end: 255.0).animate(controller)
+              alpha = Tween(begin: 0.0, end: 255.0).animate(controller)
                 ..addListener(() {});
               controller.forward();
             },
             iconSize: 35.0,
           ),
-          new IconButton(
+          IconButton(
             icon: Icon(Icons.edit),
             onPressed: () => handleMoreMenu(),
             iconSize: 35.0,
@@ -177,9 +177,9 @@ class HomePageState extends State<Homepage> with TickerProviderStateMixin {
       ),
       body: Column(
         children: <Widget>[
-          new Flexible(
+          Flexible(
             child: ((reference != null)
-                ? new FirebaseAnimatedList(
+                ? FirebaseAnimatedList(
                     query: reference,
                     sort: (a, b) => b.key!.compareTo(a.key as String),
                     padding: EdgeInsets.all(8.0), //new
@@ -191,14 +191,14 @@ class HomePageState extends State<Homepage> with TickerProviderStateMixin {
                           Animation<double> animation,
                           index,
                         ) {
-                          return new groupBox(
+                          return groupBox(
                             snapshot: snapshot,
                             animation: animation,
                             index: index,
                           );
                         },
                   )
-                : new Container()), //new
+                : Container()), //new
           ),
         ],
       ),

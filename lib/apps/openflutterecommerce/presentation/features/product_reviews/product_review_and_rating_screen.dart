@@ -12,7 +12,8 @@ import 'product_review_state.dart';
 class ProductReviewRatingScreen extends StatefulWidget {
   final Product product;
 
-  const ProductReviewRatingScreen({Key? key, this.product}) : super(key: key);
+  const ProductReviewRatingScreen({Key? key, required this.product})
+    : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -109,7 +110,8 @@ class ProductReviewWrapper extends StatefulWidget {
   final Product product;
   final summaryAndFilterIndex = 2;
 
-  const ProductReviewWrapper({Key? key, this.product}) : super(key: key);
+  const ProductReviewWrapper({Key? key, required this.product})
+    : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -138,7 +140,7 @@ class ProductReviewWrapperState extends State<ProductReviewWrapper> {
               );
             },
             childCount: comments != null
-                ? comments.length + widget.summaryAndFilterIndex
+                ? comments!.length + widget.summaryAndFilterIndex
                 : widget.summaryAndFilterIndex + 1,
           ),
         );
@@ -174,9 +176,9 @@ class ProductReviewWrapperState extends State<ProductReviewWrapper> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: OpenFlutterRatingSummary(
-        barColor: Theme.of(context).accentColor,
+        barColor: Theme.of(context).highlightColor,
         ratingQuantity: widget.product.ratingCount,
-        rating: widget.product.averageRating,
+        rating: widget.product.averageRating!,
       ),
     );
   }
@@ -191,7 +193,7 @@ class ProductReviewWrapperState extends State<ProductReviewWrapper> {
           children: <Widget>[
             Text(
               '$reviewCount reviews',
-              style: Theme.of(context).textTheme.subtitle2,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             Expanded(
               child: OpenFlutterCheckbox(
@@ -202,7 +204,7 @@ class ProductReviewWrapperState extends State<ProductReviewWrapper> {
                 onTap: (value) {
                   BlocProvider.of<ProductReviewBloc>(
                     context,
-                  ).add(ProductReviewStartEvent(widget.product.id, value));
+                  ).add(ProductReviewStartEvent(widget.product.id, value!));
                 },
               ),
             ),
@@ -219,17 +221,17 @@ class ProductReviewWrapperState extends State<ProductReviewWrapper> {
       return _buildIndicator();
     }
 
-    if (comments.isNotEmpty) {
-      var productReview = _getProductReview(index, comments);
+    if (comments!.isNotEmpty) {
+      var productReview = _getProductReview(index, comments!);
 
       return Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
         child: OpenFlutterProductReviewItem(
-          rating: productReview.rating.roundToDouble(),
-          writerName: productReview.authorName,
-          isHelpfulMarked: productReview.isHelpful,
-          comment: productReview.comment,
-          avatarUrl: productReview.authorPhotoUrl,
+          rating: productReview.rating!.roundToDouble(),
+          writerName: productReview.authorName!,
+          isHelpfulMarked: productReview.isHelpful!,
+          comment: productReview.comment!,
+          avatarUrl: productReview.authorPhotoUrl!,
           withPhotos: withPhotos,
           photos: productReview.photos,
         ),
@@ -259,7 +261,7 @@ class ProductReviewWrapperState extends State<ProductReviewWrapper> {
       child: Center(
         child: Text(
           'Without reviews',
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
         ),
       ),

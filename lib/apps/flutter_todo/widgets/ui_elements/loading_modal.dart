@@ -5,7 +5,7 @@ class LoadingModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        new Opacity(
+        Opacity(
           opacity: 0.3,
           child: const ModalBarrier(dismissible: false, color: Colors.grey),
         ),

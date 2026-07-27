@@ -35,14 +35,14 @@ class GetHomePageProductsUseCaseImpl implements GetHomePageProductsUseCase {
 class HomeProductParams {}
 
 class HomeProductsResult extends UseCaseResult {
-  final List<Product> salesProducts;
-  final List<Product> newProducts;
+  final List<Product>? salesProducts;
+  final List<Product>? newProducts;
 
   HomeProductsResult({
     this.salesProducts,
     this.newProducts,
-    Exception exception,
-    bool result,
+    Exception? exception,
+    bool? result,
   }) : super(exception: exception, result: result);
 }
 

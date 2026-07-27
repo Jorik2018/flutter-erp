@@ -1,100 +1,103 @@
-import 'dart:async';
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import '../Model/models.dart';
-import 'bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
-
+import 'package:dio/dio.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_event.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_state.dart';
+import 'package:flutter_erp/apps/cryptomarket/models/models.dart';
 import 'package:rxdart/rxdart.dart';
 
+EventTransformer<T> debounce<T>(Duration duration) {
+  return (events, mapper) {
+    return events.debounceTime(duration).switchMap(mapper);
+  };
+}
+
 class MarketPostBloc extends Bloc<PostEvent, PostState> {
-  final http.Client httpClient;
+  final Dio dio;
+  final String apiKey;
 
-  MarketPostBloc({required this.httpClient});
-
-  @override
-  Stream<PostState> transform(
-    Stream<PostEvent> events,
-    Stream<PostState> Function(PostEvent event) next,
-  ) {
-    return super.transform(
-      (events as Observable<PostEvent>).debounceTime(
-        Duration(milliseconds: 500),
-      ),
-      next,
+  MarketPostBloc({required this.dio, required this.apiKey})
+    : super(PostUninitialized()) {
+    on<Fetch>(
+      _onFetch,
+      transformer: debounce(const Duration(milliseconds: 500)),
     );
   }
 
-  @override
-  get initialState => PostUninitialized();
+  Future<void> _onFetch(Fetch event, Emitter<PostState> emit) async {
+    // Este BLoC no tiene paginación implementada.
+    // Si ya cargó los mercados, no vuelve a consultar.
+    if (state is MarketLoaded || state is PostLoading) {
+      return;
+    }
 
-  @override
-  Stream<PostState> mapEventToState(PostEvent event) async* {
-    if (event is Fetch && !_hasReachedMax(currentState)) {
-      try {
-        if (currentState is PostUninitialized) {
-          final posts = await fetchMarket(0, 20);
-          yield MarketLoaded(market: posts, hasReachedMax: false);
-          return;
-        }
-        /*  if (currentState is MarketLoaded) {
-          final posts =
-          await fetchMarket((currentState as MarketLoaded).market.length, 20);
-          yield posts.isEmpty
-              ? (currentState as MarketLoaded).copyWith(hasReachedMax: true)
-              : MarketLoaded(
-           market:  (currentState as MarketLoaded).market + posts,
-            hasReachedMax: false,
-          );
-        }*/
-      } catch (_) {
-        yield PostError();
-      }
+    emit(PostLoading());
+
+    try {
+      final List<Market> posts = await fetchMarket(startIndex: 0, limit: 20);
+
+      emit(MarketLoaded(market: posts, hasReachedMax: false));
+    } on DioException catch (error) {
+      emit(PostError(message: _getDioErrorMessage(error)));
+    } catch (error) {
+      emit(PostError(message: error.toString()));
     }
   }
 
-  bool _hasReachedMax(PostState state) =>
-      state is MarketLoaded && state.hasReachedMax;
+  Future<List<Market>> fetchMarket({
+    required int startIndex,
+    required int limit,
+  }) async {
+    final Response<dynamic> response = await dio.get(
+      'https://min-api.cryptocompare.com/data/exchanges/general',
+      queryParameters: {'api_key': apiKey},
+    );
 
-  Future<List<Market>> fetchMarket(int startIndex, int limit) async {
-    // TODO: implement fetchCurrencies
-    String apiUrl =
-        'https://min-api.cryptocompare.com/data/exchanges/general?api_key=5fa8278700ff48c403c9356a7ce85705177ebf3f4b8b0bc5a9e9151f5143d095';
+    final dynamic responseBody = response.data;
 
-    // Make a HTTP GET request to the CoinMarketCap API.
-    // Await basically pauses execution until the get() function returns a Response
-    http.Response response = await http.get(Uri.parse(apiUrl));
+    if (responseBody is! Map<String, dynamic>) {
+      throw Exception('La respuesta del servidor no es válida.');
+    }
 
-    // Iterable l = json.decode(response.body);
-    List<Market> posts = [];
+    final dynamic data = responseBody['Data'];
 
-    var responseBody = json.decode(response.body);
+    if (data is! Map) {
+      throw Exception(
+        responseBody['Message']?.toString() ?? 'No se encontraron mercados.',
+      );
+    }
 
-    var data = responseBody['Data'];
+    final List<Market> posts = [];
 
-    data.forEach((key, value) async {
-      print('Key: $key, Value:' + value['Name']);
+    final entries = data.entries.skip(startIndex).take(limit);
 
-      //posts = Market(value['Name'], value['LogoUrl']);
-      posts.add(Market(value['Name'], value['LogoUrl']));
+    for (final MapEntry<dynamic, dynamic> entry in entries) {
+      final dynamic value = entry.value;
 
-      //   posts = data.map((c) => new Market.fromMap(c)).toList();
-    });
+      if (value is! Map) {
+        continue;
+      }
 
-    /*    var data = responseBody['Data'] as List;
-    for(var key in responseBody){
+      final String name = value['Name']?.toString() ?? '';
+      final String logoUrl = value['LogoUrl']?.toString() ?? '';
 
-      print("Key: " + key);
-      print("Value: " + responseBody['Data'][key]['Name']);
-    }*/
+      if (name.isEmpty) {
+        continue;
+      }
 
-    final statusCode = response.statusCode;
-    if (statusCode != 200 || responseBody == null) {
-      throw new Exception("An error ocurred : [Status Code : $statusCode]");
+      posts.add(Market(name, logoUrl));
     }
 
     return posts;
+  }
+
+  String _getDioErrorMessage(DioException error) {
+    final dynamic responseData = error.response?.data;
+
+    if (responseData is Map<String, dynamic> &&
+        responseData['Message'] != null) {
+      return responseData['Message'].toString();
+    }
+
+    return 'Error de red: ${error.message ?? 'sin detalles'}';
   }
 }

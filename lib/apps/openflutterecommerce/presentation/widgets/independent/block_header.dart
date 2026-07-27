@@ -1,7 +1,3 @@
-// Header of the block widget with title and description
-// Author: openflutterproject@gmail.com
-// Date: 2020-02-06
-
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 
@@ -39,7 +35,7 @@ class OpenFlutterBlockHeader extends StatelessWidget {
               children: <Widget>[
                 Container(
                   width: width - rightLinkWidth,
-                  child: Text(title, style: _theme.textTheme.caption),
+                  child: Text(title, style: _theme.textTheme.bodyMedium),
                 ),
                 linkText != null
                     ? Container(
@@ -48,7 +44,7 @@ class OpenFlutterBlockHeader extends StatelessWidget {
                           alignment: Alignment.centerRight,
                           child: Text(
                             linkText!,
-                            style: _theme.textTheme.bodyText2,
+                            style: _theme.textTheme.bodyMedium,
                           ),
                         ),
                       )
@@ -56,7 +52,7 @@ class OpenFlutterBlockHeader extends StatelessWidget {
               ],
             ),
             description != null
-                ? Text(description, style: _theme.textTheme.bodyText2)
+                ? Text(description!, style: _theme.textTheme.bodyMedium)
                 : Container(),
           ],
         ),

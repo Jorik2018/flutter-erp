@@ -19,25 +19,25 @@ class Member {
 
   factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
 
-  final String id;
+  final String? id;
   @JsonKey(name: 'first_name')
-  final String firstName;
+  final String? firstName;
 
   @JsonKey(name: 'last_name')
-  final String lastName;
+  final String? lastName;
 
-  final String gender;
+  final String? gender;
 
-  final String email;
-  final String username;
-  final String avatar;
+  final String? email;
+  final String? username;
+  final String? avatar;
 
-  final String status;
+  final String? status;
 
   @JsonKey(ignore: true)
-  String error;
+  String? error;
   @JsonKey(ignore: true)
-  int errorCode;
+  int? errorCode;
 
   String get name => '$firstName $lastName';
 

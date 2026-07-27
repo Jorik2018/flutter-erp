@@ -1,47 +1,48 @@
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+class HttpClientFireBase {
+  late HttpClient client;
 
-class HttpClientFireBase{
-
-    late HttpClient client;
-
-    HttpClientFireBase(){
-      client=new HttpClient();
-    }
+  HttpClientFireBase() {
+    client = HttpClient();
+  }
 
   dynamic get({url}) async {
-     HttpClientResponse response = await client.getUrl(Uri.parse(url))
-        .then((HttpClientRequest request) {
+    HttpClientResponse response = await client.getUrl(Uri.parse(url)).then((
+      HttpClientRequest request,
+    ) {
       return request.close();
     });
-     return response;
-
+    return response;
   }
 
-  put({body,url}){
-    client.putUrl(Uri.parse(url))
+  put({body, url}) {
+    client
+        .putUrl(Uri.parse(url))
         .then((HttpClientRequest request) {
-      // Optionally set up headers...
-      // Optionally write to the request object...
-      // Then call close.
-      request.write(body);
-      return request.close();
-    }).then((HttpClientResponse response) {
-      return response;
-      // Process the response.
-    });
+          // Optionally set up headers...
+          // Optionally write to the request object...
+          // Then call close.
+          request.write(body);
+          return request.close();
+        })
+        .then((HttpClientResponse response) {
+          return response;
+          // Process the response.
+        });
   }
 
-  post({body,url}){
-    client.postUrl(Uri.parse(url))
+  post({body, url}) {
+    client
+        .postUrl(Uri.parse(url))
         .then((HttpClientRequest request) {
-      request.write(body);
-      return request.close();
-    }).then((HttpClientResponse response) {
-      return response;
-    });
+          request.write(body);
+          return request.close();
+        })
+        .then((HttpClientResponse response) {
+          return response;
+        });
   }
 }

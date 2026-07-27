@@ -9,5 +9,5 @@ part of 'prod.dart';
 const _$prodConfigJsonLiteral = {
   'env': 'PROD',
   'authEndpoint': 'https://yourauth.domain.com',
-  'serviceEndpoint': 'https://yourservice.domain.com'
+  'serviceEndpoint': 'https://yourservice.domain.com',
 };

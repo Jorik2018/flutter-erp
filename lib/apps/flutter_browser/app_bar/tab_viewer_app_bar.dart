@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_browser/models/browser_model.dart';
 import 'package:flutter_erp/apps/flutter_browser/models/webview_model.dart';
@@ -12,8 +11,8 @@ import '../tab_viewer_popup_menu_actions.dart';
 
 class TabViewerAppBar extends StatefulWidget implements PreferredSizeWidget {
   TabViewerAppBar({Key? key})
-      : preferredSize = Size.fromHeight(kToolbarHeight),
-        super(key: key);
+    : preferredSize = Size.fromHeight(kToolbarHeight),
+      super(key: key);
 
   @override
   _TabViewerAppBarState createState() => _TabViewerAppBarState();
@@ -23,8 +22,7 @@ class TabViewerAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _TabViewerAppBarState extends State<TabViewerAppBar> {
-
-  GlobalKey tabInkWellKey = new GlobalKey();
+  GlobalKey tabInkWellKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -61,27 +59,36 @@ class _TabViewerAppBarState extends State<TabViewerAppBar> {
         child: Padding(
           padding: settings.homePageEnabled
               ? EdgeInsets.only(
-              left: 20.0, top: 15.0, right: 10.0, bottom: 15.0)
+                  left: 20.0,
+                  top: 15.0,
+                  right: 10.0,
+                  bottom: 15.0,
+                )
               : EdgeInsets.only(
-              left: 10.0, top: 15.0, right: 10.0, bottom: 15.0),
+                  left: 10.0,
+                  top: 15.0,
+                  right: 10.0,
+                  bottom: 15.0,
+                ),
           child: Container(
             decoration: BoxDecoration(
-                border: Border.all(width: 2.0, color: Colors.white),
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(5.0)),
+              border: Border.all(width: 2.0, color: Colors.white),
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5.0),
+            ),
             constraints: BoxConstraints(minWidth: 25.0),
             child: Container(
-                child: Center(
-                    child: Text(
-                      browserModel
-                          .webViewTabs
-                          .length
-                          .toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.0),
-                    ))),
+              child: Center(
+                child: Text(
+                  browserModel.webViewTabs.length.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.0,
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
@@ -90,75 +97,72 @@ class _TabViewerAppBarState extends State<TabViewerAppBar> {
         itemBuilder: (popupMenuContext) {
           var items = <PopupMenuEntry<String>>[];
 
-          items.addAll(TabViewerPopupMenuActions.choices.map((choice) {
-            switch (choice) {
-              case TabViewerPopupMenuActions.NEW_TAB:
-                return CustomPopupMenuItem<String>(
-                  enabled: true,
-                  value: choice,
-                  child: Row(
+          items.addAll(
+            TabViewerPopupMenuActions.choices.map((choice) {
+              switch (choice) {
+                case TabViewerPopupMenuActions.NEW_TAB:
+                  return CustomPopupMenuItem<String>(
+                    enabled: true,
+                    value: choice,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(choice),
-                        Icon(
-                          Icons.add,
-                          color: Colors.black,
-                        )
-                      ]),
-                );
-              case TabViewerPopupMenuActions.NEW_INCOGNITO_TAB:
-                return CustomPopupMenuItem<String>(
-                  enabled: true,
-                  value: choice,
-                  child: Row(
+                        Icon(Icons.add, color: Colors.black),
+                      ],
+                    ),
+                  );
+                case TabViewerPopupMenuActions.NEW_INCOGNITO_TAB:
+                  return CustomPopupMenuItem<String>(
+                    enabled: true,
+                    value: choice,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(choice),
                         Icon(
                           FontAwesomeIcons.userSecret.data,
                           color: Colors.black,
-                        )
-                      ]),
-                );
-              case TabViewerPopupMenuActions.CLOSE_ALL_TABS:
-                return CustomPopupMenuItem<String>(
-                  enabled: browserModel.webViewTabs.length > 0,
-                  value: choice,
-                  child: Row(
+                        ),
+                      ],
+                    ),
+                  );
+                case TabViewerPopupMenuActions.CLOSE_ALL_TABS:
+                  return CustomPopupMenuItem<String>(
+                    enabled: browserModel.webViewTabs.length > 0,
+                    value: choice,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(choice),
-                        Icon(
-                          Icons.close,
-                          color: Colors.black,
-                        )
-                      ]),
-                );
-              case TabViewerPopupMenuActions.SETTINGS:
-                return CustomPopupMenuItem<String>(
-                  enabled: true,
-                  value: choice,
-                  child: Row(
+                        Icon(Icons.close, color: Colors.black),
+                      ],
+                    ),
+                  );
+                case TabViewerPopupMenuActions.SETTINGS:
+                  return CustomPopupMenuItem<String>(
+                    enabled: true,
+                    value: choice,
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(choice),
-                        Icon(
-                          Icons.settings,
-                          color: Colors.grey,
-                        )
-                      ]),
-                );
-              default:
-                return CustomPopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-            }
-          }).toList());
+                        Icon(Icons.settings, color: Colors.grey),
+                      ],
+                    ),
+                  );
+                default:
+                  return CustomPopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+              }
+            }).toList(),
+          );
 
           return items;
         },
-      )
+      ),
     ];
   }
 
@@ -199,10 +203,12 @@ class _TabViewerAppBarState extends State<TabViewerAppBar> {
 
     browserModel.showTabScroller = false;
 
-    browserModel.addTab(WebViewTab(
-      key: GlobalKey(),
-      webViewModel: WebViewModel(url: url),
-    ));
+    browserModel.addTab(
+      WebViewTab(
+        key: GlobalKey(),
+        webViewModel: WebViewModel(url: url),
+      ),
+    );
   }
 
   void addNewIncognitoTab({Uri? url}) {
@@ -217,11 +223,12 @@ class _TabViewerAppBarState extends State<TabViewerAppBar> {
 
     browserModel.showTabScroller = false;
 
-    browserModel.addTab(WebViewTab(
-      key: GlobalKey(),
-      webViewModel:
-      WebViewModel(url: url, isIncognitoMode: true),
-    ));
+    browserModel.addTab(
+      WebViewTab(
+        key: GlobalKey(),
+        webViewModel: WebViewModel(url: url, isIncognitoMode: true),
+      ),
+    );
   }
 
   void closeAllTabs() {
@@ -234,7 +241,8 @@ class _TabViewerAppBarState extends State<TabViewerAppBar> {
 
   void goToSettingsPage() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SettingsPage()));
+      context,
+      MaterialPageRoute(builder: (context) => SettingsPage()),
+    );
   }
-
 }

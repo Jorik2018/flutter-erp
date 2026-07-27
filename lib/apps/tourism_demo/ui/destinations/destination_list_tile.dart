@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_erp/apps/tourism_demo/clippers.dart';
 import 'package:flutter_erp/apps/tourism_demo/i18n/translations.dart';
 import 'package:flutter_erp/apps/tourism_demo/models/destination.dart';
@@ -25,7 +24,7 @@ class DestinationItem extends StatelessWidget {
   final double itemHeight = 175.0;
 
   Widget _buildImage() {
-    return new ClipPath(
+    return ClipPath(
       clipper: NotchedClipper(bottomLeft: false, bottomRight: false),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0.0),
@@ -58,7 +57,7 @@ class DestinationItem extends StatelessWidget {
     int dateDayFrom = 1; //dateFrom.day;
     int dateDayTo = 10; //dateTo.day;
 
-    bool isAr = StoreProvider.of<AppState>(context).state.isAr;
+    bool isAr = true; //StoreProvider.of<AppState>(context).state.isAr;
 
     destination.numDays = 10;
     return Padding(
@@ -91,9 +90,9 @@ class DestinationItem extends StatelessWidget {
   }
 
   Widget _buildTextualInfo(BuildContext context) {
-    bool isAr = StoreProvider.of<AppState>(context).state.isAr;
+    //bool isAr = StoreProvider.of<AppState>(context).state.isAr;
 
-    return new Material(
+    return Material(
       textStyle: TextStyle(fontFamily: 'BJ Regular'),
       // to overcome the issue above (text glitches in Hero)
       color: Colors.transparent,
@@ -103,7 +102,7 @@ class DestinationItem extends StatelessWidget {
         clipper: NotchedClipper(topLeft: false, topRight: false),
         child: Stack(
           children: <Widget>[
-            new Container(
+            Container(
               decoration: cardGradientBackground(),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -139,7 +138,7 @@ class DestinationItem extends StatelessWidget {
   }
 
   Widget _buildDestinationItem(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTap: onTapped,
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 15.0),
@@ -179,7 +178,7 @@ class DestinationCard extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return new _CardState();
+    return _CardState();
   }
 }
 
@@ -191,28 +190,25 @@ class _CardState extends State<DestinationCard>
 
   initState() {
     super.initState();
-    controller = new AnimationController(
+    controller = AnimationController(
       duration: const Duration(milliseconds: 600),
       vsync: this,
     );
 
-    var curvedAnimation = new CurvedAnimation(
+    var curvedAnimation = CurvedAnimation(
       parent: controller!,
       curve: Curves.fastOutSlowIn,
     );
 
-    animation = new Tween<double>(
-      begin: 90.0,
-      end: 180.0,
-    ).animate(curvedAnimation);
+    animation = Tween<double>(begin: 90.0, end: 180.0).animate(curvedAnimation);
 
-    _timer = new Timer(Duration(milliseconds: widget.initialDelay!), () {
+    _timer = Timer(Duration(milliseconds: widget.initialDelay!), () {
       controller!.forward();
     });
   }
 
   Widget build(BuildContext context) {
-    return new DestinationItem(
+    return DestinationItem(
       animation: animation,
       destination: widget.destination!,
       onTapped: widget.onTapped,

@@ -9,17 +9,17 @@ import 'package:flutter_erp/apps/openflutterecommerce/domain/entities/promo/prom
 
 class PromoCodeModel extends PromoCodeEntity {
   PromoCodeModel({
-    int id,
-    String title,
-    String promoCode,
-    double discountPercent,
-    DateTime dateExpires,
+    int? id,
+    String? title,
+    String? promoCode,
+    double? discountPercent,
+    DateTime? dateExpires,
   }) : super(
-         id: id,
-         title: title,
-         promoCode: promoCode,
-         discountPercent: discountPercent,
-         dateExpires: dateExpires,
+         id: id!,
+         title: title!,
+         promoCode: promoCode!,
+         discountPercent: discountPercent!,
+         dateExpires: dateExpires!,
        );
 
   factory PromoCodeModel.fromJson(Map<String, dynamic> json) {
@@ -43,7 +43,7 @@ class PromoCodeModel extends PromoCodeEntity {
       'amount': discountPercent,
       'discount_type': 'percent',
       'description': title,
-      'date_expires': DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateExpires),
+      'date_expires': DateFormat('yyyy-MM-ddTHH:mm:ss').format(dateExpires!),
     };
   }
 }

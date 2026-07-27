@@ -1,4 +1,3 @@
-import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
@@ -71,14 +70,9 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                           labelColor: AppColors.white,
                           labelPadding: EdgeInsets.symmetric(horizontal: 4),
                           unselectedLabelColor: AppColors.black,
-                          indicator: BubbleTabIndicator(
-                            indicatorHeight: 32,
-                            indicatorColor: Colors.black,
-                            tabBarIndicatorSize: TabBarIndicatorSize.tab,
-                          ),
                           tabs: tabs,
-                          unselectedLabelStyle: _theme.textTheme.headline2,
-                          labelStyle: _theme.textTheme.headline2.copyWith(
+                          unselectedLabelStyle: _theme.textTheme.headlineSmall,
+                          labelStyle: _theme.textTheme.headlineSmall!.copyWith(
                             color: AppColors.white,
                           ),
                         ),
@@ -121,7 +115,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
           order: orders[index],
           onClick: ((int orderId) => {
             bloc..add(ProfileMyOrderDetailsEvent(orderId)),
-            widget.changeView(changeType: ViewChangeType.Exact, index: 7),
+            widget.changeView!(changeType: ViewChangeType.Exact, index: 7),
           }),
         );
       },

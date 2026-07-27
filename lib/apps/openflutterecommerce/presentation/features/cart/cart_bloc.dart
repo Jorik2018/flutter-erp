@@ -2,8 +2,11 @@
 // Author: openflutterproject@gmail.com
 // Date: 2020-02-06
 
+import 'dart:collection';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/favorite_product.dart';
+import 'package:flutter_erp/apps/openflutterecommerce/data/model/product_attribute.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/domain/usecases/cart/change_cart_item_quantity_use_case.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/domain/usecases/cart/get_cart_products_use_case.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/domain/usecases/cart/remove_product_from_cart_use_case.dart';
@@ -39,7 +42,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           showPromoPopup: false,
           totalPrice: cartResults.totalPrice,
           calculatedPrice: cartResults.calculatedPrice,
-          promos: promos.promos,
+          promos: promos.promos!,
           appliedPromo: cartResults.appliedPromo,
           cartProducts: cartResults.cartItems,
         );
@@ -50,13 +53,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       var state = this.state as CartLoadedState;
       yield CartLoadingState();
       ChangeCartItemQuantityUseCase changeCartItemQuantityUseCase = sl();
-      if (event.newQuantity < 1) {
-        await removeProductFromCartUseCase.execute(event.item);
+      if (event.newQuantity! < 1) {
+        await removeProductFromCartUseCase.execute(event.item!);
       } else {
         await changeCartItemQuantityUseCase.execute(
           ChangeCartItemQuantityParams(
-            item: event.item,
-            quantity: event.newQuantity,
+            item: event.item!,
+            quantity: event.newQuantity!,
           ),
         );
       }
@@ -74,7 +77,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } else if (event is CartRemoveFromCartEvent) {
       var state = this.state as CartLoadedState;
       yield CartLoadingState();
-      await removeProductFromCartUseCase.execute(event.item);
+      await removeProductFromCartUseCase.execute(event.item!);
       final cartResults = await getCartProductsUseCase.execute(
         GetCartProductParams(),
       );
@@ -88,7 +91,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       );
     } else if (event is CartAddToFavsEvent) {
       await addToFavoritesUseCase.execute(
-        FavoriteProduct(event.item.product, event.item.selectedAttributes),
+        FavoriteProduct(
+          event.item!.product,
+          event.item!.selectedAttributes as HashMap<ProductAttribute, String>,
+        ),
       );
     } else if (event is CartPromoAppliedEvent) {
       //TODO: apply promo code
@@ -100,7 +106,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         showPromoPopup: false,
         totalPrice: cartResults.totalPrice,
         calculatedPrice: cartResults.calculatedPrice,
-        appliedPromo: event.promo,
+        appliedPromo: event.promo!,
       );
     } else if (event is CartPromoCodeAppliedEvent) {
       //TODO: apply promo code

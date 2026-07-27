@@ -38,9 +38,9 @@ class GetPromosUseCaseImpl implements GetPromosUseCase {
 }
 
 class GetPromosResult extends UseCaseResult {
-  List<Promo> promos;
+  List<Promo>? promos;
 
-  GetPromosResult({this.promos, Exception exception, bool result})
+  GetPromosResult({this.promos, Exception? exception, bool? result})
     : super(exception: exception, result: result);
 }
 

@@ -8,8 +8,8 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/model/hashtag.dart';
 
 class OpenFlutterHashTagList extends StatelessWidget {
   final List<HashTag>? tags;
-  final double height;
-  final Function onTap;
+  final double? height;
+  final Function? onTap;
 
   const OpenFlutterHashTagList({Key? key, this.tags, this.onTap, this.height})
     : super(key: key);

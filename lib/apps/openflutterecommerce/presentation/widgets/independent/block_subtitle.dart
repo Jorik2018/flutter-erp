@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 
 class OpenFlutterBlockSubtitle extends StatelessWidget {
-  final double width;
+  final double? width;
   final String title;
   final String? linkText;
   final Function? onLinkTap;

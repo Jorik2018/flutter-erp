@@ -12,7 +12,7 @@ import '../profile_state.dart';
 class MyOrderDetailsView extends StatefulWidget {
   final Function? changeView;
 
-  const MyOrderDetailsView({Key? key, @required this.changeView})
+  const MyOrderDetailsView({Key? key, required this.changeView})
     : super(key: key);
 
   @override
@@ -47,7 +47,7 @@ class _MyOrderDetailsViewState extends State<MyOrderDetailsView> {
                             TextSpan(
                               text:
                                   '#' + state.orderData.orderNumber.toString(),
-                              style: _theme.textTheme.headlineLarge.copyWith(
+                              style: _theme.textTheme.headlineLarge!.copyWith(
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -58,7 +58,7 @@ class _MyOrderDetailsViewState extends State<MyOrderDetailsView> {
                         DateFormat(
                           'yyyy-MM-dd',
                         ).format(state.orderData.orderDate),
-                        style: _theme.textTheme.headline3.copyWith(
+                        style: _theme.textTheme.headlineMedium!.copyWith(
                           color: AppColors.lightGray,
                         ),
                       ),
@@ -73,7 +73,7 @@ class _MyOrderDetailsViewState extends State<MyOrderDetailsView> {
                           children: <TextSpan>[
                             TextSpan(
                               text: 'Tacking Number: ',
-                              style: _theme.textTheme.headlineLarge.copyWith(
+                              style: _theme.textTheme.headlineLarge!.copyWith(
                                 color: _theme.primaryColorLight,
                               ),
                             ),
@@ -86,7 +86,7 @@ class _MyOrderDetailsViewState extends State<MyOrderDetailsView> {
                       ),
                       Text(
                         'Delivered',
-                        style: _theme.textTheme.headlineLarge.copyWith(
+                        style: _theme.textTheme.headlineLarge!.copyWith(
                           color: AppColors.green,
                         ),
                       ),
@@ -127,7 +127,7 @@ class _MyOrderDetailsViewState extends State<MyOrderDetailsView> {
                   SizedBox(height: AppSizes.sidePadding),
                   buildSummaryLine(
                     'Payment Methods:',
-                    state.orderData.paymentMethod,
+                    state.orderData.paymentMethod!,
                     _theme,
                     width,
                   ),

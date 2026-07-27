@@ -5,7 +5,7 @@ import '../view_video_page/view_video_page.dart';
 
 class FeedPage extends StatefulWidget {
   @override
-  _FeedPageState createState() => new _FeedPageState();
+  _FeedPageState createState() => _FeedPageState();
 }
 
 class _FeedPageState extends State<FeedPage> {
@@ -38,7 +38,7 @@ class _FeedPageState extends State<FeedPage> {
 
 class VideoTile extends StatefulWidget {
   @override
-  _VideoTileState createState() => new _VideoTileState();
+  _VideoTileState createState() => _VideoTileState();
 }
 
 class _VideoTileState extends State<VideoTile> {

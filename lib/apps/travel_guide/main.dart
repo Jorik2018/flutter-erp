@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'screen_lista_citta.dart';
 
 void main() {
-  runApp(new MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Travel Guide',
       theme: ThemeData(
         // This is the theme of your application.

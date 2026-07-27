@@ -49,7 +49,7 @@ class OpenFlutterOrderTile extends StatelessWidget {
                         ),
                         TextSpan(
                           text: '#' + order.orderNumber.toString(),
-                          style: _theme.textTheme.headlineLarge.copyWith(
+                          style: _theme.textTheme.headlineLarge!.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -58,7 +58,7 @@ class OpenFlutterOrderTile extends StatelessWidget {
                   ),
                   Text(
                     DateFormat('yyyy-MM-dd').format(order.orderDate),
-                    style: _theme.textTheme.headline2.copyWith(
+                    style: _theme.textTheme.headlineSmall!.copyWith(
                       color: AppColors.red,
                     ),
                   ),
@@ -82,7 +82,7 @@ class OpenFlutterOrderTile extends StatelessWidget {
                           left: AppSizes.sidePadding,
                         ),
                         child: Text(
-                          order.trackingNumber,
+                          order.trackingNumber!,
                           style: _theme.textTheme.headlineLarge,
                         ),
                       ),
@@ -115,7 +115,7 @@ class OpenFlutterOrderTile extends StatelessWidget {
                         children: <Widget>[
                           Text(
                             'Totat Amount: ',
-                            style: _theme.textTheme.headlineLarge.copyWith(
+                            style: _theme.textTheme.headlineLarge!.copyWith(
                               color: _theme.primaryColorLight,
                             ),
                           ),
@@ -141,7 +141,7 @@ class OpenFlutterOrderTile extends StatelessWidget {
                 children: <Widget>[
                   ElevatedButton(
                     onPressed: () {
-                      onClick(order.id);
+                      onClick(order.id!);
                     },
                     child: Text(
                       'Details',

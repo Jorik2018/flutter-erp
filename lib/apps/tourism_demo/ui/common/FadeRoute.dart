@@ -19,7 +19,7 @@ class FadeRoute extends PageRouteBuilder {
               Animation<double> secondaryAnimation,
               Widget child,
             ) {
-              return new FadeTransition(
+              return FadeTransition(
                 opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
                   CurvedAnimation(
                     parent: animation,

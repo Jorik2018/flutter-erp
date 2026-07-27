@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Stack(
             alignment: Alignment.center,
-            //overflow: Overflow.visible,
+            //clipBehavior: Clip.none,,
             children: <Widget>[buildMainHeader(), buildToggleButton()],
           ),
           buildExpandableChildren(),

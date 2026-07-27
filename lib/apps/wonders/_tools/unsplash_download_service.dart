@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart' show get;
+import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_erp/apps/wonders/common_libs.dart';
 import 'package:flutter_erp/apps/wonders/logic/data/wonder_data.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_erp/apps/wonders/logic/wonders_logic.dart';
 class UnsplashDownloadService {
   static final UnsplashService _unsplash = UnsplashService();
   static final WondersLogic _wondersLogic = WondersLogic();
+  static final Dio _dio = Dio();
 
   /// Downloads one image in various sizes
   static Future<int> downloadImageSet(String id) async {
@@ -24,9 +25,12 @@ class UnsplashDownloadService {
       final sizes = [32, 400, 800, 2000, 1600, 4000];
       for (var size in sizes) {
         final url = photo.getUnsplashUrl(size);
-        final imgResponse = await get(Uri.parse(url));
+        final imgResponse = await _dio.get(
+          url,
+          options: Options(responseType: ResponseType.bytes),
+        );
         File file = File('$imagesDir/$id-$size.jpg');
-        file.writeAsBytesSync(imgResponse.bodyBytes);
+        file.writeAsBytesSync(imgResponse.data as List<int>);
         //print('file saved @ ${file.path}');
         saveCount++;
       }

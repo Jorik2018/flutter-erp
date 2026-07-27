@@ -6,7 +6,8 @@ class _CustomTheme extends InheritedWidget {
   final CustomThemeState data;
 
   _CustomTheme({
-    this.data,
+    /**The parameter 'data' can't have a value of 'null' because of its type, but the implicit default value is 'null'. */
+    required this.data,
     Key? key,
     required Widget child,
   }) : super(key: key, child: child);
@@ -21,40 +22,46 @@ class CustomTheme extends StatefulWidget {
   final Widget child;
   final MyThemeKeys? initialThemeKey;
 
-  const CustomTheme({
-    Key? key,
-    this.initialThemeKey,
-    required this.child,
-  }) : super(key: key);
+  const CustomTheme({Key? key, this.initialThemeKey, required this.child})
+    : super(key: key);
 
   @override
   CustomThemeState createState() => CustomThemeState();
 
   static ThemeData of(BuildContext context) {
-    _CustomTheme inherited =
-    (context.inheritFromWidgetOfExactType(_CustomTheme) as _CustomTheme);
+    final inherited = context
+        .dependOnInheritedWidgetOfExactType<_CustomTheme>();
+    if (inherited == null) {
+      throw FlutterError(
+        'CustomTheme.of() called with a context that does not contain a CustomTheme.',
+      );
+    }
     return inherited.data.theme;
   }
 
   static CustomThemeState instanceOf(BuildContext context) {
-    _CustomTheme inherited =
-    (context.inheritFromWidgetOfExactType(_CustomTheme) as _CustomTheme);
+    final inherited = context
+        .dependOnInheritedWidgetOfExactType<_CustomTheme>();
+    if (inherited == null) {
+      throw FlutterError(
+        'CustomTheme.instanceOf() called with a context that does not contain a CustomTheme.',
+      );
+    }
     return inherited.data;
   }
 }
 
 class CustomThemeState extends State<CustomTheme> {
-  ThemeData _theme;
+  late ThemeData _theme;
 
   ThemeData get theme => _theme;
 
   @override
   void initState() {
+    /**The argument type 'MyThemeKeys?' can't be assigned to the parameter type 'MyThemeKeys'.  */
     _theme = MyThemes.getThemeFromKey(widget.initialThemeKey);
     super.initState();
   }
-
-
 
   void changeTheme(MyThemeKeys themeKey) {
     setState(() {
@@ -64,9 +71,6 @@ class CustomThemeState extends State<CustomTheme> {
 
   @override
   Widget build(BuildContext context) {
-    return _CustomTheme(
-      data: this,
-      child: widget.child,
-    );
+    return _CustomTheme(data: this, child: widget.child);
   }
 }

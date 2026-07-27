@@ -46,7 +46,9 @@ class _Main3ViewState extends State<Main3View> {
                   width: width,
                   child: Text(
                     'New collection',
-                    style: _theme.textTheme.headline5.copyWith(fontSize: 34),
+                    style: _theme.textTheme.headlineLarge!.copyWith(
+                      fontSize: 34,
+                    ),
                   ),
                 ),
               ],
@@ -63,9 +65,9 @@ class _Main3ViewState extends State<Main3View> {
                     padding: EdgeInsets.all(AppSizes.sidePadding),
                     child: Text(
                       'Summer sale',
-                      style: _theme.textTheme.headline5.copyWith(
+                      style: _theme.textTheme.headlineLarge!.copyWith(
                         fontSize: 34,
-                        color: _theme.accentColor,
+                        color: _theme.highlightColor,
                       ),
                     ),
                   ),
@@ -85,7 +87,9 @@ class _Main3ViewState extends State<Main3View> {
                     ),
                     child: Text(
                       'Black',
-                      style: _theme.textTheme.headline5.copyWith(fontSize: 34),
+                      style: _theme.textTheme.headlineLarge!.copyWith(
+                        fontSize: 34,
+                      ),
                     ),
                   ),
                 ],
@@ -103,7 +107,7 @@ class _Main3ViewState extends State<Main3View> {
                 ),
                 child: Text(
                   'Men’s hoodies',
-                  style: _theme.textTheme.headline5.copyWith(fontSize: 34),
+                  style: _theme.textTheme.headlineLarge!.copyWith(fontSize: 34),
                 ),
               ),
             ],
@@ -114,7 +118,7 @@ class _Main3ViewState extends State<Main3View> {
             width: 160,
             height: 48,
             onPressed: (() =>
-                widget.changeView(changeType: ViewChangeType.Start)),
+                widget.changeView!(changeType: ViewChangeType.Start)),
           ),
         ],
       ),

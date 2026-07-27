@@ -1,30 +1,31 @@
-// Screen Wrapper to navigate between views
-// Author: openflutterproject@gmail.com
-// Date: 2020-02-06
-
 import 'package:flutter/material.dart';
 
 enum ViewChangeType { Start, Forward, Backward, Exact }
 
 class OpenFlutterWrapperState<T> extends State {
-  PageController _viewController;
+  late PageController _viewController;
 
   PageView getPageView(List<Widget> widgets) {
     return PageView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: _viewController,
-        children: widgets);
+      physics: NeverScrollableScrollPhysics(),
+      controller: _viewController,
+      children: widgets,
+    );
   }
 
-  void changePage({@required ViewChangeType changeType, int index}) {
+  void changePage({required ViewChangeType changeType, required int index}) {
     switch (changeType) {
       case ViewChangeType.Forward:
         _viewController.nextPage(
-            duration: Duration(milliseconds: 300), curve: Curves.elasticIn);
+          duration: Duration(milliseconds: 300),
+          curve: Curves.elasticIn,
+        );
         break;
       case ViewChangeType.Backward:
         _viewController.previousPage(
-            duration: Duration(milliseconds: 300), curve: Curves.elasticIn);
+          duration: Duration(milliseconds: 300),
+          curve: Curves.elasticIn,
+        );
         break;
       case ViewChangeType.Start:
         _viewController.jumpToPage(0);

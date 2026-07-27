@@ -12,38 +12,37 @@ import 'product_attribute.dart';
 class Product extends Equatable {
   final int id;
   final String title;
-  //cateogry or hashtag to display next to title
-  final String subTitle;
-  final String shortDescription;
-  final String description;
+  final String? subTitle;
+  final String? shortDescription;
+  final String? description;
   final bool isFavorite;
   final double price;
   final double discountPercent;
-  final int amountAvailable;
+  final int? amountAvailable;
   final DateTime created;
-  final double averageRating;
+  final double? averageRating;
   final double rating1Count;
   final double rating2Count;
   final double rating3Count;
   final double rating4Count;
   final double rating5Count;
   final int ratingCount;
-  final List<CommerceImage> images;
+  final List<CommerceImage>? images;
   final List<ProductCategory> categories;
   final List<HashTag> hashTags;
-  final Map<String, dynamic> properties;
-  final List<ProductAttribute> selectableAttributes;
+  final Map<String, dynamic>? properties;
+  final List<ProductAttribute>? selectableAttributes;
 
   Product(
     this.id, {
     required this.title,
-    required this.subTitle,
+    this.subTitle,
     this.shortDescription,
     this.description,
     required this.price,
     this.discountPercent = 0,
     this.amountAvailable = 0,
-    DateTime created,
+    DateTime? created,
     this.averageRating,
     this.ratingCount = 0,
     this.rating1Count = 0,
@@ -90,33 +89,33 @@ class Product extends Equatable {
   factory Product.fromEntity(Entity entity) {
     if (entity is ProductEntity) {
       List<CommerceImage> images = [];
-      if (entity.images.isNotEmpty) {
-        entity.images.forEach((f) => images.add(CommerceImage(0, f, '')));
+      if (entity.images!.isNotEmpty) {
+        entity.images!.forEach((f) => images.add(CommerceImage(0, f, '')));
       }
       List<ProductCategory> categories = [];
-      if (entity.categories.isNotEmpty) {
-        entity.categories.forEach(
+      if (entity.categories!.isNotEmpty) {
+        entity.categories!.forEach(
           (category) => categories.add(
             ProductCategory(category.id, name: category.title),
           ),
         );
       }
       List<HashTag> hashTags = [];
-      if (entity.hashTags.isNotEmpty) {
-        entity.hashTags.forEach(
+      if (entity.hashTags!.isNotEmpty) {
+        entity.hashTags!.forEach(
           (hashTag) =>
-              hashTags.add(HashTag(id: hashTag.id, title: hashTag.title)),
+              hashTags.add(HashTag(id: hashTag.id!, title: hashTag.title!)),
         );
       }
       return Product(
-        entity.id,
-        title: entity.title,
+        entity.id!,
+        title: entity.title!,
         subTitle: entity.subTitle,
         shortDescription: entity.description,
         description: entity.description,
         price: entity.price ?? 0,
-        discountPercent: entity.discountPercent,
-        amountAvailable: entity.amount,
+        discountPercent: entity.discountPercent!,
+        amountAvailable: entity.amount!,
         //TODO: created - do we need this attribute in the model?
         averageRating: entity.rating,
         categories: categories,
@@ -143,10 +142,10 @@ class Product extends Equatable {
   bool get isNew => created.difference(DateTime.now()).inDays < 3;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     id,
     title,
-    shortDescription,
+    shortDescription!,
     description,
     isFavorite,
     price,
@@ -170,7 +169,7 @@ class Product extends Equatable {
   }
 
   //TODO place it in extension because it is about UI
-  String get specialMark {
+  String? get specialMark {
     if (discountPercent > 0) {
       return '-' + discountPercent.round().toString() + '%';
     } else if (isNew) {
@@ -180,7 +179,7 @@ class Product extends Equatable {
     }
   }
 
-  CommerceImage get mainImage => (images != null && images.isNotEmpty)
-      ? images.first
+  CommerceImage get mainImage => (images != null && images!.isNotEmpty)
+      ? images!.first
       : CommerceImage.placeHolder();
 }

@@ -10,5 +10,5 @@ Future<String> _loadProduct() async {
 Future loadAddress() async {
   String jsonAddress = await _loadProduct();
   final jsonResponce = json.decode(jsonAddress);
-  address address_model = new address.fromJson(jsonResponce);
+  address address_model = address.fromJson(jsonResponce);
 }

@@ -7,7 +7,7 @@ import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/category.dart';
 
 class OpenFlutterCatregoryListElement extends StatelessWidget {
-  final ProductCategory category;
+  final ProductCategory? category;
 
   const OpenFlutterCatregoryListElement({Key? key, this.category})
     : super(key: key);
@@ -29,8 +29,8 @@ class OpenFlutterCatregoryListElement extends StatelessWidget {
         ),
       ),
       child: Text(
-        category.name,
-        style: _theme.textTheme.headlineLarge.copyWith(
+        category!.name!,
+        style: _theme.textTheme.headlineLarge!.copyWith(
           fontWeight: FontWeight.normal,
         ),
       ),

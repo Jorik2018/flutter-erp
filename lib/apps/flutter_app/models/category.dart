@@ -89,7 +89,7 @@ class Category extends StatelessWidget {
                         textAlign: TextAlign.left,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      new Container(
+                      Container(
                         decoration: BoxDecoration(
                           color: isActive == true
                               ? Colors.green[300]

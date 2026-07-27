@@ -6,7 +6,7 @@ import 'package:flutter_erp/apps/tourism_demo/redux/destinations/destinations_st
 @immutable
 class AppState {
   AppState({
-    @required this.destinationsState,
+    required this.destinationsState,
     this.destinationInfoState,
     this.appLocale,
   });

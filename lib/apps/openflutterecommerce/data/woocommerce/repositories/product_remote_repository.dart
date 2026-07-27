@@ -12,7 +12,7 @@ import 'package:flutter_erp/apps/openflutterecommerce/domain/usecases/products/p
 class RemoteProductRepository extends ProductRepository {
   final WoocommercWrapperAbstract woocommerce;
 
-  RemoteProductRepository({@required this.woocommerce});
+  RemoteProductRepository({required this.woocommerce});
 
   @override
   Future<Product> getProduct(int id) {
@@ -33,7 +33,7 @@ class RemoteProductRepository extends ProductRepository {
   @override
   Future<FilterRules> getPossibleFilterOptions(int categoryId) {
     // TODO: implement getPossibleFilterOptions
-    return null;
+    return null!;
   }
 
   @override
@@ -43,7 +43,7 @@ class RemoteProductRepository extends ProductRepository {
     int categoryId = 0,
     bool isFavorite = false,
     SortRules sortRules = const SortRules(),
-    FilterRules filterRules,
+    FilterRules? filterRules,
   }) async {
     // TODO: implement getProducts
     try {
@@ -51,7 +51,7 @@ class RemoteProductRepository extends ProductRepository {
         ProductsByFilterParams(
           categoryId: categoryId,
           sortBy: sortRules,
-          filterRules: filterRules,
+          filterRules: filterRules!,
         ),
       );
       List<Product> products = [];

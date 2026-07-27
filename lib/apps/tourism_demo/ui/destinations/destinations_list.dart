@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_erp/apps/tourism_demo/models/destination.dart';
 import 'package:flutter_erp/apps/tourism_demo/redux/app/app_state.dart';
 import 'package:flutter_erp/apps/tourism_demo/redux/destination_info/destination_info_actions.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_erp/apps/tourism_demo/ui/common/FadeRoute.dart';
 import 'package:flutter_erp/apps/tourism_demo/ui/common/info_message_view.dart';
 import 'package:flutter_erp/apps/tourism_demo/ui/destination_info/destination_info_page.dart';
 import 'package:flutter_erp/apps/tourism_demo/ui/destinations/destination_list_tile.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class DestinationsList extends StatelessWidget {
   static const Key emptyViewKey = Key('emptyView');
@@ -39,16 +39,13 @@ class DestinationsList extends StatelessWidget {
             onTapped: () {
               var store = StoreProvider.of<AppState>(context);
               store.dispatch(
-                new SelectedDestinationAction(
+                SelectedDestinationAction(
                   destinationCard: _buildCard(destinations[index]),
                 ),
               );
               //                  Navigator.pushNamed(context, AppRoutes.destinationInfo);
               //                  Navigator.push
-              Navigator.push(
-                context,
-                new FadeRoute(widget: DestinationInfoPage()),
-              );
+              Navigator.push(context, FadeRoute(widget: DestinationInfoPage()));
             },
           ),
         );

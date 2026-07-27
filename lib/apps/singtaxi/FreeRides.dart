@@ -151,8 +151,6 @@ class FreeRides extends StatelessWidget {
                       //                            msg:
                       //                                "I'm giving you a free ride on the Uber app (up to Rs. 25). To accept, use code 'wmp9it' to sign up. Enjoy! Details https://www.uber.com/invite/wmp9it");
                     },
-                    textColor: Colors.white,
-                    color: Colors.green[600],
                     child: Text(
                       "WHATSAPP",
                       textAlign: TextAlign.center,

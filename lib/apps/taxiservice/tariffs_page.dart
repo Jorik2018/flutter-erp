@@ -9,7 +9,9 @@ class Tariffs extends StatefulWidget {
 }
 
 class TariffState extends State<Tariffs> with SingleTickerProviderStateMixin {
-  final CollectionReference colRef = Firestore.instance.collection('tariffs');
+  final CollectionReference<Map<String, dynamic>> colRef = FirebaseFirestore
+      .instance
+      .collection('tariffs');
   final PageController pageController = PageController();
   @override
   void initState() {
@@ -23,7 +25,8 @@ class TariffState extends State<Tariffs> with SingleTickerProviderStateMixin {
     initConnectivity();
     return Scaffold(
       appBar: AppBar(title: Text("Тарифы")),
-      body: StreamBuilder(
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        /**The argument type 'Stream<QuerySnapshot<Object?>>' can't be assigned to the parameter type 'Stream<QuerySnapshot<Map<String, dynamic>>>?' */
         stream: colRef.snapshots(),
         builder: (context, snapshot) {
           if (!hasConnection) {
@@ -47,9 +50,11 @@ class TariffState extends State<Tariffs> with SingleTickerProviderStateMixin {
               PageView.builder(
                 controller: pageController,
                 physics: AlwaysScrollableScrollPhysics(),
-                itemCount: snapshot.data.documents.length,
+                /**The property 'docs' can't be unconditionally accessed because the receiver can be 'null'.
+Try making the access conditional (using '?.') or adding a null check to the target ('!'). */
+                itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
-                  DocumentSnapshot ds = snapshot.data.documents[index];
+                  DocumentSnapshot ds = snapshot.data!.docs[index];
                   return ListView(
                     padding: const EdgeInsets.symmetric(
                       vertical: 40.0,
@@ -102,7 +107,7 @@ class TariffState extends State<Tariffs> with SingleTickerProviderStateMixin {
               ),
               CircleIndicator(
                 pageController: pageController,
-                size: snapshot.data.documents.length,
+                size: snapshot.data!.docs.length,
               ),
             ],
           );
@@ -114,8 +119,8 @@ class TariffState extends State<Tariffs> with SingleTickerProviderStateMixin {
 
 class CircleIndicator extends StatefulWidget {
   CircleIndicator({Key? key, this.pageController, this.size}) : super(key: key);
-  final PageController pageController;
-  final int size;
+  final PageController? pageController;
+  final int? size;
   @override
   State createState() {
     return CircleIndicatorState(pageController, size);
@@ -124,13 +129,13 @@ class CircleIndicator extends StatefulWidget {
 
 class CircleIndicatorState extends State {
   int position = 0;
-  int length;
-  CircleIndicatorState(PageController pageController, int size) {
+  int? length;
+  CircleIndicatorState(PageController? pageController, int? size) {
     length = size;
-    pageController.addListener(() {
-      if (pageController.page.toInt() != position) {
+    pageController!.addListener(() {
+      if (pageController.page!.toInt() != position) {
         setState(() {
-          position = pageController.page.toInt();
+          position = pageController.page!.toInt();
           length = size;
         });
       }
@@ -144,7 +149,7 @@ class CircleIndicatorState extends State {
       padding: EdgeInsets.only(bottom: 60.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: indicatorList(length),
+        children: indicatorList(length!),
       ),
     );
   }
@@ -153,7 +158,7 @@ class CircleIndicatorState extends State {
     return List.generate(
       size,
       (i) => i == position
-          ? drawCircle(Colors.grey[300])
+          ? drawCircle(Colors.grey[300]!)
           : drawCircle(Colors.white),
     );
   }
@@ -161,11 +166,7 @@ class CircleIndicatorState extends State {
   Widget drawCircle(Color color) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 3.0),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.grey[200]),
-        color: color,
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
       width: 13.0,
       height: 13.0,
     );

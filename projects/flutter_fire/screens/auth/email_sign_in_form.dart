@@ -13,21 +13,26 @@ class EmailSignInForm extends StatefulWidget {
   EmailSignInForm({@required this.model});
   final EmailSignInModel model;
 
-  static Widget create(BuildContext context, bool toLink, String previousEmail,
-      AuthCredential creds, EmailSignInFormType type, LinkType linkType) {
+  static Widget create(
+    BuildContext context,
+    bool toLink,
+    String previousEmail,
+    AuthCredential creds,
+    EmailSignInFormType type,
+    LinkType linkType,
+  ) {
     final auth = Provider.of<AuthBase>(context);
     return ChangeNotifierProvider<EmailSignInModel>(
       create: (_) => EmailSignInModel(
-          linkType: linkType,
-          auth: auth,
-          toLink: toLink,
-          creds: creds,
-          previousEmail: previousEmail,
-          formType: type),
+        linkType: linkType,
+        auth: auth,
+        toLink: toLink,
+        creds: creds,
+        previousEmail: previousEmail,
+        formType: type,
+      ),
       child: Consumer<EmailSignInModel>(
-        builder: (context, model, _) => EmailSignInForm(
-          model: model,
-        ),
+        builder: (context, model, _) => EmailSignInForm(model: model),
       ),
     );
   }
@@ -61,8 +66,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       await model.submit();
       if (model.toPop())
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (ctx) => LandingManager()),
-            (Route<dynamic> route) => false);
+          MaterialPageRoute(builder: (ctx) => LandingManager()),
+          (Route<dynamic> route) => false,
+        );
       else
         _toggleFormType();
     } on PlatformException catch (e) {
@@ -124,8 +130,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
           : ElevatedButton(
               onPressed: model.canSubmit ? _submit : null,
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) => kColorPrimary)),
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) => kColorPrimary,
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(model.primaryButtonText),
@@ -148,19 +156,16 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       children: [
         Text(
           model.primaryWelcomeText,
-          style: Theme.of(context).textTheme.headline5.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlinelarge!.copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(
-          height: 3.0,
-        ),
+        SizedBox(height: 3.0),
         Text(
           model.secondaryWelcomeText,
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              .copyWith(color: Colors.grey),
+          style: Theme.of(
+            context,
+          ).textTheme.subtitle2.copyWith(color: Colors.grey),
         ),
       ],
     );
@@ -169,17 +174,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   Widget _buildEmailTextField() {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.grey.shade900,
-          borderRadius: BorderRadius.all(Radius.circular(6.0))),
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      ),
       child: Row(
         children: [
           Container(
             width: 100.0,
             padding: const EdgeInsets.only(left: 15.0, right: 20.0),
-            child: Text(
-              'Email',
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
+            child: Text('Email', style: Theme.of(context).textTheme.bodyText2),
           ),
           Expanded(
             child: TextField(
@@ -187,23 +190,18 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
               controller: _emailController,
               focusNode: _emailFocusNode,
               decoration: InputDecoration(
-                  hintText: 'example@abc.com',
-                  errorText: model.emailErrorText,
-                  enabled: model.isLoading == false,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey.shade900),
+                hintText: 'example@abc.com',
+                errorText: model.emailErrorText,
+                enabled: model.isLoading == false,
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade900,
+              ),
               autocorrect: false,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
@@ -219,8 +217,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   Widget _buildPasswordTextField() {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.grey.shade900,
-          borderRadius: BorderRadius.all(Radius.circular(6.0))),
+        color: Colors.grey.shade900,
+        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      ),
       child: Row(
         children: [
           Container(
@@ -240,26 +239,21 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
                 suffix: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: GestureDetector(
-                      child: Icon(
-                        _showPass ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.grey.shade500,
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _showPass = !_showPass;
-                        });
-                      }),
+                    child: Icon(
+                      _showPass ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.grey.shade500,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _showPass = !_showPass;
+                      });
+                    },
+                  ),
                 ),
                 hintText: 'At least 6 characters',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide.none),
+                errorBorder: OutlineInputBorder(borderSide: BorderSide.none),
                 focusedErrorBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
                 ),

@@ -10,7 +10,11 @@ class SignUpPressed extends SignUpEvent {
   final String password;
   final String name;
 
-  SignUpPressed({this.name, this.email, this.password});
+  SignUpPressed({
+    required this.name,
+    required this.email,
+    required this.password,
+  });
 
   @override
   List<Object> get props => [email, password];
@@ -19,4 +23,3 @@ class SignUpPressed extends SignUpEvent {
 class SignUpPressedFacebook extends SignUpEvent {}
 
 class SignUpPressedGoogle extends SignUpEvent {}
-

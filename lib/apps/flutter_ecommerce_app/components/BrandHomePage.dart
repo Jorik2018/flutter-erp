@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/CircularProgress.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/GridTilesCategory.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/utils/Urls.dart';
-import 'package:http/http.dart';
-
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 import '../models/BrandModel.dart';
 
 BrandModel? brandModel;
@@ -14,7 +13,8 @@ class BrandHomePage extends StatefulWidget {
   String slug;
   bool isSubList;
 
-  BrandHomePage({Key? key, required this.slug, this.isSubList=false}) : super(key: key);
+  BrandHomePage({Key? key, required this.slug, this.isSubList = false})
+    : super(key: key);
   @override
   _BrandHomePageState createState() => _BrandHomePageState();
 }
@@ -27,7 +27,7 @@ class _BrandHomePageState extends State<BrandHomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getCategoryList(widget.slug,widget.isSubList),
+      future: getCategoryList(widget.slug, widget.isSubList),
       builder: (context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -53,23 +53,25 @@ Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
     childAspectRatio: 8.0 / 9.0,
     children: List<Widget>.generate(results.length, (index) {
       return GridTile(
-          child: GridTilesCategory(
-              name: results[index].name,
-              imageUrl: results[index].imageUrl,
-              slug: results[index].slug));
+        child: GridTilesCategory(
+          name: results[index].name,
+          imageUrl: results[index].imageUrl,
+          slug: results[index].slug,
+        ),
+      );
     }),
   );
 }
 
 Future<BrandModel?> getCategoryList(String slug, bool isSubList) async {
   if (brandModel == null) {
-    Response response = await get(Uri.parse(Urls.ROOT_URL + slug));
+    HttpResponse response = await HttpClient.get(Urls.ROOT_URL + slug);
     int statusCode = response.statusCode;
-    var body = json.decode(response.body);
+    var body = json.decode(response.body!);
     log('${body}');
     if (statusCode == 200) {
       brandModel = BrandModel.fromJson(body);
-//    brandModel = (body).map((i) =>BrandModel.fromJson(body)) ;
+      //    brandModel = (body).map((i) =>BrandModel.fromJson(body)) ;
       return brandModel;
     }
   } else {

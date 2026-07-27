@@ -30,7 +30,8 @@ class TripRatePage extends StatelessWidget {
                   date: "2020.4.2",
                   place: "Westwood Secondary School -- Unity Center",
                   price: "25.70\$",
-                  color: Colors.green[100],
+
+                  color: const Color.fromARGB(255, 30, 44, 146)!,
                 ),
               ),
               FadeAnimation(
@@ -70,11 +71,11 @@ class TripRatePage extends StatelessWidget {
     image,
     tag,
     context,
-    String imageString,
-    String date,
-    String place,
-    String price,
-    Color color,
+    required String imageString,
+    required String date,
+    required String place,
+    required String price,
+    required Color color,
   }) {
     return Hero(
       tag: tag,

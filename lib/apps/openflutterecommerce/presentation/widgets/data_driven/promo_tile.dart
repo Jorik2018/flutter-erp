@@ -41,7 +41,7 @@ class OpenFlutterPromoTile extends StatelessWidget {
                 ? BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: AssetImage(item.image),
+                      image: AssetImage(item.image!),
                     ),
                   )
                 : BoxDecoration(
@@ -56,7 +56,7 @@ class OpenFlutterPromoTile extends StatelessWidget {
               children: <Widget>[
                 Text(
                   item.discount.toStringAsFixed(0),
-                  style: _theme.textTheme.caption.copyWith(
+                  style: _theme.textTheme.bodyMedium!.copyWith(
                     color: textColor,
                     fontSize: 32,
                   ),
@@ -67,13 +67,13 @@ class OpenFlutterPromoTile extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         '%',
-                        style: _theme.textTheme.headline2.copyWith(
+                        style: _theme.textTheme.headlineSmall!.copyWith(
                           color: textColor,
                         ),
                       ),
                       Text(
                         'off',
-                        style: _theme.textTheme.headline2.copyWith(
+                        style: _theme.textTheme.headlineSmall!.copyWith(
                           color: textColor,
                         ),
                       ),
@@ -93,14 +93,14 @@ class OpenFlutterPromoTile extends StatelessWidget {
               children: <Widget>[
                 Text(
                   item.title,
-                  style: _theme.textTheme.headlineLarge.copyWith(
+                  style: _theme.textTheme.headlineLarge!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: _theme.primaryColor,
                   ),
                 ),
                 Text(
                   item.promoCode,
-                  style: _theme.textTheme.bodyText1.copyWith(
+                  style: _theme.textTheme.bodySmall!.copyWith(
                     color: _theme.primaryColor,
                   ),
                 ),
@@ -117,7 +117,7 @@ class OpenFlutterPromoTile extends StatelessWidget {
               children: <Widget>[
                 Text(
                   item.daysLeft.toString() + ' days remaining',
-                  style: _theme.textTheme.headline2.copyWith(
+                  style: _theme.textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: _theme.primaryColor,
                   ),

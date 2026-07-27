@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/favorite_product.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/hashtag.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/product.dart';
@@ -9,17 +8,17 @@ import 'category.dart';
 import 'product_attribute.dart';
 
 class FilterRules {
-  final HashMap<ProductCategory, bool> categories;
-  final HashMap<ProductAttribute, List<String>> selectableAttributes;
+  final HashMap<ProductCategory, bool>? categories;
+  final HashMap<ProductAttribute, List<String>>? selectableAttributes;
   final HashMap<ProductAttribute, List<String>> selectedAttributes;
-  final PriceRange selectedPriceRange;
+  final PriceRange? selectedPriceRange;
   final List<HashTag> hashTags;
   final HashMap<HashTag, bool> selectedHashTags;
 
   FilterRules({
     this.categories,
-    @required this.hashTags,
-    @required this.selectedHashTags,
+    required this.hashTags,
+    required this.selectedHashTags,
     selectedAttributes,
     this.selectableAttributes,
     this.selectedPriceRange,
@@ -31,9 +30,9 @@ class FilterRules {
     String value,
   ) {
     HashMap<ProductAttribute, List<String>> updatedAttributes =
-        selectableAttributes;
+        selectableAttributes!;
     if (updatedAttributes.containsKey(attribute)) {
-      updatedAttributes[attribute].add(value);
+      updatedAttributes[attribute]!.add(value);
     } else {
       updatedAttributes[attribute] = [value];
     }
@@ -47,22 +46,22 @@ class FilterRules {
   }
 
   /// this behavior can be changed in subclasses to show special attribute instead of first
-  MapEntry<ProductAttribute, List<String>> get topmostOption =>
+  /*MapEntry<ProductAttribute, List<String>> get topmostOption =>
       selectableAttributes?.entries?.isNotEmpty
       ? selectableAttributes?.entries?.first
       : MapEntry<ProductAttribute, List<String>>(
           ProductAttribute(name: ''),
           [],
-        );
+        );*/
 
   FilterRules copyWithRemovedAttributeValue(
     ProductAttribute attribute,
     String value,
   ) {
     HashMap<ProductAttribute, List<String>> updatedAttributes =
-        selectableAttributes;
-    updatedAttributes[attribute].remove(value);
-    if (updatedAttributes[attribute].isEmpty) {
+        selectableAttributes!;
+    updatedAttributes[attribute]!.remove(value);
+    if (updatedAttributes[attribute]!.isEmpty) {
       updatedAttributes.remove(attribute);
     }
     return FilterRules(
@@ -111,17 +110,17 @@ class FilterRules {
         product.selectableAttributes != null
             ?
               // returnAttributes.addAll({for (var attribute in product.selectableAttributes) attribute: []})
-              product.selectableAttributes.forEach(
+              product.selectableAttributes!.forEach(
                 (attribute) => {
                   if (attribute != null)
                     {
                       if (attributesIdToString[attribute.id] == null)
                         {
-                          attributesIdToString[attribute.id] = [],
-                          attributesIdToAttribute[attribute.id] = attribute,
+                          attributesIdToString[attribute.id!] = [],
+                          attributesIdToAttribute[attribute.id!] = attribute,
                         },
-                      attributesIdToString[attribute.id].addAll(
-                        attribute.options,
+                      attributesIdToString[attribute.id]!.addAll(
+                        attribute.options!,
                       ),
                     },
                 },
@@ -133,15 +132,15 @@ class FilterRules {
         product.categories.forEach(
           (ProductCategory category) => {
             if (!categoryIds.contains(category.id))
-              {categoryIds.add(category.id), categories[category] = false},
+              {categoryIds.add(category.id!), categories[category] = false},
           },
         ),
       },
     );
     attributesIdToString.keys.forEach(
       (attributeById) => {
-        returnAttributes[attributesIdToAttribute[attributeById]] =
-            attributesIdToString[attributeById].toSet().toList(),
+        returnAttributes[attributesIdToAttribute[attributeById]!] =
+            attributesIdToString[attributeById]!.toSet().toList(),
       },
     );
 

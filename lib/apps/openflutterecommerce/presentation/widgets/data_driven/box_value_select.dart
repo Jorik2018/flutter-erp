@@ -9,7 +9,7 @@ class OpenFlutterSelectValuesBoxes<T> extends StatefulWidget {
   final List<T> selectedValues;
   final String label;
   final Function(List<T>) onClick;
-  final double boxWidth;
+  final double? boxWidth;
 
   const OpenFlutterSelectValuesBoxes({
     Key? key,
@@ -27,7 +27,7 @@ class OpenFlutterSelectValuesBoxes<T> extends StatefulWidget {
 
 class _OpenFlutterSelectValuesBoxesState<T>
     extends State<OpenFlutterSelectValuesBoxes<T>> {
-  List<T> selectedValues;
+  List<T>? selectedValues;
 
   @override
   void initState() {
@@ -82,17 +82,6 @@ class _OpenFlutterSelectValuesBoxesState<T>
     return Container(
       alignment: Alignment.center,
       width: widget.boxWidth,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-        border: Border.all(
-          color: widget.selectedValues.contains(currentValue)
-              ? _theme.accentColor
-              : _theme.primaryColorLight,
-        ),
-        color: widget.selectedValues.contains(currentValue)
-            ? _theme.accentColor
-            : AppColors.white,
-      ),
       padding: EdgeInsets.symmetric(
         vertical: AppSizes.sidePadding,
         horizontal: widget.boxWidth == null ? AppSizes.sidePadding : 0,
@@ -100,11 +89,6 @@ class _OpenFlutterSelectValuesBoxesState<T>
       child: Text(
         convertValueToString(currentValue).toUpperCase(),
         overflow: TextOverflow.ellipsis,
-        style: _theme.textTheme.headline2.copyWith(
-          color: widget.selectedValues.contains(currentValue)
-              ? AppColors.white
-              : _theme.accentColor,
-        ),
       ),
     );
   }
@@ -112,21 +96,21 @@ class _OpenFlutterSelectValuesBoxesState<T>
   String convertValueToString(T currentValue) {
     if (currentValue is CategoryView) return currentValue.title;
     if (currentValue is ProductCategory) {
-      return currentValue.name;
+      return currentValue.name!;
     }
     return currentValue.toString();
   }
 
   void updateSelectedBoxes(T currentValue) {
     if (selectedValues != null) {
-      if (selectedValues.contains(currentValue)) {
-        selectedValues.remove(currentValue);
+      if (selectedValues!.contains(currentValue)) {
+        selectedValues!.remove(currentValue);
       } else {
-        selectedValues.add(currentValue);
+        selectedValues!.add(currentValue);
       }
     }
     setState(() {});
-    widget.onClick(selectedValues);
+    widget.onClick(selectedValues!);
   }
 }
 

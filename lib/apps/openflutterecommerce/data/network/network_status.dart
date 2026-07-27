@@ -1,14 +1,14 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-abstract class NetworkStatus {
+abstract interface class NetworkStatus {
   Future<bool> get isConnected;
 }
 
 class NetworkStatusImpl implements NetworkStatus {
-  final DataConnectionChecker connectionChecker;
+  const NetworkStatusImpl(this._connectionChecker);
 
-  NetworkStatusImpl(this.connectionChecker);
+  final InternetConnectionChecker _connectionChecker;
 
   @override
-  Future<bool> get isConnected => connectionChecker.hasConnection;
+  Future<bool> get isConnected => _connectionChecker.hasConnection;
 }

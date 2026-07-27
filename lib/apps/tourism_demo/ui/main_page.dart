@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage> {
     return CustomScrollView(
       // physics:PageScrollPhysics(),
       slivers: <Widget>[
-        new SliverAppBar(
+        SliverAppBar(
           elevation: 0.0,
           backgroundColor: Colors.transparent,
           title: Text(
@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
             child: Divider(color: Colors.white, height: 1.0),
           ),
           actions: <Widget>[
-            new TextButton(
+            TextButton(
               child: Text(
                 Translations.of(context).language,
                 style: Theme.of(context).textTheme.labelLarge,
@@ -71,23 +71,23 @@ class _MainPageState extends State<MainPage> {
         //            return body;
         //          }, childCount: 1),
         //        )
-        new SliverFillRemaining(child: body),
+        SliverFillRemaining(child: body),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Stack(
+    return Stack(
       fit: StackFit.passthrough,
       alignment: Alignment.topCenter,
       children: <Widget>[
-        new Container(
+        Container(
           decoration: gradientBackDecoration(),
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [
-                new BoxShadow(
+                BoxShadow(
                   color: Colors.black12,
                   blurRadius: 30.0,
                   offset: const Offset(0.0, 30.0),
@@ -96,7 +96,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
         ),
-        new Scaffold(
+        Scaffold(
           backgroundColor: Colors.transparent,
           body: _appBody(DestinationsPage()),
         ),

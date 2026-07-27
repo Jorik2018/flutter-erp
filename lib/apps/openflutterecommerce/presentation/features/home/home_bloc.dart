@@ -30,8 +30,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           HomeProductParams(),
         );
         yield HomeLoadedState(
-          salesProducts: results.salesProducts,
-          newProducts: results.newProducts,
+          salesProducts: results.salesProducts!,
+          newProducts: results.newProducts!,
         );
       } else if (state is HomeLoadedState) {
         yield state;
@@ -50,8 +50,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         HomeProductParams(),
       );
       yield HomeLoadedState(
-        salesProducts: results.salesProducts,
-        newProducts: results.newProducts,
+        salesProducts: results.salesProducts!,
+        newProducts: results.newProducts!,
       );
     }
   }

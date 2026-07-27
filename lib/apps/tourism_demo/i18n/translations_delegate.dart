@@ -12,7 +12,7 @@ class TranslationsDelegate extends LocalizationsDelegate<Translations> {
 
   @override
   Future<Translations> load(Locale locale) {
-    return new SynchronousFuture<Translations>(new Translations(locale));
+    return SynchronousFuture<Translations>(Translations(locale));
   }
 
   @override

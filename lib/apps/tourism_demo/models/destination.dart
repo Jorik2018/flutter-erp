@@ -16,23 +16,24 @@ class Destination {
   String? dateTo;
   List<Activities>? activities;
 
-  Destination(
-      {this.title,
-        this.titleAr,
-        this.emoji,
-        this.photo,
-        this.price,
-        this.numDays,
-        this.airlines,
-        this.airlinesAr,
-        this.food,
-        this.foodAr,
-        this.hotelStars,
-        this.shortDescription,
-        this.shortDescriptionAr,
-        this.dateFrom,
-        this.dateTo,
-        this.activities});
+  Destination({
+    this.title,
+    this.titleAr,
+    this.emoji,
+    this.photo,
+    this.price,
+    this.numDays,
+    this.airlines,
+    this.airlinesAr,
+    this.food,
+    this.foodAr,
+    this.hotelStars,
+    this.shortDescription,
+    this.shortDescriptionAr,
+    this.dateFrom,
+    this.dateTo,
+    this.activities,
+  });
 
   Destination.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -53,13 +54,13 @@ class Destination {
     if (json['activities'] != null) {
       activities = [];
       json['activities'].forEach((v) {
-        activities!.add(new Activities.fromJson(v));
+        activities!.add(Activities.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['title'] = this.title;
     data['title_ar'] = this.titleAr;
     data['emoji'] = this.emoji;
@@ -91,14 +92,15 @@ class Activities {
   String? activityAr;
   String? photo;
 
-  Activities(
-      {this.city,
-        this.cityAr,
-        this.dateFrom,
-        this.dateTo,
-        this.activity,
-        this.activityAr,
-        this.photo});
+  Activities({
+    this.city,
+    this.cityAr,
+    this.dateFrom,
+    this.dateTo,
+    this.activity,
+    this.activityAr,
+    this.photo,
+  });
 
   Activities.fromJson(Map<String, dynamic> json) {
     city = json['city'];
@@ -111,7 +113,7 @@ class Activities {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['city'] = this.city;
     data['city_ar'] = this.cityAr;
     data['date_from'] = this.dateFrom;

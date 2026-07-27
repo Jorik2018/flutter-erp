@@ -18,12 +18,12 @@ class ProfileMyOrdersProcessingState extends ProfileState {}
 class ProfileMyOrdersState extends ProfileState {
   final List<UserOrder> orderData;
 
-  ProfileMyOrdersState({this.orderData});
+  ProfileMyOrdersState({required this.orderData});
 }
 
 @immutable
 class ProfileMyOrderDetailsState extends ProfileState {
   final UserOrder orderData;
 
-  ProfileMyOrderDetailsState({this.orderData});
+  ProfileMyOrderDetailsState({required this.orderData});
 }

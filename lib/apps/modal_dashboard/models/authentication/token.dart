@@ -19,20 +19,20 @@ class Token {
   factory Token.fromJson(Map<String, dynamic> json) => _$TokenFromJson(json);
 
   @JsonKey(name: 'access_token')
-  final String accessToken;
+  final String? accessToken;
   @JsonKey(name: 'token_type')
-  final String tokenType;
+  final String? tokenType;
   @JsonKey(name: 'expires_at')
-  final int expiresAt;
+  final int? expiresAt;
   @JsonKey(name: 'refresh_token')
-  final String refreshToken;
+  final String? refreshToken;
   @JsonKey(name: 'user')
-  final Member user;
+  final Member? user;
 
   @JsonKey(ignore: true)
-  String error;
+  String? error;
   @JsonKey(ignore: true)
-  int errorCode;
+  int? errorCode;
 
   Map<String, dynamic> toJson() => _$TokenToJson(this);
 }

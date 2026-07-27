@@ -29,18 +29,22 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
   Widget build(BuildContext context) {
     myDim = Dimensions(context);
     return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: myDim.width * 0.04, vertical: myDim.height * 0.01),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: _buildChildren()),
+      key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: myDim.width * 0.04,
+            vertical: myDim.height * 0.01,
           ),
-        ));
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: _buildChildren(),
+          ),
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildChildren() {
@@ -51,10 +55,9 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
       Text(
         'Enter your phone number',
         textScaleFactor: myDim.textScaleFactor,
-        style: Theme.of(context)
-            .textTheme
-            .subtitle2
-            .copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(
+          context,
+        ).textTheme.subtitle2.copyWith(fontWeight: FontWeight.bold),
       ),
       SizedBox(height: 10.0),
       _buildPhoneField(),
@@ -74,8 +77,10 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
           : ElevatedButton(
               onPressed: model.canSubmit ? _submit : null,
               style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) => kColorPrimary)),
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) => kColorPrimary,
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text('Continue'),
@@ -91,19 +96,16 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
         const SizedBox(height: 10.0),
         Text(
           'Welcome back!',
-          style: Theme.of(context).textTheme.headline5.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlinelarge!.copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(
-          height: 3.0,
-        ),
+        SizedBox(height: 3.0),
         Text(
           'Sign in to your account',
-          style: Theme.of(context)
-              .textTheme
-              .subtitle2
-              .copyWith(color: Colors.grey),
+          style: Theme.of(
+            context,
+          ).textTheme.subtitle2.copyWith(color: Colors.grey),
         ),
         const SizedBox(height: 30.0),
       ],
@@ -114,25 +116,33 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
     return Container(
       height: myDim.height * 0.06,
       child: InternationalPhoneInput(
-        onPhoneNumberChange: (String number,
-            String internationalizedPhoneNumber, String isoCode) {
-          setState(() {
-            model.updatePhone(internationalizedPhoneNumber);
-          });
-        },
+        onPhoneNumberChange:
+            (
+              String number,
+              String internationalizedPhoneNumber,
+              String isoCode,
+            ) {
+              setState(() {
+                model.updatePhone(internationalizedPhoneNumber);
+              });
+            },
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade900),
-              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            borderSide: BorderSide(color: Colors.grey.shade900),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: kColorPrimary),
-              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            borderSide: BorderSide(color: kColorPrimary),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
           errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
           focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
         ),
         initialSelection: '+91',
       ),
@@ -145,8 +155,9 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
       child: Text(
         'A 6-digit code will be sent by SMS to confirm your phone number.',
         textAlign: TextAlign.center,
-        style:
-            Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.grey),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyText2.copyWith(color: Colors.grey),
       ),
     );
   }
@@ -159,14 +170,16 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
       AuthCredential creds = await model.verifyPhoneNumber();
       if (creds != null)
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => EmailSignInManager(
-                      linkType: LinkType.phone,
-                      type: EmailSignInFormType.signUp,
-                      toLink: true,
-                      creds: creds,
-                    )),
-            ModalRoute.withName('\main'));
+          MaterialPageRoute(
+            builder: (context) => EmailSignInManager(
+              linkType: LinkType.phone,
+              type: EmailSignInFormType.signUp,
+              toLink: true,
+              creds: creds,
+            ),
+          ),
+          ModalRoute.withName('\main'),
+        );
       else {
         // SharedPreferences prefs = await SharedPreferences.getInstance();
         // if (prefs.getString('user') != null)
@@ -178,13 +191,9 @@ class _PhoneLOginUIState extends State<PhoneLoginUI> {
         //       MaterialPageRoute(
         //           builder: (context) => RegisterPage(model.userToLink)),
         //       ModalRoute.withName('\main'));
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => OtpPageUI(
-              model: model,
-            ),
-          ),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (ctx) => OtpPageUI(model: model)));
       }
     } on PlatformException catch (e) {
       PlatformAlertDialog(

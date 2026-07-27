@@ -85,6 +85,6 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     final categoriesData = await findCategoriesByFilterUseCase.execute(
       CategoriesByFilterParams(categoryId: categoryId),
     );
-    return categoriesData.categories;
+    return categoriesData.categories!;
   }
 }

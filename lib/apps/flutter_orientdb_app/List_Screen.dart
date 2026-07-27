@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_orientdb_app/Message_screen.dart';
 import 'package:flutter_erp/apps/flutter_orientdb_app/UserModel.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +12,7 @@ class List_data extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new list_data();
+    return list_data();
   }
 }
 
@@ -45,7 +46,7 @@ Try changing the type of the variable, or casting the right-hand type to 'List<U
               ? ListView.builder(
                   itemCount: useData.length,
                   itemBuilder: (BuildContext ctx, int index) {
-                    return new GestureDetector(
+                    return GestureDetector(
                       child: Container(
                         padding: EdgeInsets.all(10.0),
                         child: Container(
@@ -121,13 +122,13 @@ Try making the call conditional (using '?.') or adding a null check to the targe
     var postDataurl =
         "http://192.168.1.4:2480/command/chat_db/sql/select from tbl_user/20/*:-1";
 
-    http.Response response = await http.post(
-      Uri.parse(postDataurl),
+    HttpResponse response = await HttpClient.send(
+      postDataurl,
       headers: Headers,
     );
 
     if (response.statusCode == 200) {
-      var res = json.decode(response.body);
+      var res = json.decode(response.body!);
       var res1 = res['result'] as List;
 
       for (int i = 0; i < res1.length; i++) {

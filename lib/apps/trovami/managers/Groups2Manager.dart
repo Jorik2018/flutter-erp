@@ -5,8 +5,7 @@ import 'package:flutter_erp/apps/trovami/model/Group2.dart';
 import 'ThemeManager.dart';
 
 class Groups2Manager {
-
-  static final Groups2Manager _instance = new Groups2Manager._internal();
+  static final Groups2Manager _instance = Groups2Manager._internal();
 
   factory Groups2Manager() {
     return _instance;
@@ -20,44 +19,48 @@ class Groups2Manager {
 
   Future<FirebaseResponse> acquire() async {
     var returnResponse = FirebaseResponse();
-    await CloudFirebaseHelper.getItems("groups", Group2()).then((FirebaseResponse response) => {
-        if (response.hasError()){
-          print ("GroupsManager.fetchDocs failed with $response.getError()")
-        } else {
-          print ("GroupsManager.fetchDocs succeeded returning ${response.docs.length} docs")
-        },
+    await CloudFirebaseHelper.getItems("groups", Group2()).then(
+      (FirebaseResponse response) => {
+        if (response.hasError())
+          {print("GroupsManager.fetchDocs failed with $response.getError()")}
+        else
+          {
+            print(
+              "GroupsManager.fetchDocs succeeded returning ${response.docs.length} docs",
+            ),
+          },
         returnResponse = response,
-        groups = returnResponse.docs as Map<String, Group2>
-      }
+        groups = returnResponse.docs as Map<String, Group2>,
+      },
     );
     return returnResponse;
   }
-  
+
   Group2 currentGroup() {
     return groups[currentGroupId!]! as Group2;
   }
 
   List<Widget> getGroupWidgets(BuildContext context) {
-    List <Widget> groupWidgets = [];
+    List<Widget> groupWidgets = [];
 
     for (Group2 group in groups.values) {
       groupWidgets.add(
-          InkWell(
-            splashColor: Colors.blue,
-            onTap: () {
-//              handleGroupTap(context, player.id);
-              print(group.name);
-            },
+        InkWell(
+          splashColor: Colors.blue,
+          onTap: () {
+            //              handleGroupTap(context, player.id);
+            print(group.name);
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Container(
-                alignment: Alignment.center,
-                child: _getGroup(group),
-              ),
+              alignment: Alignment.center,
+              child: _getGroup(group),
             ),
-          ));
-        groupWidgets.add(Divider(height: 2.0, color: Colors.blueGrey),
+          ),
+        ),
       );
+      groupWidgets.add(Divider(height: 2.0, color: Colors.blueGrey));
     }
     return groupWidgets;
   }
@@ -66,17 +69,19 @@ class Groups2Manager {
   _getGroup(Group2 group) {
     Widget widget;
 
-    widget = Row (
-        children: <Widget>[
-          Spacer(),
-          Text(group.name!, style: ThemeManager().getStyle(STYLE_NORMAL),),
-          Spacer(),
-          Text("(${group.members.length} members)", style: ThemeManager().getStyle(STYLE_NORMAL)),
-          Spacer(),
-        ]
+    widget = Row(
+      children: <Widget>[
+        Spacer(),
+        Text(group.name!, style: ThemeManager().getStyle(STYLE_NORMAL)),
+        Spacer(),
+        Text(
+          "(${group.members.length} members)",
+          style: ThemeManager().getStyle(STYLE_NORMAL),
+        ),
+        Spacer(),
+      ],
     );
     return widget;
   }
-//</editor-fold>
-  
+  //</editor-fold>
 }

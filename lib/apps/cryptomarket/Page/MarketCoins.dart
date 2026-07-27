@@ -1,15 +1,12 @@
 import 'dart:convert';
 
-import '../Model/GetCoinsAdd.dart';
-import '../Model/models.dart';
-import 'CoinDescription.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_state.dart';
+
+import '../models/models.dart';
 import 'MarketCoinDescription.dart';
 import '../Util/SharedPreferencesHelper.dart';
-import '../bloc/bloc.dart';
-import '../bloc/market_coins_bloc.dart';
-import '../flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class MarketCoins extends StatefulWidget {
   String Marketname;
@@ -86,13 +83,16 @@ class marketcoins extends State<MarketCoins> {
 
     String apiUrl = "https://min-api.cryptocompare.com/data/v2/all/exchanges";
 
-    http.Response response = await http.get(Uri.parse(apiUrl));
+    final dio = Dio();
+    Response response = await dio.get(apiUrl);
     String market = await SharedPreferencesHelper.getMarket();
     String currency = await SharedPreferencesHelper.getCurrency();
 
-    // Iterable l = json.decode(response.body);
+    // Iterable l = json.decode(response.data);
 
-    var responseBody = json.decode(response.body);
+    var responseBody = response.data is String
+        ? json.decode(response.data)
+        : response.data;
 
     var data = responseBody['Data'][market];
 
@@ -112,8 +112,10 @@ class marketcoins extends State<MarketCoins> {
                 currency +
                 "&e=" +
                 market;
-            http.Response coinresponse = await http.get(Uri.parse(coinData));
-            var coinresponseBody = json.decode(coinresponse.body);
+            Response coinresponse = await dio.get(coinData);
+            var coinresponseBody = coinresponse.data is String
+                ? json.decode(coinresponse.data)
+                : coinresponse.data;
             var Raw = coinresponseBody['DISPLAY'];
 
             if (Raw != null) {
@@ -234,8 +236,10 @@ class PostWidget extends StatelessWidget {
                                 : (double.parse(post.CHANGEPCT24HOUR) ?? 0)
                                           .toStringAsFixed(2) +
                                       "%",
-                            style: Theme.of(context).primaryTextTheme.bodyMedium
-                                !.apply(
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .bodyMedium!
+                                .apply(
                                   color:
                                       (double.parse(post.CHANGEPCT24HOUR) ??
                                               0) >=

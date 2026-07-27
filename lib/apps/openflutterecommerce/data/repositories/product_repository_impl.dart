@@ -15,8 +15,9 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/network/network_statu
 import 'package:flutter_erp/apps/openflutterecommerce/data/woocommerce/repositories/product_remote_repository.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/locator.dart';
 
-//Uses remote or local data depending on NetworkStatus
-class ProductRepositoryImpl extends ProductRepository with FavoritesRepository {
+/**The class 'FavoritesRepository' can't be used as a mixin because it's neither a mixin class nor a mixin. */
+class ProductRepositoryImpl extends ProductRepository
+    implements FavoritesRepository {
   static ProductDataStorage dataStorage = ProductDataStorage();
 
   @override
@@ -55,7 +56,7 @@ class ProductRepositoryImpl extends ProductRepository with FavoritesRepository {
     int categoryId = 0,
     bool isFavorite = false,
     SortRules sortRules = const SortRules(),
-    FilterRules filterRules,
+    FilterRules? filterRules,
   }) async {
     // TODO: implement getProducts
     try {
@@ -96,7 +97,7 @@ class ProductRepositoryImpl extends ProductRepository with FavoritesRepository {
     int pageIndex = 0,
     int pageSize = AppConsts.page_size,
     SortRules sortRules = const SortRules(),
-    FilterRules filterRules,
+    FilterRules? filterRules,
   }) async {
     //TODO: remove when favorite feature will be implemented
     /*_dataStorage.products = await getProducts();

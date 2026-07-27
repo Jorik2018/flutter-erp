@@ -9,27 +9,27 @@ class Promo extends Equatable {
   final String title;
   final String promoCode;
   final int daysLeft;
-  final String image;
+  final String? image;
   final Color textColor;
 
   Promo({
-    @required this.discount,
-    @required this.title,
-    @required this.promoCode,
-    @required this.daysLeft,
-    @required this.image,
-    @required this.textColor,
+    required this.discount,
+    required this.title,
+    required this.promoCode,
+    required this.daysLeft,
+    this.image,
+    required this.textColor,
   });
 
   @override
   factory Promo.fromEntity(Entity entity) {
     if (entity is PromoCodeEntity) {
       return Promo(
-        title: entity.title,
-        promoCode: entity.promoCode,
-        discount: entity.discountPercent,
+        title: entity.title!,
+        promoCode: entity.promoCode!,
+        discount: entity.discountPercent!,
         textColor: Colors.white,
-        daysLeft: entity.dateExpires.difference(DateTime.now()).inDays,
+        daysLeft: entity.dateExpires!.difference(DateTime.now()).inDays,
         image: null,
       );
     } else {
@@ -44,7 +44,7 @@ class Promo extends Equatable {
     title,
     promoCode,
     daysLeft,
-    image,
+    image!,
     textColor,
   ];
 

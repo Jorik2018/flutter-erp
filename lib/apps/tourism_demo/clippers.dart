@@ -19,10 +19,10 @@ class NotchedClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     const double radius = 7.0;
 
-    Path path = new Path();
+    Path path = Path();
 
     if (topLeft) {
-      Rect topLeftOval = new Rect.fromCircle(
+      Rect topLeftOval = Rect.fromCircle(
         center: Offset(0.0, 0.0),
         radius: radius,
       );
@@ -34,7 +34,7 @@ class NotchedClipper extends CustomClipper<Path> {
     if (bottomLeft) {
       path.lineTo(0.0, size.height - radius);
       path.relativeArcToPoint(
-        new Offset(radius, radius),
+        Offset(radius, radius),
         radius: const Radius.circular(radius),
       );
       path.lineTo(size.width - radius, size.height);
@@ -46,7 +46,7 @@ class NotchedClipper extends CustomClipper<Path> {
       path.lineTo(size.width - radius, size.height);
 
       path.relativeArcToPoint(
-        new Offset(radius * 2, 0.0),
+        Offset(radius * 2, 0.0),
         radius: const Radius.circular(radius),
       );
     } else {
@@ -57,7 +57,7 @@ class NotchedClipper extends CustomClipper<Path> {
       path.lineTo(size.width, size.height - radius);
       path.lineTo(size.width, radius);
       path.relativeArcToPoint(
-        new Offset(-radius, -radius),
+        Offset(-radius, -radius),
         radius: const Radius.circular(radius),
       );
     } else {

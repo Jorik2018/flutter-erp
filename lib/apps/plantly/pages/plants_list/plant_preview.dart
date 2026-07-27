@@ -6,10 +6,10 @@ class PlantPreview extends StatelessWidget {
   final Plant plant;
   PlantPreview(this.plant);
 
-  final LinearGradient backgroundGradient = new LinearGradient(
+  final LinearGradient backgroundGradient = LinearGradient(
     colors: [
-      new Color(0x10000000), // Light black
-      new Color(0x30000000), // Dark black
+      Color(0x10000000), // Light black
+      Color(0x30000000), // Dark black
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -17,7 +17,7 @@ class PlantPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Padding(
+    return Padding(
       padding: const EdgeInsets.only(
         top: 24.0,
         left: 24.0,
@@ -26,8 +26,8 @@ class PlantPreview extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => Navigator.of(context).push(
-          new MaterialPageRoute(
-            builder: (_) => new FullscreenImagePage('res/' + plant.plantImg),
+          MaterialPageRoute(
+            builder: (_) => FullscreenImagePage('res/' + plant.plantImg),
           ),
         ),
         child: Material(
@@ -35,19 +35,19 @@ class PlantPreview extends StatelessWidget {
           color: Colors.transparent,
           child: Stack(
             children: <Widget>[
-              new SizedBox.expand(
+              SizedBox.expand(
                 child: Container(
                   decoration: BoxDecoration(gradient: backgroundGradient),
                 ),
               ),
-              new Align(
+              Align(
                 alignment: Alignment.center,
                 child: Hero(
                   tag: 'res/' + plant.plantImg,
                   child: Image.asset('res/${plant.plantImg}'),
                 ),
               ),
-              new Align(
+              Align(
                 alignment: Alignment.bottomLeft,
                 child: Material(
                   borderRadius: BorderRadius.only(
@@ -70,7 +70,7 @@ class PlantPreview extends StatelessWidget {
                   ),
                 ),
               ),
-              new Align(
+              Align(
                 alignment: Alignment.topRight,
                 child: Material(
                   borderRadius: BorderRadius.only(

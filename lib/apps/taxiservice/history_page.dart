@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login_page.dart';
-import 'package:geocoder/geocoder.dart';
+//import 'package:geocoding/geocoding.dart';
 import 'main.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/date_time_format.dart';
 
 class History extends StatefulWidget {
   @override
-  _HistoryState createState() => new _HistoryState();
+  _HistoryState createState() => _HistoryState();
 }
 
 class _HistoryState extends State<History> {
-  String addressFromLocation;
-  String addressToLocation;
-  final CollectionReference colOrdRef = Firestore.instance.collection('orders');
+  String? addressFromLocation;
+  String? addressToLocation;
+  final CollectionReference<Map<String, dynamic>> colOrdRef = FirebaseFirestore
+      .instance
+      .collection('orders');
 
   getPlaceFromLocation(double latitude, double longitude) async {
     addressFromLocation = '';
-    var coordinates = new Coordinates(latitude, longitude);
+    /*var coordinates = Coordinates(latitude, longitude);
     var address = await Geocoder.local.findAddressesFromCoordinates(
       coordinates,
     );
-    addressFromLocation = address.first.addressLine.toString();
+    addressFromLocation = address.first.addressLine.toString();*/
     //print(address.first.addressLine.toString());
     //return addressFromLocation;
   }
 
   getPlaceToLocation(double latitude, double longitude) async {
     addressToLocation = '';
-    var coordinates = new Coordinates(latitude, longitude);
+    /*var coordinates = Coordinates(latitude, longitude);
     var address = await Geocoder.local.findAddressesFromCoordinates(
       coordinates,
     );
-    addressToLocation = address.first.addressLine.toString();
+    addressToLocation = address.first.addressLine.toString();*/
     //print(address.first.addressLine.toString());
     // return addressFromLocation;
   }
@@ -48,9 +50,9 @@ class _HistoryState extends State<History> {
     // TODO: implement build
 
     // print(clientDocRef);
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(title: Text('История поездок')),
-      body: StreamBuilder(
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: colOrdRef.snapshots(),
         builder: (context, snapshot) {
           if (!hasConnection) {
@@ -64,14 +66,16 @@ class _HistoryState extends State<History> {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          return new Container(
+          return Container(
             color: Colors.blueGrey[50],
             child: Stack(
               children: <Widget>[
                 ListView.builder(
-                  itemCount: snapshot.data.documents.length,
+                  /**The property 'docs' can't be unconditionally accessed because the receiver can be 'null'.
+Try making the access conditional (using '?.') or adding a null check to the target ('!'). */
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[index];
+                    DocumentSnapshot ds = snapshot.data!.docs[index];
                     if ('${ds['clientId']}' != null &&
                         '${ds['clientId']}' == clientDocRef) {
                       DateTime date = ds['date'];
@@ -96,7 +100,7 @@ class _HistoryState extends State<History> {
                                 title: Text(
                                   date.day.toString() +
                                       ' ' +
-                                      convertMonth(date.month) +
+                                      convertMonth(date.month)! +
                                       ' ' +
                                       date.year.toString() +
                                       ' , в ' +
@@ -120,7 +124,7 @@ class _HistoryState extends State<History> {
                                 title: Text(
                                   date.day.toString() +
                                       ' ' +
-                                      convertMonth(date.month) +
+                                      convertMonth(date.month)! +
                                       ' ' +
                                       date.year.toString(),
                                   textAlign: TextAlign.left,

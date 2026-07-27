@@ -52,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  TextEditingController username = new TextEditingController();
+  TextEditingController username = TextEditingController();
 
   void _incrementCounter() {
     setState(() {
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 30.0),
-            new Container(
+            Container(
               padding: EdgeInsets.all(10.0),
               child: TextField(
                 controller: username,

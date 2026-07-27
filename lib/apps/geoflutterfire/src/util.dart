@@ -2,10 +2,9 @@ import 'dart:math';
 import 'package:flutter_erp/apps/geoflutterfire/src/point.dart';
 
 class Util {
-
   static const BASE32_CODES = '0123456789bcdefghjkmnpqrstuvwxyz';
-  
-  Map<String, int> base32CodesDic = new Map();
+
+  Map<String, int> base32CodesDic = Map();
 
   Util() {
     for (var i = 0; i < BASE32_CODES.length; i++) {
@@ -35,7 +34,7 @@ class Util {
   String encode(var latitude, var longitude, var numberOfChars) {
     if (numberOfChars == encodeAuto) {
       if (latitude.runtimeType == double || longitude.runtimeType == double) {
-        throw new Exception('string notation required for auto precision.');
+        throw Exception('string notation required for auto precision.');
       }
       int decSigFigsLat = latitude.split('.')[1].length;
       int decSigFigsLon = longitude.split('.')[1].length;
@@ -184,7 +183,7 @@ class Util {
       encodeNeighbor(-1, 0),
       encodeNeighbor(-1, -1),
       encodeNeighbor(0, -1),
-      encodeNeighbor(1, -1)
+      encodeNeighbor(1, -1),
     ];
 
     return neighborHashList;
@@ -251,18 +250,27 @@ class Util {
   static const double EPSILON = 1e-12;
 
   static double distance(Coordinates location1, Coordinates location2) {
-    return calcDistance(location1.latitude, location1.longitude,
-        location2.latitude, location2.longitude);
+    return calcDistance(
+      location1.latitude,
+      location1.longitude,
+      location2.latitude,
+      location2.longitude,
+    );
   }
 
   static double calcDistance(
-      double lat1, double long1, double lat2, double long2) {
+    double lat1,
+    double long1,
+    double lat2,
+    double long2,
+  ) {
     // Earth's mean radius in meters
     final double radius = (EARTH_EQ_RADIUS + EARTH_POLAR_RADIUS) / 2;
     double latDelta = _toRadians(lat1 - lat2);
     double lonDelta = _toRadians(long1 - long2);
 
-    double a = (sin(latDelta / 2) * sin(latDelta / 2)) +
+    double a =
+        (sin(latDelta / 2) * sin(latDelta / 2)) +
         (cos(_toRadians(lat1)) *
             cos(_toRadians(lat2)) *
             sin(lonDelta / 2) *

@@ -28,7 +28,7 @@ class LocalProductRepository implements ProductRepository {
     int categoryId = 0,
     bool isFavorite = false,
     SortRules sortRules = const SortRules(),
-    FilterRules filterRules,
+    FilterRules? filterRules,
   }) {
     // TODO: implement getProducts
     return null!;

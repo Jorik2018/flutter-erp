@@ -31,11 +31,11 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return (new Container(
+    return (Container(
       margin: EdgeInsets.only(bottom: bottomMargin),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(new Radius.circular(30.0)),
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
           color: textFieldColor,
         ),
         child: TextFormField(

@@ -27,18 +27,14 @@ class _CategoriesListViewState extends State<CategoriesListView> {
     var _theme = Theme.of(context);
     return BlocListener<CategoryBloc, CategoryState>(
       listener: (context, state) {
-        if (state is CategoryErrorState) {
+        /*if (state is CategoryErrorState) {
           return Container(
-            padding: EdgeInsets.all(AppSizes.sidePadding),
             child: Text(
-              'An error occured',
-              style: _theme.textTheme.headlineLarge!.copyWith(
-                color: _theme.errorColor,
-              ),
+              'An error occured'
             ),
           );
         }
-        return Container();
+        return Container();*/
       },
       child: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {
@@ -58,7 +54,7 @@ class _CategoriesListViewState extends State<CategoriesListView> {
                     height: 50.0,
                   ),
                   Padding(padding: EdgeInsets.only(top: AppSizes.sidePadding)),
-                  Column(children: buildCategoryList(state.categories)),
+                  Column(children: buildCategoryList(state.categories!)),
                 ],
               ),
             );
@@ -79,7 +75,7 @@ class _CategoriesListViewState extends State<CategoriesListView> {
                 ? () {
                     BlocProvider.of<CategoryBloc>(
                       context,
-                    ).add(ChangeCategoryParent(categories[i].id));
+                    ).add(ChangeCategoryParent(categories[i].id!));
                   }
                 : () {
                     Navigator.of(context).pushNamed(

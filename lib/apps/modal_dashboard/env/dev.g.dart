@@ -9,5 +9,5 @@ part of 'dev.dart';
 const _$devConfigJsonLiteral = {
   'env': 'DEV',
   'authEndpoint': 'https://yourauth.domain.com',
-  'serviceEndpoint': 'https://yourservice.domain.com'
+  'serviceEndpoint': 'https://yourservice.domain.com',
 };

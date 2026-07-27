@@ -1,8 +1,3 @@
-/*
- * @author Andrew Poteryahin <openflutterproject@gmail.com>
- * @copyright 2020 Open E-commerce App
- * @see shipping_address_repository_impl.dart
- */
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/payment_method.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/payment_method_repository.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/fake_repos/payment_method_repository.dart';
@@ -20,7 +15,7 @@ class PaymentMethodRepositoryImpl implements PaymentMethodRepository {
 
   @override
   Future<List<PaymentMethodModel>> getPaymentMethodList() async {
-    if (dataStorage.paymentMethods?.isEmpty) {
+    if (dataStorage.paymentMethods.isEmpty) {
       FakePaymentMethodRepository repo = FakePaymentMethodRepository();
       dataStorage.paymentMethods = await repo.getPaymentMethodList();
     }

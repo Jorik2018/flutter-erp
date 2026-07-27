@@ -11,7 +11,7 @@ abstract class SettingsEvent extends Equatable {
 class UpdateFullNameEvent extends SettingsEvent {
   final String fullName;
 
-  UpdateFullNameEvent({this.fullName});
+  UpdateFullNameEvent({required this.fullName});
 
   @override
   List<Object> get props => [fullName];
@@ -24,7 +24,7 @@ class UpdateFullNameEvent extends SettingsEvent {
 class UpdateDateOfBirthEvent extends SettingsEvent {
   final String dateOfBirth;
 
-  UpdateDateOfBirthEvent({this.dateOfBirth});
+  UpdateDateOfBirthEvent({required this.dateOfBirth});
 
   @override
   List<Object> get props => [dateOfBirth];
@@ -37,7 +37,7 @@ class UpdateDateOfBirthEvent extends SettingsEvent {
 class UpdateNotifySalesEvent extends SettingsEvent {
   final bool notifySales;
 
-  UpdateNotifySalesEvent({this.notifySales});
+  UpdateNotifySalesEvent({required this.notifySales});
 
   @override
   String toString() => 'Update NotifySales Event';
@@ -50,7 +50,7 @@ class UpdateNotifySalesEvent extends SettingsEvent {
 class UpdateNotifyArrivalsEvent extends SettingsEvent {
   final bool notifyArrivals;
 
-  UpdateNotifyArrivalsEvent({this.notifyArrivals});
+  UpdateNotifyArrivalsEvent({required this.notifyArrivals});
 
   @override
   String toString() => 'Update NotifyArrivals Event';
@@ -63,7 +63,7 @@ class UpdateNotifyArrivalsEvent extends SettingsEvent {
 class UpdateNotifyDeliveryEvent extends SettingsEvent {
   final bool notifyDelivery;
 
-  UpdateNotifyDeliveryEvent({this.notifyDelivery});
+  UpdateNotifyDeliveryEvent({required this.notifyDelivery});
 
   @override
   String toString() => 'Update Delivery Event';

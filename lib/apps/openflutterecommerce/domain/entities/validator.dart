@@ -1,5 +1,5 @@
 class Validator {
-  static String valueExists(dynamic value) {
+  static String? valueExists(dynamic value) {
     if (value == null || value.isEmpty) {
       return 'Please fill this field';
     } else {
@@ -7,7 +7,7 @@ class Validator {
     }
   }
 
-  static String passwordCorrect(dynamic value) {
+  static String? passwordCorrect(dynamic value) {
     var emptyResult = valueExists(value);
     if (emptyResult == null || emptyResult.isEmpty) {
       var pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[#?!@$%^&*-]).{8,}$';
@@ -22,7 +22,7 @@ class Validator {
     }
   }
 
-  static String validateEmail(dynamic value) {
+  static String? validateEmail(dynamic value) {
     var pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     var regExp = RegExp(pattern);

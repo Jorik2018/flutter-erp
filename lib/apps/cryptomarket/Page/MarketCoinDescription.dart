@@ -1,13 +1,10 @@
 import 'dart:convert';
 import 'dart:math';
-import 'dart:math' as math;
-
-import '../Model/models.dart';
+import 'package:dio/dio.dart';
+import 'package:fl_chart/fl_chart.dart';
+import '../models/models.dart';
 import '../Util/SharedPreferencesHelper.dart';
-import 'package:http/http.dart' as http;
-import '../Theme/MyThemes.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 var isLoading = false;
 List<LinearSales> chartList = [];
@@ -29,6 +26,7 @@ class marketcoindes extends State<MarketCoinDescription> {
   CoinsMarketData coinsMarketData;
   String map = "1D";
   String chartReport = "histoday";
+  final Dio _dio = Dio();
 
   // var data = _generateRandomData(50);
   marketcoindes(this.coinsMarketData);
@@ -40,171 +38,203 @@ class marketcoindes extends State<MarketCoinDescription> {
     fetchCurrencies();
   }
 
-  Future fetchCurrencies() async {
-    setState(() {
-      isLoading = true;
-    });
-    String curenncy = await SharedPreferencesHelper.getCurrency();
-    // TODO: implement fetchCurrencies
+  Future<List<LinearSales>> fetchCurrencies() async {
+    setState(() => isLoading = true);
 
-    String apiUrl = "https://min-api.cryptocompare.com/data/" +
-        chartReport +
-        "?fsym=" +
-        coinsMarketData.FROMSYMBOL +
-        "&tsym=" +
-        curenncy;
+    try {
+      final currency = await SharedPreferencesHelper.getCurrency();
 
-    // Make a HTTP GET request to the CoinMarketCap API.
-    // Await basically pauses execution until the get() function returns a Response
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    var responseBody = json.decode(response.body);
-    List data = responseBody['Data'];
+      final response = await _dio.get<dynamic>(
+        'https://min-api.cryptocompare.com/data/$chartReport',
+        queryParameters: {'fsym': coinsMarketData.FROMSYMBOL, 'tsym': currency},
+      );
 
-    final statusCode = response.statusCode;
-    if (statusCode != 200 || responseBody == null) {
-      throw Exception("An error ocurred : [Status Code : $statusCode]");
+      if (response.statusCode != 200 || response.data is! Map) {
+        throw Exception(
+          'Error al consultar CryptoCompare. '
+          'Código HTTP: ${response.statusCode}',
+        );
+      }
+
+      final responseBody = Map<String, dynamic>.from(response.data as Map);
+      final responseData = responseBody['Data'];
+
+      if (responseData is! List) {
+        throw Exception(
+          responseBody['Message']?.toString() ??
+              'No hay datos disponibles para la gráfica.',
+        );
+      }
+
+      final charts = responseData
+          .whereType<Map>()
+          .map((item) => LinearSales.fromMap(Map<String, dynamic>.from(item)))
+          .toList();
+
+      if (mounted) {
+        setState(() => chartList = charts);
+      }
+
+      return charts;
+    } on DioException catch (error) {
+      throw Exception(
+        'Error de red: ${error.response?.statusCode ?? error.message}',
+      );
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
     }
-
-    chartList = (data).map((data) => LinearSales.fromMap(data)).toList();
-    setState(() {
-      isLoading = false;
-      chartList = chartList;
-    });
-    return data.map((c) => LinearSales.fromMap(c)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Material(
-        child: Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        centerTitle: true,
-        title: Text(
-          coinsMarketData.FROMSYMBOL,
-          style: TextStyle(fontSize: 20.0),
-        ),
-        elevation: 0.0,
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: Image.network(
-              "https://www.cryptocompare.com" + coinsMarketData.ImageUrl,
-              height: 40,
-              width: 40,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          centerTitle: true,
+          title: Text(
+            coinsMarketData.FROMSYMBOL,
+            style: TextStyle(fontSize: 20.0),
+          ),
+          elevation: 0.0,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: Image.network(
+                "https://www.cryptocompare.com" + coinsMarketData.ImageUrl,
+                height: 40,
+                width: 40,
+              ),
             ),
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
                     padding: EdgeInsets.only(top: 10.0, left: 15.0),
                     child: Text(
                       coinsMarketData.PRICE,
                       style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 30.0),
-                    )),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0, right: 15.0),
-                  child: Text(
-                    (double.parse(coinsMarketData.CHANGEPCT24HOUR) ?? 0) >= 0
-                        ? "+" +
-                            (double.parse(coinsMarketData.CHANGEPCT24HOUR) ?? 0)
-                                .toStringAsFixed(2) +
-                            "%"
-                        : (double.parse(coinsMarketData.CHANGEPCT24HOUR) ?? 0)
-                                .toStringAsFixed(2) +
-                            "%",
-                    style: Theme.of(context).primaryTextTheme.bodyMedium!.apply(
-                        color: (double.parse(coinsMarketData.CHANGEPCT24HOUR) ??
-                                    0) >=
-                                0
-                            ? Colors.green
-                            : Colors.red),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 30.0,
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.all(15.0),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text(coinsMarketData.MARKET),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(15.0),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black54),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Text(coinsMarketData.MARKET),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0, right: 15.0),
+                    child: Text(
+                      (double.parse(coinsMarketData.CHANGEPCT24HOUR) ?? 0) >= 0
+                          ? "+" +
+                                (double.parse(
+                                          coinsMarketData.CHANGEPCT24HOUR,
+                                        ) ??
+                                        0)
+                                    .toStringAsFixed(2) +
+                                "%"
+                          : (double.parse(coinsMarketData.CHANGEPCT24HOUR) ?? 0)
+                                    .toStringAsFixed(2) +
+                                "%",
+                      style: Theme.of(context).primaryTextTheme.bodyMedium!
+                          .apply(
+                            color:
+                                (double.parse(
+                                          coinsMarketData.CHANGEPCT24HOUR,
+                                        ) ??
+                                        0) >=
+                                    0
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            Divider(),
-            SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  child: Text("LOW :" + coinsMarketData.LOW24HOUR,
-                      style: TextStyle(fontWeight: FontWeight.w500)),
+              SizedBox(height: 10.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(coinsMarketData.MARKET),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(15.0),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(coinsMarketData.MARKET),
+                    ),
+                  ],
                 ),
-                Container(
-                  margin: const EdgeInsets.all(15.0),
-                  child: Text(
-                    "HIGH :" + coinsMarketData.HIGH24HOUR,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.only(
-                      top: 10.0, left: 20, right: 20, bottom: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black54),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text(map),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-                width: MediaQuery.of(context).size.width,
-                height: 250.0,
-                child: AreaAndLineChart.withRandomData()),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+              ),
+              Divider(),
+              SizedBox(height: 10.0),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
+                    margin: const EdgeInsets.all(15.0),
+                    child: Text(
+                      "LOW :" + coinsMarketData.LOW24HOUR,
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(15.0),
+                    child: Text(
+                      "HIGH :" + coinsMarketData.HIGH24HOUR,
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      left: 20,
+                      right: 20,
+                      bottom: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black54),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(map),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 250.0,
+                child: AreaAndLineChart.withRandomData(),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
                       margin: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(10)),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: TextButton(
                         onPressed: () {
                           setState(() {
@@ -216,14 +246,18 @@ class marketcoindes extends State<MarketCoinDescription> {
                         child: Text(
                           "1M",
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      )),
-                  Container(
+                      ),
+                    ),
+                    Container(
                       margin: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(10)),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: TextButton(
                         onPressed: () {
                           setState(() {
@@ -235,14 +269,18 @@ class marketcoindes extends State<MarketCoinDescription> {
                         child: Text(
                           "1H",
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      )),
-                  Container(
+                      ),
+                    ),
+                    Container(
                       margin: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black54),
-                          borderRadius: BorderRadius.circular(10)),
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: TextButton(
                         onPressed: () {
                           setState(() {
@@ -254,167 +292,280 @@ class marketcoindes extends State<MarketCoinDescription> {
                         child: Text(
                           "1D",
                           style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w500),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      )),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Divider(),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      margin: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "VOLUME(1D)",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            coinsMarketData.VOLUME24HOURTO,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  VerticalDivider(),
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      margin: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            "MARKET CAP",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            coinsMarketData.MKTCAP,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-            ),
-            Divider(),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
+              Divider(),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: Container(
                       margin: const EdgeInsets.all(15.0),
                       child: Column(
                         children: <Widget>[
-                          Text("VOLUME(1D)",
-                              style: TextStyle(fontWeight: FontWeight.w500)),
-                          SizedBox(
-                            height: 10.0,
+                          Text(
+                            "RANK",
+                            style: TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          Text(coinsMarketData.VOLUME24HOURTO,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 20.0)),
+                          SizedBox(height: 10.0),
+                          Text(
+                            "1",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20.0,
+                            ),
+                          ),
                         ],
-                      )),
-                ),
-                VerticalDivider(),
-                Expanded(
+                      ),
+                    ),
+                  ),
+                  VerticalDivider(),
+                  Expanded(
                     flex: 5,
                     child: Container(
-                        margin: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: <Widget>[
-                            Text("MARKET CAP",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                )),
-                            SizedBox(
-                              height: 10.0,
-                            ),
-                            Text(coinsMarketData.MKTCAP,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20.0)),
-                          ],
-                        ))),
-              ],
-            ),
-            Divider(),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Container(
                       margin: const EdgeInsets.all(15.0),
                       child: Column(
                         children: <Widget>[
-                          Text("RANK",
-                              style: TextStyle(fontWeight: FontWeight.w500)),
-                          SizedBox(
-                            height: 10.0,
+                          Text(
+                            "CIRCULATING SUPPLY",
+                            style: TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          Text("1",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 20.0)),
-                        ],
-                      )),
-                ),
-                VerticalDivider(),
-                Expanded(
-                    flex: 5,
-                    child: Container(
-                        margin: const EdgeInsets.all(15.0),
-                        child: Column(
-                          children: <Widget>[
-                            Text("CIRCULATING SUPPLY",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                )),
-                            SizedBox(
-                              height: 10.0,
+                          SizedBox(height: 10.0),
+                          Text(
+                            coinsMarketData.SUPPLY,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 20.0,
                             ),
-                            Text(coinsMarketData.SUPPLY,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20.0)),
-                          ],
-                        ))),
-              ],
-            ),
-            Divider(
-              color: Colors.black,
-            ),
-          ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Divider(color: Colors.black),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }
 
-class VerticalDivider extends StatelessWidget {
+class ChartVerticalDivider extends StatelessWidget {
+  const ChartVerticalDivider({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70.0,
-      width: 1.0,
+      height: 70,
+      width: 1,
       color: Colors.black,
-      margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+      margin: const EdgeInsets.symmetric(horizontal: 10),
     );
   }
 }
 
 class AreaAndLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool? animate;
+  final List<LinearSales> data;
+  final bool animate;
+  final bool isLoading;
 
-  AreaAndLineChart(this.seriesList, {this.animate});
+  const AreaAndLineChart(
+    this.data, {
+    super.key,
+    this.animate = false,
+    this.isLoading = false,
+  });
 
-  /// Creates a [LineChart] with sample data and no transition.
-
-  // EXCLUDE_FROM_GALLERY_DOCS_START
-  // This section is excluded from being copied to the gallery.
-  // It is used for creating random series data to demonstrate animation in
-  // the example app only.
   factory AreaAndLineChart.withRandomData() {
     return AreaAndLineChart(_createRandomData());
   }
 
-  /// Create random data.
-  static List<charts.Series<LinearSales, num>> _createRandomData() {
-    return [
-      charts.Series<LinearSales, int>(
-        id: 'Desktop',
-        domainFn: (LinearSales sales, _) => sales.time,
-        measureFn: (LinearSales sales, _) => sales.close,
-        data: chartList,
-      ),
-    ];
+  static List<LinearSales> _createRandomData() {
+    return chartList;
   }
-
-  // EXCLUDE_FROM_GALLERY_DOCS_END
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : charts.LineChart(seriesList, animate: animate, behaviors: [
-            charts.PanAndZoomBehavior(),
-          ]);
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (data.isEmpty) {
+      return const Center(child: Text('No hay datos disponibles'));
+    }
+
+    final spots =
+        data.map((sales) => FlSpot(sales.time.toDouble(), sales.close)).toList()
+          ..sort((a, b) => a.x.compareTo(b.x));
+
+    final minX = spots.first.x;
+    final maxX = spots.last.x;
+
+    return LineChart(
+      LineChartData(
+        minX: minX,
+        maxX: maxX,
+        minY: 0,
+        gridData: FlGridData(
+          show: true,
+          drawVerticalLine: true,
+          getDrawingHorizontalLine: (value) {
+            return FlLine(color: Colors.grey.withOpacity(0.25), strokeWidth: 1);
+          },
+          getDrawingVerticalLine: (value) {
+            return FlLine(color: Colors.grey.withOpacity(0.15), strokeWidth: 1);
+          },
+        ),
+        borderData: FlBorderData(
+          show: true,
+          border: Border(
+            left: BorderSide(color: Colors.grey.shade400),
+            bottom: BorderSide(color: Colors.grey.shade400),
+          ),
+        ),
+        titlesData: FlTitlesData(
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 45,
+              getTitlesWidget: (value, meta) {
+                return Text(
+                  value.toStringAsFixed(0),
+                  style: const TextStyle(fontSize: 10),
+                );
+              },
+            ),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 30,
+              getTitlesWidget: (value, meta) {
+                if (value < minX || value > maxX) {
+                  return const SizedBox.shrink();
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(
+                    value.toInt().toString(),
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        lineTouchData: LineTouchData(
+          enabled: true,
+          touchTooltipData: LineTouchTooltipData(
+            getTooltipItems: (touchedSpots) {
+              return touchedSpots.map((spot) {
+                return LineTooltipItem(
+                  'Tiempo: ${spot.x.toInt()}\n'
+                  'Valor: ${spot.y.toStringAsFixed(2)}',
+                  const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ),
+        lineBarsData: [
+          LineChartBarData(
+            spots: spots,
+            isCurved: true,
+            color: Colors.blue,
+            barWidth: 3,
+            isStrokeCapRound: true,
+            dotData: const FlDotData(show: false),
+            belowBarData: BarAreaData(
+              show: true,
+              color: Colors.blue.withOpacity(0.20),
+            ),
+          ),
+        ],
+      ),
+      duration: animate ? const Duration(milliseconds: 300) : Duration.zero,
+    );
   }
 }
 
 class LinearSales {
-  int time;
-  double close;
+  final int time;
+  final double close;
 
   LinearSales(this.time, this.close);
 
   LinearSales.fromMap(Map<String, dynamic> map)
-      : time = map['time'] ?? 0,
-        close = double.tryParse(map['close'].toString()) ?? 0.0;
+    : time = (map['time'] as num?)?.toInt() ?? 0,
+      close = double.tryParse(map['close']?.toString() ?? '') ?? 0.0;
 }

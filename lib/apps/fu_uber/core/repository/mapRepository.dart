@@ -7,16 +7,15 @@ import 'package:flutter_erp/apps/fu_uber/core/models/google_places/prediction.da
 import 'package:flutter_erp/apps/fu_uber/core/models/google_places/structured_formatting.dart';
 import 'package:flutter_erp/apps/fu_uber/core/constants/Constants.dart';
 import 'package:flutter_erp/apps/fu_uber/core/Utils/LogUtils.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart'; // 👈 se mantiene SOLO para modelos
-import 'package:http/http.dart' as http;
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dio/dio.dart';
 import 'package:vector_math/vector_math.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 
 class MapRepository {
-
   static const TAG = "MapRepository";
 
-  final http.Client _client = http.Client();
+  final Dio _dio = Dio();
 
   // =========================
   // DIRECTIONS
@@ -29,13 +28,20 @@ class MapRepository {
           "&destination=${l2.latitude},${l2.longitude}"
           "&key=${Constants.anotherApiKey}";
 
-      final response = await _client.get(Uri.parse(url));
+      final response = await _dio.get(
+        "https://maps.googleapis.com/maps/api/directions/json"
+        "?origin=${l1.latitude},${l1.longitude}"
+        "&destination=${l2.latitude},${l2.longitude}"
+        "&key=${Constants.anotherApiKey}",
+      );
 
       if (response.statusCode != 200) {
         throw Exception("HTTP ${response.statusCode}");
       }
 
-      final values = jsonDecode(response.body);
+      final values = response.data is String
+          ? jsonDecode(response.data)
+          : response.data;
 
       return values["routes"][0]["overview_polyline"]["points"];
     } catch (e) {
@@ -48,7 +54,8 @@ class MapRepository {
   // AUTOCOMPLETE (SIN LIB OBSOLETA)
   // =========================
   Future<PlacesAutocompleteResponse> getAutoCompleteResponse(
-      String search) async {
+    String search,
+  ) async {
     try {
       final url =
           "https://maps.googleapis.com/maps/api/place/autocomplete/json"
@@ -56,13 +63,15 @@ class MapRepository {
           "&key=${Constants.mapApiKey}"
           "&components=country:pe";
 
-      final response = await _client.get(Uri.parse(url));
+      final response = await _dio.get(url);
 
       if (response.statusCode != 200) {
         throw Exception("HTTP ${response.statusCode}");
       }
 
-      final data = jsonDecode(response.body);
+      final data = response.data is String
+          ? jsonDecode(response.data)
+          : response.data;
 
       // 👇 adaptamos respuesta manualmente al modelo esperado
       final predictions = (data["predictions"] as List).map((e) {
@@ -71,8 +80,7 @@ class MapRepository {
           placeId: e["place_id"],
           structuredFormatting: StructuredFormatting(
             mainText: e["structured_formatting"]?["main_text"] ?? "",
-            secondaryText:
-                e["structured_formatting"]?["secondary_text"] ?? "",
+            secondaryText: e["structured_formatting"]?["secondary_text"] ?? "",
           ),
         );
       }).toList();
@@ -84,10 +92,7 @@ class MapRepository {
     } catch (e) {
       ProjectLog.logIt(TAG, "getAutoCompleteResponse ERROR", e.toString());
 
-      return PlacesAutocompleteResponse(
-        predictions: [],
-        status: "ERROR",
-      );
+      return PlacesAutocompleteResponse(predictions: [], status: "ERROR");
     }
   }
 
@@ -97,7 +102,9 @@ class MapRepository {
   Future<String> getPlaceNameFromLatLng(LatLng latLng) async {
     try {
       final placemark = await geocoding.placemarkFromCoordinates(
-          latLng.latitude, latLng.longitude);
+        latLng.latitude,
+        latLng.longitude,
+      );
 
       return placemark[0].name! +
           ", " +
@@ -139,8 +146,9 @@ class MapRepository {
     double By = Math.cos(lat2) * Math.sin(dLon);
 
     double lat3 = Math.atan2(
-        Math.sin(lat1) + Math.sin(lat2),
-        Math.sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By));
+      Math.sin(lat1) + Math.sin(lat2),
+      Math.sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By),
+    );
 
     double lon3 = lon1 + Math.atan2(By, Math.cos(lat1) + Bx);
 

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:map_view/map_view.dart';
+//import 'package:map_view/map_view.dart';
 import 'package:flutter_erp/apps/taxiservice/main.dart';
 import 'package:flutter_erp/apps/taxiservice/order_page.dart';
-import 'package:geocoder/geocoder.dart';
+//import 'package:geocoding/geocoding.dart';
 import 'package:flutter_erp/apps/taxiservice/login_page.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/dialog_boxes.dart';
 import 'dart:async';
 
-double latitude;
-double longitude;
-String currentAddress;
+double? latitude;
+double? longitude;
+String? currentAddress;
 
 class FabAnim extends StatefulWidget {
   /* final Function() onPressed;
@@ -23,28 +23,28 @@ class FabAnim extends StatefulWidget {
 
 class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
   bool isOpened = false;
-  AnimationController _animationController;
-  Animation<Color> _animateColor;
-  Animation<double> _animateIcon;
-  Animation<double> _translateButton;
+  late AnimationController _animationController;
+  late Animation<Color> _animateColor;
+  late Animation<double> _animateIcon;
+  late Animation<double> _translateButton;
   Curve _curve = Curves.ease;
   double _fabHeight = 56.0;
-  var mapView = new MapView();
-  var provider = new StaticMapProvider(Api_key);
-  CameraPosition cameraPosition;
+  /*var mapView = MapView();
+  var provider = StaticMapProvider(Api_key);
+  CameraPosition cameraPosition;*/
 
   showMap() {
-    mapView.show(
-      new MapOptions(
+    /*mapView.show(
+      MapOptions(
         mapViewType: mapViewType,
         showUserLocation: true,
-        initialCameraPosition: new CameraPosition(
-          new Location(41.311081, 69.240562),
+        initialCameraPosition: CameraPosition(
+          Location(41.311081, 69.240562),
           14.0,
         ),
         title: "Карта",
       ),
-      toolbarActions: [new ToolbarAction('Закрыть', 1)],
+      toolbarActions: [ToolbarAction('Закрыть', 1)],
     );
 
     mapView.zoomToFit(padding: 100);
@@ -61,21 +61,21 @@ class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
     });
     mapView.onMapTapped.listen((location) {
       print('$location tapped');
-    });
+    });*/
     // mapView.onMapReady.listen(onData)
   }
 
-  onUserLocationUpdated(position, MapView mapview) async {
+  /*onUserLocationUpdated(position, MapView mapview) async {
     double zoomLevel = await mapview.zoomLevel;
     mapview.setCameraPosition(position.latitude, position.longitude, zoomLevel);
     latitude = position.latitude;
     longitude = position.longitude;
     getCurrentAddress();
-  }
+  }*/
 
   getCurrentAddress() async {
     print('current location');
-    var coordinates = new Coordinates(latitude, longitude);
+    /*var coordinates = Coordinates(latitude, longitude);
     var address = await Geocoder.local.findAddressesFromCoordinates(
       coordinates,
     );
@@ -83,7 +83,7 @@ class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
     fromAddress.text = currentAddress;
     fromLat = latitude;
     fromLong = longitude;
-    print(address.first.addressLine.toString());
+    print(address.first.addressLine.toString());*/
   }
 
   @override
@@ -91,19 +91,17 @@ class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
     // TODO: implement initState
     initConnectivity();
     _animationController =
-        new AnimationController(
-          vsync: this,
-          duration: Duration(milliseconds: 500),
-        )..addListener(() {
-          setState(() {});
-        });
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+          ..addListener(() {
+            setState(() {});
+          });
     _animateIcon = Tween(begin: 0.0, end: 1.0).animate(_animationController);
-    _animateColor = ColorTween(begin: Colors.blue, end: Colors.red).animate(
+    /*_animateColor = ColorTween(begin: Colors.blue, end: Colors.red).animate(
       CurvedAnimation(
         parent: _animationController,
         curve: Interval(0.00, 1.00, curve: _curve),
       ),
-    );
+    );*/
     _translateButton = Tween<double>(begin: _fabHeight, end: -14.0).animate(
       CurvedAnimation(
         parent: _animationController,
@@ -143,7 +141,7 @@ class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
   }
 
   Widget location() {
-    return new Container(
+    return Container(
       child: FloatingActionButton(
         onPressed: () {
           showMap();
@@ -156,11 +154,11 @@ class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
   }
 
   Widget order() {
-    return new Container(
+    return Container(
       child: FloatingActionButton(
         heroTag: 'makeOrder',
         onPressed: () {
-          if (hasConnection && (latitude != null && longitude != null)) {
+          /*if (hasConnection && (latitude != null && longitude != null)) {
             fromAddress.text == currentAddress;
             toAddress.clear();
             fromLat = latitude;
@@ -170,7 +168,7 @@ class _FabAnimState extends State<FabAnim> with SingleTickerProviderStateMixin {
             //    context, MaterialPageRoute(builder: (context) => OrderPage()));
           } else {
             locationDialogBox(context);
-          }
+          }*/
         },
         tooltip: 'Order Taxi',
         child: Icon(Icons.add),

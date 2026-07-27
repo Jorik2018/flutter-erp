@@ -5,13 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
 import '../../../repository/repository.dart';
-import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
-import '../../home/home.dart';
-import '../create_account/create_new_account_page.dart';
 import '../error_bar.dart';
-import '../forgot_password/forgot_password_page.dart';
 import '../onboarding_form_field.dart';
 import '../onboarding_left_view.dart';
 import '../raised_button.dart';
@@ -27,12 +23,12 @@ class DesktopLoginForm extends StatefulWidget {
 }
 
 class _DesktopLoginFormState extends State<DesktopLoginForm> {
-  LoginBloc _loginBloc;
+  late LoginBloc _loginBloc;
 
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  String _email;
-  String _password;
+  String? _email;
+  String? _password;
   double _errorToastHeight = 0;
   String _errorMessage = '';
 
@@ -200,7 +196,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
       return;
     }
     if (state is LoginSuccess) {
-      Application.router.navigateTo(context, HomePage.route);
+      //Application.router.navigateTo(context, HomePage.route);
     }
   }
 
@@ -220,17 +216,17 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
 
   bool get _isValidInput {
     return _email != null &&
-        _email.isValidEmail() &&
+        _email!.isValidEmail() &&
         _password != null &&
-        _password.isNotEmpty;
+        _password!.isNotEmpty;
   }
 
   void _handleForgotPasswordButtonClick() {
-    Application.router.navigateTo(context, ForgotPasswordPage.route);
+    //Application.router.navigateTo(context, ForgotPasswordPage.route);
   }
 
   void _handleLoginButtonClick() {
-    _loginBloc.add(LoginButtonPressed(email: _email, password: _password));
+    _loginBloc.add(LoginButtonPressed(email: _email!, password: _password!));
   }
 
   void _handleGoogleLogin() {
@@ -243,7 +239,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
 
   void _handleCreateNewAccount() {
     logger.i('Create new account clicked');
-    Application.router.navigateTo(context, CreateAccountPage.route);
+    //Application.router.navigateTo(context, CreateAccountPage.route);
   }
 }
 
@@ -255,8 +251,8 @@ class SocialLogin extends StatelessWidget {
     Key? key,
   }) : super(key: key);
   final double width;
-  final VoidCallback onGoogleButtonClick;
-  final VoidCallback onFacebookButtonClick;
+  final VoidCallback? onGoogleButtonClick;
+  final VoidCallback? onFacebookButtonClick;
 
   @override
   Widget build(BuildContext context) {

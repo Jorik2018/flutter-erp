@@ -8,7 +8,7 @@ import 'package:flutter_erp/apps/taxiservice/helpers/app_constants.dart';
 
 //String savedUserName;
 //String savedPhoneNumber;
-int editMode;
+int? editMode;
 /*
 EditMode
 1--userName edit
@@ -21,7 +21,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  DocumentReference clientReference;
+  DocumentReference? clientReference;
 
   @override
   void initState() {
@@ -34,12 +34,12 @@ class ProfilePageState extends State<ProfilePage> {
   getUserInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      savedUserName = pref.getString('userName');
-      savedPhoneNumber = pref.getString('phoneNumber');
-      clientDocRef = pref.getString('userId');
+      savedUserName = pref.getString('userName')!;
+      savedPhoneNumber = pref.getString('phoneNumber')!;
+      clientDocRef = pref.getString('userId')!;
       //   clientReference =
-      //     Firestore.instance.collection('data').document('$clientDocRef');
-      print('clinetId' + clientRef.documentID);
+      //     FirebaseFirestore.instance.collection('data').document('$clientDocRef');
+      print('clinetId' + clientRef.id);
     });
   }
 
@@ -63,7 +63,7 @@ class ProfilePageState extends State<ProfilePage> {
                   if (hasConnection) {
                     editMode = 1;
                     print('show dialog box $editMode');
-                    profileEditDialogBox(context, savedUserName);
+                    profileEditDialogBox(context, savedUserName!);
                   } else {
                     connectionErrorDialogbox(context);
                   }
@@ -81,7 +81,7 @@ class ProfilePageState extends State<ProfilePage> {
                 onTap: () {
                   if (hasConnection) {
                     editMode = 2;
-                    profileEditDialogBox(context, savedPhoneNumber);
+                    profileEditDialogBox(context, savedPhoneNumber!);
                   } else {
                     connectionErrorDialogbox(context);
                   }
@@ -131,7 +131,7 @@ editPhoneNumberLocally(String newPhoneNumber) async {
 
 editUserName(String newUserName) {
   clientRef
-      .updateData({"userName": '$newUserName'})
+      .update({"userName": '$newUserName'})
       .whenComplete(() {
         print('UserName is updated in the database to $newUserName');
       })
@@ -140,7 +140,7 @@ editUserName(String newUserName) {
 
 editPhoneNumber(String newPhoneNumber) {
   clientRef
-      .updateData({"phoneNumber": '$newPhoneNumber'})
+      .update({"phoneNumber": '$newPhoneNumber'})
       .whenComplete(() {
         print('PhoneNumber is updated in the database');
       })

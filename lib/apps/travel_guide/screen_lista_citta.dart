@@ -3,11 +3,11 @@ import 'lista_citta.dart';
 import 'screen_citta.dart';
 
 class ListaCittaScreen extends StatelessWidget {
-  PageController controller = new PageController();
+  PageController controller = PageController();
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: PageView.builder(
-        itemBuilder: (_, int i) => new CopertinaCitta(ListaCitta.listaCitta[i]),
+        itemBuilder: (_, int i) => CopertinaCitta(ListaCitta.listaCitta[i]),
         itemCount: ListaCitta.listaCitta.length,
         controller: controller,
       ),
@@ -21,7 +21,7 @@ class CopertinaCitta extends StatelessWidget {
   CopertinaCitta(this.citta);
 
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(citta.img!),
@@ -31,7 +31,7 @@ class CopertinaCitta extends StatelessWidget {
       ),
       child: Stack(
         children: <Widget>[
-          new Align(
+          Align(
             alignment: FractionalOffset.topLeft,
             child: Container(
               margin: EdgeInsets.only(top: 32.0, left: 24.0, right: 24.0),
@@ -45,16 +45,16 @@ class CopertinaCitta extends StatelessWidget {
               ),
             ),
           ),
-          new Align(
+          Align(
             alignment: FractionalOffset.bottomCenter,
             child: Container(
               margin: EdgeInsets.all(16.0),
               child: FloatingActionButton(
                 backgroundColor: Colors.white,
                 child: Icon(Icons.keyboard_arrow_up, color: Colors.black),
-                onPressed: () => Navigator.of(context).push(
-                  new MaterialPageRoute(builder: (_) => new ScreenCitta(citta)),
-                ),
+                onPressed: () => Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => ScreenCitta(citta))),
               ),
             ),
           ),

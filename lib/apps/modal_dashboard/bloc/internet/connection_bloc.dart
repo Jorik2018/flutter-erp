@@ -8,20 +8,30 @@ part 'connection_state.dart';
 
 class InternetConnectionBloc
     extends Bloc<InternetConnectionEvent, InternetConnectionState> {
-  final _webLocalStorage = WebLocalStorageHelper();
+  InternetConnectionBloc({WebLocalStorageHelper? webLocalStorage})
+    : _webLocalStorage = webLocalStorage ?? WebLocalStorageHelper(),
+      super(InternetInitializing()) {
+    on<InternetConnected>(_onInternetConnected);
+    on<InternetDisconnected>(_onInternetDisconnected);
+  }
 
-  @override
-  InternetConnectionState get initialState => InternetInitializing();
+  final WebLocalStorageHelper _webLocalStorage;
 
-  @override
-  Stream<InternetConnectionState> mapEventToState(
-      InternetConnectionEvent event) async* {
-    if (event is InternetConnected) {
-      _webLocalStorage.saveInternetState(available: true);
-      yield InternetAvailable();
-    } else if (event is InternetDisconnected) {
-      _webLocalStorage.saveInternetState(available: false);
-      yield InternetUnAvailable();
-    }
+  Future<void> _onInternetConnected(
+    InternetConnected event,
+    Emitter<InternetConnectionState> emit,
+  ) async {
+    await _webLocalStorage.saveInternetState(available: true);
+
+    emit(InternetAvailable());
+  }
+
+  Future<void> _onInternetDisconnected(
+    InternetDisconnected event,
+    Emitter<InternetConnectionState> emit,
+  ) async {
+    await _webLocalStorage.saveInternetState(available: false);
+
+    emit(InternetUnAvailable());
   }
 }

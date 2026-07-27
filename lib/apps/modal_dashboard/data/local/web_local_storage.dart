@@ -1,58 +1,86 @@
-import 'dart:html';
-
-import 'package:guard/guard.dart';
-import 'package:key_value_store_web/key_value_store_web.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/local_storage_constant.dart';
 
 class WebLocalStorageHelper {
-  factory WebLocalStorageHelper() => _singleton;
-  WebLocalStorageHelper._internal();
-  static final _singleton = WebLocalStorageHelper._internal();
+  WebLocalStorageHelper._();
 
-  final _kvs = WebKeyValueStore(window.localStorage);
+  static final WebLocalStorageHelper instance = WebLocalStorageHelper._();
 
-  void clearLocalStorage() {
-    _kvs.clear();
+  factory WebLocalStorageHelper() => instance;
+
+  final SharedPreferencesAsync _preferences = SharedPreferencesAsync();
+
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
+  /// Elimina tanto preferencias comunes como tokens.
+  Future<void> clearLocalStorage() async {
+    await Future.wait([_preferences.clear(), _secureStorage.deleteAll()]);
   }
 
-  void saveInternetState({bool available}) {
-    _kvs.setBool(LocalStorage.internetStateKey, available);
+  Future<void> saveInternetState({required bool available}) async {
+    await _preferences.setBool(LocalStorage.internetStateKey, available);
   }
 
-  bool getInternetState() {
-    return _kvs.getBool(LocalStorage.internetStateKey);
+  Future<bool> getInternetState() async {
+    return await _preferences.getBool(LocalStorage.internetStateKey) ?? false;
   }
 
-  void saveLoginState({bool login}) {
-    _kvs.setBool(LocalStorage.logInStateKey, login);
+  Future<void> saveLoginState({required bool login}) async {
+    await _preferences.setBool(LocalStorage.logInStateKey, login);
   }
 
-  bool getLoginState() {
-    return _kvs.getBool(LocalStorage.logInStateKey);
+  Future<bool> getLoginState() async {
+    return await _preferences.getBool(LocalStorage.logInStateKey) ?? false;
   }
 
-  void saveAccessToken(String token) {
-    _kvs.setString(LocalStorage.accessTokenKey, token);
+  Future<void> saveAccessToken(String token) async {
+    await _secureStorage.write(key: LocalStorage.accessTokenKey, value: token);
   }
 
-  String getAccessToken() {
-    return _kvs.getString(LocalStorage.accessTokenKey);
+  Future<String?> getAccessToken() async {
+    return _secureStorage.read(key: LocalStorage.accessTokenKey);
   }
 
-  void saveRefreshToken(String refreshToken) {
-    _kvs.setString(LocalStorage.refreshTokenKey, refreshToken);
+  Future<void> saveRefreshToken(String refreshToken) async {
+    await _secureStorage.write(
+      key: LocalStorage.refreshTokenKey,
+      value: refreshToken,
+    );
   }
 
-  String getRefreshToken() {
-    return _kvs.getString(LocalStorage.refreshTokenKey);
+  Future<String?> getRefreshToken() async {
+    return _secureStorage.read(key: LocalStorage.refreshTokenKey);
   }
 
-  void saveTokenExpiryTime(int timestamp) {
-    _kvs.setInt(LocalStorage.tokenExpiryKey, timestamp);
+  Future<void> saveTokenExpiryTime(int timestamp) async {
+    await _preferences.setInt(LocalStorage.tokenExpiryKey, timestamp);
   }
 
-  int getTokenExpiryTime() {
-    return guard(() => _kvs.getInt(LocalStorage.tokenExpiryKey), null);
+  Future<int?> getTokenExpiryTime() async {
+    return _preferences.getInt(LocalStorage.tokenExpiryKey);
+  }
+
+  Future<void> clearAuthenticationData() async {
+    await Future.wait([
+      _preferences.remove(LocalStorage.logInStateKey),
+      _preferences.remove(LocalStorage.tokenExpiryKey),
+      _secureStorage.delete(key: LocalStorage.accessTokenKey),
+      _secureStorage.delete(key: LocalStorage.refreshTokenKey),
+    ]);
+  }
+
+  Future<bool> hasValidAccessToken() async {
+    final accessToken = await getAccessToken();
+    final expiryTimestamp = await getTokenExpiryTime();
+
+    if (accessToken == null || accessToken.isEmpty || expiryTimestamp == null) {
+      return false;
+    }
+
+    final currentTimestamp = DateTime.now().millisecondsSinceEpoch;
+
+    return currentTimestamp < expiryTimestamp;
   }
 }

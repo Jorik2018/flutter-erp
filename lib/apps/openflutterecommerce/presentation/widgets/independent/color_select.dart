@@ -22,7 +22,7 @@ class OpenFlutterColorSelect extends StatefulWidget {
 }
 
 class _OpenFlutterColorSelectState extends State<OpenFlutterColorSelect> {
-  List<Color> selectedColors;
+  late List<Color> selectedColors;
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _OpenFlutterColorSelectState extends State<OpenFlutterColorSelect> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(22)),
         border: widget.selectedColors.contains(color)
-            ? Border.all(color: _theme.accentColor)
+            ? Border.all(color: _theme.highlightColor)
             : null,
       ),
       padding: EdgeInsets.all(4),

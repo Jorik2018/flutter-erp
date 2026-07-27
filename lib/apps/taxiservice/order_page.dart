@@ -5,47 +5,65 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/floating_button.dart';
 import 'code_page.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:flutter_google_places_autocomplete/flutter_google_places_autocomplete.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_places_autocomplete_text_field/google_places_autocomplete_text_field.dart'
+    hide Location;
 import 'places_search_page.dart';
 import 'main.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/dialog_boxes.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/date_time_format.dart';
 
-DocumentReference orderRef;
-final CollectionReference colRefOrders = Firestore.instance.collection(
+DocumentReference? orderRef;
+final CollectionReference colRefOrders = FirebaseFirestore.instance.collection(
   "orders",
 );
-String addressToField;
-String addressFromLocation;
-String addressFromQuery;
-bool fromfieldPressed;
-double fromLong;
-double fromLat;
-double toLong;
-double toLat;
+String? addressToField;
+String? addressFromLocation;
+String? addressFromQuery;
+bool? fromfieldPressed;
+double? fromLong;
+double? fromLat;
+double? toLong;
+double? toLat;
 Color locationIconColor = Colors.grey;
 Color locationIconColor2 = Colors.grey;
-final fromAddress = new TextEditingController();
-final toAddress = new TextEditingController();
+final fromAddress = TextEditingController();
+final toAddress = TextEditingController();
+final GoogleApiConfig _placesConfig = GoogleApiConfig(
+  apiKey: kGoogleApiKey,
+
+  // Puedes restringir la búsqueda a Uzbekistán.
+  //regionCode: 'UZ',
+
+  // Descomenta para restringir resultados a un área.
+  // locationRestriction: LocationConfig.circle(
+  //   circleCenter: const Coordinates(
+  //     latitude: 41.311081,
+  //     longitude: 69.240562,
+  //   ),
+  //   circleRadiusInKilometers: 500,
+  // ),
+);
 
 class OrderPage extends StatefulWidget {
   @override
   State createState() => OrderPageState();
 }
 
-final homeScaffoldKey = new GlobalKey<ScaffoldState>();
-final searchScaffoldKey = new GlobalKey<ScaffoldState>();
+final homeScaffoldKey = GlobalKey<ScaffoldState>();
+final searchScaffoldKey = GlobalKey<ScaffoldState>();
 
 class OrderPageState extends State<OrderPage>
     with SingleTickerProviderStateMixin {
-  final CollectionReference colRef = Firestore.instance.collection('tariffs');
+  final CollectionReference<Map<String, dynamic>> colRef = FirebaseFirestore
+      .instance
+      .collection('tariffs');
 
-  List tablist2 = new List<Widget>();
+  final List<Widget> tablist2 = <Widget>[];
   Color TextButtonColor = Colors.transparent;
 
-  FocusNode _focus1 = new FocusNode();
-  FocusNode _focus2 = new FocusNode();
+  FocusNode _focus1 = FocusNode();
+  FocusNode _focus2 = FocusNode();
   var tariffName2 = "Эконом";
   var oneKmCost2 = '1200';
   var oneKmCost3;
@@ -58,18 +76,131 @@ class OrderPageState extends State<OrderPage>
   var waitingDefault;
   var tariffNameDefault;
 
-  String userId;
+  String? userId;
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
 
   //String tariff = "Эконом";
+
+  Future<void> getPlaceFromQuery() async {
+    const String query = '1600 Amphitheatre Parkway, Mountain View';
+
+    try {
+      final List<Location> address = await locationFromAddress(query);
+
+      if (address.isEmpty) {
+        addressFromQuery = null;
+        return;
+      }
+
+      final Location location = address.first;
+
+      addressFromQuery = query;
+
+      fromLat = location.latitude;
+      fromLong = location.longitude;
+
+      debugPrint(
+        'Resultado: $addressFromQuery '
+        '(${location.latitude}, ${location.longitude})',
+      );
+    } catch (error, stackTrace) {
+      debugPrint('Error buscando dirección: $error');
+
+      debugPrintStack(stackTrace: stackTrace);
+    }
+  }
+
+  Future<void> openSearch() async {
+    final Prediction? p = await _showGooglePlacesAutocomplete();
+
+    if (!mounted || p == null) {
+      return;
+    }
+
+    /*displayPrediction(
+      p,
+      homeScaffoldKey.currentState,
+    );*/
+  }
+
+  Future<Prediction?> _showGooglePlacesAutocomplete() {
+    final TextEditingController searchController = TextEditingController();
+
+    return showModalBottomSheet<Prediction>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (BuildContext bottomSheetContext) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: MediaQuery.viewInsetsOf(bottomSheetContext).bottom + 16,
+          ),
+          child: SizedBox(
+            height: MediaQuery.sizeOf(bottomSheetContext).height * 0.85,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(bottomSheetContext);
+                      },
+                      icon: const Icon(Icons.arrow_back),
+                    ),
+                    const Expanded(
+                      child: Text(
+                        'Buscar dirección',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                GooglePlacesAutoCompleteTextFormField(
+                  config: _placesConfig,
+                  textEditingController: searchController,
+                  decoration: const InputDecoration(
+                    hintText: 'Introduce una dirección',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+                  minInputLength: 3,
+                  maxLines: 1,
+                  onSuggestionClicked: (Prediction prediction) {
+                    searchController.text = prediction.description ?? '';
+
+                    Navigator.pop(bottomSheetContext, prediction);
+                  },
+                  onPredictionWithCoordinatesReceived: (Prediction prediction) {
+                    debugPrint('Predicción: ${prediction.description}');
+
+                    debugPrint(
+                      'Coordenadas: '
+                      '${prediction.lat}, ${prediction.lng}',
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ).whenComplete(searchController.dispose);
+  }
 
   @override
   void initState() {
     super.initState();
     initConnectivity();
     print(clientDocRef);
-    fromAddress.text = currentAddress;
+    fromAddress.text = currentAddress!;
     setState(() {
       colorControllers();
       print(latitude.toString());
@@ -77,30 +208,17 @@ class OrderPageState extends State<OrderPage>
     });
   }
 
-  _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _date,
       firstDate: _date,
-      lastDate: _date.add(Duration(days: 7)),
+      lastDate: _date.add(const Duration(days: 7)),
     );
+
     if (picked != null && picked != _date) {
       setState(() {
         _date = picked;
-        //print('selected date $_date');
-      });
-    }
-  }
-
-  _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-      context: context,
-      initialTime: _time,
-    );
-    if (picked != null && picked != _time) {
-      // print('selected time $_date');
-      setState(() {
-        _time = picked;
       });
     }
   }
@@ -108,9 +226,9 @@ class OrderPageState extends State<OrderPage>
   void getPressedField() {}
 
   void addOrder() {
-    orderRef = colRefOrders.document();
-    orderRef
-        .setData({
+    orderRef = colRefOrders.doc();
+    orderRef!
+        .set({
           'clientId': clientDocRef,
           'fromLat': fromLat,
           'fromLong': fromLong,
@@ -149,27 +267,17 @@ class OrderPageState extends State<OrderPage>
     }
   }
 
-  getPlaceFromQuery() async {
-    var query = "1600 Amphiteatre Parkway, Mountain View";
-    var address = await Geocoder.local.findAddressesFromQuery(query);
-    addressFromQuery = address.first.addressLine.toString();
-  }
-
-  void openSearch() async {
-    Prediction p = await showGooglePlacesAutocomplete(
+  _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
-      apiKey: kGoogleApiKey,
-      onError: (res) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(new SnackBar(content: Text(res.errorMessage)));
-      },
-      mode: Mode.fullscreen,
-      language: "uzb",
-      components: [new Component(Component.country, "uzb")],
+      initialTime: _time,
     );
-
-    displayPrediction(p, homeScaffoldKey.currentState);
+    if (picked != null && picked != _time) {
+      // print('selected time $_date');
+      setState(() {
+        _time = picked;
+      });
+    }
   }
 
   @override
@@ -192,54 +300,90 @@ class OrderPageState extends State<OrderPage>
           child: Container(
             decoration: BoxDecoration(color: Colors.white),
             height: 60.0,
-            child: StreamBuilder(
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: colRef.snapshots(),
-              builder: (context, snapshot) {
-                if (!hasConnection || !snapshot.hasData) {
-                  return CircularProgressIndicator();
-                }
+              builder:
+                  (
+                    BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
+                  ) {
+                    if (!hasConnection) {
+                      return const Center(child: Text('Sin conexión'));
+                    }
 
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot ds = snapshot.data.documents[index];
-                    var tariffName = ds['name'];
-                    var oneKmCost = ds['one_km'];
-                    tariffNameDefault = snapshot.data.documents[0]['name']
-                        .toString();
-                    oneKmDefault = snapshot.data.documents[0]['one_km']
-                        .toString();
-                    minDefault = snapshot.data.documents[0]['min'].toString();
-                    waitingDefault = snapshot.data.documents[0]['waiting']
-                        .toString();
-                    carsDefault = snapshot.data.documents[0]['cars'].toString();
-                    return new Container(
-                      decoration: BoxDecoration(
-                        border: const Border(
-                          right: BorderSide(width: 0.2, color: Colors.grey),
-                        ),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          setState(() {
-                            tariffName2 = tariffName;
-                            oneKmCost2 = oneKmCost.substring(0, 4);
-                            oneKmCost3 = oneKmCost;
-                            tarrifMin2 = ds['min'];
-                            availableCars2 = ds['cars'];
-                            waiting2 = ds['waiting'];
-                          });
-                        },
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(
                         child: Text(
-                          tariffName,
-                          style: TextStyle(fontSize: 15.0),
+                          'Error al cargar tarifas: ${snapshot.error}',
                         ),
-                      ),
+                      );
+                    }
+
+                    final docs = snapshot.data?.docs ?? [];
+
+                    if (docs.isEmpty) {
+                      return const Center(
+                        child: Text('No hay tarifas disponibles'),
+                      );
+                    }
+
+                    final firstData = docs.first.data();
+
+                    tariffNameDefault = firstData['name']?.toString();
+                    oneKmDefault = firstData['one_km']?.toString();
+                    minDefault = firstData['min']?.toString();
+                    waitingDefault = firstData['waiting']?.toString();
+                    carsDefault = firstData['cars']?.toString();
+
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: docs.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final DocumentSnapshot<Map<String, dynamic>> ds =
+                            docs[index];
+
+                        final data = ds.data() ?? <String, dynamic>{};
+
+                        final String tariffName =
+                            data['name']?.toString() ?? '';
+
+                        final String oneKmCost =
+                            data['one_km']?.toString() ?? '0';
+
+                        return Container(
+                          decoration: const BoxDecoration(
+                            border: Border(
+                              right: BorderSide(width: 0.2, color: Colors.grey),
+                            ),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              setState(() {
+                                tariffName2 = tariffName;
+
+                                oneKmCost2 = oneKmCost.length >= 4
+                                    ? oneKmCost.substring(0, 4)
+                                    : oneKmCost;
+
+                                oneKmCost3 = oneKmCost;
+                                tarrifMin2 = data['min'];
+                                availableCars2 = data['cars'];
+                                waiting2 = data['waiting'];
+                              });
+                            },
+                            child: Text(
+                              tariffName,
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
             ),
           ),
         ),
@@ -364,7 +508,7 @@ class OrderPageState extends State<OrderPage>
                         showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
-                            return new Container(
+                            return Container(
                               child: Padding(
                                 padding: EdgeInsets.fromLTRB(
                                   30.0,
@@ -520,7 +664,7 @@ class OrderPageState extends State<OrderPage>
                     child: Text(
                       '${_date.day.toString()}' +
                           ' ' +
-                          convertMonth(_date.month) +
+                          convertMonth(_date.month)!.toLowerCase() +
                           ' ' +
                           _date.year.toString(),
                     ),

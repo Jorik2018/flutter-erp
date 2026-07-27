@@ -36,7 +36,6 @@ class Signup_Screen extends StatefulWidget {
 }
 
 class signup extends State<Signup_Screen> {
-  ShapeBorder shape;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
 
@@ -115,7 +114,9 @@ class signup extends State<Signup_Screen> {
                   elevation: 5.0,
                   child: Form(
                     key: formKey,
-                    autovalidate: _autovalidate,
+                    autovalidateMode: _autovalidate
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.disabled,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -322,19 +323,19 @@ class signup extends State<Signup_Screen> {
     );
   }
 
-  String validateEmail(String value) {
+  String? validateEmail(String? value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = RegExp(pattern);
-    if (!regex.hasMatch(value))
+    RegExp regex = RegExp(pattern.toString());
+    if (!regex.hasMatch(value!))
       return 'Enter Valid Email';
     else
       return null;
   }
 
-  String validateMobile(String value) {
+  String? validateMobile(String? value) {
     // Indian Mobile number are of 10 digit only
-    if (value.length != 10)
+    if (value!.length != 10)
       return 'Mobile Number must be of 10 digit';
     else
       return null;

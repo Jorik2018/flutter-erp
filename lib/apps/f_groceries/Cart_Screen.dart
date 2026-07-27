@@ -418,19 +418,14 @@ class Cart extends State<Cart_screen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       alignment: Alignment.center,
-                      child: OutlineButton(
-                        borderSide: BorderSide(color: Colors.amber.shade500),
+                      child: OutlinedButton(
                         child: const Text('CONFIRM ORDER'),
-                        textColor: Colors.amber.shade500,
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => Checkout()),
                           );
                         },
-                        shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
                       ),
                     ),
                   ),
@@ -459,9 +454,9 @@ class Cart extends State<Cart_screen> {
     ).then<void>((T? value) {
       // The value passed to Navigator.pop() or null.
       if (value != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('You selected: $value')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('You selected: $value')));
       }
     });
   }

@@ -5,14 +5,14 @@ import 'cart_item.dart';
 
 class CartPage extends StatefulWidget {
   @override
-  _CartPageState createState() => new _CartPageState();
+  _CartPageState createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     if (Cart.cartItems.length > 0) {
-      return new Material(
+      return Material(
         borderRadius: BorderRadius.circular(8.0),
         child: Scaffold(
           appBar: AppBar(
@@ -28,7 +28,7 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
             actions: <Widget>[
-              new Center(
+              Center(
                 child: IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: Icon(Icons.close, color: Colors.black45),
@@ -40,7 +40,7 @@ class _CartPageState extends State<CartPage> {
           body: ListView.builder(
             itemCount: Cart.cartItems.length,
             itemBuilder: (_, int pos) =>
-                new CartItem(plantsList[Cart.cartItems[pos]]),
+                CartItem(plantsList[Cart.cartItems[pos]]),
           ),
           bottomNavigationBar: Hero(
             tag: 'Buy button',
@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
       );
     } else // Show an empty state
     {
-      return new Material(
+      return Material(
         borderRadius: BorderRadius.circular(8.0),
         child: Scaffold(
           appBar: AppBar(
@@ -80,7 +80,7 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
             actions: <Widget>[
-              new Center(
+              Center(
                 child: IconButton(
                   onPressed: () => Navigator.of(context).pop(),
                   icon: Icon(Icons.close, color: Colors.black45),
@@ -94,13 +94,13 @@ class _CartPageState extends State<CartPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Icon(
+                Icon(
                   Icons.remove_shopping_cart,
                   color: Colors.black26,
                   size: 96.0,
                 ),
-                new Padding(padding: EdgeInsets.only(bottom: 48.0)),
-                new Text(
+                Padding(padding: EdgeInsets.only(bottom: 48.0)),
+                Text(
                   'Your cart is empty!',
                   style: TextStyle(
                     color: Colors.black,
@@ -108,8 +108,8 @@ class _CartPageState extends State<CartPage> {
                     fontSize: 28.0,
                   ),
                 ),
-                new Padding(padding: EdgeInsets.only(bottom: 8.0)),
-                new Container(
+                Padding(padding: EdgeInsets.only(bottom: 8.0)),
+                Container(
                   margin: EdgeInsets.symmetric(horizontal: 64.0),
                   child: Text(
                     'Looks like you haven\'t added any plants to your cart yet.',
@@ -117,8 +117,8 @@ class _CartPageState extends State<CartPage> {
                     style: TextStyle(fontSize: 20.0),
                   ),
                 ),
-                new Padding(padding: EdgeInsets.only(bottom: 96.0)),
-                new Container(
+                Padding(padding: EdgeInsets.only(bottom: 96.0)),
+                Container(
                   child: Material(
                     elevation: 16.0,
                     shadowColor: Color(0x7000E676),

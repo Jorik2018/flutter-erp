@@ -27,9 +27,9 @@ class _DestinationsPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new CustomScrollView(
+    return CustomScrollView(
       slivers: <Widget>[
-        new SliverPadding(
+        SliverPadding(
           padding: const EdgeInsets.only(bottom: 20.0, top: 0.0),
           sliver: SliverFillRemaining(
             child: DestinationsView(viewModel: viewModel),

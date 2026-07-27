@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_chat_app/ChatScreen.dart';
 import 'package:flutter_erp/apps/flutter_chat_app/util/Themes.dart';
 
-void main() => runApp(new FlutterChatApp());
+void main() => runApp(FlutterChatApp());
 
 class FlutterChatApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Flutter Chat App",
       theme: defaultTargetPlatform == TargetPlatform.iOS

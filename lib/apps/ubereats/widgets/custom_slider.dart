@@ -60,7 +60,7 @@ class _CustomSliderWidgetState extends State<CustomSliderWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      //overflow: Overflow.visible,
+      //clipBehavior: Clip.none,,
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width,
@@ -81,11 +81,12 @@ class _CustomSliderWidgetState extends State<CustomSliderWidget> {
                   return Stack(
                     children: <Widget>[
                       Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Image(
-                            image: AssetImage(item),
-                            fit: BoxFit.cover,
-                          )),
+                        width: MediaQuery.of(context).size.width,
+                        child: Image(
+                          image: AssetImage(item),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ],
                   );
                 },
@@ -98,11 +99,12 @@ class _CustomSliderWidgetState extends State<CustomSliderWidget> {
           right: 0,
           bottom: 30,
           child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(widget.items.length, (idx) {
-                return activeIndex == idx ? ActiveDot() : InactiveDot();
-              })),
-        )
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(widget.items.length, (idx) {
+              return activeIndex == idx ? ActiveDot() : InactiveDot();
+            }),
+          ),
+        ),
       ],
     );
   }

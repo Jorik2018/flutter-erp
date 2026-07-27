@@ -1,19 +1,11 @@
-import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_erp/apps/trovami/helpers/RoutesHelper.dart';
-import 'package:flutter_erp/apps/trovami/httpClient/httpClient.dart';
-//import 'package:flutter_test/flutter_test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'InputTextField.dart';
 import 'Roundedbutton.dart';
 import 'Strings.dart';
-import 'main.dart';
 import 'core/OldUser.dart';
 import 'signuppage.dart';
 import 'homepage.dart';
@@ -25,11 +17,11 @@ String? loggedinUser;
 
 var loggedInUsername;
 
-final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-TextStyle textStyle = new TextStyle(
+TextStyle textStyle = TextStyle(
   color: const Color.fromRGBO(255, 255, 255, 0.4),
   fontSize: 16.0,
   fontWeight: FontWeight.normal,
@@ -37,11 +29,11 @@ TextStyle textStyle = new TextStyle(
 
 Color textFieldColor = const Color.fromRGBO(0, 0, 0, 0.7);
 
-ScrollController scrollController = new ScrollController();
+ScrollController scrollController = ScrollController();
 
 class SignInForm extends StatefulWidget {
   @override
-  SigninFormState createState() => new SigninFormState();
+  SigninFormState createState() => SigninFormState();
 }
 
 class SigninFormState extends State<SignInForm>
@@ -71,10 +63,10 @@ class SigninFormState extends State<SignInForm>
     fontFamily: 'MaterialIcons',
   );
 
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final GlobalKey<FormFieldState<String>> _passwordFieldKey =
-      new GlobalKey<FormFieldState<String>>();
+      GlobalKey<FormFieldState<String>>();
 
   Animation<Color?>? animation;
   late AnimationController controller;
@@ -121,7 +113,7 @@ class SigninFormState extends State<SignInForm>
     });
     print(':_authenticateWithGoogle3');
     if (user != null) {
-      OldUser guser = new OldUser();
+      OldUser guser = OldUser();
       guser.EmailId = user!.email;
       guser.name = user!.displayName;
       guser.locationShare = false;
@@ -210,7 +202,7 @@ class SigninFormState extends State<SignInForm>
   String? _validateName(String? value) {
     _formWasEdited = true;
     if (value != null && value!.isEmpty) return 'EmailID is required.';
-    final nameExp = new RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
+    final nameExp = RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
     if (!nameExp.hasMatch(value ?? '')) return 'Please enter correct EmailID';
     return null;
   }
@@ -246,12 +238,12 @@ class SigninFormState extends State<SignInForm>
         )
         .then((_) => setGoogleSigninListener());
 
-    controller = new AnimationController(
+    controller = AnimationController(
       duration: const Duration(seconds: 10),
       vsync: this,
     );
     animation =
-        new ColorTween(begin: Colors.red, end: Colors.blue).animate(controller)
+        ColorTween(begin: Colors.red, end: Colors.blue).animate(controller)
           ..addListener(() {
             setState(() {});
           });
@@ -261,7 +253,7 @@ class SigninFormState extends State<SignInForm>
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
 
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
       body: SingleChildScrollView(
         controller: scrollController,
@@ -275,13 +267,13 @@ class SigninFormState extends State<SignInForm>
           ),
           child: Column(
             children: <Widget>[
-              new Container(
+              Container(
                 height: screenSize.height / 4,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Container(
+                    Container(
                       child: Text(
                         Strings.appName,
                         textAlign: TextAlign.center,
@@ -291,18 +283,18 @@ class SigninFormState extends State<SignInForm>
                   ],
                 ),
               ),
-              new Container(
+              Container(
                 height: 3 * screenSize.height / 4,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    new Form(
+                    Form(
                       key: _formKey,
                       //autovalidate: _autovalidate,
                       child: Column(
                         children: <Widget>[
-                          new Container(
+                          Container(
                             child: InputField(
                               hintText: 'Email',
                               obscureText: false,
@@ -324,7 +316,7 @@ class SigninFormState extends State<SignInForm>
                               },
                             ),
                           ),
-                          new InputField(
+                          InputField(
                             hintText: 'Password',
                             obscureText: true,
                             textInputType: TextInputType.text,
@@ -341,10 +333,10 @@ class SigninFormState extends State<SignInForm>
                         ],
                       ),
                     ),
-                    new Column(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        new RoundedButton(
+                        RoundedButton(
                           buttonName: 'Sign-In',
                           onTap: _handleSubmitted,
                           width: screenSize.width,
@@ -353,7 +345,7 @@ class SigninFormState extends State<SignInForm>
                           borderWidth: 0.0,
                           buttonColor: const Color.fromRGBO(100, 100, 100, 1.0),
                         ),
-                        new RoundedButton(
+                        RoundedButton(
                           buttonName: 'Sign-up',
                           onTap: () {
                             RoutesHelper.pushRoute(context, ROUTE_SIGNUP);
@@ -373,9 +365,9 @@ class SigninFormState extends State<SignInForm>
 
                         /// UNCOMMENT IF YOU WANT TO SIGNIN THROUGH GOOGLE
                         //                        (_isgooglesigincomplete
-                        //                            ? new FloatingActionButton(
+                        //                            ? FloatingActionButton(
                         //                                child:
-                        //                                    new Image.asset('assets/google-logo.jpg'),
+                        //                                    Image.asset('assets/google-logo.jpg'),
                         //                                onPressed: _handleSubmitted1,
                         //                                backgroundColor: Colors.white,
                         //                              )

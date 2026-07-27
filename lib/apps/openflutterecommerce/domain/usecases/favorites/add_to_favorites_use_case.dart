@@ -33,6 +33,6 @@ class AddToFavoritesUseCaseImpl implements AddToFavoritesUseCase {
 class AddProductToCartException implements Exception {}
 
 class AddToFavoriteResult extends UseCaseResult {
-  AddToFavoriteResult({Exception exception, bool result})
+  AddToFavoriteResult({Exception? exception, bool? result})
     : super(exception: exception, result: result);
 }

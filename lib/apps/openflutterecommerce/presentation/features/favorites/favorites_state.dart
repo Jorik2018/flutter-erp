@@ -11,12 +11,12 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/model/sort_rules.dart
 
 @immutable
 class FavouriteState extends Equatable {
-  final List<FavoriteProduct> data;
-  final List<HashTag> hashtags;
-  final SortRules sortBy;
-  final FilterRules filterRules;
-  final String error;
-  final bool isList;
+  final List<FavoriteProduct>? data;
+  final List<HashTag>? hashtags;
+  final SortRules? sortBy;
+  final FilterRules? filterRules;
+  final String? error;
+  final bool? isList;
 
   FavouriteState({
     this.data,
@@ -28,12 +28,12 @@ class FavouriteState extends Equatable {
   });
 
   FavouriteState copyWith({
-    List<FavoriteProduct> data,
-    List<HashTag> hashtags,
-    SortRules sortBy,
-    FilterRules filterRules,
-    String error,
-    bool isList,
+    List<FavoriteProduct>? data,
+    List<HashTag>? hashtags,
+    SortRules? sortBy,
+    FilterRules? filterRules,
+    String? error,
+    bool? isList,
   }) {
     return FavouriteState(
       data: data ?? this.data,
@@ -53,7 +53,7 @@ class FavouriteState extends Equatable {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     data,
     hashtags,
     sortBy,

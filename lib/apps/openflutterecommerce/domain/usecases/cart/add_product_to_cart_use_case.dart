@@ -33,6 +33,6 @@ class AddProductToCartUseCaseImpl implements AddProductToCartUseCase {
 class AddProductToCartException implements Exception {}
 
 class AddToCartResult extends UseCaseResult {
-  AddToCartResult({Exception exception, bool result})
+  AddToCartResult({Exception? exception, bool? result})
     : super(exception: exception, result: result);
 }

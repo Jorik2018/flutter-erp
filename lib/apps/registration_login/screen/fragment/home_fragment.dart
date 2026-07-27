@@ -6,7 +6,7 @@ class HomeFragment extends StatefulWidget {
   List<String> listDe = Util.descriptionList;
 
   @override
-  _HomeFragmentState createState() => new _HomeFragmentState();
+  _HomeFragmentState createState() => _HomeFragmentState();
 }
 
 class ListItems {
@@ -32,12 +32,12 @@ class _HomeFragmentState extends State<HomeFragment> {
 
       print(l);
       drawerOptions.add(
-        new Column(
+        Column(
           children: <Widget>[
-            new Column(
+            Column(
               children: <Widget>[
-                new Image.network(d),
-                new Text(
+                Image.network(d),
+                Text(
                   l,
                   style: TextStyle(
                     color: Colors.deepPurple,
@@ -45,11 +45,11 @@ class _HomeFragmentState extends State<HomeFragment> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                new Divider(color: Colors.deepPurple, height: 2.0),
+                Divider(color: Colors.deepPurple, height: 2.0),
               ],
             ),
 
-            /* new ListTile(
+            /* ListTile(
 
                 leading:Image.network(
                     d,
@@ -67,11 +67,9 @@ class _HomeFragmentState extends State<HomeFragment> {
         ),
       );
     }
-    return new Scaffold(
+    return Scaffold(
       body: Container(
-        child: ListView(
-          children: <Widget>[new Column(children: drawerOptions)],
-        ),
+        child: ListView(children: <Widget>[Column(children: drawerOptions)]),
       ),
     );
   }

@@ -41,7 +41,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           child: BlocConsumer<ProductsBloc, ProductsState>(
             listener: (context, state) {
               if (state.hasError) {
-                ErrorDialog.showErrorDialog(context, state.error);
+                ErrorDialog.showErrorDialog(context, state.error!);
               }
             },
             builder: (context, state) {
@@ -49,8 +49,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 slivers: <Widget>[
                   SizeChangingAppBar(
                     title: state.data?.category?.name ?? '',
-                    filterRules: state.filterRules,
-                    sortRules: state.sortBy,
+                    filterRules: state.filterRules!,
+                    sortRules: state.sortBy!,
                     isListView: state is ProductsListViewState,
                     onFilterRulesChanged: (filter) {
                       BlocProvider.of<ProductsBloc>(

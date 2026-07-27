@@ -8,7 +8,7 @@ class ForgetPasswordBloc
     extends Bloc<ForgetPasswordEvent, ForgetPasswordState> {
   final UserRepository userRepository;
 
-  ForgetPasswordBloc({@required this.userRepository})
+  ForgetPasswordBloc({required this.userRepository})
     : super(ForgetPasswordInitialState());
 
   @override
@@ -21,7 +21,7 @@ class ForgetPasswordBloc
         await userRepository.forgotPassword(email: event.email.toString());
         yield ForgetPasswordFinishedState(event.email);
       } catch (error) {
-        yield ForgetPasswordErrorState(error);
+        yield ForgetPasswordErrorState(error.toString());
       }
     }
   }

@@ -6,7 +6,7 @@ class DatabaseService {
   final String? uid;
   DatabaseService({this.uid});
   // collection reference
-  final CollectionReference userProfile = Firestore.instance.collection(
+  final CollectionReference userProfile = FirebaseFirestore.instance.collection(
     'profile',
   );
 
@@ -22,7 +22,7 @@ class DatabaseService {
     String carplate,
     String payment,
   ) async {
-    return await userProfile.document(uid).setData({
+    return await userProfile.doc(uid).set({
       'name': name,
       'driver': driver,
       'talkative': talkative,
@@ -36,18 +36,19 @@ class DatabaseService {
     });
   }
 
-  //userdata form snapshot
-  List<Profile> _profileListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.documents.map((doc) {
+  List<Profile> _profileListFromSnapshot(QuerySnapshot<Object?> snapshot) {
+    return snapshot.docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>;
+
       return Profile(
-        name: doc.data['name'] ?? '',
-        email: doc.data['email'] ?? '',
+        name: data['name'] as String? ?? '',
+        email: data['email'] as String? ?? '',
       );
     }).toList();
   }
 
-  //get brews stream
   Stream<List<Profile>> get profile {
+    /**The argument type 'List<Profile> Function(QuerySnapshot<Map<String, dynamic>>)' can't be assigned to the parameter type 'List<Profile> Function(QuerySnapshot<Object?>) */
     return userProfile.snapshots().map(_profileListFromSnapshot);
   }
 }

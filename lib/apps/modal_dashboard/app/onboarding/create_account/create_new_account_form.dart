@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
 import '../../../repository/repository.dart';
-import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
 import '../../home/home_page.dart';
@@ -190,8 +189,8 @@ class _DesktopCreateNewAccountFormState
                   top: 64,
                   left: MediaQuery.of(context).size.width * .6 + 32,
                   child: BackIconButton(
-                    onPressed: () =>
-                        Application.router.navigateTo(context, LoginPage.route),
+                    onPressed: () => {},
+                    //Application.router.navigateTo(context, LoginPage.route),
                   ),
                 ),
                 Positioned(
@@ -222,7 +221,7 @@ class _DesktopCreateNewAccountFormState
 
   void _handleCreateAccountStateChange(CreateAccountState state) {
     if (state is CreateAccountSuccess) {
-      Application.router.navigateTo(context, HomePage.route);
+      //Application.router.navigateTo(context, HomePage.route);
     }
   }
 
@@ -250,7 +249,7 @@ class _DesktopCreateNewAccountFormState
   }
 
   void _handleSignInButtonClick() {
-    Application.router.navigateTo(context, LoginPage.route);
+    //Application.router.navigateTo(context, LoginPage.route);
   }
 
   void _handleCreateNewAccount() {

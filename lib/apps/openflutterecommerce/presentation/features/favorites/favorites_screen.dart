@@ -39,9 +39,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           slivers: <Widget>[
             SizeChangingAppBar(
               title: 'Favorites',
-              filterRules: state.filterRules,
-              sortRules: state.sortBy,
-              isListView: state.isList,
+              filterRules: state.filterRules!,
+              sortRules: state.sortBy!,
+              isListView: state.isList!,
               onFilterRulesChanged: (filter) {
                 BlocProvider.of<FavouriteBloc>(
                   context,
@@ -58,7 +58,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 ).add(ProductsChangeViewEvent());
               },
             ),
-            state.isList ? FavoritesListView() : FavouritesTileView(),
+            state.isList! ? FavoritesListView() : FavouritesTileView(),
           ],
         );
       },

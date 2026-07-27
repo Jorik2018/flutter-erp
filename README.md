@@ -25,3 +25,7 @@ flutter run -d web-server --web-port 8810
 flutter pub add --dev build_runner
 flutter pub add --dev json_serializable
 flutter pub run build_runner build --delete-conflicting-outputs
+
+
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs

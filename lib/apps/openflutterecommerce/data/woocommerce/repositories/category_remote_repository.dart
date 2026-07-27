@@ -8,7 +8,7 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/woocommerce/repositor
 class RemoteCategoryRepository extends CategoryRepository {
   final WoocommercWrapperAbstract woocommerce;
 
-  RemoteCategoryRepository({@required this.woocommerce});
+  RemoteCategoryRepository({required this.woocommerce});
 
   @override
   Future<List<ProductCategory>> getCategories({
@@ -35,6 +35,6 @@ class RemoteCategoryRepository extends CategoryRepository {
   @override
   Future<ProductCategory> getCategoryDetails(int categoryId) {
     // TODO: implement getCategoryDetails
-    return null;
+    return null!;
   }
 }

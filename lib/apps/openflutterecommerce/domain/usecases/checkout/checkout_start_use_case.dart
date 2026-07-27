@@ -55,26 +55,26 @@ class CheckoutStartUseCaseImpl implements CheckoutStartUseCase {
 }
 
 class ChekcoutStartResult extends UseCaseResult {
-  final List<PaymentMethodModel> paymentMethods;
-  final List<ShippingAddressModel> shippingAddress;
-  final List<CartItem> cartItems;
-  final ShippingAddressModel currentShippingAddress;
-  final PaymentMethodModel currentPaymentMethod;
-  final double totalCalculatedPrice;
-  final double deliveryPrice;
-  final double summaryPrice;
+  final List<PaymentMethodModel>? paymentMethods;
+  final List<ShippingAddressModel>? shippingAddress;
+  final List<CartItem>? cartItems;
+  final ShippingAddressModel? currentShippingAddress;
+  final PaymentMethodModel? currentPaymentMethod;
+  final double? totalCalculatedPrice;
+  final double? deliveryPrice;
+  final double? summaryPrice;
 
   ChekcoutStartResult({
     this.paymentMethods,
     this.shippingAddress,
     this.cartItems,
     this.currentShippingAddress,
-    @required this.currentPaymentMethod,
-    @required this.totalCalculatedPrice,
-    @required this.deliveryPrice,
+    required this.currentPaymentMethod,
+    required this.totalCalculatedPrice,
+    required this.deliveryPrice,
     this.summaryPrice,
-    Exception exception,
-    bool result,
+    Exception? exception,
+    bool? result,
   }) : super(exception: exception, result: result);
 }
 

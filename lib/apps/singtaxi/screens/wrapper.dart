@@ -11,7 +11,7 @@ import 'home/onboarding_screen.dart';
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<XUser?>(context);
     print(user);
     //return either home or authenticate widget
     if (user == null) {

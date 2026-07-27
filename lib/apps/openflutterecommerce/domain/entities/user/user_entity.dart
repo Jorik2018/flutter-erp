@@ -1,18 +1,18 @@
 import 'package:flutter_erp/apps/openflutterecommerce/domain/entities/entity.dart';
 
-class UserEntity extends Entity<int> {
-  final String name;
-  final String avatar;
-  final String email;
-  final String password;
-  final String birthDate;
-  final String token;
-  final bool salesNotification;
-  final bool newArrivalsNotification;
-  final bool deliveryStatusChanges;
+class UserEntity extends Entity<int?> {
+  final String? name;
+  final String? avatar;
+  final String? email;
+  final String? password;
+  final String? birthDate;
+  final String? token;
+  final bool? salesNotification;
+  final bool? newArrivalsNotification;
+  final bool? deliveryStatusChanges;
 
   UserEntity({
-    int id,
+    int? id,
     this.name,
     this.avatar,
     this.email,
@@ -41,7 +41,7 @@ class UserEntity extends Entity<int> {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     id,
     name,
     avatar,

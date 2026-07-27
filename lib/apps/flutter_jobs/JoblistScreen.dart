@@ -5,9 +5,9 @@ import 'package:flutter_erp/apps/flutter_jobs/CustomDrawer.dart';
 import 'package:flutter_erp/apps/flutter_jobs/DetailScreen.dart';
 import 'package:flutter_erp/apps/flutter_jobs/Job.dart';
 import 'package:flutter_erp/apps/flutter_jobs/utils/Colors.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as parser;
-import 'package:html/dom.dart' as dom;
+import 'package:dio/dio.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
+import 'package:universal_html/html.dart' as dom;
 
 class JobListScreen extends StatefulWidget {
   @override
@@ -33,12 +33,10 @@ class _JobListScreenState extends State<JobListScreen> {
     List<String> myList = [];
 
     //connect to flutter jobs web site
-    http.Response response = await http.get(
-      Uri.parse('https://flutterjobs.info/'),
-    );
+    HttpResponse response = await HttpClient.get('https://flutterjobs.info/');
 
     //parse and extract the data from the web site
-    dom.Document document = parser.parse(response.body);
+    /*dom.Document document = parser.parse(response.body!);
     document.getElementsByTagName('tr').forEach((child) {
       jobsList.add(
         Job(
@@ -49,7 +47,7 @@ class _JobListScreenState extends State<JobListScreen> {
           url: getLink(child.getElementsByTagName("th").first.innerHtml.trim()),
         ),
       );
-    });
+    });*/
     // remove the first item which is the title item in the table
     jobsList.removeAt(0);
 
@@ -221,9 +219,8 @@ class ClippedItem extends StatefulWidget {
 
 class ClippedItemState extends State<ClippedItem>
     with SingleTickerProviderStateMixin {
-  
   late Animation<Offset> animation;
-  
+
   late AnimationController animationController;
 
   @override

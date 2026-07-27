@@ -3,9 +3,9 @@ import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/presentation/widgets/independent/block_subtitle.dart';
 
 class FilterSelectableVisibleOption<T> extends StatelessWidget {
-  final Map<T, Widget> children;
-  final ValueChanged<T> onSelected;
-  final String title;
+  final Map<T, Widget>? children;
+  final ValueChanged<T>? onSelected;
+  final String? title;
 
   const FilterSelectableVisibleOption({
     Key? key,
@@ -18,7 +18,7 @@ class FilterSelectableVisibleOption<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        OpenFlutterBlockSubtitle(title: title),
+        OpenFlutterBlockSubtitle(title: title!),
         SizedBox(height: AppSizes.sidePadding),
         Container(
           alignment: Alignment.centerLeft,
@@ -30,14 +30,14 @@ class FilterSelectableVisibleOption<T> extends StatelessWidget {
           child: Wrap(
             spacing: AppSizes.sidePadding,
             alignment: WrapAlignment.start,
-            children: children
+            children: children!
                 .map(
                   (key, widget) => MapEntry(
                     key,
                     InkWell(
                       child: widget,
                       onTap: () {
-                        onSelected(key);
+                        onSelected!(key);
                       },
                     ),
                   ),

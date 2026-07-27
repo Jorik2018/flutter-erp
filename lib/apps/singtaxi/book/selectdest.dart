@@ -21,9 +21,9 @@ class SelectDest extends StatefulWidget {
 class _MyAppState1 extends State<SelectDest> {
   Completer<GoogleMapController> _completer = Completer();
 
-  final Set<Marker> _markers = new Set();
+  final Set<Marker> _markers = Set();
 
-  final Set<Polyline> _polyLines = new Set();
+  final Set<Polyline> _polyLines = Set();
 
   GoogleMapsServices _googleMapsServices = GoogleMapsServices();
 
@@ -40,14 +40,14 @@ class _MyAppState1 extends State<SelectDest> {
   }
 
   getLocation() async {
-    var location = new Location();
-    location.onLocationChanged().listen((currentLocation) {
+    var location = Location();
+    /*location.onLocationChanged().listen((currentLocation) {
       setState(() {
         latLng = LatLng(currentLocation.latitude, currentLocation.longitude);
       });
       print(location);
       addMarker(latLng, "Init_position");
-    });
+    });*/
   }
 
   addMarker(LatLng latLng, String name) async {
@@ -63,12 +63,12 @@ class _MyAppState1 extends State<SelectDest> {
   }
 
   void handleOnPress() async {
-    String route = await _googleMapsServices.getRouteCoordinates(
+    /*String route = await _googleMapsServices.getRouteCoordinates(
       apiKey,
       latLng,
       DEST_LOCATION,
     );
-    _polyLines.add(_googleMapsServices.createRoute(route, DEST_LOCATION));
+    _polyLines.add(_googleMapsServices.createRoute(route, DEST_LOCATION));*/
     addMarker(DEST_LOCATION, "Destination");
   }
 
@@ -118,7 +118,7 @@ class _MyAppState1 extends State<SelectDest> {
                 ),
                 Row(
                   children: <Widget>[
-                    new Container(
+                    Container(
                       height: 60.0,
                       width: 360.0,
                       color: Colors.white,
@@ -179,14 +179,14 @@ class _MyAppState1 extends State<SelectDest> {
 
   Set<Marker> myMarker() {
     setState(() {
-      _markers.add(
+      /*_markers.add(
         Marker(
           // This marker id can be anything that uniquely identifies each marker.
           markerId: MarkerId(latLng.toString()),
           position: latLng,
           icon: BitmapDescriptor.defaultMarker, //(,"assets/images/taxi.png"),
         ),
-      );
+      );*/
     });
 
     return _markers;

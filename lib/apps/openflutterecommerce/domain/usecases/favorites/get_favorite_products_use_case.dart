@@ -53,7 +53,7 @@ class GetFavoriteProductParams {
   final int pageIndex;
   final int pageSize;
   final SortRules sortRules;
-  final FilterRules filterRules;
+  final FilterRules? filterRules;
 
   GetFavoriteProductParams({
     this.pageIndex = 0,
@@ -64,14 +64,14 @@ class GetFavoriteProductParams {
 }
 
 class GetFavoriteProductResult extends UseCaseResult {
-  final List<FavoriteProduct> products;
-  final FilterRules filterRules;
+  final List<FavoriteProduct>? products;
+  final FilterRules? filterRules;
 
   GetFavoriteProductResult({
     this.products,
     this.filterRules,
-    Exception exception,
-    bool result,
+    Exception? exception,
+    bool? result,
   }) : super(exception: exception, result: result);
 }
 

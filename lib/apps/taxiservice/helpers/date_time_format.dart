@@ -36,8 +36,8 @@ String convertMinute(String minute) {
   return minute;
 }
 
-String convertMonth(int month) {
-  String monthName;
+String? convertMonth(int month) {
+  String? monthName;
   switch (month) {
     case 1:
       monthName = 'Январь';

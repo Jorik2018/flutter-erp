@@ -3,7 +3,7 @@ import 'elevated_card.dart';
 
 class VideoPlayer extends StatefulWidget {
   @override
-  _VideoPlayerState createState() => new _VideoPlayerState();
+  _VideoPlayerState createState() => _VideoPlayerState();
 }
 
 class _VideoPlayerState extends State<VideoPlayer> {
@@ -21,19 +21,22 @@ class _VideoPlayerState extends State<VideoPlayer> {
                 onPressed: () {},
                 iconSize: 32.0,
                 color: Colors.white,
-                icon: Icon(Icons.pause)
-              )
+                icon: Icon(Icons.pause),
+              ),
             ),
-            Align( // TODO: replace with a custom slider
+            Align(
+              // TODO: replace with a custom slider
               alignment: Alignment.bottomCenter,
               child: Container(
                 margin: EdgeInsets.all(16.0),
                 child: Material(
                   borderRadius: BorderRadius.circular(4.0),
                   child: Theme(
-                    data: ThemeData(colorScheme: ColorScheme.fromSeed(
-    seedColor: Color(0xFFFF0000),
-  ),),
+                    data: ThemeData(
+                      colorScheme: ColorScheme.fromSeed(
+                        seedColor: Color(0xFFFF0000),
+                      ),
+                    ),
                     child: LinearProgressIndicator(
                       backgroundColor: Colors.white,
                       value: 0.7,
@@ -41,11 +44,11 @@ class _VideoPlayerState extends State<VideoPlayer> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
-        )
+        ),
       ),
-      color: videoBgColor
+      color: videoBgColor,
     );
   }
 }

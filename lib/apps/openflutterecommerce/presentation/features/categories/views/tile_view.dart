@@ -41,15 +41,15 @@ class _CategoriesTileViewState extends State<CategoriesTileView>
         return state is CategoryErrorState;
       },
       listener: (BuildContext context, CategoryState state) {
-        return Container(
+        /*return Container(
           padding: EdgeInsets.all(AppSizes.sidePadding),
           child: Text(
             'An error occured',
             style: _theme.textTheme.headlineLarge.copyWith(
-              color: _theme.errorColor,
+              color: _theme.colorScheme.error,
             ),
           ),
-        );
+        );*/
       },
       child: BlocBuilder<CategoryBloc, CategoryState>(
         builder: (context, state) {
@@ -66,7 +66,6 @@ class _CategoriesTileViewState extends State<CategoriesTileView>
                           width: width,
                           padding: EdgeInsets.all(AppSizes.sidePadding * 2),
                           decoration: BoxDecoration(
-                            color: _theme.accentColor,
                             borderRadius: BorderRadius.circular(
                               AppSizes.imageRadius,
                             ),
@@ -94,7 +93,7 @@ class _CategoriesTileViewState extends State<CategoriesTileView>
                         padding: EdgeInsets.all(AppSizes.sidePadding),
                         child: Column(
                           children: buildCategoryList(
-                            state.categories,
+                            state.categories!,
                             width - AppSizes.sidePadding * 3,
                           ),
                         ),

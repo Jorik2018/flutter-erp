@@ -11,10 +11,7 @@ class RecoverPasswordUnInitiated extends ForgotPasswordState {}
 class RecoverPasswordInitiated extends ForgotPasswordState {}
 
 class RecoverPasswordFailed extends ForgotPasswordState {
-  const RecoverPasswordFailed({
-    @required this.error,
-    this.errorCode,
-  });
+  const RecoverPasswordFailed({required this.error, required this.errorCode});
   final String error;
   final int errorCode;
 

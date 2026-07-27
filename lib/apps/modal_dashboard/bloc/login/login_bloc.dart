@@ -1,44 +1,46 @@
-import 'dart:async';
-
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
-import '../../models/models.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/models.dart';
 import '../../repository/auth.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc({
-    @required this.authRepository,
-  }) : assert(authRepository != null, 'auth repository cannot be null');
+  LoginBloc({required this.authRepository}) : super(LoginInitial()) {
+    on<LoginButtonPressed>(_onLoginButtonPressed);
+  }
 
   final AuthRepository authRepository;
 
-  @override
-  LoginState get initialState => LoginInitial();
+  Future<void> _onLoginButtonPressed(
+    LoginButtonPressed event,
+    Emitter<LoginState> emit,
+  ) async {
+    emit(LoginInProgress());
 
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginButtonPressed) {
-      yield LoginInProgress();
+    try {
       final Token token = await authRepository.generateToken(
         event.email,
         event.password,
       );
+
       if (token.error != null) {
-        yield LoginFailure(
-          error: token.error,
-          errorCode: token.errorCode,
+        emit(
+          LoginFailure(error: token.error!, errorCode: token.errorCode ?? 0),
         );
         return;
       }
+
       await authRepository.persistToken(token);
       await authRepository.persistLogInState(loggedIn: true);
-      yield LoginSuccess();
-      return;
+
+      emit(LoginSuccess());
+    } catch (error, stackTrace) {
+      addError(error, stackTrace);
+
+      emit(LoginFailure(error: error.toString(), errorCode: 0));
     }
   }
 }

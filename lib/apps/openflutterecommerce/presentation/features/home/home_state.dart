@@ -23,7 +23,7 @@ class HomeLoadedState extends HomeState {
   final List<Product> salesProducts;
   final List<Product> newProducts;
 
-  HomeLoadedState({this.salesProducts, this.newProducts});
+  HomeLoadedState({required this.salesProducts, required this.newProducts});
 
   @override
   String toString() => 'HomeLoadedState';

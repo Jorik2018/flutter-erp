@@ -4,7 +4,7 @@ import 'package:flutter_erp/apps/tourism_demo/redux/destination_info/destination
 import 'package:flutter_erp/apps/tourism_demo/redux/common/common_reducers.dart';
 
 AppState appReducer(AppState state, dynamic action) {
-  return new AppState(
+  return AppState(
     destinationsState: destinationsReducer(state.destinationsState!, action),
     destinationInfoState: destinationInfoReducer(
       state.destinationInfoState!,

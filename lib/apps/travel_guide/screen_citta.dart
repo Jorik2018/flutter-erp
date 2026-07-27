@@ -8,28 +8,28 @@ class ScreenCitta extends StatefulWidget {
   ScreenCitta(this._citta);
 
   @override
-  State createState() => new ScreenCittaState();
+  State createState() => ScreenCittaState();
 }
 
 class ScreenCittaState extends State<ScreenCitta> {
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text("${widget._citta.nome}"),
         actions: <Widget>[
-          new IconButton(icon: Icon(Icons.search), onPressed: () => null),
+          IconButton(icon: Icon(Icons.search), onPressed: () => null),
         ],
       ),
       body: ListView.builder(
-        itemBuilder: (_, int i) => new TileLuogo(widget._citta.luoghi![i]),
+        itemBuilder: (_, int i) => TileLuogo(widget._citta.luoghi![i]),
         itemCount: widget._citta.luoghi!.length,
         scrollDirection: Axis.vertical,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          new MaterialPageRoute(builder: (_) => new ScreenCercaBiglietto()),
-        ),
+        onPressed: () => Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => ScreenCercaBiglietto())),
         child: Icon(Icons.flight_takeoff),
         backgroundColor: Colors.pinkAccent,
       ),
@@ -44,12 +44,12 @@ class TileLuogo extends StatefulWidget {
   bool selected = true;
 
   @override
-  State createState() => new TileLuogoState();
+  State createState() => TileLuogoState();
 }
 
 class TileLuogoState extends State<TileLuogo> {
   Widget build(BuildContext context) {
-    return new GestureDetector(
+    return GestureDetector(
       onTap: () => setState(() => widget.selected = !widget.selected),
       onLongPress: () => _longPress(context),
       child: Material(
@@ -57,7 +57,7 @@ class TileLuogoState extends State<TileLuogo> {
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(new Radius.circular(20.0)),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
             image: DecorationImage(
               image: AssetImage(widget._luogo.img!),
               fit: BoxFit.cover,
@@ -106,15 +106,15 @@ class TileLuogoState extends State<TileLuogo> {
 
   void _longPress(BuildContext context) {
     showDialog(
-      builder: (context) => new SimpleDialog(
+      builder: (context) => SimpleDialog(
         contentPadding: EdgeInsets.all(0.0),
         children: <Widget>[
-          new Image.asset(widget._luogo.img!),
-          new Text(
+          Image.asset(widget._luogo.img!),
+          Text(
             widget._luogo.nome! /*, style: Theme.of(context).textTheme.title*/,
           ),
-          new Text(widget._luogo.descrizione!),
-          //new Text(_luogo.posizione)
+          Text(widget._luogo.descrizione!),
+          //Text(_luogo.posizione)
         ],
       ),
       context: context,

@@ -6,10 +6,13 @@ import '../widgets.dart';
 
 class OpenFlutterSortBy extends StatelessWidget {
   final Function(SortRules) onSelect;
-  final SortRules currentSortBy;
+  final SortRules? currentSortBy;
 
-  const OpenFlutterSortBy({Key? key, this.onSelect, this.currentSortBy})
-    : super(key: key);
+  const OpenFlutterSortBy({
+    Key? key,
+    required this.onSelect,
+    this.currentSortBy,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,9 @@ class OpenFlutterSortBy extends StatelessWidget {
             width: width,
             title: rule.getSortTitle(),
             sortRules: rule,
-            backgroundColor: rule == currentSortBy ? _theme.accentColor : null,
+            backgroundColor: rule == currentSortBy
+                ? _theme.highlightColor
+                : null,
             textColor: rule == currentSortBy ? AppColors.white : null,
             onTap: ((rule) => {onSelect(rule)}),
           ),

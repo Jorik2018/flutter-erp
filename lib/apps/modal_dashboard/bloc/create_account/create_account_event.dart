@@ -1,14 +1,17 @@
 part of 'create_account_bloc.dart';
 
-abstract class CreateAccountEvent extends Equatable {
+sealed class CreateAccountEvent extends Equatable {
   const CreateAccountEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
-class CreateAccountButtonPressed extends CreateAccountEvent {
+final class CreateAccountButtonPressed extends CreateAccountEvent {
   const CreateAccountButtonPressed({
-    @required this.fullName,
-    @required this.email,
-    @required this.password,
+    required this.fullName,
+    required this.email,
+    required this.password,
   });
 
   final String fullName;
@@ -16,9 +19,13 @@ class CreateAccountButtonPressed extends CreateAccountEvent {
   final String password;
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [fullName, email, password];
 
   @override
-  String toString() =>
-      '''CreateAccountButtonPressed { fullName: $fullName, email: $email, password:$password  }''';
+  String toString() {
+    return 'CreateAccountButtonPressed('
+        'fullName: $fullName, '
+        'email: $email'
+        ')';
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_erp/apps/flutter_todo/.env.dart';
 import 'package:flutter_erp/apps/flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_erp/apps/flutter_todo/widgets/helpers/message_dialog.dart';
 import 'package:flutter_erp/apps/flutter_todo/states/auth_provider.dart';
@@ -58,7 +57,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Configure.AppName),
+        title: Text('Configure.AppNam'),
         backgroundColor: Colors.blue,
       ),
       body: Container(

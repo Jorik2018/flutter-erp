@@ -1,16 +1,12 @@
 import 'dart:convert';
 
-import '../Model/models.dart';
+import 'package:dio/dio.dart';
+
+import '../models/models.dart';
 import 'CoinDescription.dart';
-import 'Dashboard.dart';
-import 'MarketCoins.dart';
 import '../Util/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
-import '../Model/GetCoinsAdd.dart';
-
-import '../bloc/bloc.dart';
-import '../flutter_bloc.dart';
-import 'package:http/http.dart' as http;
+import '../models/GetCoinsAdd.dart';
 
 class Markets_Screen extends StatefulWidget {
   const Markets_Screen({Key? key}) : super(key: key);
@@ -24,7 +20,7 @@ class Markets_Screen extends StatefulWidget {
 
 class markets extends State<Markets_Screen> {
   final _scrollController = ScrollController();
-
+  final Dio _dio = Dio();
   //final PostBloc _postBloc = PostBloc(httpClient: http.Client());
   final _scrollThreshold = 200.0;
   TextEditingController controller = TextEditingController();
@@ -318,35 +314,60 @@ class markets extends State<Markets_Screen> {
   }
 
   Future<List<GetCoinsAdd>> fetchCurrencies() async {
-    setState(() {
-      isLoading = true;
-    });
-    // TODO: implement fetchCurrencies
-    String currency = await SharedPreferencesHelper.getCurrency();
-    List coins = await SharedPreferencesHelper.getCoinList();
-    /*  String coinsdata = coins.toString().replaceAll('[', '').replaceAll(']', '');
-    String Baseurl = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=" + coinsdata + "&tsyms=" + currency + "&extraParams=your_app_name";
-*/
-    String apiUrl =
-        'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=100&tsym=' +
-        currency;
+    setState(() => isLoading = true);
 
-    // Make a HTTP GET request to the CoinMarketCap API.
-    // Await basically pauses execution until the get() function returns a Response
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    var responseBody = json.decode(response.body);
-    List data = responseBody['Data'];
+    try {
+      final currency = await SharedPreferencesHelper.getCurrency();
 
-    final statusCode = response.statusCode;
-    if (statusCode != 200 || responseBody == null) {
-      throw Exception("An error ocurred : [Status Code : $statusCode]");
+      // Se conserva por si lo usarás posteriormente para filtrar monedas.
+      final coins = await SharedPreferencesHelper.getCoinList();
+
+      final response = await _dio.get<dynamic>(
+        'https://min-api.cryptocompare.com/data/top/mktcapfull',
+        queryParameters: {'limit': 100, 'tsym': currency},
+      );
+
+      if (response.statusCode != 200 || response.data is! Map) {
+        throw Exception(
+          'Error al consultar CryptoCompare. '
+          'Código HTTP: ${response.statusCode}',
+        );
+      }
+
+      final responseBody = Map<String, dynamic>.from(response.data as Map);
+      final responseData = responseBody['Data'];
+
+      if (responseData is! List) {
+        throw Exception(
+          responseBody['Message']?.toString() ??
+              'No se encontraron criptomonedas.',
+        );
+      }
+
+      final fetchedCoins = responseData
+          .whereType<Map>()
+          .map((item) => GetCoinsAdd.fromMap(Map<String, dynamic>.from(item)))
+          .toList();
+
+      // Si deseas mostrar únicamente las monedas guardadas:
+      // final filteredCoins = fetchedCoins.where(
+      //   (coin) => coins.contains(coin.coinInfo.name),
+      // ).toList();
+
+      if (mounted) {
+        setState(() => coinList = fetchedCoins);
+      }
+
+      return fetchedCoins;
+    } on DioException catch (error) {
+      throw Exception(
+        'Error de red: ${error.response?.statusCode ?? error.message}',
+      );
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
     }
-
-    coinList = (data).map((data) => GetCoinsAdd.fromMap(data)).toList();
-    setState(() {
-      isLoading = false;
-    });
-    return data.map((c) => GetCoinsAdd.fromMap(c)).toList();
   }
 
   onSearchTextChanged(String text) async {

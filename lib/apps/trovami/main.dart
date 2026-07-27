@@ -10,12 +10,12 @@ import 'helpers/RoutesHelper.dart';
 import 'signinpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-final ThemeData kIOSTheme = new ThemeData(
+final ThemeData kIOSTheme = ThemeData(
   //primarySwatch: Colors.blueGrey,
   //accentColor: Colors.blueGrey,
 );
 
-final ThemeData kDefaultTheme = new ThemeData(
+final ThemeData kDefaultTheme = ThemeData(
   //primarySwatch: Colors.blueGrey,
   //accentColor: Colors.blueGrey,
 );
@@ -56,7 +56,7 @@ class MyCustomRoute<T> extends MaterialPageRoute<T> {
   ) {
     // if (settings.isInitialRoute)
     //   return child;
-    return new FadeTransition(opacity: animation, child: child);
+    return FadeTransition(opacity: animation, child: child);
   }
 }
 
@@ -75,6 +75,6 @@ class MyCustomRoute1<T> extends MaterialPageRoute<T> {
   ) {
     // if (settings.isInitialRoute)
     //   return child;
-    return new SlideTransition(position: animation, child: child);
+    return SlideTransition(position: animation, child: child);
   }
 }

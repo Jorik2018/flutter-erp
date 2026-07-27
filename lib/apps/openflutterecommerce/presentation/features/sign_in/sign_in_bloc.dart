@@ -9,7 +9,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final UserRepository userRepository;
   final AuthenticationBloc authenticationBloc;
 
-  SignInBloc({@required this.userRepository, @required this.authenticationBloc})
+  SignInBloc({required this.userRepository, required this.authenticationBloc})
     : assert(userRepository != null),
       assert(authenticationBloc != null),
       super(SignInInitialState());
@@ -26,7 +26,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         authenticationBloc.add(LoggedIn(token));
         yield SignInFinishedState();
       } catch (error) {
-        yield SignInErrorState(error);
+        yield SignInErrorState(error.toString());
       }
     }
 
@@ -40,7 +40,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
         yield SignInFinishedState();
       } catch (error) {
-        yield SignInErrorState(error);
+        yield SignInErrorState(error.toString());
       }
     }
 
@@ -54,7 +54,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
         yield SignInFinishedState();
       } catch (error) {
-        yield SignInErrorState(error);
+        yield SignInErrorState(error.toString());
       }
     }
   }

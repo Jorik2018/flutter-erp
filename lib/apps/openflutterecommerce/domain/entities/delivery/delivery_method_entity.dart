@@ -1,10 +1,10 @@
 import 'package:flutter_erp/apps/openflutterecommerce/domain/entities/entity.dart';
 
-class DeliveryMethodEntity extends Entity<int> {
-  final String title;
-  final double price;
+class DeliveryMethodEntity extends Entity<int?> {
+  final String? title;
+  final double? price;
 
-  DeliveryMethodEntity({int id, this.title, this.price}) : super(id);
+  DeliveryMethodEntity({int? id, this.title, this.price}) : super(id);
 
   @override
   Map<String, dynamic> toMap() {
@@ -12,5 +12,5 @@ class DeliveryMethodEntity extends Entity<int> {
   }
 
   @override
-  List<Object> get props => [id, title, price];
+  List<Object> get props => [id!, title!, price!];
 }

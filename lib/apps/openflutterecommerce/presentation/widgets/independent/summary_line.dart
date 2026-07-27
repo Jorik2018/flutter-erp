@@ -5,8 +5,11 @@ class OpenFlutterSummaryLine extends StatelessWidget {
   final String title;
   final String summary;
 
-  const OpenFlutterSummaryLine({Key? key, this.title, this.summary})
-    : super(key: key);
+  const OpenFlutterSummaryLine({
+    Key? key,
+    required this.title,
+    required this.summary,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +24,14 @@ class OpenFlutterSummaryLine extends StatelessWidget {
         children: <Widget>[
           Container(
             width: width / 2,
-            child: Text(title, style: _theme.textTheme.headline2),
+            child: Text(title, style: _theme.textTheme.headlineSmall!),
           ),
           Container(
             alignment: Alignment.centerRight,
             width: width / 2,
             child: Text(
               summary,
-              style: _theme.textTheme.headline2.copyWith(
+              style: _theme.textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold,
                 color: _theme.primaryColor,
               ),

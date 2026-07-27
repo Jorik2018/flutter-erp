@@ -17,7 +17,7 @@ class OpenFlutterScaffold extends StatelessWidget {
   const OpenFlutterScaffold({
     Key? key,
     this.background,
-    required this.title,
+    this.title,
     required this.body,
     required this.bottomMenuIndex,
     this.tabBarList,
@@ -33,7 +33,7 @@ class OpenFlutterScaffold extends StatelessWidget {
         tabBars.add(Tab(key: UniqueKey(), text: tabBarList![i]));
       }
     }
-    Widget? tabWidget = tabBars.isNotEmpty
+    PreferredSizeWidget? tabWidget = tabBars.isNotEmpty
         ? TabBar(
             unselectedLabelColor: _theme.primaryColor,
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),

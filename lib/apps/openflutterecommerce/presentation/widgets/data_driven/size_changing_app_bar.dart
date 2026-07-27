@@ -8,18 +8,18 @@ import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/prod
 import 'package:flutter_erp/apps/openflutterecommerce/presentation/widgets/independent/view_options.dart';
 
 class SizeChangingAppBar extends StatelessWidget {
-  final String title;
-  final FilterRules filterRules;
-  final SortRules sortRules;
+  final String? title;
+  final FilterRules? filterRules;
+  final SortRules? sortRules;
   final bool isListView;
-  final Function(FilterRules) onFilterRulesChanged;
-  final Function(SortRules) onSortRulesChanged;
-  final VoidCallback onViewChanged;
+  final Function(FilterRules)? onFilterRulesChanged;
+  final Function(SortRules)? onSortRulesChanged;
+  final VoidCallback? onViewChanged;
 
   const SizeChangingAppBar({
     Key? key,
     this.title,
-    required this.filterRules,
+    this.filterRules,
     this.sortRules,
     this.isListView = true,
     this.onFilterRulesChanged,
@@ -54,14 +54,14 @@ class SizeChangingAppBar extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Text(
                 title ?? 'Loading...',
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
             Container(
               height: 30,
               child: VisualFilter(
-                filterRules?.hashTags,
-                filterRules?.selectedHashTags,
+                filterRules!.hashTags,
+                filterRules!.selectedHashTags,
                 (updateValue, isSelected) {
                   BlocProvider.of<ProductsBloc>(
                     context,
@@ -70,12 +70,12 @@ class SizeChangingAppBar extends StatelessWidget {
               ),
             ),
             OpenFlutterViewOptions(
-              sortRules: sortRules,
-              filterRules: filterRules,
+              sortRules: sortRules!,
+              filterRules: filterRules!,
               isListView: isListView,
-              onChangeViewClicked: onViewChanged,
-              onFilterChanged: onFilterRulesChanged,
-              onSortChanged: onSortRulesChanged,
+              onChangeViewClicked: onViewChanged!,
+              onFilterChanged: onFilterRulesChanged!,
+              onSortChanged: onSortRulesChanged!,
             ),
           ],
         ),

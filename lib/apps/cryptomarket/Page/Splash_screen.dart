@@ -12,7 +12,7 @@ class Splash_screen extends StatefulWidget {
 }
 
 class splash_screen extends State<Splash_screen> {
-  MediaQueryData querydata;
+  late MediaQueryData querydata;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +38,7 @@ class splash_screen extends State<Splash_screen> {
                   vertical: 20.0,
                   horizontal: 40.0,
                 ),
-                child: OutlineButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(2.0),
-                  ),
+                child: OutlinedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -57,7 +54,7 @@ class splash_screen extends State<Splash_screen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Expanded(
+                        Expanded(
                           child: Text(
                             "START",
                             textAlign: TextAlign.center,

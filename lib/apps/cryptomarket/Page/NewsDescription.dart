@@ -1,9 +1,8 @@
-import '../Model/models.dart';
+import '../models/models.dart';
 import 'package:flutter/material.dart';
 
-class NewsDescription extends StatelessWidget{
+class NewsDescription extends StatelessWidget {
   final News name;
-
 
   const NewsDescription(this.name);
 
@@ -14,47 +13,61 @@ class NewsDescription extends StatelessWidget{
       appBar: AppBar(
         automaticallyImplyLeading: true,
         centerTitle: true,
-        title: Text(
-          'NewsDescription',
-          style: TextStyle(fontSize: 20.0),
-        ),
+        title: Text('NewsDescription', style: TextStyle(fontSize: 20.0)),
         elevation: 0.0,
       ),
-      body:SingleChildScrollView(
-        child:
-       new Column(
-        children: <Widget>[
-
-          new Container(
-            margin: EdgeInsets.only(top: 5.0),
-            height: 250.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage('${name.imageurl}'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 5.0),
+              height: 250.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage('${name.imageurl}'),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: 20.0,
+                bottom: 10.0,
+                left: 5.0,
+                right: 5.0,
+              ),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  name.source.toUpperCase(),
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blueAccent,
+                  ),
+                ),
               ),
             ),
 
-          ),
-          new Padding(padding: EdgeInsets.only(top: 20.0,bottom: 10.0,left: 5.0,right: 5.0),
-              child:Container(
-                  alignment: Alignment.centerLeft,
-                  child:new Text(name.source.toUpperCase(),style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.w600,
-                  color: Colors.blueAccent),)),),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                name.title,
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+              ),
+            ),
 
-
-          new Padding(padding: EdgeInsets.all(10.0),
-          child:new Text(name.title,style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.w500),)),
-
-
-
-          new Padding(padding: EdgeInsets.all(10.0),
-              child:new Text(name.body,textAlign:TextAlign.justify,style: TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,),)),
-
-
-        ],
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                name.body,
+                textAlign: TextAlign.justify,
+                style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400),
+              ),
+            ),
+          ],
+        ),
       ),
-      )
     );
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/singtaxi/RateRemark/tripRate.dart';
-import 'package:flutter_erp/apps/singtaxi/yourTrip/YourTrip.dart';
-import 'package:flutter_erp/apps/singtaxi/main.dart';
 import 'package:flutter_erp/apps/singtaxi/screens/wrapper.dart';
 import 'StartPage.dart';
 import 'package:flutter_erp/apps/singtaxi/screens/authenticate/LoginPage.dart';
@@ -67,8 +65,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => RemarkPage());
       case '/Forget':
         return MaterialPageRoute(builder: (_) => forgetpassword());
-      case '/YourTrip':
-        return MaterialPageRoute(builder: (_) => YourTrip());
+      //case '/YourTrip':
+      //return MaterialPageRoute(builder: (_) => YourTrip());
       case '/Chats':
         return MaterialPageRoute(builder: (_) => Chats());
       default:

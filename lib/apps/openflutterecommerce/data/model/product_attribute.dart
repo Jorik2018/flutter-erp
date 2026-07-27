@@ -15,5 +15,5 @@ class ProductAttribute extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, name, options, info];
+  List<Object> get props => [id!, name, options!, info!];
 }

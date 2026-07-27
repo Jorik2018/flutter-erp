@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 
 class BaseProductListItem extends StatelessWidget {
-  final VoidCallback onClick;
-  final String inactiveMessage;
-  final Widget bottomRoundButton;
-  final ImageProvider image;
-  final WidgetBuilder mainContentBuilder;
-  final String specialMark;
-  final VoidCallback onRemove;
-  final double imageHeight;
-  final double imageWidth;
+  final VoidCallback? onClick;
+  final String? inactiveMessage;
+  final Widget? bottomRoundButton;
+  final ImageProvider? image;
+  final WidgetBuilder? mainContentBuilder;
+  final String? specialMark;
+  final VoidCallback? onRemove;
+  final double? imageHeight;
+  final double? imageWidth;
 
   const BaseProductListItem({
     Key? key,
@@ -29,7 +29,7 @@ class BaseProductListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: imageHeight + 30,
+      height: imageHeight! + 30,
       padding: EdgeInsets.symmetric(horizontal: AppSizes.widgetSidePadding / 2),
       child: Opacity(
         opacity: inactiveMessage == null ? 1 : 0.6,
@@ -52,7 +52,7 @@ class BaseProductListItem extends StatelessWidget {
                           image: image == null
                               ? null
                               : DecorationImage(
-                                  image: image,
+                                  image: image!,
                                   fit: BoxFit.cover,
                                 ),
                           color: AppColors.background,
@@ -65,7 +65,7 @@ class BaseProductListItem extends StatelessWidget {
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(11.0),
-                          child: mainContentBuilder(context),
+                          child: mainContentBuilder!(context),
                         ),
                       ),
                     ],
@@ -76,16 +76,16 @@ class BaseProductListItem extends StatelessWidget {
             bottomRoundButton == null
                 ? Container()
                 : Positioned(
-                    top: imageHeight - 32,
+                    top: imageHeight! - 32,
                     right: 0,
-                    child: bottomRoundButton,
+                    child: bottomRoundButton!,
                   ),
             inactiveMessage == null
                 ? Container()
                 : Positioned(
-                    top: imageHeight + 4,
+                    top: imageHeight! + 4,
                     left: 0,
-                    child: Text(inactiveMessage),
+                    child: Text(inactiveMessage!),
                   ),
             specialMark == null
                 ? Container()
@@ -103,8 +103,8 @@ class BaseProductListItem extends StatelessWidget {
                             : AppColors.black,
                       ),
                       child: Text(
-                        specialMark,
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        specialMark!,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: AppColors.white,
                           fontWeight: FontWeight.bold,
                         ),

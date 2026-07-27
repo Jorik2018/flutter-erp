@@ -11,7 +11,7 @@ class UnitTests extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return new Container(
+    return Container(
       child: MainBody(),
       width: screenSize.width,
       height: screenSize.height,
@@ -23,7 +23,7 @@ class MainBody extends StatefulWidget {
   MainBody();
 
   @override
-  MainBodyState createState() => new MainBodyState();
+  MainBodyState createState() => MainBodyState();
 }
 
 class MainBodyState extends State<MainBody> {
@@ -65,14 +65,14 @@ class MainBodyState extends State<MainBody> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         leading: Container(),
         // actions: <Widget>[
-        //   new IconButton(
+        //   IconButton(
         //     icon:Icon(Icons.group_add),
         //     iconSize: 42.0,),
-        //   new IconButton(
+        //   IconButton(
         //     icon:Icon(Icons.person),
         //     iconSize: 35.0,),
         // ],

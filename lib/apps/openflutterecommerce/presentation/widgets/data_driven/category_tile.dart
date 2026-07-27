@@ -9,9 +9,9 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/model/category.dart';
 import '../extensions/commerce_image_view.dart';
 
 class OpenFlutterCategoryTile extends StatelessWidget {
-  final ProductCategory category;
-  final double height;
-  final double width;
+  final ProductCategory? category;
+  final double? height;
+  final double? width;
 
   const OpenFlutterCategoryTile({
     Key? key,
@@ -36,13 +36,16 @@ class OpenFlutterCategoryTile extends StatelessWidget {
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
-              width: width - 200.0,
-              child: Text(category.name, style: _theme.textTheme.headlineLarge),
+              width: width! - 200.0,
+              child: Text(
+                category!.name!,
+                style: _theme.textTheme.headlineLarge,
+              ),
             ),
             Container(
               width: 200,
               alignment: Alignment.centerRight,
-              child: Image(image: category.image.getView()),
+              child: Image(image: category!.image!.getView()),
             ),
           ],
         ),

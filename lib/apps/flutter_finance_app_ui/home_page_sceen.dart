@@ -15,7 +15,7 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomePageScreenState extends State<HomePageScreen> {
-  final numberFormat = new NumberFormat("##,###.00#", "en_US");
+  final numberFormat = NumberFormat("##,###.00#", "en_US");
   Color color = ColorConstants.gblackColor;
   Color fcolor = ColorConstants.kgreyColor;
   bool isActive = false;

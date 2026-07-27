@@ -1,19 +1,20 @@
 class TripInfo {
-  const TripInfo(
-      {this.assetName,
-      this.location,
-      this.name,
-      this.completed,
-      this.payBy,
-      this.amount,
-      this.bookingId,
-      this.className,
-      this.pickupLocation,
-      this.destLocation,
-      this.time,
-      this.date,
-      this.driverNote,
-      this.userRating});
+  const TripInfo({
+    this.assetName,
+    this.location,
+    this.name,
+    this.completed,
+    this.payBy,
+    this.amount,
+    this.bookingId,
+    this.className,
+    this.pickupLocation,
+    this.destLocation,
+    this.time,
+    this.date,
+    this.driverNote,
+    this.userRating,
+  });
 
   final String? assetName;
   final String? location;
@@ -32,9 +33,8 @@ class TripInfo {
   bool get isValid => assetName != null && location != null;
 }
 
-
 List<TripInfo> dummyData = [
-  new TripInfo(
+  TripInfo(
     location: "Le Centre",
     destLocation: "Louis Vuitton Foundation",
     time: "3.20Pm",
@@ -42,10 +42,12 @@ List<TripInfo> dummyData = [
     date: "10 April 2018",
     payBy: "Cash",
     className: "Economy",
-      
-      assetName: "http://www.usanetwork.com/sites/usanetwork/files/styles/629x720/public/suits_cast_harvey.jpg?itok=fpTOeeBb"),
 
-  new TripInfo(
+    assetName:
+        "http://www.usanetwork.com/sites/usanetwork/files/styles/629x720/public/suits_cast_harvey.jpg?itok=fpTOeeBb",
+  ),
+
+  TripInfo(
     location: "Le Centre",
     destLocation: "Louis Vuitton Foundation",
     time: "3.20Pm",
@@ -53,7 +55,8 @@ List<TripInfo> dummyData = [
     date: "10 April 2018",
     payBy: "Cash",
     className: "Economy",
-      
-      assetName: "http://www.usanetwork.com/sites/usanetwork/files/styles/629x720/public/suits_cast_harvey.jpg?itok=fpTOeeBb"),
 
+    assetName:
+        "http://www.usanetwork.com/sites/usanetwork/files/styles/629x720/public/suits_cast_harvey.jpg?itok=fpTOeeBb",
+  ),
 ];

@@ -22,7 +22,7 @@ class _RemarkPageState extends State<RemarkPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Remark'),
         backgroundColor: Colors.brown[600],

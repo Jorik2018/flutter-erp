@@ -15,13 +15,13 @@ class OpenFlutterViewOptions extends StatelessWidget {
   final bool isListView;
   final Function(FilterRules) onFilterChanged;
   final Function(SortRules) onSortChanged;
-  final Function onChangeViewClicked;
+  final VoidCallback? onChangeViewClicked;
 
   const OpenFlutterViewOptions({
     Key? key,
     required this.onFilterChanged,
     required this.onSortChanged,
-    required this.onChangeViewClicked,
+    this.onChangeViewClicked,
     required this.sortRules,
     required this.filterRules,
     this.isListView = true,
@@ -47,7 +47,7 @@ class OpenFlutterViewOptions extends StatelessWidget {
                   Icon(Icons.filter_list),
                   Padding(
                     padding: EdgeInsets.only(left: 5),
-                    child: Text('Filters', style: _theme.textTheme.bodyText1),
+                    child: Text('Filters', style: _theme.textTheme.bodySmall!),
                   ),
                 ],
               ),
@@ -63,7 +63,7 @@ class OpenFlutterViewOptions extends StatelessWidget {
                     padding: EdgeInsets.only(left: 5),
                     child: Text(
                       sortRules?.getSortTitle() ?? '',
-                      style: _theme.textTheme.bodyText1,
+                      style: _theme.textTheme.bodySmall!,
                     ),
                   ),
                 ],
@@ -131,7 +131,9 @@ class OpenFlutterViewOptions extends StatelessWidget {
                             child: InkWell(
                               child: Text(
                                 value,
-                                style: Theme.of(context).textTheme.headlineLarge
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
                                     .copyWith(
                                       fontWeight: FontWeight.normal,
                                       color: sortRules.sortType == key
@@ -159,12 +161,12 @@ class OpenFlutterViewOptions extends StatelessWidget {
                             icon: Icon(
                               sortRules.sortOrder ==
                                       SortOrder.FromHighestToLowest
-                                  ? FontAwesomeIcons.sortAlphaUp
-                                  : FontAwesomeIcons.sortAlphaDown,
+                                  ? FontAwesomeIcons.arrowUpAZ.data
+                                  : FontAwesomeIcons.arrowDownAZ.data,
                             ),
                             color: sortRules.sortType == key
                                 ? Theme.of(context).primaryColor
-                                : Theme.of(context).backgroundColor,
+                                : Theme.of(context).unselectedWidgetColor,
                             onPressed: () {
                               onSortChanged(sortRules.copyWithChangedOrder());
                               Navigator.pop(context);

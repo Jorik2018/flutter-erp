@@ -5,8 +5,11 @@ class OpenFlutterSearchBar extends StatefulWidget {
   final String searchKey;
   final Function(String) onChange;
 
-  const OpenFlutterSearchBar({Key? key, this.searchKey, this.onChange})
-    : super(key: key);
+  const OpenFlutterSearchBar({
+    Key? key,
+    required this.searchKey,
+    required this.onChange,
+  }) : super(key: key);
 
   @override
   _OpenFlutterSearchBarState createState() => _OpenFlutterSearchBarState();
@@ -39,7 +42,7 @@ class _OpenFlutterSearchBarState extends State<OpenFlutterSearchBar> {
             width: width - 90,
             child: TextField(
               controller: _searchKeyController,
-              style: _theme.textTheme.headline2.copyWith(
+              style: _theme.textTheme.headlineSmall!.copyWith(
                 color: _theme.primaryColorLight,
               ),
               decoration: InputDecoration(border: InputBorder.none),

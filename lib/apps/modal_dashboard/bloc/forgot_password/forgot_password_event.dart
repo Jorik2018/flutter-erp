@@ -5,9 +5,7 @@ abstract class ForgotPasswordEvent extends Equatable {
 }
 
 class RecoverPassword extends ForgotPasswordEvent {
-  const RecoverPassword({
-    @required this.email,
-  });
+  const RecoverPassword({required this.email});
 
   final String email;
 

@@ -1,6 +1,5 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/cart_repository.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/category_repository.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/favorites_repository.dart';
@@ -38,9 +37,9 @@ final sl = GetIt.instance;
 //Service locator description
 void init() {
   //Singleton for NetworkStatus identification
-  sl.registerLazySingleton<NetworkStatus>(
+  /*sl.registerLazySingleton<NetworkStatus>(
     () => NetworkStatusImpl(DataConnectionChecker()),
-  );
+  );*/
 
   //get home page products use case
   sl.registerLazySingleton<GetHomePageProductsUseCase>(
@@ -106,7 +105,7 @@ void init() {
   );
 
   //Singleton for HTTP request
-  sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => Dio());
 
   sl.registerLazySingleton<WoocommercWrapperAbstract>(
     () => WoocommerceWrapper(client: sl()),

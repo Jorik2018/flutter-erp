@@ -1,16 +1,12 @@
-import 'package:bloc/bloc.dart';
 import 'Page/Splash_screen.dart';
 import 'Theme/MyThemes.dart';
 import 'Theme/_CustomTheme.dart';
 import 'Theme/themes.dart';
 import 'Util/SharedPreferencesHelper.dart';
-import 'bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // 👈 importante ahora
-
-  Bloc.observer = SimpleBlocObserver();
 
   String theme = await SharedPreferencesHelper.getTheme();
   if (theme == "Light") {
@@ -24,43 +20,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    /* MaterialApp(
-        theme: snapshot.data ? ThemeData.dark() : ThemeData.light(),*/
     return MaterialApp(
       title: 'Dynamic themes demo',
       theme: CustomTheme.of(context),
       home: Splash_screen(),
     );
-    /* final ThemeBloc themeBloc = ThemeBloc();
-     return StreamBuilder<ThemeData>(
-      initialData: themeBloc.initialTheme().data,
-      stream: themeBloc.themeDataStream,
-      builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) {
-        return MaterialApp(
-          title: 'Theme Switcher',
-          theme: snapshot.data,
-          home: Splash_screen()*/ /*(
-            themeBloc: themeBloc,
-          ),*/ /*
-        );
-      },
-    );*/
   }
 }
 
 class MyHomePage extends StatefulWidget {
   final ThemeBloc themeBloc;
 
-  MyHomePage({Key? key, required this.title, required this.themeBloc}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  MyHomePage({Key? key, required this.title, required this.themeBloc})
+    : super(key: key);
 
   final String title;
 
@@ -70,17 +42,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,11 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Text('$_counter', style: Theme.of(context).textTheme.displayMedium),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

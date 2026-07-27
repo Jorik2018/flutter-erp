@@ -37,7 +37,7 @@ class _Success1ViewState extends State<Success1View> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: AppSizes.sidePadding * 3),
-              child: Text('Success!', style: _theme.textTheme.caption),
+              child: Text('Success!'),
             ),
             Padding(
               padding: EdgeInsets.all(AppSizes.sidePadding),
@@ -49,7 +49,7 @@ class _Success1ViewState extends State<Success1View> {
             OpenFlutterButton(
               title: 'Continue shopping',
               onPressed: (() => {
-                widget.changeView(changeType: ViewChangeType.Forward),
+                widget.changeView!(changeType: ViewChangeType.Forward),
               }),
             ),
           ],

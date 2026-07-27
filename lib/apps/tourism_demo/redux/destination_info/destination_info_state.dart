@@ -1,12 +1,9 @@
-import 'package:collection/collection.dart';
 import 'package:meta/meta.dart';
-import 'package:flutter_erp/apps/tourism_demo/models/destination.dart';
-import 'package:flutter_erp/apps/tourism_demo/models/loading_status.dart';
 import 'package:flutter_erp/apps/tourism_demo/ui/destinations/destination_list_tile.dart';
 
 @immutable
 class DestinationInfoState {
-  DestinationInfoState({@required this.destinationCard});
+  DestinationInfoState({required this.destinationCard});
 
   final DestinationCard? destinationCard;
 

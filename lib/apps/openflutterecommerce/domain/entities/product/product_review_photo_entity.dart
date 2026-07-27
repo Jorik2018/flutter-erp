@@ -1,10 +1,10 @@
 import 'package:flutter_erp/apps/openflutterecommerce/domain/entities/entity.dart';
 
-class ProductReviewPhotoEntity extends Entity<int> {
-  final String image;
-  final int reviewId;
+class ProductReviewPhotoEntity extends Entity<int?> {
+  final String? image;
+  final int? reviewId;
 
-  ProductReviewPhotoEntity({int id, this.image, this.reviewId}) : super(id);
+  ProductReviewPhotoEntity({int? id, this.image, this.reviewId}) : super(id);
 
   @override
   Map<String, dynamic> toMap() {
@@ -12,5 +12,5 @@ class ProductReviewPhotoEntity extends Entity<int> {
   }
 
   @override
-  List<Object> get props => [id, image, reviewId];
+  List<Object?> get props => [id, image, reviewId];
 }

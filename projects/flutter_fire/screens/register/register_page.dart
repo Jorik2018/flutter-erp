@@ -59,116 +59,115 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     auth = Provider.of<AuthBase>(context, listen: false);
     myDim = Dimensions(context);
-    const spaceBox = SizedBox(
-      height: 10.0,
-    );
+    const spaceBox = SizedBox(height: 10.0);
     return Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 30.0,
-              horizontal: 20.0,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: 'Konnect',
-                      style: Theme.of(context).textTheme.headline5.copyWith(
-                            color: kColorPrimary,
-                          ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' better.\nAnytime. Anywhere.',
-                          style: Theme.of(context).textTheme.headline5,
-                        ),
-                      ],
-                    ),
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: 'Konnect',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.headlinelarge!.copyWith(color: kColorPrimary),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: ' better.\nAnytime. Anywhere.',
+                        style: Theme.of(context).textTheme.headlinelarge!,
+                      ),
+                    ],
                   ),
-                  spaceBox,
-                  spaceBox,
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
-                    child: Center(
-                        child: ImageInput(_selectImage, InputType.profile)),
+                ),
+                spaceBox,
+                spaceBox,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 16.0),
+                  child: Center(
+                    child: ImageInput(_selectImage, InputType.profile),
                   ),
-                  spaceBox,
-                  _buildCustomTextField(
-                      controller: _nameController,
-                      prefix: Icons.person_outline,
-                      label: 'Name',
-                      hint: '',
-                      inputType: TextInputType.name,
-                      errorText: nameErrorText,
-                      textCapitals: TextCapitalization.words,
-                      shiftFocusTo: null),
-                  spaceBox,
-                  spaceBox,
-                  _buildGenderRadios(),
-                  spaceBox,
-                  _buildSubmitButton(),
-                  spaceBox,
-                  Text(
-                    'Filling up the details accurately will help us ensure an easy connection to your favorites.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.grey),
-                  ),
-                ],
-              ),
+                ),
+                spaceBox,
+                _buildCustomTextField(
+                  controller: _nameController,
+                  prefix: Icons.person_outline,
+                  label: 'Name',
+                  hint: '',
+                  inputType: TextInputType.name,
+                  errorText: nameErrorText,
+                  textCapitals: TextCapitalization.words,
+                  shiftFocusTo: null,
+                ),
+                spaceBox,
+                spaceBox,
+                _buildGenderRadios(),
+                spaceBox,
+                _buildSubmitButton(),
+                spaceBox,
+                Text(
+                  'Filling up the details accurately will help us ensure an easy connection to your favorites.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.subtitle2.copyWith(color: Colors.grey),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
-  Widget _buildCustomTextField(
-      {TextEditingController controller,
-      FocusNode myFocus,
-      IconData prefix,
-      String label,
-      String hint,
-      TextInputType inputType,
-      TextCapitalization textCapitals,
-      String errorText,
-      FocusNode shiftFocusTo}) {
+  Widget _buildCustomTextField({
+    TextEditingController controller,
+    FocusNode myFocus,
+    IconData prefix,
+    String label,
+    String hint,
+    TextInputType inputType,
+    TextCapitalization textCapitals,
+    String errorText,
+    FocusNode shiftFocusTo,
+  }) {
     return TextField(
-        focusNode: myFocus,
-        controller: controller,
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            prefix,
-          ),
-          enabledBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-            color: kColorPrimary,
-          )),
-          errorBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-          focusedErrorBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-          labelText: label,
-          hintText: hint,
-          errorText: errorText,
+      focusNode: myFocus,
+      controller: controller,
+      decoration: InputDecoration(
+        prefixIcon: Icon(prefix),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
         ),
-        autocorrect: false,
-        textCapitalization: textCapitals,
-        keyboardType: inputType,
-        textInputAction: TextInputAction.next,
-        onChanged: (val) {
-          setState(() {});
-        },
-        onEditingComplete: () {
-          shiftFocusTo == null
-              ? _submit()
-              : FocusScope.of(context).requestFocus(shiftFocusTo);
-        });
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: kColorPrimary),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.red),
+        ),
+        labelText: label,
+        hintText: hint,
+        errorText: errorText,
+      ),
+      autocorrect: false,
+      textCapitalization: textCapitals,
+      keyboardType: inputType,
+      textInputAction: TextInputAction.next,
+      onChanged: (val) {
+        setState(() {});
+      },
+      onEditingComplete: () {
+        shiftFocusTo == null
+            ? _submit()
+            : FocusScope.of(context).requestFocus(shiftFocusTo);
+      },
+    );
   }
 
   Widget _buildSubmitButton() {
@@ -177,13 +176,16 @@ class _RegisterPageState extends State<RegisterPage> {
       child: ElevatedButton(
         onPressed: _submit,
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) => kColorPrimary),
-            shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
-              (Set<MaterialState> states) => RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7.0),
-                  side: BorderSide(color: Colors.transparent)),
-            )),
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) => kColorPrimary,
+          ),
+          shape: MaterialStateProperty.resolveWith<OutlinedBorder>(
+            (Set<MaterialState> states) => RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(7.0),
+              side: BorderSide(color: Colors.transparent),
+            ),
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Text('Submit'),
@@ -218,33 +220,35 @@ class _RegisterPageState extends State<RegisterPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Select your Gender',
-        ),
-        Row(children: [
-          Container(
-            width: myDim.width * 0.4,
-            child: RadioListTile(
+        Text('Select your Gender'),
+        Row(
+          children: [
+            Container(
+              width: myDim.width * 0.4,
+              child: RadioListTile(
                 activeColor: kColorPrimary,
                 title: Text('Male'),
                 value: 0,
                 groupValue: _gender,
                 onChanged: (value) {
                   _setValue(value);
-                }),
-          ),
-          Container(
-            width: myDim.width * 0.4,
-            child: RadioListTile(
+                },
+              ),
+            ),
+            Container(
+              width: myDim.width * 0.4,
+              child: RadioListTile(
                 activeColor: kColorPrimary,
                 title: Text('Female'),
                 value: 1,
                 groupValue: _gender,
                 onChanged: (value) {
                   _setValue(value);
-                }),
-          )
-        ]),
+                },
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

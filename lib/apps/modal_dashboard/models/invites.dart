@@ -11,12 +11,12 @@ class Invites {
       _$InvitesFromJson(json);
 
   @JsonKey(name: 'total_count')
-  final int totalCount;
+  final int? totalCount;
   @JsonKey(name: 'page_number')
-  final int pageNumber;
+  final int? pageNumber;
   @JsonKey(name: 'page_size')
-  final int pageSize;
-  final List<Invite> invites;
+  final int? pageSize;
+  final List<Invite>? invites;
 
   Map<String, dynamic> toJson() => _$InvitesToJson(this);
 }

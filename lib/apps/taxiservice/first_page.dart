@@ -4,7 +4,7 @@ import 'package:flutter_erp/apps/taxiservice/helpers/auth.dart';
 
 class FirstPage extends StatefulWidget {
   @override
-  State createState() => new FirstPageState();
+  State createState() => FirstPageState();
 }
 
 class FirstPageState extends State<FirstPage> {

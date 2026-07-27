@@ -92,7 +92,7 @@ class _OpenFlutterCartTileState extends State<OpenFlutterCartTile> {
                         ),
                       ),
                       Wrap(
-                        children: widget.item.selectedAttributes
+                        children: widget.item.selectedAttributes!
                             .map(
                               (key, value) => MapEntry(
                                 key,

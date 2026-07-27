@@ -22,9 +22,8 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-
   bool _toggleCamera = false;
-  
+
   CameraController? controller;
 
   bool isLoading = false;
@@ -59,7 +58,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(oneSec, (Timer timer) {
+    _timer = Timer.periodic(oneSec, (Timer timer) {
       if (_start == 0) {
         setState(() {
           timer.cancel();
@@ -77,7 +76,7 @@ class _CameraScreenState extends State<CameraScreen> {
   String address = "";
 
   String lat = "";
-  
+
   String long = "";
 
   /* 
@@ -87,9 +86,9 @@ video values
   String? videoName;
 
   String? latitude;
-  
+
   String? longitude;
-  
+
   String? videoPath;
 
   Future listenForTime(BuildContext context) async {
@@ -470,7 +469,7 @@ video values
     if (mounted) setState(() {});
   }
 
-  String timestamp() => new DateTime.now().millisecondsSinceEpoch.toString();
+  String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
   Future<void> startVideoRecording() async {
     if (!controller!.value.isInitialized) {

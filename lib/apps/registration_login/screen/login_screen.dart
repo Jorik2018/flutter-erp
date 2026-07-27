@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/registration_login/utils/list_item.dart';
 import 'package:flutter_erp/apps/registration_login/utils/navigation_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_erp/apps/registration_login/utils/util.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:dio/dio.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -23,114 +24,304 @@ class _LoginData {
 class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _fireBaseAuth = FirebaseAuth.instance;
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
-  static final FacebookLogin facebookSignIn = FacebookLogin();
+  //final FacebookLogin _facebookLogin = FacebookLogin();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   _LoginData _data = _LoginData();
+  bool _googleSignInInitialized = false;
+  bool _isLoading = false;
 
-  Future<FirebaseUser> _googleSignInButton() async {
-    GoogleSignInAccount _googleSignInAccount = await _googleSignIn.signIn();
+  Future<void> _initializeGoogleSignIn() async {
+    if (_googleSignInInitialized) {
+      return;
+    }
 
-    GoogleSignInAuthentication _googleSignInAuth =
-        await _googleSignInAccount.authentication;
+    await _googleSignIn.initialize(
+      // En Android normalmente se obtiene de google-services.json.
+      // En Web puede ser necesario:
+      // clientId: 'TU_WEB_CLIENT_ID',
 
-    FirebaseUser _fireBaseUser = await _fireBaseAuth.signInWithGoogle(
-      idToken: _googleSignInAuth.idToken,
-      accessToken: _googleSignInAuth.accessToken,
+      // Necesario si enviarás credenciales a un backend.
+      // serverClientId: 'TU_WEB_CLIENT_ID',
     );
-    // print("user name : ${_fireBaseUser.photoUrl}");
-    Util.userName = _fireBaseUser.displayName;
-    Util.emailId = _fireBaseUser.email;
-    Util.profilePic = _fireBaseUser.photoUrl;
-    NavigationRouter.switchToHome(context);
-    return _fireBaseUser;
+
+    _googleSignInInitialized = true;
   }
 
-  Future<Null> _facebookLogin() async {
-    final FacebookLoginResult result = await facebookSignIn
-        .logInWithReadPermissions(['email', 'public_profile', 'user_posts']);
-    //,publish_actions,manage_pages,publish_pages,user_status,user_videos,user_work_history
+  void _setLoading(bool loading) {
+    if (!mounted) {
+      return;
+    }
 
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        final FacebookAccessToken accessToken = result.accessToken;
-        accessToken.permissions;
+    setState(() {
+      _isLoading = loading;
+    });
+  }
 
-        var graphResponse = await http.get(
-          Uri.parse(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,picture,last_name,email&access_token=${accessToken.token}',
-          ),
-        );
-        Map<String, dynamic> user = jsonDecode(graphResponse.body);
-        Map<String, dynamic> picture = user['picture'];
-        Map<String, dynamic> data = picture['data'];
-        Util.userName = user['name'];
-        Util.emailId = user['email'];
-        Util.profilePic = data['url'];
-        var graphResponseFeed = await http.get(
-          Uri.parse(
-            'https://graph.facebook.com/v2.12/me/feed?fields=message&access_token=${accessToken.token}',
-          ),
-        );
-        var data1 = jsonDecode(graphResponseFeed.body);
-        // print(data1);
+  Future<User> _googleSignInButton() async {
+    try {
+      _setLoading(true);
 
-        // me?fields=id,name,feed{message,attachments}
-        var graphResponseFeed1 = await http.get(
-          Uri.parse(
-            'https://graph.facebook.com/v2.12/me?fields=id,name,feed{attachments,message}&access_token=${accessToken.token}',
-          ),
-        );
-        var data1l = jsonDecode(graphResponseFeed1.body);
-        Map<String, dynamic> root = jsonDecode(graphResponseFeed1.body);
-        Map<String, dynamic> feed = root['feed'];
-        var fdata = feed['data'];
+      UserCredential userCredential;
 
-        for (var i = 0; i < fdata.length; i++) {
-          var qq = fdata[i];
-          // var pp = qq['attachments'];
-          if (qq['attachments'] == null) {
-            i++;
-          } else {
-            Map<String, dynamic> pp = qq['attachments'];
-            var nn = pp['data'];
-            for (var j = 0; j < nn.length; j++) {
-              var mm = nn[j];
-              var jj = mm['media'];
-              var img = jj['image'];
-              var src = img['src'];
-              print(src);
-              Util.descriptionList.add(mm['description']);
-              Util.mediaList.add(img['src']);
-              // Util.listItems.add(ListItem(mm['description'], img['src']));
-            }
-          }
-          NavigationRouter.switchToHome(context);
-        }
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        _showMessage('Login cancelled by the user.');
-        break;
-      case FacebookLoginStatus.error:
-        _showMessage(
-          'Something went wrong with the login process.\n'
-          'Here\'s the error Facebook gave us: ${result.errorMessage}',
+      if (kIsWeb) {
+        final GoogleAuthProvider provider = GoogleAuthProvider();
+
+        provider.addScope('email');
+        provider.addScope('profile');
+
+        userCredential = await _fireBaseAuth.signInWithPopup(provider);
+      } else {
+        await _initializeGoogleSignIn();
+
+        final GoogleSignInAccount googleAccount = await _googleSignIn
+            .authenticate();
+
+        final GoogleSignInAuthentication googleAuthentication =
+            googleAccount.authentication;
+
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleAuthentication.idToken,
         );
-        break;
+
+        userCredential = await _fireBaseAuth.signInWithCredential(credential);
+      }
+
+      final User? firebaseUser = userCredential.user;
+
+      if (firebaseUser == null) {
+        throw FirebaseAuthException(
+          code: 'user-not-found',
+          message: 'Firebase no devolvió el usuario autenticado.',
+        );
+      }
+
+      Util.userName = firebaseUser.displayName ?? '';
+      Util.emailId = firebaseUser.email ?? '';
+      Util.profilePic = firebaseUser.photoURL ?? '';
+
+      if (mounted) {
+        NavigationRouter.switchToHome(context);
+      }
+
+      return firebaseUser;
+    } on GoogleSignInException catch (error) {
+      _showMessage(
+        error.description ?? 'No se pudo iniciar sesión con Google.',
+      );
+
+      rethrow;
+    } on FirebaseAuthException catch (error) {
+      _showMessage(error.message ?? 'Firebase rechazó el inicio de sesión.');
+
+      rethrow;
+    } catch (error) {
+      _showMessage('Error al iniciar sesión con Google: $error');
+      rethrow;
+    } finally {
+      _setLoading(false);
     }
   }
 
-  Future<Null> _logOut() async {
-    await facebookSignIn.logOut();
-    _showMessage('Logged out.');
+  Future<Null> _facebookLogin() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: const ['email', 'public_profile', 'user_posts'],
+      );
+
+      switch (result.status) {
+        case LoginStatus.success:
+          final AccessToken? accessToken = result.accessToken;
+
+          if (accessToken == null) {
+            _showMessage('Facebook no devolvió un token de acceso.');
+            return null;
+          }
+
+          // Datos básicos del usuario.
+          final Map<String, dynamic> user = await FacebookAuth.instance
+              .getUserData(
+                fields: 'name,first_name,last_name,email,picture.width(300)',
+              );
+
+          final Map<String, dynamic>? picture =
+              user['picture'] as Map<String, dynamic>?;
+
+          final Map<String, dynamic>? pictureData =
+              picture?['data'] as Map<String, dynamic>?;
+
+          Util.userName = user['name']?.toString() ?? '';
+          Util.emailId = user['email']?.toString() ?? '';
+          Util.profilePic = pictureData?['url']?.toString() ?? '';
+
+          // Conserva la consulta del feed del código original.
+          final Response<dynamic> graphResponseFeed = await Dio().get(
+            'https://graph.facebook.com/me/feed',
+            queryParameters: {
+              'fields': 'message',
+              'access_token': accessToken.tokenString,
+            },
+          );
+
+          final Map<String, dynamic> feedMessages = _responseToMap(
+            graphResponseFeed.data,
+          );
+
+          debugPrint('Feed: $feedMessages');
+
+          // Consulta publicaciones con mensajes y adjuntos.
+          final Response<dynamic> graphResponseFeedWithAttachments = await Dio()
+              .get(
+                'https://graph.facebook.com/me/feed',
+                queryParameters: {
+                  'fields':
+                      'message,attachments{description,media,target,type,url}',
+                  'access_token': accessToken.tokenString,
+                },
+              );
+
+          final Map<String, dynamic> root = _responseToMap(
+            graphResponseFeedWithAttachments.data,
+          );
+
+          final List<dynamic> feedData =
+              (root['data'] as List<dynamic>?) ?? const [];
+
+          // Evita acumular publicaciones de inicios de sesión anteriores.
+          Util.descriptionList.clear();
+          Util.mediaList.clear();
+
+          for (final dynamic feedItem in feedData) {
+            if (feedItem is! Map<String, dynamic>) {
+              continue;
+            }
+
+            final Map<String, dynamic>? attachments =
+                feedItem['attachments'] as Map<String, dynamic>?;
+
+            if (attachments == null) {
+              continue;
+            }
+
+            final List<dynamic> attachmentData =
+                (attachments['data'] as List<dynamic>?) ?? const [];
+
+            for (final dynamic attachmentItem in attachmentData) {
+              if (attachmentItem is! Map<String, dynamic>) {
+                continue;
+              }
+
+              final Map<String, dynamic>? media =
+                  attachmentItem['media'] as Map<String, dynamic>?;
+
+              final Map<String, dynamic>? image =
+                  media?['image'] as Map<String, dynamic>?;
+
+              final String? imageUrl = image?['src']?.toString();
+
+              final String description =
+                  attachmentItem['description']?.toString() ??
+                  feedItem['message']?.toString() ??
+                  '';
+
+              if (imageUrl == null || imageUrl.isEmpty) {
+                continue;
+              }
+
+              debugPrint(imageUrl);
+
+              Util.descriptionList.add(description);
+              Util.mediaList.add(imageUrl);
+            }
+          }
+
+          if (!mounted) {
+            return null;
+          }
+
+          NavigationRouter.switchToHome(context);
+          break;
+
+        case LoginStatus.cancelled:
+          _showMessage('Login cancelled by the user.');
+          break;
+
+        case LoginStatus.failed:
+          _showMessage(
+            'Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: '
+            '${result.message ?? 'Unknown error'}',
+          );
+          break;
+
+        case LoginStatus.operationInProgress:
+          _showMessage('Facebook login is already in progress.');
+          break;
+      }
+    } on DioException catch (error) {
+      final dynamic responseData = error.response?.data;
+
+      String message = 'No se pudo consultar Facebook Graph API.';
+
+      if (responseData is Map<String, dynamic>) {
+        final dynamic graphError = responseData['error'];
+
+        if (graphError is Map<String, dynamic>) {
+          message = graphError['message']?.toString() ?? message;
+        }
+      }
+
+      _showMessage(message);
+    } catch (error, stackTrace) {
+      debugPrint('Facebook login error: $error');
+      debugPrintStack(stackTrace: stackTrace);
+
+      _showMessage('Facebook login error: $error');
+    }
+
+    return null;
   }
 
-  void _showMessage(String message) {
+  Map<String, dynamic> _responseToMap(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      return responseData;
+    }
+
+    if (responseData is String) {
+      final dynamic decoded = jsonDecode(responseData);
+
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
+      }
+    }
+
+    return <String, dynamic>{};
+  }
+
+  Future<Null> _logOut() async {
+    try {
+      await FacebookAuth.instance.logOut();
+
+      Util.userName = '';
+      Util.emailId = '';
+      Util.profilePic = '';
+      Util.descriptionList.clear();
+      Util.mediaList.clear();
+
+      _showMessage('Logged out.');
+    } catch (error) {
+      _showMessage('Could not log out: $error');
+    }
+
+    return null;
+  }
+
+  void _showMessage(message) {
     setState(() {
-      _message = message;
+      //_message = message!;
     });
   }
 
@@ -228,10 +419,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 50.0,
                       margin: const EdgeInsets.only(left: 10.0, top: 30.0),
                       child: ElevatedButton(
-                        child: Text(
-                          'Login',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: Text('Login'),
                         onPressed: this._submit,
                       ),
                     ),
@@ -239,10 +427,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 50.0,
                       margin: const EdgeInsets.only(left: 20.0, top: 30.0),
                       child: ElevatedButton(
-                        child: Text(
-                          'Registration',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: Text('Registration'),
                         onPressed: _navigateRegistration,
                       ),
                     ),
@@ -272,7 +457,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 24.0,
                               ),
                               onPressed: () => _googleSignInButton()
-                                  .then((FirebaseUser user) => print(user))
+                                  .then((user) => print(user))
                                   .catchError((e) => print(e)),
                             ),
                           ),

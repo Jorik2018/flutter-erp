@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_erp/apps/flutter_orientdb_app/List_Screen.dart';
 import 'package:flutter_erp/apps/flutter_orientdb_app/Message_Model.dart';
 
@@ -11,7 +12,7 @@ class Message_screen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return new message_screen();
+    return message_screen();
   }
 }
 
@@ -26,13 +27,13 @@ class message_screen extends State<Message_screen> {
 
   SharedPreferences? prf;
 
-  TextEditingController chatmessagetext = new TextEditingController();
+  TextEditingController chatmessagetext = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = new StreamController();
+    _controller = StreamController();
     getPrefData();
   }
 
@@ -71,14 +72,16 @@ class message_screen extends State<Message_screen> {
     var postDataurl =
         "http://192.168.1.4:2480/command/chat_db/sql/select from tbl_message/20/*:-1";
 
-    http.Response response = await http.post(
-      Uri.parse(postDataurl),
-      headers: Headers,
+    Response response = await Dio().post(
+      postDataurl,
+      options: Options(headers: Headers),
     );
 
     var st_code = response.statusCode;
 
-    var res1 = json.decode(response.body);
+    var res1 = response.data is String
+        ? json.decode(response.data)
+        : response.data;
 
     return MessageModel.fromJson(res1);
   }
@@ -100,7 +103,7 @@ class message_screen extends State<Message_screen> {
             },
           ),
           actions: <Widget>[
-            new IconButton(
+            IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
                 loadPosts();
@@ -110,11 +113,11 @@ class message_screen extends State<Message_screen> {
         ),
         body: Column(
           children: <Widget>[
-            new Flexible(
+            Flexible(
               child: StreamBuilder(
                 stream: _controller!.stream,
                 builder: (BuildContext con, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) return new Container();
+                  if (!snapshot.hasData) return Container();
 
                   return ListView.builder(
                     padding: EdgeInsets.all(10.0),
@@ -150,7 +153,7 @@ class message_screen extends State<Message_screen> {
                         );
                       }
 
-                      return new Container();
+                      return Container();
                     },
                   );
                 },
@@ -182,11 +185,11 @@ class message_screen extends State<Message_screen> {
       margin: EdgeInsets.only(top: 5.0),
       child: Row(
         children: <Widget>[
-          new Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                new Text(
+                Text(
                   sender_name,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -194,11 +197,9 @@ class message_screen extends State<Message_screen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                new Container(
+                Container(
                   margin: EdgeInsets.only(top: 5.0),
-                  child: attechment != ""
-                      ? new Image.network('')
-                      : Text(message),
+                  child: attechment != "" ? Image.network('') : Text(message),
                 ),
               ],
             ),
@@ -219,11 +220,11 @@ class message_screen extends State<Message_screen> {
       margin: EdgeInsets.only(top: 5.0),
       child: Row(
         children: <Widget>[
-          new Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text(
+                Text(
                   Sendername,
                   style: TextStyle(
                     fontSize: 14.0,
@@ -231,11 +232,9 @@ class message_screen extends State<Message_screen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                new Container(
+                Container(
                   margin: EdgeInsets.only(top: 5.0),
-                  child: attechment != ""
-                      ? new Image.network('')
-                      : Text(message),
+                  child: attechment != "" ? Image.network('') : Text(message),
                 ),
               ],
             ),
@@ -246,7 +245,7 @@ class message_screen extends State<Message_screen> {
   }
 
   Widget Text_compond() {
-    return new IconTheme(
+    return IconTheme(
       data: IconThemeData(
         color: _isConpomess
             /**error:The getter 'accentColor' isn't defined for the type 'ThemeData'.
@@ -258,7 +257,7 @@ Try importing the library that defines 'accentColor', correcting the name to the
         margin: EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
           children: <Widget>[
-            new Flexible(
+            Flexible(
               child: TextField(
                 controller: chatmessagetext,
                 onChanged: (String messag) {
@@ -272,7 +271,7 @@ Try importing the library that defines 'accentColor', correcting the name to the
                 ),
               ),
             ),
-            new Container(
+            Container(
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
                 icon: Icon(Icons.send),
@@ -319,8 +318,8 @@ Try importing the library that defines 'accentColor', correcting the name to the
         sender_name +
         "'";
 
-    http.Response response = await http.post(
-      Uri.parse(postMesasage),
+    HttpResponse response = await HttpClient.send(
+      postMesasage,
       headers: Headers,
     );
 

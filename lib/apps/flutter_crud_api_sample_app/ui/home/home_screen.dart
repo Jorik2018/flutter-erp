@@ -9,7 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   ApiService? apiService;
 
   @override
@@ -20,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: FutureBuilder<List<Profile>?>(
         future: apiService!.getProfiles(),

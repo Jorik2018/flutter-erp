@@ -7,28 +7,28 @@ import 'shipping_address.dart';
 enum UserOrderStatus { InProgress, New, Paid, Sent, Delivered }
 
 class UserOrder extends Equatable {
-  final int id;
+  final int? id;
   final List<CartItem> products;
-  final int orderNumber;
+  final int? orderNumber;
   final UserOrderStatus orderStatus;
-  final ShippingAddressModel shippingAddress;
+  final ShippingAddressModel? shippingAddress;
 
   //TODO: extend further on
-  final String paymentMethod;
+  final String? paymentMethod;
 
   //TODO: extend further on
-  final String deliveryMethod;
-  final Promo promo;
-  final String trackingNumber;
+  final String? deliveryMethod;
+  final Promo? promo;
+  final String? trackingNumber;
   final DateTime orderDate;
 
   double get totalPrice =>
       products.fold(
         0,
-        (previousValue, element) =>
-            previousValue += element.productQuantity.quantity * element.price,
+        (previousValue, element) => previousValue +=
+            0, //element.productQuantity.quantity * element.price,
       ) -
-      promo.discount;
+      promo!.discount;
 
   int get totalQuantity => products.fold(
     0,
@@ -38,7 +38,7 @@ class UserOrder extends Equatable {
 
   UserOrder({
     this.id,
-    List<CartItem> products,
+    List<CartItem>? products,
     this.orderNumber,
     this.orderStatus = UserOrderStatus.InProgress,
     this.shippingAddress,
@@ -46,12 +46,12 @@ class UserOrder extends Equatable {
     this.deliveryMethod,
     this.trackingNumber,
     this.promo,
-    DateTime orderCreated,
+    DateTime? orderCreated,
   }) : products = products ?? [],
        orderDate = orderCreated ?? DateTime.now();
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     id,
     products,
     orderNumber,

@@ -36,6 +36,10 @@ class AppShell extends ConsumerWidget {
               title: const Text("Covid"),
               onTap: () => navigate(context, "/covid"),
             ),
+            ListTile(
+              title: const Text("Google Contact"),
+              onTap: () => navigate(context, "/google-contact/:currentUserId"),
+            ),
             const Divider(),
             ListTile(
               title: const Text("Logout"),

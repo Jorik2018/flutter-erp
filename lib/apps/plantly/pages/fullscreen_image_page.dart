@@ -5,10 +5,10 @@ class FullscreenImagePage extends StatelessWidget {
   final String imgPath;
   FullscreenImagePage(this.imgPath);
 
-  final LinearGradient backgroundGradient = new LinearGradient(
+  final LinearGradient backgroundGradient = LinearGradient(
     colors: [
-      new Color(0x10000000), // Light black
-      new Color(0x30000000), // Dark black
+      Color(0x10000000), // Light black
+      Color(0x30000000), // Dark black
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -16,17 +16,17 @@ class FullscreenImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: SizedBox.expand(
         child: Container(
           decoration: BoxDecoration(gradient: backgroundGradient),
           child: Stack(
             children: <Widget>[
-              new Align(
+              Align(
                 alignment: Alignment.center,
                 child: Hero(tag: imgPath, child: Image.asset(imgPath)),
               ),
-              new Align(
+              Align(
                 alignment: Alignment.topCenter,
                 child: Column(
                   // I need to add a column to set the MainAxisSize to min,
@@ -34,7 +34,7 @@ class FullscreenImagePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    new AppBar(
+                    AppBar(
                       elevation: 0.0,
                       backgroundColor: Colors.transparent,
                       leading: IconButton(
@@ -42,10 +42,10 @@ class FullscreenImagePage extends StatelessWidget {
                         icon: Icon(Icons.close, color: Colors.black),
                       ),
                       actions: <Widget>[
-                        new IconButton(
+                        IconButton(
                           onPressed: () => Navigator.of(context).push(
-                            new MaterialPageRoute(
-                              builder: (_) => new ZoomableImagePage(imgPath),
+                            MaterialPageRoute(
+                              builder: (_) => ZoomableImagePage(imgPath),
                             ),
                           ),
                           icon: Icon(Icons.zoom_in, color: Colors.black),

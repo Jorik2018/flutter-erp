@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'AlertPage.dart';
 
-AlertPageState alert = new AlertPageState();
+AlertPageState alert = AlertPageState();
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key, this.title}) : super(key: key);
@@ -17,18 +17,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
-  File _image;
+  File? _image;
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = image;
+      //_image = image;
       print('Image Path $_image');
     });
   }
 
   Future uploadPic(BuildContext context) async {
-    String fileName = basename(_image.path);
+    /*String fileName = basename(_image.path);
     StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(
       fileName,
     );
@@ -39,23 +39,23 @@ class _ProfilePageState extends State<ProfilePage> {
       Scaffold.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Profile Picture Uploaded')));
-    });
+    });*/
   }
 
   Widget build(BuildContext cx) {
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
         backgroundColor: Colors.brown[600],
       ),
       body: ListView(
         children: <Widget>[
-          new Column(
+          Column(
             children: <Widget>[
               Container(
                 child: Stack(
                   alignment: Alignment.bottomCenter,
-                  overflow: Overflow.visible,
+                  //clipBehavior: Clip.none,,
                   children: <Widget>[
                     Row(
                       children: <Widget>[
@@ -174,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 return AlertDialog(
                                   title: Row(
                                     children: [
-                                      new Container(
+                                      Container(
                                         child: Image.asset(
                                           'android/assets/cony.jpg',
                                           height: 50.0,
@@ -412,7 +412,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showModalBottomSheet(
       context: cx,
       builder: (BuildContext bcx) {
-        return new Column(
+        return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(

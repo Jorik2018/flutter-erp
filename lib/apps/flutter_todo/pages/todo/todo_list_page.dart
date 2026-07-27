@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter_erp/apps/flutter_todo/.env.dart';
 import 'package:flutter_erp/apps/flutter_todo/models/filter.dart';
 import 'package:flutter_erp/apps/flutter_todo/widgets/helpers/confirm_dialog.dart';
 import 'package:flutter_erp/apps/flutter_todo/widgets/ui_elements/loading_modal.dart';
@@ -95,7 +94,7 @@ class _TodoListPageState extends ConsumerState<TodoListPage> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      title: Text(Configure.AppName),
+      title: Text('Configure.AppName'),
       backgroundColor: Colors.blue,
       actions: [
         IconButton(icon: const Icon(Icons.lock), onPressed: _logout),

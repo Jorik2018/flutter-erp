@@ -8,7 +8,7 @@ import '../widgets.dart';
 
 class OpenFlutterRatingSummary extends StatelessWidget {
   final double rating;
-  final List<StarQuantity> ratingDetail;
+  final List<StarQuantity>? ratingDetail;
   final int startCount;
   final int ratingQuantity;
   final bool showLabel;
@@ -53,7 +53,7 @@ class OpenFlutterRatingSummary extends StatelessWidget {
           rating.toString(),
           style: Theme.of(
             context,
-          ).textTheme.headline3.copyWith(color: Colors.black),
+          ).textTheme.headlineMedium!.copyWith(color: Colors.black),
         ),
         _buildLabel(context),
       ],
@@ -75,7 +75,7 @@ class OpenFlutterRatingSummary extends StatelessWidget {
     if (showLabel) {
       return Text(
         '${ratingQuantity.toString()} ratings',
-        style: Theme.of(context).textTheme.caption.copyWith(
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
           color: Colors.grey,
           fontSize: labelFontSize,
         ),
@@ -87,8 +87,8 @@ class OpenFlutterRatingSummary extends StatelessWidget {
 
   List<Widget> _buildList(BuildContext context) {
     var list = <Widget>[];
-    if (ratingDetail != null && ratingDetail.isNotEmpty) {
-      ratingDetail.forEach((starQuantity) {
+    if (ratingDetail != null && ratingDetail!.isNotEmpty) {
+      ratingDetail!.forEach((starQuantity) {
         list.add(_buildItem(context, starQuantity));
       });
     }
@@ -167,7 +167,7 @@ class OpenFlutterRatingSummary extends StatelessWidget {
         starQuantity.quantity.toInt().toString(),
         style: Theme.of(
           context,
-        ).textTheme.caption.copyWith(fontSize: reviewCounterLabelFontSize),
+        ).textTheme.bodyMedium!.copyWith(fontSize: reviewCounterLabelFontSize),
         textAlign: TextAlign.center,
         maxLines: 1,
       ),
@@ -193,5 +193,5 @@ class StarQuantity {
   final double rating;
   final int quantity;
 
-  StarQuantity({this.rating, this.quantity});
+  StarQuantity({required this.rating, required this.quantity});
 }

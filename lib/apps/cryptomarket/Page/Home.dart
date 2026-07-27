@@ -1,25 +1,24 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_bloc.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_event.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_state.dart';
+
 import 'CoinDescription.dart';
-import 'Dashboard.dart';
 import '../Util/SharedPreferencesHelper.dart';
-import '../Util/swipe_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../Model/GetCoinsAdd.dart';
+import '../models/GetCoinsAdd.dart';
 
-import '../bloc/bloc.dart';
-import '../flutter_bloc.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-//import 'package:socket_io/socket_io.dart';
+late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -32,21 +31,21 @@ class Home extends StatefulWidget {
 }
 
 class home extends State<Home> {
-  List coins;
+  List? coins;
 
   final _scrollController = ScrollController();
 
-  PostBloc _postBloc = PostBloc(httpClient: http.Client());
+  PostBloc _postBloc = PostBloc(dio: Dio());
 
-  Stream<List<GetCoinsAdd>> stream;
+  Stream<List<GetCoinsAdd>>? stream;
 
-  List<GetCoinsAdd> _listData;
+  List<GetCoinsAdd>? _listData;
 
-  List<USD1> _datalits;
+  List<USD1>? _datalits;
 
-  Timer _everySecond;
+  late Timer _everySecond;
 
-  String lbl_notification;
+  String? lbl_notification;
 
   var platform = MethodChannel('crossingthestreams.io/resourceResolver');
 
@@ -61,7 +60,7 @@ class home extends State<Home> {
 
   @override
   void dispose() {
-    _postBloc.dispose();
+    _postBloc.close();
     super.dispose();
   }
 
@@ -69,7 +68,7 @@ class home extends State<Home> {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _postBloc.dispatch(Fetch());
+      _postBloc.add(Fetch());
     }
   }
 
@@ -83,40 +82,52 @@ class home extends State<Home> {
     var initializationSettingsAndroid = AndroidInitializationSettings(
       'app_icon',
     );
-    var initializationSettingsIOS = IOSInitializationSettings(
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+    const initializationSettingsIOS = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestSoundPermission: true,
+      requestBadgePermission: true,
+      defaultPresentAlert: true,
+      defaultPresentSound: true,
+      defaultPresentBadge: true,
     );
     var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid,
-      initializationSettingsIOS,
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
     );
     flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: onSelectNotification,
+      settings: initializationSettings,
+      /**The named parameter 'onSelectNotification' isn't defined.
+Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'onSelectNotification'. */
+      onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     );
 
     getCoinsList();
 
     _everySecond = Timer.periodic(Duration(seconds: 5), (Timer t) {
       setState(() {
-        _postBloc = PostBloc(httpClient: http.Client());
+        _postBloc = PostBloc(dio: Dio());
 
         setState(() {
-          _postBloc.dispatch(Fetch());
+          _postBloc.add(Fetch());
         });
       });
     });
   }
 
-  Future<void> onSelectNotification(String payload) async {
+  void onDidReceiveNotificationResponse(NotificationResponse response) {
+    final String? payload = response.payload;
+
     if (payload != null) {
-      debugPrint('notification payload: ' + payload);
+      debugPrint('Notification payload: $payload');
     }
 
-    /*await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Dashboard()),
-    );*/
+    /*
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => const Dashboard(),
+    ),
+  );
+  */
   }
 
   Future<void> onDidReceiveLocalNotification(
@@ -154,77 +165,81 @@ class home extends State<Home> {
     bool startNotification =
         await SharedPreferencesHelper.getNotificationFlag();
     if (startNotification == true) {
-      if (lbl_notification == "EveryMinute") {
+      if (lbl_notification == "everyMinute") {
         var androidPlatformChannelSpecifics = AndroidNotificationDetails(
           'repeating channel id',
           'repeating channel name',
-          'repeating description',
+          channelDescription: 'repeating description',
         );
-        var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+        var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
         var platformChannelSpecifics = NotificationDetails(
-          androidPlatformChannelSpecifics,
-          iOSPlatformChannelSpecifics,
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics,
         );
         await flutterLocalNotificationsPlugin.periodicallyShow(
-          0,
-          'Price updated',
-          'Check it out your favorite coins price',
-          RepeatInterval.EveryMinute,
-          platformChannelSpecifics,
+          id: 0,
+          title: 'Price updated',
+          body: 'Check it out your favorite coins price',
+          repeatInterval: RepeatInterval.everyMinute,
+          notificationDetails: platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
         );
       } else if (lbl_notification == "Hourly") {
         var androidPlatformChannelSpecifics = AndroidNotificationDetails(
           'repeating channel id',
           'repeating channel name',
-          'repeating description',
+          channelDescription: 'repeating description',
         );
-        var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+        var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
         var platformChannelSpecifics = NotificationDetails(
-          androidPlatformChannelSpecifics,
-          iOSPlatformChannelSpecifics,
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics,
         );
         await flutterLocalNotificationsPlugin.periodicallyShow(
-          0,
-          'Price updated',
-          'Check it out your favorite coins price',
-          RepeatInterval.EveryMinute,
-          platformChannelSpecifics,
+          id: 0,
+          title: 'Price updated',
+          body: 'Check it out your favorite coins price',
+          repeatInterval: RepeatInterval.everyMinute,
+          notificationDetails: platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
         );
       } else if (lbl_notification == "Daily") {
         var androidPlatformChannelSpecifics = AndroidNotificationDetails(
           'repeating channel id',
           'repeating channel name',
-          'repeating description',
+          channelDescription: 'repeating description',
         );
-        var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+        var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
         var platformChannelSpecifics = NotificationDetails(
-          androidPlatformChannelSpecifics,
-          iOSPlatformChannelSpecifics,
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics,
         );
         await flutterLocalNotificationsPlugin.periodicallyShow(
-          0,
-          'Price updated',
-          'Check it out your favorite coins price',
-          RepeatInterval.EveryMinute,
-          platformChannelSpecifics,
+          id: 0,
+          title: 'Price updated',
+          body: 'Check it out your favorite coins price',
+          repeatInterval: RepeatInterval.everyMinute,
+          notificationDetails: platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
         );
       } else if (lbl_notification == "Weekly") {
         var androidPlatformChannelSpecifics = AndroidNotificationDetails(
           'repeating channel id',
           'repeating channel name',
-          'repeating description',
+          channelDescription: 'repeating description',
         );
-        var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+        var iOSPlatformChannelSpecifics = DarwinNotificationDetails();
         var platformChannelSpecifics = NotificationDetails(
-          androidPlatformChannelSpecifics,
-          iOSPlatformChannelSpecifics,
+          android: androidPlatformChannelSpecifics,
+          iOS: iOSPlatformChannelSpecifics,
         );
         await flutterLocalNotificationsPlugin.periodicallyShow(
-          0,
-          'Price updated',
-          'Check it out your favorite coins price',
-          RepeatInterval.EveryMinute,
-          platformChannelSpecifics,
+          id: 0,
+          title: 'Price updated',
+          body: 'Check it out your favorite coins price',
+          repeatInterval: RepeatInterval.everyMinute,
+          notificationDetails: platformChannelSpecifics,
+          androidScheduleMode: AndroidScheduleMode.alarmClock,
         );
       }
     }
@@ -311,8 +326,8 @@ class home extends State<Home> {
                         ' - ',
                   );
 
-                  for (int i = 0; i < _listData.length; i++) {
-                    if (_listData[i].coinInfo.name == x[2]) {
+                  for (int i = 0; i < _listData!.length; i++) {
+                    if (_listData![i].coinInfo.name == x[2]) {
                       //  _datalits.add(USD1(x[5], "", "", "", "", "", "", "", "", "", ""));
                     }
                   }
@@ -342,7 +357,7 @@ class home extends State<Home> {
     });
     socket.on('event', (data) => print(data));
     socket.on('disconnect', (_) => print('disconnect'));
-    socket.on('fromServer', (_) => print(_));
+    socket.on('fromServer', (_) => print('_'));
 
     // TODO: implement fetchCurrencies
 
@@ -365,8 +380,8 @@ class home extends State<Home> {
 
     // Make a HTTP GET request to the CoinMarketCap API.
     // Await basically pauses execution until the get() function returns a Response
-    http.Response response = await http.get(Uri.parse(apiUrl));
-    var responseBody = json.decode(response.body);
+    var response = await Dio().get(apiUrl);
+    var responseBody = json.decode(response.data);
     List data = responseBody['Data'];
 
     final statusCode = response.statusCode;
@@ -393,19 +408,20 @@ class home extends State<Home> {
         elevation: 0.0,
       ),
       body: RefreshIndicator(
+        onRefresh: _handleRefresh,
         child: StreamBuilder<List<GetCoinsAdd>>(
           stream: fetchCurrencies().asStream(),
           builder: (BuildContext context, snapshot) {
             if (snapshot.hasError) {
-              return Text(snapshot.error);
+              return Text(snapshot.error.toString());
             }
 
             if (snapshot.hasData) {
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return getViewCoins(
-                    snapshot.data[index],
+                    snapshot.data![index],
                   ); //PostWidget(post: state.posts[index]);
                 },
               );
@@ -419,9 +435,9 @@ class home extends State<Home> {
                 snapshot.connectionState == ConnectionState.done) {
               return Text('No Posts');
             }
+            return Text('None');
           },
         ),
-        onRefresh: _handleRefresh,
       ),
     );
   }
@@ -460,7 +476,7 @@ class home extends State<Home> {
   Future<Null> _handleRefresh() async {
     await Future.delayed(Duration(seconds: 3));
 
-    _postBloc = PostBloc(httpClient: http.Client());
+    _postBloc = PostBloc(dio: Dio());
 
     setState(() {
       _postBloc.add(Fetch());
@@ -470,7 +486,7 @@ class home extends State<Home> {
   }
 
   getViewCoins(GetCoinsAdd post) {
-    if (coins.contains(post.coinInfo.name)) {
+    if (coins!.contains(post.coinInfo.name)) {
       return Dismissible(
         key: Key(post.coinInfo.fullName),
         background: stackBehindDismiss(),
@@ -479,7 +495,7 @@ class home extends State<Home> {
           setState(() {
             _selecteCategorys.remove(post.coinInfo.name);
 
-            _postBloc = PostBloc(httpClient: http.Client());
+            _postBloc = PostBloc(dio: Dio());
 
             setState(() {
               _postBloc.add(Fetch());
@@ -599,10 +615,7 @@ class PostWidget extends StatelessWidget {
                                     0
                                 ? "+" +
                                       (double.parse(
-                                                post
-                                                    .Display
-                                                    .USD
-                                                    .CHANGEPCT24HOUR,
+                                                post.display.usd.change24Hour,
                                               ) ??
                                               0)
                                           .toStringAsFixed(2) +

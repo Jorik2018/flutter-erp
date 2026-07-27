@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import '../../../constants/colors.dart';
 import '../../../models/models.dart';
 import '../../common/common.dart';
@@ -30,7 +29,7 @@ class InviteCard extends StatelessWidget {
                 height: 28,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: invite.categories.length,
+                  itemCount: invite.categories!.length,
                   itemBuilder: (context, index) {
                     return Card(
                       elevation: 0,
@@ -47,7 +46,7 @@ class InviteCard extends StatelessWidget {
                             bottom: 4,
                           ),
                           child: Text(
-                            invite.categories[index],
+                            invite.categories![index],
                             style: const TextStyle(
                               color: AppColors.inviteCardText,
                               letterSpacing: .5,
@@ -62,7 +61,7 @@ class InviteCard extends StatelessWidget {
               ),
               const VerticalSpacer(space: 4),
               Text(
-                isReceived ? invite.sender.name : invite.receiver.name,
+                isReceived ? invite.sender!.name : invite.receiver!.name,
                 style: const TextStyle(fontSize: 23, letterSpacing: .5),
               ),
               const VerticalSpacer(space: 12),
@@ -75,9 +74,7 @@ class InviteCard extends StatelessWidget {
                   ),
                   const HorizontalSpacer(),
                   Text(
-                    timeago.format(
-                      DateTime.fromMillisecondsSinceEpoch(invite.date),
-                    ),
+                    "timeago.format(DateTime.fromMillisecondsSinceEpoch(invite.date),)",
                     style: const TextStyle(
                       fontSize: 13,
                       letterSpacing: .5,

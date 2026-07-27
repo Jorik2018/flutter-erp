@@ -21,24 +21,24 @@ Color textFieldColor = const Color.fromRGBO(0, 0, 0, 0.2);
 const jsonCodec = const JsonCodec(reviver: _reviver);
 const jsonCodec1 = const JsonCodec(reviver: _reviver1);
 
-TextStyle textStyle = new TextStyle(
+TextStyle textStyle = TextStyle(
   color: const Color.fromRGBO(0, 0, 0, 0.9),
   fontSize: 16.0,
   fontWeight: FontWeight.normal,
 );
 
-ThemeData appTheme = new ThemeData(hintColor: Colors.white);
+ThemeData appTheme = ThemeData(hintColor: Colors.white);
 
 _reviver(key, value) {
   if (key != null && value is Map && key.contains('-')) {
-    return new OldUser.fromJson(value);
+    return OldUser.fromJson(value);
   }
   return value;
 }
 
 _reviver1(key, value) {
   if (key != null && value is Map && key.contains('-')) {
-    return new Group.fromJson(value);
+    return Group.fromJson(value);
   }
   return value;
 }
@@ -49,7 +49,7 @@ class AddGroup extends StatefulWidget {
   AddGroup({this.users});
 
   @override
-  AddGroupstate createState() => new AddGroupstate(users: users);
+  AddGroupstate createState() => AddGroupstate(users: users);
 }
 
 class AddGroupstate extends State<AddGroup> {
@@ -58,8 +58,8 @@ class AddGroupstate extends State<AddGroup> {
   AddGroupstate({this.users});
 
   final GlobalKey<ScaffoldState> _scaffoldKeySecondary1 =
-      new GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _groupformKey = new GlobalKey<FormState>();
+      GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _groupformKey = GlobalKey<FormState>();
 
   bool _autovalidate1 = false;
   List<OldUser> userstoShowGrpDetailsPage = [];
@@ -82,7 +82,7 @@ class AddGroupstate extends State<AddGroup> {
     var httpClient = HttpClientFireBase();
     final FormState? form = _groupformKey!.currentState;
     form!.save();
-    OldUser loggedInMember = new OldUser();
+    OldUser loggedInMember = OldUser();
     loggedInMember.EmailId = loggedinUser;
     loggedInMember.locationShare = false;
     for (var i = 0; i < members.length; i++) {
@@ -151,7 +151,7 @@ class AddGroupstate extends State<AddGroup> {
   getusers() {
     print('getUsers22');
     users!.value.forEach((k, v) {
-      OldUser usertoshow = new OldUser();
+      OldUser usertoshow = OldUser();
       usertoshow.name = v["name"];
       usertoshow.EmailId = v["emailid"];
       usertoshow.locationShare = false;
@@ -168,13 +168,10 @@ class AddGroupstate extends State<AddGroup> {
   @override
   Widget build(BuildContext context) {
     if (members.isNotEmpty) {
-      children1 = new List.generate(
-        count,
-        (int i) => new memberlist(members[i].name!),
-      );
+      children1 = List.generate(count, (int i) => memberlist(members[i].name!));
     }
 
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKeySecondary1,
       body: Form(
         //autovalidate: true,
@@ -182,7 +179,7 @@ class AddGroupstate extends State<AddGroup> {
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           children: <Widget>[
-            new Container(
+            Container(
               child: Container(
                 child: Text(
                   "Add a Group",
@@ -198,7 +195,7 @@ class AddGroupstate extends State<AddGroup> {
                 ),
               ),
             ),
-            new Container(
+            Container(
               child: Container(
                 child: InputField(
                   hintText: "Groupname",
@@ -223,10 +220,10 @@ class AddGroupstate extends State<AddGroup> {
               ),
               padding: const EdgeInsets.only(top: 30.0),
             ),
-            new Row(
+            Row(
               children: <Widget>[
-                new Container(
-                  child: new Text(
+                Container(
+                  child: Text(
                     "Add a member:",
                     style: TextStyle(
                       fontSize: 16.0,
@@ -235,19 +232,18 @@ class AddGroupstate extends State<AddGroup> {
                   ),
                   padding: EdgeInsets.only(left: 13.0),
                 ),
-                new Container(
-                  child: new CircleAvatar(
-                    child: new PopupMenuButton<OldUser>(
+                Container(
+                  child: CircleAvatar(
+                    child: PopupMenuButton<OldUser>(
                       icon: Icon(Icons.add),
                       onSelected: _select,
                       itemBuilder: (BuildContext context) =>
                           userstoShowGrpDetailsPage
                               .map(
-                                (OldUser usertoshow) =>
-                                    new PopupMenuItem<OldUser>(
-                                      value: usertoshow,
-                                      child: Text(usertoshow.name!),
-                                    ),
+                                (OldUser usertoshow) => PopupMenuItem<OldUser>(
+                                  value: usertoshow,
+                                  child: Text(usertoshow.name!),
+                                ),
                               )
                               .toList(),
                     ),
@@ -257,10 +253,10 @@ class AddGroupstate extends State<AddGroup> {
                 ),
               ],
             ),
-            new Column(children: children1),
-            new Row(
+            Column(children: children1),
+            Row(
               children: <Widget>[
-                new Container(
+                Container(
                   alignment: Alignment.bottomCenter,
                   child: FloatingActionButton(
                     onPressed: _handleSubmitted,
@@ -268,8 +264,8 @@ class AddGroupstate extends State<AddGroup> {
                   ),
                   padding: const EdgeInsets.only(top: 50.0, left: 100.0),
                 ),
-                new Container(
-                  child: new FloatingActionButton(
+                Container(
+                  child: FloatingActionButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
@@ -296,17 +292,17 @@ class memberlist extends StatelessWidget {
   memberlist(this.mem);
 
   @override
-  Widget build(BuildContext context) => new Container(
+  Widget build(BuildContext context) => Container(
     child: Column(
       children: <Widget>[
-        new Row(
+        Row(
           children: <Widget>[
-            new CircleAvatar(
-              child: new Icon(Icons.person),
+            CircleAvatar(
+              child: Icon(Icons.person),
               backgroundColor: const Color.fromRGBO(0, 0, 0, 0.2),
             ),
-            new Container(
-              child: new Text("${mem}", style: TextStyle(fontSize: 20.0)),
+            Container(
+              child: Text("${mem}", style: TextStyle(fontSize: 20.0)),
               padding: EdgeInsets.only(left: 20.0),
             ),
           ],

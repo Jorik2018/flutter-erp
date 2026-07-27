@@ -23,7 +23,7 @@ Widget _gradientContainer(
   final ButtonThemeData buttonTheme = ButtonTheme.of(
     context,
   ).copyWith(padding: const EdgeInsets.all(0.0));
-  return new Container(
+  return Container(
     height: buttonTheme.height + incHeightBy,
     width: buttonTheme.minWidth + incWidthBy,
     decoration: BoxDecoration(gradient: gradient),
@@ -56,9 +56,9 @@ class CircularGradientButton extends StatelessWidget {
 
 class GradientButton extends StatelessWidget {
   GradientButton({
-    @required this.gradient,
-    @required this.child,
-    @required this.callback,
+    required this.gradient,
+    required this.child,
+    required this.callback,
     this.shape,
     this.shapeRadius,
     this.textStyle,

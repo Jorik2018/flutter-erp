@@ -10,9 +10,9 @@ class MultiSelectDialogItem<V> {
 class MultiSelectDialog<V> extends StatefulWidget {
   MultiSelectDialog({
     Key? key,
-    this.title,
-    this.items,
-    this.initialSelectedValues,
+    required this.title,
+    required this.items,
+    required this.initialSelectedValues,
   }) : super(key: key);
 
   final String title;
@@ -99,7 +99,8 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
       value: checked,
       title: Text(item.label),
       controlAffinity: ListTileControlAffinity.leading,
-      onChanged: (checked) => _onItemCheckedChange(item.value, checked),
+      onChanged: (checked) =>
+          _onItemCheckedChange(item.value, checked ?? false),
     );
   }
 }

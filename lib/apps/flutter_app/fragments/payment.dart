@@ -6,7 +6,7 @@ class PaymentFragment extends StatefulWidget {
   static const String routeName = '/payment';
 
   @override
-  Payment createState() => new Payment();
+  Payment createState() => Payment();
 }
 
 class Payment extends State<PaymentFragment> {
@@ -14,28 +14,28 @@ class Payment extends State<PaymentFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return new ListView(
+    return ListView(
       children: <Widget>[
-        new ListTile(
+        ListTile(
           leading: Icon(Icons.credit_card, color: Colors.grey),
           title: const Text("Visa credit card"),
         ),
-        new Divider(),
-        new ListTile(
+        Divider(),
+        ListTile(
           leading: Icon(Icons.credit_card, color: Colors.grey),
           title: const Text("Master credit card"),
         ),
-        new Divider(),
-        new ListTile(
+        Divider(),
+        ListTile(
           leading: Icon(Icons.credit_card, color: Colors.grey),
           title: const Text("Debit credit card"),
         ),
-        new Divider(),
-        new ListTile(
+        Divider(),
+        ListTile(
           leading: Icon(Icons.credit_card, color: Colors.grey),
           title: const Text("Electronic money"),
         ),
-        new Divider(),
+        Divider(),
       ],
     );
   }

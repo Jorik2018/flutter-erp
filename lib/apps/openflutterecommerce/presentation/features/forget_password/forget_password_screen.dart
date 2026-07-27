@@ -19,7 +19,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController emailController = TextEditingController();
   final GlobalKey<OpenFlutterInputFieldState> emailKey = GlobalKey();
 
-  double sizeBetween;
+  late double sizeBetween;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
-        brightness: Brightness.light,
         elevation: 0,
         iconTheme: IconThemeData(color: AppColors.black),
       ),
@@ -38,7 +37,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         listener: (context, state) {
           // on success push back
           if (state is ForgetPasswordFinishedState) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
                   'An email with password reminder was sent to ${state.email}',
@@ -50,7 +49,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           }
           // on failure show a snackbar
           if (state is ForgetPasswordErrorState) {
-            Scaffold.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('${state.error}'),
                 backgroundColor: Colors.red, // TODO use app colors
@@ -138,7 +137,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   }
 
   void _validateAndSend() {
-    if (emailKey.currentState.validate() != null) {
+    if (emailKey.currentState!.validate() != null) {
       return;
     }
     BlocProvider.of<ForgetPasswordBloc>(

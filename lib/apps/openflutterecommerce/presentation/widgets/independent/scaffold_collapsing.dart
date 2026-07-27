@@ -1,66 +1,70 @@
-//Collapsing Scaffold for Open Flutter E-commerce App
-//Author: umair_adil@live.com
-//Date: 2020-02-13
-
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 
 import 'bottom_menu.dart';
 
 class OpenFlutterCollapsingScaffold extends StatelessWidget {
-  final Color background;
-  final String title;
-  final Widget body;
-  final int bottomMenuIndex;
-  final List<String> tabBarList;
-  final TabController tabController;
-
   const OpenFlutterCollapsingScaffold({
-    Key? key,
+    super.key,
     this.background,
     this.title,
-    this.body,
-    this.bottomMenuIndex,
+    required this.body,
+    required this.bottomMenuIndex,
     this.tabBarList,
-    this.tabController,
-  }) : super(key: key);
+    required this.tabController,
+  });
+
+  final Color? background;
+  final String? title;
+  final Widget body;
+  final int bottomMenuIndex;
+  final List<String>? tabBarList;
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: background,
       body: NestedScrollView(
-        physics: ScrollPhysics(parent: PageScrollPhysics()),
-        headerSliverBuilder: title != null
-            ? (BuildContext context, bool innerBoxIsScrolled) {
-                return _buildSilverAppBar(context);
-              }
-            : null,
+        physics: const PageScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          if (title == null) {
+            return const <Widget>[];
+          }
+
+          return _buildSliverAppBar(
+            context,
+            innerBoxIsScrolled: innerBoxIsScrolled,
+          );
+        },
         body: body,
       ),
-      backgroundColor: background,
       bottomNavigationBar: OpenFlutterBottomMenu(bottomMenuIndex),
     );
   }
 
-  List<Widget> _buildSilverAppBar(BuildContext context) {
-    var tabBars = <Tab>[];
-    var _theme = Theme.of(context);
-    if (tabBarList != null) {
-      for (var i = 0; i < tabBarList.length; i++) {
-        tabBars.add(Tab(key: UniqueKey(), text: tabBarList[i]));
-      }
-    }
+  List<Widget> _buildSliverAppBar(
+    BuildContext context, {
+    required bool innerBoxIsScrolled,
+  }) {
+    final theme = Theme.of(context);
 
-    Widget tabWidget = tabBars.isNotEmpty
+    final tabs =
+        tabBarList?.map((tabTitle) => Tab(text: tabTitle)).toList() ??
+        const <Tab>[];
+
+    final PreferredSizeWidget? tabWidget = tabs.isNotEmpty
         ? TabBar(
-            unselectedLabelColor: _theme.primaryColor,
-            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-            labelColor: _theme.primaryColor,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
-            tabs: tabBars,
             controller: tabController,
-            indicatorColor: _theme.accentColor,
+            tabs: tabs,
+            unselectedLabelColor: theme.colorScheme.primary,
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+            ),
+            labelColor: theme.colorScheme.primary,
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+            indicatorColor: theme.colorScheme.secondary,
             indicatorSize: TabBarIndicatorSize.tab,
           )
         : null;
@@ -70,44 +74,38 @@ class OpenFlutterCollapsingScaffold extends StatelessWidget {
         expandedHeight: AppSizes.app_bar_expanded_size,
         floating: false,
         pinned: true,
+        forceElevated: innerBoxIsScrolled,
         bottom: tabWidget,
         actions: <Widget>[
-          Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.search),
-                color: AppColors.black,
-                onPressed: () {
-                  print('Search favourites.');
-                },
-              ),
-            ],
+          IconButton(
+            icon: const Icon(Icons.search),
+            color: AppColors.black,
+            tooltip: 'Buscar',
+            onPressed: () {
+              debugPrint('Search favourites.');
+            },
           ),
         ],
         flexibleSpace: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            var percent =
-                ((constraints.maxHeight - kToolbarHeight) *
-                100.0 /
-                (AppSizes.app_bar_expanded_size - kToolbarHeight));
-            var dx = 0.0;
+            final availableHeight =
+                AppSizes.app_bar_expanded_size - kToolbarHeight;
 
-            dx = 100.0 - percent;
+            final currentHeight = constraints.maxHeight - kToolbarHeight;
 
-            if (constraints.maxHeight == 100) {
-              dx = 0;
-            }
+            final percent = availableHeight > 0
+                ? (currentHeight * 100 / availableHeight).clamp(0.0, 100.0)
+                : 0.0;
+
+            final dx = 100.0 - percent;
 
             return Stack(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(
-                    top: kToolbarHeight / 4,
-                    left: 0.0,
-                  ),
+                  padding: const EdgeInsets.only(top: kToolbarHeight / 4),
                   child: Transform.translate(
-                    child: Text(title, style: _theme.textTheme.caption),
                     offset: Offset(dx, constraints.maxHeight - kToolbarHeight),
+                    child: Text(title!, style: theme.textTheme.bodySmall),
                   ),
                 ),
               ],

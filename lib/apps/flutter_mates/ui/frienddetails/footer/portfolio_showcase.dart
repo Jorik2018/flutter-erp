@@ -5,7 +5,7 @@ class PortfolioShowcase extends StatelessWidget {
     var items = <Widget>[];
 
     for (var i = 1; i <= 6; i++) {
-      var image = new Image.asset(
+      var image = Image.asset(
         'images/portfolio_$i.jpeg',
         width: 200.0,
         height: 200.0,
@@ -19,13 +19,13 @@ class PortfolioShowcase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var delegate = new SliverGridDelegateWithFixedCrossAxisCount(
+    var delegate = SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 3,
       crossAxisSpacing: 8.0,
       mainAxisSpacing: 8.0,
     );
 
-    return new GridView(
+    return GridView(
       padding: const EdgeInsets.only(top: 16.0),
       gridDelegate: delegate,
       children: _buildItems(),

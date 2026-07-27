@@ -20,7 +20,7 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  FilterRules rules;
+  FilterRules? rules;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(' selected attributes: ${rules.selectableAttributes}');
+    print(' selected attributes: ${rules!.selectableAttributes}');
     return Scaffold(
       appBar: AppBar(title: Text('Filters'), centerTitle: true),
       body: SingleChildScrollView(
@@ -38,15 +38,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
           children:
               <Widget>[
                 OpenFlutterPriceRangeSlider(
-                  selectedMin: rules.selectedPriceRange.minPrice,
-                  selectedMax: rules.selectedPriceRange.maxPrice,
+                  selectedMin: rules!.selectedPriceRange!.minPrice,
+                  selectedMax: rules!.selectedPriceRange!.maxPrice,
                   label: 'Price range',
                   min: 0,
                   max: 300,
                   onChanged: _changeSelectedPrice,
                 ),
               ] +
-              rules.selectableAttributes
+              rules!.selectableAttributes!
                   .map(
                     (attribute, selectedValues) => MapEntry(
                       attribute,
@@ -56,14 +56,14 @@ class _FiltersScreenState extends State<FiltersScreen> {
                           _onAttributeSelected(attribute, value);
                         },
                         children: Map.fromEntries(
-                          attribute.options.map(
+                          attribute.options!.map(
                             (option) => MapEntry(
                               option,
                               FilterSelectableItem(
                                 text: option,
                                 isSelected:
-                                    rules.selectedAttributes[attribute] != null
-                                    ? rules.selectedAttributes[attribute]!
+                                    rules!.selectedAttributes[attribute] != null
+                                    ? rules!.selectedAttributes[attribute]!
                                           .contains(option)
                                     : false,
                               ),
@@ -78,11 +78,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
               [
                 FilterSelectableVisibleOption<ProductCategory>(
                   title: 'Category',
-                  children: rules.categories.map(
+                  children: rules!.categories!.map(
                     (category, isSelected) => MapEntry(
                       category,
                       FilterSelectableItem(
-                        text: category.name,
+                        text: category.name!,
                         isSelected: isSelected,
                       ),
                     ),
@@ -102,28 +102,28 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   void _onCategorySelected(ProductCategory value) {
     setState(() {
-      rules.categories[value] = !rules.categories[value];
+      rules!.categories![value] = !rules!.categories![value]!;
     });
   }
 
   void _onAttributeSelected(ProductAttribute attribute, String value) {
-    if (rules.selectedAttributes[attribute] == null) {
-      rules.selectedAttributes[attribute] = [];
+    if (rules!.selectedAttributes[attribute] == null) {
+      rules!.selectedAttributes[attribute] = [];
     }
-    if (rules.selectedAttributes[attribute].contains(value)) {
+    if (rules!.selectedAttributes[attribute]!.contains(value)) {
       setState(() {
-        rules.selectedAttributes[attribute].remove(value);
+        rules!.selectedAttributes[attribute]!.remove(value);
       });
     } else {
       setState(() {
-        rules.selectedAttributes[attribute].add(value);
+        rules!.selectedAttributes[attribute]!.add(value);
       });
     }
   }
 
   void _changeSelectedPrice(RangeValues value) {
     setState(() {
-      rules = rules.copyWithPriceRange(PriceRange(value.start, value.end));
+      rules = rules!.copyWithPriceRange(PriceRange(value.start, value.end));
     });
   }
 }

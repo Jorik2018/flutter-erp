@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/src/layer/tile_layer/tile.dart';
 
-typedef TileBuilder = Widget Function(
-    BuildContext context, Widget tileWidget, Tile tile);
+typedef TileBuilder =
+    Widget Function(BuildContext context, Widget tileWidget, Tile tile);
 
-typedef TilesContainerBuilder = Widget Function(
-    BuildContext context, Widget tilesContainer, List<Tile> tiles);
+typedef TilesContainerBuilder =
+    Widget Function(
+      BuildContext context,
+      Widget tilesContainer,
+      List<Tile> tiles,
+    );
 
 /// Applies inversion color matrix on Tiles container which may simulate Dark mode.
 Widget darkModeTilesContainerBuilder(
@@ -42,11 +46,7 @@ Widget darkModeTilesContainerBuilder(
 
 /// Applies inversion color matrix on Tiles which may simulate Dark mode.
 /// [darkModeTilesContainerBuilder] is better at performance because it applies color matrix on the container instead of on every Tile
-Widget darkModeTileBuilder(
-  BuildContext context,
-  Widget tileWidget,
-  Tile tile,
-) {
+Widget darkModeTileBuilder(BuildContext context, Widget tileWidget, Tile tile) {
   return ColorFiltered(
     colorFilter: const ColorFilter.matrix(<double>[
       -1,
@@ -85,9 +85,7 @@ Widget coordinateDebugTileBuilder(
       '${coords.x.floor()} : ${coords.y.floor()} : ${coords.z.floor()}';
 
   return Container(
-    decoration: BoxDecoration(
-      border: Border.all(),
-    ),
+    decoration: BoxDecoration(border: Border.all()),
     child: Stack(
       fit: StackFit.passthrough,
       children: [
@@ -95,7 +93,7 @@ Widget coordinateDebugTileBuilder(
         Center(
           child: Text(
             readableKey,
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headlinelarge!,
           ),
         ),
       ],
@@ -117,18 +115,13 @@ Widget loadingTimeDebugTileBuilder(
       : '${(loaded.millisecond - loadStarted.millisecond).abs()} ms';
 
   return Container(
-    decoration: BoxDecoration(
-      border: Border.all(),
-    ),
+    decoration: BoxDecoration(border: Border.all()),
     child: Stack(
       fit: StackFit.passthrough,
       children: [
         tileWidget,
         Center(
-          child: Text(
-            time,
-            style: Theme.of(context).textTheme.headline5,
-          ),
+          child: Text(time, style: Theme.of(context).textTheme.headlinelarge!),
         ),
       ],
     ),

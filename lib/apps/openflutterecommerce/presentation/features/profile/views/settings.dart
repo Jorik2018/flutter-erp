@@ -13,7 +13,7 @@ import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/prof
 import 'package:flutter_erp/apps/openflutterecommerce/presentation/widgets/widgets.dart';
 
 class SettingsView extends StatefulWidget {
-  final Function changeView;
+  final Function? changeView;
 
   const SettingsView({Key? key, this.changeView}) : super(key: key);
 
@@ -24,11 +24,11 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  TextEditingController _currentPasswordController;
-  TextEditingController _newPasswordController;
-  TextEditingController _repeatPasswordController;
-  TextEditingController _fullNameController;
-  TextEditingController _dateOfBirthController;
+  late TextEditingController _currentPasswordController;
+  late TextEditingController _newPasswordController;
+  late TextEditingController _repeatPasswordController;
+  late TextEditingController _fullNameController;
+  late TextEditingController _dateOfBirthController;
 
   @override
   void initState() {
@@ -59,8 +59,8 @@ class _SettingsViewState extends State<SettingsView> {
       child: BlocBuilder<SettingsBloc, SettingsState>(
         bloc: settingsBloc,
         builder: (context, state) {
-          _fullNameController.text = state.settings.fullName;
-          _dateOfBirthController.text = state.settings.dateOfBirth;
+          _fullNameController!.text = state.settings.fullName;
+          _dateOfBirthController!.text = state.settings.dateOfBirth;
 
           return SingleChildScrollView(
             child: Container(
@@ -80,7 +80,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   SizedBox(height: 21),
                   OpenFlutterInputField(
-                    controller: _fullNameController,
+                    controller: _fullNameController!,
                     hint: 'Full Name',
                     horizontalPadding: 0,
                     onValueChanged: (value) => settingsBloc
@@ -90,7 +90,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   SizedBox(height: 24),
                   OpenFlutterInputField(
-                    controller: _dateOfBirthController,
+                    controller: _dateOfBirthController!,
                     hint: 'Date of Birth',
                     horizontalPadding: 0,
                     onValueChanged: (value) => settingsBloc.add(

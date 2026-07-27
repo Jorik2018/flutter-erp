@@ -21,14 +21,14 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         );
         yield CheckoutProceedState(
           cardId: 1,
-          cartProducts: results.cartItems,
-          shippingAddresses: results.shippingAddress,
-          paymentMethods: results.paymentMethods,
-          currentPaymentMethod: results.currentPaymentMethod,
-          currentShippingAddress: results.currentShippingAddress,
-          orderPrice: results.totalCalculatedPrice,
-          deliveryPrice: results.deliveryPrice,
-          summaryPrice: results.summaryPrice,
+          cartProducts: results.cartItems!,
+          shippingAddresses: results.shippingAddress!,
+          paymentMethods: results.paymentMethods!,
+          currentPaymentMethod: results.currentPaymentMethod!,
+          currentShippingAddress: results.currentShippingAddress!,
+          orderPrice: results.totalCalculatedPrice!,
+          deliveryPrice: results.deliveryPrice!,
+          summaryPrice: results.summaryPrice!,
         );
       } else if (state is CheckoutProceedState) {
         yield state;

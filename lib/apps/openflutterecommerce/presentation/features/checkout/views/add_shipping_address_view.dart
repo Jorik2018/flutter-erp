@@ -11,7 +11,7 @@ import '../../wrapper.dart';
 import '../checkout.dart';
 
 class AddShippingAddressView extends StatefulWidget {
-  final Function changeView;
+  final Function? changeView;
 
   const AddShippingAddressView({Key? key, this.changeView}) : super(key: key);
 
@@ -60,18 +60,18 @@ class _AddShippingAddressViewState extends State<AddShippingAddressView> {
     return BlocListener(
       bloc: bloc,
       listener: (BuildContext context, CheckoutState state) {
-        if (state is CheckoutErrorState) {
+        /*if (state is CheckoutErrorState) {
           return Container(
             padding: EdgeInsets.all(AppSizes.sidePadding),
             child: Text(
               'An error occured',
               style: _theme.textTheme.headlineLarge.copyWith(
-                color: _theme.errorColor,
+                color: _theme.colorScheme.error,
               ),
             ),
           );
         }
-        return Container();
+        return Container();*/
       },
       child: BlocBuilder(
         bloc: bloc,
@@ -125,7 +125,7 @@ class _AddShippingAddressViewState extends State<AddShippingAddressView> {
                         country: _countryController.text,
                       ),
                     ),
-                    widget.changeView(changeType: ViewChangeType.Backward),
+                    widget.changeView!(changeType: ViewChangeType.Backward),
                   }),
                 ),
               ],

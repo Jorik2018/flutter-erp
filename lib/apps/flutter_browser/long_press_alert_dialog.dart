@@ -143,8 +143,8 @@ class _LongPressAlertDialogState extends State<LongPressAlertDialog> {
             Center(child: CircularProgressIndicator()),
             InAppWebView(
               gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-                new Factory<OneSequenceGestureRecognizer>(
-                  () => new EagerGestureRecognizer(),
+                Factory<OneSequenceGestureRecognizer>(
+                  () => EagerGestureRecognizer(),
                 ),
               ].toSet(),
               initialUrlRequest: URLRequest(
@@ -175,7 +175,7 @@ class _LongPressAlertDialogState extends State<LongPressAlertDialog> {
     var browserModel = Provider.of<BrowserModel>(context, listen: false);
 
     return ListTile(
-      title: const Text("Open in a new tab"),
+      title: const Text("Open in a tab"),
       onTap: () {
         browserModel.addTab(
           WebViewTab(
@@ -194,7 +194,7 @@ class _LongPressAlertDialogState extends State<LongPressAlertDialog> {
     var browserModel = Provider.of<BrowserModel>(context, listen: false);
 
     return ListTile(
-      title: const Text("Open in a new incognito tab"),
+      title: const Text("Open in a incognito tab"),
       onTap: () {
         browserModel.addTab(
           WebViewTab(
@@ -317,7 +317,7 @@ class _LongPressAlertDialogState extends State<LongPressAlertDialog> {
     var browserModel = Provider.of<BrowserModel>(context, listen: false);
 
     return ListTile(
-      title: const Text("Image in a new tab"),
+      title: const Text("Image in a tab"),
       onTap: () {
         browserModel.addTab(
           WebViewTab(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_flexmonster/flutter_flexmonster.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CustomizeCell extends StatefulWidget {
@@ -10,16 +9,17 @@ class CustomizeCell extends StatefulWidget {
 }
 
 class _CustomizeCellState extends State<CustomizeCell> {
-  Flexmonster pivot = Flexmonster(
+  /*Flexmonster pivot = Flexmonster(
       width: "100%",
       height: "500",
       toolbar: true,
-      report: "https://cdn.flexmonster.com/github/demo-report.json");
+      report: "https://cdn.flexmonster.com/github/demo-report.json");*/
 
+  var pivot = Text("pivot");
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    /*WidgetsBinding.instance.addPostFrameCallback((_) async {
       WebViewController controller = await pivot.controller.future;
       pivot.on("reportcomplete", () async {
         await controller.runJavascript('''
@@ -47,7 +47,7 @@ class _CustomizeCellState extends State<CustomizeCell> {
               }
         }''');
       });
-    });
+    });*/
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/server_addresses.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/error/exceptions.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/domain/usecases/products/products_by_filter_params.dart';
@@ -12,9 +12,9 @@ abstract class WoocommercWrapperAbstract {
 }
 
 class WoocommerceWrapper implements WoocommercWrapperAbstract {
-  final http.Client client;
+  final Dio client;
 
-  WoocommerceWrapper({@required this.client});
+  WoocommerceWrapper({required this.client});
 
   @override
   Future<List<dynamic>> getProductList(ProductsByFilterParams params) {
@@ -34,12 +34,14 @@ class WoocommerceWrapper implements WoocommercWrapperAbstract {
 
   Future<List<dynamic>> _getApiRequest(String url) async {
     final response = await client.get(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
+      url,
+      options: Options(headers: {'Content-Type': 'application/json'}),
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      return response.data is String
+          ? json.decode(response.data)
+          : response.data;
     } else {
       throw HttpRequestException();
     }

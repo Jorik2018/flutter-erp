@@ -146,10 +146,10 @@ class LoadingViewState extends State<LoadingView>
 
 class _TransitionAnimation extends StatelessWidget {
   _TransitionAnimation({
-    @required Key? key,
-    @required this.controller,
-    @required this.child,
-    @required this.isVisible,
+    required Key? key,
+    required this.controller,
+    required this.child,
+    required this.isVisible,
   }) : _opacity = Tween(begin: 0.0, end: 1.0).animate(
          CurvedAnimation(
            parent: controller!,

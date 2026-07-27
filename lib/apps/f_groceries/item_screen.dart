@@ -262,17 +262,17 @@ class item extends State<Item_Screen> {
     });
   }
 
-  List<RangeSliderData> rangeSliders;
+  List<RangeSliderData>? rangeSliders;
 
   List<Widget> _buildRangeSliders() {
     List<Widget> children = <Widget>[];
-    for (int index = 0; index < rangeSliders.length; index++) {
+    for (int index = 0; index < rangeSliders!.length; index++) {
       children.add(
-        rangeSliders[index].build(context, (double lower, double upper) {
+        rangeSliders![index].build(context, (double lower, double upper) {
           // adapt the RangeSlider lowerValue and upperValue
           setState(() {
-            rangeSliders[index].lowerValue = lower;
-            rangeSliders[index].upperValue = upper;
+            rangeSliders![index].lowerValue = lower;
+            rangeSliders![index].upperValue = upper;
           });
         }),
       );
@@ -288,8 +288,8 @@ class item extends State<Item_Screen> {
       // disable the button
       _showBottomSheetCallback = null;
     });
-    _scaffoldKey.currentState
-        .showBottomSheet<Null>((BuildContext context) {
+    _scaffoldKey.currentState!
+        .showBottomSheet((BuildContext context) {
           final ThemeData themeData = Theme.of(context);
           return Container(
             alignment: Alignment.topLeft,
@@ -1139,21 +1139,20 @@ class item extends State<Item_Screen> {
   int radioValue = 0;
   bool switchValue = false;
 
-  void handleRadioValueChanged(int value) {
+  void handleRadioValueChanged(int? value) {
     setState(() {
-      radioValue = value;
+      radioValue = value!;
     });
   }
 }
 
 class TravelDestinationItem extends StatelessWidget {
-  TravelDestinationItem({Key? key, required this.destination, this.shape})
+  TravelDestinationItem({Key? key, required this.destination})
     : assert(destination != null),
       super(key: key);
 
   static const double height = 566.0;
   final Item destination;
-  final ShapeBorder shape;
 
   @override
   Widget build(BuildContext context) {
@@ -1175,7 +1174,6 @@ class TravelDestinationItem extends StatelessWidget {
             );
           },
           child: Card(
-            shape: shape,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -1186,7 +1184,7 @@ class TravelDestinationItem extends StatelessWidget {
                     children: <Widget>[
                       Positioned.fill(
                         child: Image.asset(
-                          destination.imagename,
+                          destination.imagename!,
                           // package: destination.assetPackage,
                           fit: BoxFit.scaleDown,
                         ),
@@ -1217,7 +1215,7 @@ class TravelDestinationItem extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: Text(
-                              destination.itemname,
+                              destination.itemname!,
                               style: descriptionStyle.copyWith(
                                 color: Colors.black87,
                               ),
@@ -1226,7 +1224,7 @@ class TravelDestinationItem extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: Text(
-                              destination.itmprice,
+                              destination.itmprice!,
                               style: descriptionStyle.copyWith(
                                 color: Colors.black54,
                               ),
@@ -1332,20 +1330,20 @@ class RangeSliderData {
   static const Color defaultOverlayColor = const Color(0x290175c2);
 
   RangeSliderData({
-    this.min,
-    this.max,
-    this.lowerValue,
-    this.upperValue,
-    this.divisions,
-    this.showValueIndicator: true,
-    this.valueIndicatorMaxDecimals: 1,
-    this.forceValueIndicator: false,
-    this.overlayColor: defaultOverlayColor,
-    this.activeTrackColor: defaultActiveTrackColor,
-    this.inactiveTrackColor: defaultInactiveTrackColor,
-    this.thumbColor: defaultThumbColor,
-    this.valueIndicatorColor: defaultValueIndicatorColor,
-    this.activeTickMarkColor: defaultActiveTickMarkColor,
+    required this.min,
+    required this.max,
+    required this.lowerValue,
+    required this.upperValue,
+    required this.divisions,
+    this.showValueIndicator = true,
+    this.valueIndicatorMaxDecimals = 1,
+    this.forceValueIndicator = false,
+    this.overlayColor = defaultOverlayColor,
+    this.activeTrackColor = defaultActiveTrackColor,
+    this.inactiveTrackColor = defaultInactiveTrackColor,
+    this.thumbColor = defaultThumbColor,
+    this.valueIndicatorColor = defaultValueIndicatorColor,
+    this.activeTickMarkColor = defaultActiveTickMarkColor,
   });
 
   // Returns the values in text format, with the number
@@ -1359,7 +1357,7 @@ class RangeSliderData {
   // Builds a RangeSlider and customizes the theme
   // based on parameters
   //
-  Widget build(BuildContext context, rangeSlider.RangeSliderCallback callback) {
+  Widget build(BuildContext context, var callback) {
     return Container(
       width: double.infinity,
       child: Row(
@@ -1384,7 +1382,8 @@ class RangeSliderData {
                     ? ShowValueIndicator.always
                     : ShowValueIndicator.onlyForDiscrete,
               ),
-              child: rangeSlider.RangeSlider(
+              child: Text(''),
+              /*child: RangeSlider(
                 min: min,
                 max: max,
                 lowerValue: lowerValue,
@@ -1396,7 +1395,7 @@ class RangeSliderData {
                   // call
                   callback(lower, upper);
                 },
-              ),
+              ),*/
             ),
           ),
           Container(

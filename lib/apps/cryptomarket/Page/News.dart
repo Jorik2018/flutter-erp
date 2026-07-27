@@ -1,92 +1,117 @@
-import '../Model/models.dart';
-import 'NewsDescription.dart';
-import '../bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../flutter_bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class News_screen extends StatefulWidget {
-  const News_screen({Key? key}) : super(key: key);
+import 'package:flutter_erp/apps/cryptomarket/bloc/news_post_bloc.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_event.dart';
+import 'package:flutter_erp/apps/cryptomarket/bloc/post_state.dart';
+import 'package:flutter_erp/apps/cryptomarket/models/models.dart';
+
+import 'NewsDescription.dart';
+
+class NewsScreen extends StatefulWidget {
+  const NewsScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return news_screen();
-  }
+  State<NewsScreen> createState() => _NewsScreenState();
 }
 
-class news_screen extends State<News_screen> {
+class _NewsScreenState extends State<NewsScreen> {
+  final ScrollController _scrollController = ScrollController();
 
-  final _scrollController = ScrollController();
+  late final NewsPostBloc _newsPostBloc;
 
-  final NewsPostBloc _newsPostBloc = NewsPostBloc(httpClient: http.Client());
+  static const double _scrollThreshold = 200.0;
 
-  final _scrollThreshold = 200.0;
+  bool _isRequestInProgress = false;
 
-  news_screen() {
+  @override
+  void initState() {
+    super.initState();
+
+    _newsPostBloc = NewsPostBloc(dio: Dio());
+
     _scrollController.addListener(_onScroll);
-    /**The method 'dispatch' isn't defined for the type 'NewsPostBloc'.
-Try correcting the name to the name of an existing method, or defining a method named 'dispatch'. */
-    _newsPostBloc.add(Fetch());
+
+    _isRequestInProgress = true;
+    _newsPostBloc.add(const Fetch());
   }
 
   @override
   void dispose() {
-    /**The method 'dispose' isn't defined for the type 'NewsPostBloc'.
-Try correcting the name to the name of an existing method, or defining a method named 'dispose'. */
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+
     _newsPostBloc.close();
+
     super.dispose();
   }
 
   void _onScroll() {
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.position.pixels;
+    if (!_scrollController.hasClients || _isRequestInProgress) {
+      return;
+    }
+
+    final double maxScroll = _scrollController.position.maxScrollExtent;
+    final double currentScroll = _scrollController.position.pixels;
+
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      _newsPostBloc.add(Fetch());
+      _isRequestInProgress = true;
+      _newsPostBloc.add(const Fetch());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('News', style: TextStyle(fontSize: 20.0)),
-        elevation: 0.0,
+        elevation: 0,
+        title: const Text('News', style: TextStyle(fontSize: 20)),
       ),
-      body: Container(
-        margin: EdgeInsets.only(top: 5.0),
-        child: BlocBuilder<NewsPostBloc, PostState>(
-          bloc: _newsPostBloc,
-          builder: (BuildContext context, PostState state) {
-            if (state is PostUninitialized) {
-              return Center(child: CircularProgressIndicator());
-            }
+      body: BlocConsumer<NewsPostBloc, PostState>(
+        bloc: _newsPostBloc,
+        listener: (context, state) {
+          if (state is NewsLoaded || state is PostError) {
+            _isRequestInProgress = false;
+          }
+        },
+        builder: (context, state) {
+          if (state is PostUninitialized || state is PostLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (state is PostError) {
-              return Center(child: Text('Failed to fetch news posts'));
-            }
+          if (state is PostError) {
+            return Center(child: Text(state.message));
+          }
 
-            if (state is NewsLoaded) {
-              if (state.posts.isEmpty) {
-                return Center(child: Text('No news'));
+          if (state is! NewsLoaded) {
+            return const SizedBox.shrink();
+          }
+
+          if (state.posts.isEmpty) {
+            return const Center(child: Text('No news'));
+          }
+
+          final bool showLoadingIndicator = !state.hasReachedMax;
+
+          return ListView.builder(
+            controller: _scrollController,
+            itemCount: state.posts.length + (showLoadingIndicator ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index >= state.posts.length) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(child: CircularProgressIndicator()),
+                );
               }
 
-              return ListView.builder(
-                itemCount: state.posts.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return NewsWidget(news: state.posts[index]);
-                },
-                controller: _scrollController,
-              );
-            }
-
-            // ✅ IMPORTANTE: fallback obligatorio
-            return SizedBox();
-          },
-        ),
+              return NewsWidget(news: state.posts[index]);
+            },
+          );
+        },
       ),
     );
   }
@@ -95,7 +120,7 @@ Try correcting the name to the name of an existing method, or defining a method 
 class NewsWidget extends StatelessWidget {
   final News news;
 
-  const NewsWidget({Key? key, required this.news}) : super(key: key);
+  const NewsWidget({super.key, required this.news});
 
   @override
   Widget build(BuildContext context) {
@@ -104,42 +129,55 @@ class NewsWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NewsDescription(news)),
+            MaterialPageRoute(builder: (_) => NewsDescription(news)),
           );
         },
         child: Padding(
-          padding: EdgeInsets.all(2.0),
-          child: Container(
-            height: 220.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: NetworkImage('${news.imageurl}'),
-              ),
-            ),
+          padding: const EdgeInsets.all(2),
+          child: SizedBox(
+            height: 220,
             child: Stack(
-              children: <Widget>[
-                new Container(color: Colors.black54),
-                new Padding(
-                  padding: EdgeInsets.all(5.0),
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      news.source.toUpperCase(),
-                      maxLines: 2,
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    ),
+              fit: StackFit.expand,
+              children: [
+                Image.network(
+                  news.imageurl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) {
+                    return Container(
+                      color: Colors.grey.shade800,
+                      child: const Center(
+                        child: Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Colors.white,
+                          size: 42,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Container(color: Colors.black54),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  left: 8,
+                  child: Text(
+                    news.source.toUpperCase(),
+                    maxLines: 2,
+                    textAlign: TextAlign.right,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
                 Positioned(
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    padding: EdgeInsets.all(5.0),
-                    child: Text(
-                      news.title,
-                      maxLines: 2,
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
+                  right: 8,
+                  bottom: 8,
+                  left: 8,
+                  child: Text(
+                    news.title,
+                    maxLines: 3,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
               ],

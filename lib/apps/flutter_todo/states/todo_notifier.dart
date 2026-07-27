@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_erp/apps/flutter_todo/widgets/helpers/priority_helper.dart';
 import '../models/todo_extensions.dart';
@@ -56,10 +56,8 @@ class TodoNotifier extends Notifier<TodoState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      final res = await http.get(
-        Uri.parse(
-          '', //'${Configure.FirebaseUrl}/todos.json?auth=${_user.token}&orderBy="userId"&equalTo="${_user.id}"',
-        ),
+      final res = await Dio().get(
+        '', //'${Configure.FirebaseUrl}/todos.json?auth=${_user.token}&orderBy="userId"&equalTo="${_user.id}"',
       );
 
       if (res.statusCode != 200 && res.statusCode != 201) {
@@ -67,7 +65,9 @@ class TodoNotifier extends Notifier<TodoState> {
         return;
       }
 
-      final data = json.decode(res.body) as Map<String, dynamic>?;
+      final data = res.data is String
+          ? json.decode(res.data)
+          : res.data as Map<String, dynamic>?;
 
       if (data == null) {
         state = state.copyWith(isLoading: false);
@@ -115,11 +115,10 @@ class TodoNotifier extends Notifier<TodoState> {
         'userId': _user.id,
       };
 
-      final res = await http.post(
-        Uri.parse(
-          '', //'${Configure.FirebaseUrl}/todos.json?auth=${_user.token}'
-        ),
-        body: json.encode(form),
+      final res = await Dio().post(
+        '', //'${Configure.FirebaseUrl}/todos.json?auth=${_user.token}'
+
+        data: json.encode(form),
       );
 
       if (res.statusCode != 200 && res.statusCode != 201) {
@@ -127,7 +126,7 @@ class TodoNotifier extends Notifier<TodoState> {
         return false;
       }
 
-      final data = json.decode(res.body);
+      final data = json.decode(res.data);
 
       final newTodo = Todo(
         id: data['name'],
@@ -173,11 +172,10 @@ class TodoNotifier extends Notifier<TodoState> {
         'userId': _user.id,
       };
 
-      final res = await http.put(
-        Uri.parse(
-          '', //'${Configure.FirebaseUrl}/todos/${current.id}.json?auth=${_user.token}',
-        ),
-        body: json.encode(form),
+      final res = await Dio().put(
+        '', //'${Configure.FirebaseUrl}/todos/${current.id}.json?auth=${_user.token}',
+
+        data: json.encode(form),
       );
 
       if (res.statusCode != 200 && res.statusCode != 201) {
@@ -223,10 +221,8 @@ class TodoNotifier extends Notifier<TodoState> {
     state = state.copyWith(todos: filtered);
 
     try {
-      final res = await http.delete(
-        Uri.parse(
-          '', //'${Configure.FirebaseUrl}/todos/$id.json?auth=${_user.token}'
-        ),
+      final res = await Dio().delete(
+        '', //'${Configure.FirebaseUrl}/todos/$id.json?auth=${_user.token}'
       );
 
       if (res.statusCode != 200 && res.statusCode != 201) {
@@ -260,11 +256,10 @@ class TodoNotifier extends Notifier<TodoState> {
         'userId': _user.id,
       };
 
-      final res = await http.put(
-        Uri.parse(
-          '', //'${Configure.FirebaseUrl}/todos/$id.json?auth=${_user.token}'
-        ),
-        body: json.encode(form),
+      final res = await Dio().put(
+        '', //'${Configure.FirebaseUrl}/todos/$id.json?auth=${_user.token}'
+
+        data: json.encode(form),
       );
 
       if (res.statusCode != 200 && res.statusCode != 201) {

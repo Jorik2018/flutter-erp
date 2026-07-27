@@ -19,7 +19,7 @@ class ShippingAddressRepositoryImpl implements ShippingAddressRepository {
 
   @override
   Future<List<ShippingAddressModel>> getShippingAddressList() async {
-    if (dataStorage.shippingAddresses?.isEmpty) {
+    if (dataStorage.shippingAddresses.isEmpty) {
       FakeShippingAddressRepository repo = FakeShippingAddressRepository();
       dataStorage.shippingAddresses = await repo.getShippingAddressList();
     }

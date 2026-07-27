@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rate_my_app/rate_my_app.dart';
+//import 'package:rate_my_app/rate_my_app.dart';
 
 class feedBack extends StatefulWidget {
   feedBack({Key? key, this.title}) : super(key: key);
@@ -11,7 +11,7 @@ class feedBack extends StatefulWidget {
 }
 
 class _feedBackState extends State<feedBack> {
-  RateMyApp _rateMyApp = RateMyApp(
+  /*RateMyApp _rateMyApp = RateMyApp(
     preferencesPrefix: 'rateMyApp_',
     minDays: 3,
     minLaunches: 7,
@@ -19,12 +19,12 @@ class _feedBackState extends State<feedBack> {
     remindLaunches: 5,
     // appStoreIdentifier: '',
     // googlePlayIdentifier: '',
-  );
+  );*/
 
   @override
   void initState() {
     super.initState();
-    _rateMyApp.init().then((_) {
+    /*_rateMyApp.init().then((_) {
       // TODO: Comment out this if statement to test rating dialog (Remember to uncomment)
       // if (_rateMyApp.shouldOpenDialog) {
       _rateMyApp.showStarRateDialog(
@@ -37,8 +37,8 @@ class _feedBackState extends State<feedBack> {
               child: Text('Ok'),
               onPressed: () {
                 if (stars != null) {
-                  _rateMyApp.doNotOpenAgain = true;
-                  _rateMyApp.save().then((v) => Navigator.pop(context));
+                  //_rateMyApp.doNotOpenAgain = true;
+                 // _rateMyApp.save().then((v) => Navigator.pop(context));
 
                   if (stars <= 3) {
                     print('Navigate to Contact Us Screen');
@@ -67,11 +67,11 @@ class _feedBackState extends State<feedBack> {
         starRatingOptions: StarRatingOptions(),
       );
       // }
-    });
+    });*/
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(widget.title)));
+    return Scaffold(appBar: AppBar(title: Text(widget.title!)));
   }
 }

@@ -8,7 +8,7 @@ import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/prof
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsRepository settingsRepository;
 
-  SettingsBloc({@required this.settingsRepository})
+  SettingsBloc({required this.settingsRepository})
     : assert(settingsRepository != null),
       super(
         SettingsInitialState(
@@ -34,7 +34,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } catch (error) {
         yield ChangeSettingsErrorState(
           settings: newSettings,
-          errorMessage: error,
+          errorMessage: error.toString(),
         );
       }
     } else if (event is UpdateDateOfBirthEvent) {
@@ -45,7 +45,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } catch (error) {
         yield ChangeSettingsErrorState(
           settings: newSettings,
-          errorMessage: error,
+          errorMessage: error.toString(),
         );
       }
     } else if (event is UpdateNotifySalesEvent) {
@@ -56,7 +56,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } catch (error) {
         yield ChangeSettingsErrorState(
           settings: newSettings,
-          errorMessage: error,
+          errorMessage: error.toString(),
         );
       }
     } else if (event is UpdateNotifyArrivalsEvent) {
@@ -69,7 +69,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } catch (error) {
         yield ChangeSettingsErrorState(
           settings: newSettings,
-          errorMessage: error,
+          errorMessage: error.toString(),
         );
       }
     } else if (event is UpdateNotifyDeliveryEvent) {
@@ -82,7 +82,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } catch (error) {
         yield ChangeSettingsErrorState(
           settings: newSettings,
-          errorMessage: error,
+          errorMessage: error.toString(),
         );
       }
     }

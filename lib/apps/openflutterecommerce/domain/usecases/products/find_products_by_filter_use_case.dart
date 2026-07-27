@@ -45,16 +45,16 @@ class FindProductsByFilterUseCaseImpl implements FindProductsByFilterUseCase {
   }
 
   Future<List<Product>> _findProductsByFilter(
-    ProductsByFilterParams params,
+    ProductsByFilterParams? params,
   ) async {
-    List<Product> products;
-    if (params.filterByCategory) {
+    List<Product>? products;
+    if (params!.filterByCategory) {
       ProductRepository productRepository = sl();
       products = await productRepository.getProducts(
-        categoryId: params.categoryId,
+        categoryId: params.categoryId!,
       );
     }
-    return products;
+    return products!;
   }
 }
 

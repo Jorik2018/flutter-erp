@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 
 class BaseProductTile extends StatelessWidget {
-  final VoidCallback onClick;
-  final String inactiveMessage;
-  final Widget bottomRoundButton;
+  final VoidCallback? onClick;
+  final String? inactiveMessage;
+  final Widget? bottomRoundButton;
   final ImageProvider image;
   final WidgetBuilder mainContentBuilder;
-  final String specialMark;
-  final VoidCallback onRemove;
+  final String? specialMark;
+  final VoidCallback? onRemove;
   final double imageHeight;
   final double imageWidth;
   final double tileHeight;
@@ -18,8 +18,8 @@ class BaseProductTile extends StatelessWidget {
     this.onClick,
     this.inactiveMessage,
     this.bottomRoundButton,
-    this.image,
-    this.mainContentBuilder,
+    required this.image,
+    required this.mainContentBuilder,
     this.imageHeight = 184,
     this.imageWidth = AppSizes.tile_width,
     this.tileHeight = AppSizes.tile_height,
@@ -61,7 +61,9 @@ class BaseProductTile extends StatelessWidget {
                     padding: EdgeInsets.all(4),
                     child: mainContentBuilder(context),
                   ),
-                  inactiveMessage == null ? Container() : Text(inactiveMessage),
+                  inactiveMessage == null
+                      ? Container()
+                      : Text(inactiveMessage!),
                 ],
               ),
             ),
@@ -70,7 +72,7 @@ class BaseProductTile extends StatelessWidget {
                 : Positioned(
                     top: imageHeight - 24,
                     right: 0,
-                    child: bottomRoundButton,
+                    child: bottomRoundButton!,
                   ),
             specialMark == null
                 ? Container()
@@ -88,8 +90,8 @@ class BaseProductTile extends StatelessWidget {
                             : AppColors.black,
                       ),
                       child: Text(
-                        specialMark,
-                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        specialMark!,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: AppColors.white,
                           fontWeight: FontWeight.bold,
                         ),

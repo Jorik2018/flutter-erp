@@ -22,7 +22,7 @@ class HomeAddToFavoriteEvent extends HomeEvent {
   final bool isFavorite;
   final Product product;
 
-  HomeAddToFavoriteEvent({this.isFavorite, this.product});
+  HomeAddToFavoriteEvent({required this.isFavorite, required this.product});
 
   @override
   List<Object> get props => [isFavorite, product];

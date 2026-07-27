@@ -3,21 +3,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'main.dart';
-import 'code_page.dart';
 
-class Settings extends StatefulWidget {
+class SettingsPage extends StatefulWidget {
   @override
-  _SettingsState createState() => new _SettingsState();
+  _SettingsState createState() => _SettingsState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsState extends State<SettingsPage> {
   int _selected = 0;
-  bool val;
+  bool? val;
   bool _callpermissionValue = false;
-  Future<bool> perm;
-  DocumentReference clientRefer = Firestore.instance
+  Future<bool>? perm;
+  DocumentReference clientRefer = FirebaseFirestore.instance
       .collection('data')
-      .document('$clientDocRef');
+      .doc('$clientDocRef');
   void onChanged(int value) {
     setState(() {
       _selected = value;
@@ -43,7 +42,7 @@ class _SettingsState extends State<Settings> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       if (pref.getBool('callPerm') != null) {
-        _callpermissionValue = pref.getBool('callPerm');
+        _callpermissionValue = pref.getBool('callPerm')!;
       } else {
         _callpermissionValue == false;
       }
@@ -64,7 +63,7 @@ class _SettingsState extends State<Settings> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
       if (pref.getInt('mapType') != null) {
-        _selected = pref.getInt('mapType');
+        _selected = pref.getInt('mapType')!;
       } else
         _selected == 0;
     });
@@ -83,12 +82,12 @@ class _SettingsState extends State<Settings> {
     Map<String, bool> data = <String, bool>{"disableCall": enable};
     setState(() {
       clientRefer
-          .updateData(data)
+          .update(data)
           .whenComplete(() {
             print('permission updated to $enable');
           })
           .catchError((e) => print(e));
-      print(clientRefer.documentID);
+      print(clientRefer.id);
     });
   }
 
@@ -97,14 +96,14 @@ class _SettingsState extends State<Settings> {
     super.initState();
     _getCallPermission();
     _getMapTypeLocal();
-    print('reference' + clientRefer.documentID);
+    print('reference' + clientRefer.id);
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     //_updateCallPemission(_callpermissionValue);
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(title: Text('Настройки')),
       body: ListView(
         padding: const EdgeInsets.all(15.0),
@@ -121,8 +120,8 @@ class _SettingsState extends State<Settings> {
                 trailing: Radio(
                   value: 0,
                   groupValue: _selected,
-                  onChanged: (int value) {
-                    onChanged(value);
+                  onChanged: (value) {
+                    onChanged(value!);
                   },
                 ),
                 title: Text('Карта'),
@@ -131,8 +130,8 @@ class _SettingsState extends State<Settings> {
                 trailing: Radio(
                   value: 1,
                   groupValue: _selected,
-                  onChanged: (int value) {
-                    onChanged(value);
+                  onChanged: (value) {
+                    onChanged(value!);
                   },
                 ),
                 title: Text('Гибрид'),

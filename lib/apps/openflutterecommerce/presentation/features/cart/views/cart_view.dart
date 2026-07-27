@@ -39,23 +39,14 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    var _theme = Theme.of(context);
     var width = MediaQuery.of(context).size.width;
     final bloc = BlocProvider.of<CartBloc>(context);
     return BlocListener<CartBloc, CartState>(
       listener: (context, state) {
-        if (state is CartErrorState) {
-          return Container(
-            padding: EdgeInsets.all(AppSizes.sidePadding),
-            child: Text(
-                  'An error occurred',
-              style: _theme.textTheme.headlineLarge.copyWith(
-                color: _theme.errorColor,
-              ),
-            ),
-          );
+        /*if (state is CartErrorState) {
+          return Container(child: Text('An error occurred'));
         }
-        return Container();
+        return Container();*/
       },
       child: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
@@ -76,7 +67,7 @@ class _CartViewState extends State<CartView> {
                       ),
                       OpenFlutterInputButton(
                         placeHolder: state.appliedPromo != null
-                            ? state.appliedPromo.promoCode
+                            ? state.appliedPromo!.promoCode
                             : 'Enter your promo code',
                         controller: _promoController,
                         width: width,
@@ -94,12 +85,12 @@ class _CartViewState extends State<CartView> {
                                   title: 'Subtotal:',
                                   summary:
                                       '\$' +
-                                      state.totalPrice?.toStringAsFixed(2),
+                                      state.totalPrice!.toStringAsFixed(2),
                                 ),
                                 OpenFlutterSummaryLine(
                                   title: 'Discount percent:',
                                   summary:
-                                      state.appliedPromo.discount
+                                      state.appliedPromo!.discount
                                           .toStringAsFixed(0) +
                                       '%',
                                 ),
@@ -107,14 +98,14 @@ class _CartViewState extends State<CartView> {
                                   title: 'Total amount:',
                                   summary:
                                       '\$' +
-                                      state.calculatedPrice?.toStringAsFixed(2),
+                                      state.calculatedPrice!.toStringAsFixed(2),
                                 ),
                               ],
                             )
                           : OpenFlutterSummaryLine(
                               title: 'Subtotal:',
                               summary:
-                                  '\$' + state.totalPrice?.toStringAsFixed(2),
+                                  '\$' + state.totalPrice!.toStringAsFixed(2),
                             ),
                       Padding(
                         padding: EdgeInsets.only(

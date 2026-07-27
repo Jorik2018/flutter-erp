@@ -35,10 +35,12 @@ class _AuthPageState extends State<AuthPage> {
             Container(
               height: myDim.height * 0.70,
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Colors.transparent, Colors.black],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter)),
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
             ),
             _buildInteractionScreen(context),
             _isLoading
@@ -50,13 +52,14 @@ class _AuthPageState extends State<AuthPage> {
                       child: SizedBox(
                         child: CircularProgressIndicator(
                           strokeWidth: 2.0,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(kColorPrimary),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            kColorPrimary,
+                          ),
                         ),
                       ),
                     ),
                   )
-                : SizedBox.shrink()
+                : SizedBox.shrink(),
           ],
         ),
       ),
@@ -73,59 +76,56 @@ class _AuthPageState extends State<AuthPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            height: myDim.height * 0.15,
-          ),
-          Image.asset(
-            'assets/images/logo.png',
-            scale: 11,
-          ),
+          SizedBox(height: myDim.height * 0.15),
+          Image.asset('assets/images/logo.png', scale: 11),
           Text(
             'Because anything can happen over a chat.',
             textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .headline5
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.headlinelarge!.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 10.0),
           Container(
             width: double.infinity,
             child: ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) => kColorPrimary),
+                  (Set<MaterialState> states) => kColorPrimary,
+                ),
               ),
               onPressed: _isLoading ? null : () => _signInWithEmail(context),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Text(
                   'Sign in Free',
-                  style: Theme.of(context).textTheme.subtitle1.copyWith(
-                        color: Colors.white,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.subtitle1.copyWith(color: Colors.white),
                 ),
               ),
             ),
           ),
-          buildSocialLoginButton(context,
-              icon: Icon(
-                Icons.phone_android_outlined,
-                color: Colors.white,
-              ),
-              text: 'Continue with phone number', onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (c) => PhoneLoginPage.create()));
-          }),
-          buildSocialLoginButton(context,
-              icon: Image.asset(
-                'assets/images/google-logo.png',
-              ),
-              text: 'Continue with Google',
-              onPressed: () => _isLoading ? null : _signInWithGoogle()),
+          buildSocialLoginButton(
+            context,
+            icon: Icon(Icons.phone_android_outlined, color: Colors.white),
+            text: 'Continue with phone number',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (c) => PhoneLoginPage.create(),
+                ),
+              );
+            },
+          ),
+          buildSocialLoginButton(
+            context,
+            icon: Image.asset('assets/images/google-logo.png'),
+            text: 'Continue with Google',
+            onPressed: () => _isLoading ? null : _signInWithGoogle(),
+          ),
           buildSocialLoginButton(
             context,
             icon: Image.asset(
@@ -144,47 +144,48 @@ class _AuthPageState extends State<AuthPage> {
     return Container(
       height: myDim.height * 0.70,
       decoration: BoxDecoration(
-          image: DecorationImage(
-              alignment: Alignment.topCenter,
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/login_bg.jpg'))),
+        image: DecorationImage(
+          alignment: Alignment.topCenter,
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/login_bg.jpg'),
+        ),
+      ),
     );
   }
 
-  Widget buildSocialLoginButton(BuildContext context,
-      {@required Widget icon,
-      @required String text,
-      @required Function onPressed}) {
+  Widget buildSocialLoginButton(
+    BuildContext context, {
+    @required Widget icon,
+    @required String text,
+    @required Function onPressed,
+  }) {
     return GestureDetector(
       onTap: onPressed,
       child: icon == null
           ? Text(
               text,
-              style: Theme.of(context).textTheme.subtitle1.copyWith(
-                    color: Colors.white,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.subtitle1.copyWith(color: Colors.white),
             )
           : Container(
               padding: EdgeInsets.symmetric(vertical: myDim.height * 0.015),
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                border: Border.all(color: Colors.white),
+                borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              ),
               child: Row(
                 children: [
-                  SizedBox(
-                    width: myDim.width * 0.07,
-                  ),
+                  SizedBox(width: myDim.width * 0.07),
                   Container(width: 23.0, height: 23.0, child: icon),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
+                  const SizedBox(width: 10.0),
                   Expanded(
                     child: Text(
                       text,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            color: Colors.white,
-                          ),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.subtitle1.copyWith(color: Colors.white),
                     ),
                   ),
                 ],
@@ -232,16 +233,18 @@ class _AuthPageState extends State<AuthPage> {
 
   void _signInWithEmail(BuildContext context) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            fullscreenDialog: true,
-            builder: (context) => EmailSignInManager(
-                  type: EmailSignInFormType.signIn,
-                  toLink: _toLinkFb,
-                  linkType: LinkType.fb,
-                  previousEmail: _emailToLink,
-                  creds: _credsToLink,
-                )));
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => EmailSignInManager(
+          type: EmailSignInFormType.signIn,
+          toLink: _toLinkFb,
+          linkType: LinkType.fb,
+          previousEmail: _emailToLink,
+          creds: _credsToLink,
+        ),
+      ),
+    );
   }
 
   void showErrorDialog(PlatformException e) {

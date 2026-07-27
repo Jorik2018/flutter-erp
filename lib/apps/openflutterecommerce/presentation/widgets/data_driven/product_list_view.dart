@@ -43,7 +43,7 @@ class OpenFlutterProductListView extends StatelessWidget {
                     arguments: ProductDetailsParameters(
                       product.id,
                       product.categories.isNotEmpty
-                          ? product.categories[0].id
+                          ? product.categories[0].id!
                           : 0,
                     ),
                   );

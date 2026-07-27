@@ -14,9 +14,9 @@ import 'package:flutter_erp/apps/openflutterecommerce/presentation/features/wrap
 import 'package:flutter_erp/apps/openflutterecommerce/presentation/widgets/widgets.dart';
 
 class Main2View extends StatefulWidget {
-  final Function changeView;
-  final List<Product> salesProducts;
-  final List<Product> newProducts;
+  final Function? changeView;
+  final List<Product>? salesProducts;
+  final List<Product>? newProducts;
 
   const Main2View({
     Key? key,
@@ -56,7 +56,9 @@ class _Main2ViewState extends State<Main2View> {
                   width: width,
                   child: Text(
                     'Street clothes',
-                    style: _theme.textTheme.headline5.copyWith(fontSize: 34),
+                    style: _theme.textTheme.headlineLarge!.copyWith(
+                      fontSize: 34,
+                    ),
                   ),
                 ),
               ],
@@ -76,7 +78,7 @@ class _Main2ViewState extends State<Main2View> {
           ),
           OpenFlutterProductListView(
             width: widgetWidth,
-            products: widget.salesProducts,
+            products: widget.salesProducts!,
             onFavoritesTap: ((Product product) => {
               BlocProvider.of<HomeBloc>(context).add(
                 HomeAddToFavoriteEvent(
@@ -101,7 +103,7 @@ class _Main2ViewState extends State<Main2View> {
           ),
           OpenFlutterProductListView(
             width: widgetWidth,
-            products: widget.newProducts,
+            products: widget.newProducts!,
             onFavoritesTap: ((Product product) => {
               BlocProvider.of<HomeBloc>(context).add(
                 HomeAddToFavoriteEvent(
@@ -116,7 +118,7 @@ class _Main2ViewState extends State<Main2View> {
             width: 160,
             height: 48,
             onPressed: (() =>
-                widget.changeView(changeType: ViewChangeType.Forward)),
+                widget.changeView!(changeType: ViewChangeType.Forward)),
           ),
         ],
       ),

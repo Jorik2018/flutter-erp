@@ -8,26 +8,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'profile_page.dart';
 import 'package:flutter_erp/apps/taxiservice/helpers/dialog_boxes.dart';
 
-final codeController = new TextEditingController();
-String newPhoneNumber;
+final codeController = TextEditingController();
+String? newPhoneNumber;
 
 class CodePage extends StatefulWidget {
   @override
-  State createState() => new CodePageState();
+  State createState() => CodePageState();
 }
 
 class CodePageState extends State<CodePage> with TickerProviderStateMixin {
-  final GlobalKey<FormState> _codeFormKey = new GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _codePageScaffold =
-      new GlobalKey<ScaffoldState>();
-  final CollectionReference colRef = Firestore.instance.collection('data');
-  StreamSubscription<DocumentSnapshot> subscription;
-  AnimationController _loginButtonController;
-  Animation<double> buttonSqueezeAnimation;
-  Animation<double> buttonZoomOut;
-  Animation<Color> fadeScreenAnimation;
-  DocumentReference clienId;
-  String currentPhoneNumber;
+  final GlobalKey<FormState> _codeFormKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _codePageScaffold = GlobalKey<ScaffoldState>();
+  final CollectionReference colRef = FirebaseFirestore.instance.collection(
+    'data',
+  );
+  StreamSubscription<DocumentSnapshot>? subscription;
+  late AnimationController _loginButtonController;
+  late Animation<double> buttonSqueezeAnimation;
+  late Animation<double> buttonZoomOut;
+  late Animation<Color> fadeScreenAnimation;
+  late DocumentReference clienId;
+  String? currentPhoneNumber;
 
   saveRegistred(bool value) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -36,9 +37,9 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
   }
 
   void _addUser() {
-    clienId = colRef.document();
+    clienId = colRef.doc();
     clienId
-        .setData({
+        .set({
           "userName": nameController.text,
           "disableCall": false,
           "phoneNumber": '+998' + numberController.text,
@@ -53,8 +54,8 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('userName', nameController.text);
     pref.setString('phoneNumber', '+998' + numberController.text);
-    pref.setString('userId', clienId.documentID);
-    print(clienId.documentID);
+    //pref.setString('userId', clienId.documentID);
+    //print(clienId.documentID);
     print('user saved localy');
   }
 
@@ -76,33 +77,30 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     print('create $createnewProfile hklk');
-    _loginButtonController = new AnimationController(
+    _loginButtonController = AnimationController(
       duration: Duration(milliseconds: 1000),
       vsync: this,
     );
-    buttonSqueezeAnimation = new Tween(begin: 320.0, end: 70.0).animate(
-      new CurvedAnimation(
+    buttonSqueezeAnimation = Tween(begin: 320.0, end: 70.0).animate(
+      CurvedAnimation(
         parent: _loginButtonController,
         curve: Interval(0.0, 0.150),
       ),
     );
-    buttonZoomOut = new Tween(begin: 70.0, end: 1000.0).animate(
-      new CurvedAnimation(
+    buttonZoomOut = Tween(begin: 70.0, end: 1000.0).animate(
+      CurvedAnimation(
         parent: _loginButtonController,
         curve: Interval(0.550, 0.550, curve: Curves.bounceOut),
       ),
     );
 
-    fadeScreenAnimation =
-        new ColorTween(
+    /*fadeScreenAnimation =
+        ColorTween(
           begin: const Color.fromRGBO(33, 150, 243, 1.0),
           end: const Color.fromRGBO(33, 150, 243, 0.0),
         ).animate(
-          new CurvedAnimation(
-            parent: _loginButtonController,
-            curve: Curves.ease,
-          ),
-        );
+          CurvedAnimation(parent: _loginButtonController, curve: Curves.ease),
+        );*/
 
     _loginButtonController.addListener(() {
       if (_loginButtonController.isCompleted) {
@@ -114,7 +112,7 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
         );
       }
     });
-    if (createnewProfile) {
+    if (createnewProfile!) {
       currentPhoneNumber = '+998' + numberController.text;
     } else {
       currentPhoneNumber = newData.text;
@@ -135,7 +133,7 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     // TODO: implement build
 
-    return new Scaffold(
+    return Scaffold(
       key: _codePageScaffold,
       appBar: AppBar(title: Text('Taxi Service')),
       body: Padding(
@@ -153,7 +151,7 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
                   child: Text(
                     buttonZoomOut.value == 70
                         ? 'Введите код, который вы получили на номер ' +
-                              currentPhoneNumber
+                              currentPhoneNumber!
                         : '',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey, height: 1.2),
@@ -164,7 +162,7 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
                   height: buttonZoomOut.value == 70 ? 50.0 : 0.0,
                   child: TextFormField(
                     validator: (value) {
-                      if (value.isEmpty) {
+                      if (value!.isEmpty) {
                         return 'введите отправленный код';
                       } else if (value != randomCode) {
                         print('option 2');
@@ -191,9 +189,9 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
                 InkWell(
                   onTap: () {
                     print('EditMode $createnewProfile');
-                    if (_codeFormKey.currentState.validate()) {
+                    if (_codeFormKey.currentState!.validate()) {
                       if (codeController.text == randomCode) {
-                        if (!createnewProfile) {
+                        if (!createnewProfile!) {
                           editPhoneNumber(newData.text);
                           editPhoneNumberLocally(newData.text);
                           print('data updated to ' + newData.text);
@@ -226,19 +224,19 @@ class CodePageState extends State<CodePage> with TickerProviderStateMixin {
                       decoration: BoxDecoration(
                         color: const Color.fromRGBO(33, 150, 243, 1.0),
                         borderRadius: buttonZoomOut.value < 300
-                            ? new BorderRadius.all(const Radius.circular(10.0))
+                            ? BorderRadius.all(const Radius.circular(10.0))
                             : BorderRadius.all(const Radius.circular(0.0)),
                       ),
                       child: buttonSqueezeAnimation.value > 75.0
-                          ? new Text(
+                          ? Text(
                               "Продолжить",
                               style: TextStyle(color: Colors.white),
                             )
                           : buttonZoomOut.value < 300.0
-                          ? new CircularProgressIndicator(
+                          ? CircularProgressIndicator(
                               value: null,
                               strokeWidth: 1.0,
-                              valueColor: new AlwaysStoppedAnimation<Color>(
+                              valueColor: AlwaysStoppedAnimation<Color>(
                                 Colors.white,
                               ),
                             )

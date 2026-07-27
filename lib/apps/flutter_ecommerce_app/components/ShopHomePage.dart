@@ -6,7 +6,7 @@ import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/CircularPro
 import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/GridTilesCategory.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/models/ShopModel.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/utils/Urls.dart';
-import 'package:http/http.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 
 ShopModel? shopModel;
 
@@ -14,7 +14,7 @@ class ShopHomePage extends StatefulWidget {
   String? slug;
   bool? isSubList;
 
-  ShopHomePage({Key? key, this.slug, this.isSubList=false}) : super(key: key);
+  ShopHomePage({Key? key, this.slug, this.isSubList = false}) : super(key: key);
   @override
   _ShopHomePageState createState() => _ShopHomePageState();
 }
@@ -49,9 +49,12 @@ Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
     childAspectRatio: 8.0 / 9.0,
     children: List<Widget>.generate(results.length, (index) {
       return GridTile(
-          child: GridTilesCategory(
-              name: results[index].shopName,
-              imageUrl: results[index].shopImage,slug:results[index].slug));
+        child: GridTilesCategory(
+          name: results[index].shopName,
+          imageUrl: results[index].shopImage,
+          slug: results[index].slug,
+        ),
+      );
     }),
   );
 }
@@ -61,14 +64,13 @@ Future<ShopModel?> getCategoryList(String slug, bool isSubList) async {
     shopModel = null;
   }
   if (shopModel == null) {
-    Response response =
-        await get(Uri.parse(Urls.ROOT_URL + slug));
+    HttpResponse response = await HttpClient.get(Urls.ROOT_URL + slug);
     int statusCode = response.statusCode;
-    var body = json.decode(response.body);
+    var body = json.decode(response.body!);
     log('${body}');
     if (statusCode == 200) {
       shopModel = ShopModel.fromJson(body);
-//    brandModel = (body).map((i) =>BrandModel.fromJson(body)) ;
+      //    brandModel = (body).map((i) =>BrandModel.fromJson(body)) ;
       return shopModel!;
     }
   } else {

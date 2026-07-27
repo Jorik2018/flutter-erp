@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'dart:convert';
 
 class GoogleMapsServices {
   Future<String> getRouteCoordinates(
-      String apiKey, LatLng l1, LatLng l2) async {
+    String apiKey,
+    LatLng l1,
+    LatLng l2,
+  ) async {
     String url =
         "https://maps.googleapis.com/maps/api/directions/json?origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$apiKey";
-    http.Response response = await http.get(url);
-    Map values = jsonDecode(response.body);
+    Response response = await Dio().get(url);
+    Map values = jsonDecode(response.data);
     return values["routes"][0]["overview_polyline"]["points"];
   }
 
@@ -25,15 +28,16 @@ class GoogleMapsServices {
 
   Polyline createRoute(String encondedPoly, LatLng latLng) {
     return Polyline(
-        polylineId: PolylineId(latLng.toString()),
-        width: 4,
-        points: _convertToLatLng(_decodePoly(encondedPoly)),
-        color: Colors.red);
+      polylineId: PolylineId(latLng.toString()),
+      width: 4,
+      points: _convertToLatLng(_decodePoly(encondedPoly)),
+      color: Colors.red,
+    );
   }
 
   List _decodePoly(String poly) {
     var list = poly.codeUnits;
-    var lList = new List();
+    var lList = [];
     int index = 0;
     int len = poly.length;
     int c = 0;

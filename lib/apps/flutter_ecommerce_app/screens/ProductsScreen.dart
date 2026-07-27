@@ -6,14 +6,14 @@ import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/CircularPro
 import 'package:flutter_erp/apps/flutter_ecommerce_app/common_widget/GridTilesProducts.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/models/ProductsModel.dart';
 import 'package:flutter_erp/apps/flutter_ecommerce_app/utils/Urls.dart';
-import 'package:http/http.dart';
+import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 
 class ProductsScreen extends StatefulWidget {
   String name;
   String slug;
 
   ProductsScreen({Key? key, required this.name, required this.slug})
-      : super(key: key);
+    : super(key: key);
 
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
@@ -26,11 +26,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
       /**The argument type 'Widget' can't be assigned to the parameter type 'PreferredSizeWidget?'. */
       appBar: appBarWidget(context),
       body: Container(
-          alignment: Alignment.topLeft,
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: ProductListWidget(
-            slug: widget.slug,
-          )),
+        alignment: Alignment.topLeft,
+        padding: EdgeInsets.only(left: 10, right: 10),
+        child: ProductListWidget(slug: widget.slug),
+      ),
     );
   }
 }
@@ -67,10 +66,9 @@ Future<ProductsModels?> getProductList(String slug, bool isSubList) async {
     products = null;
   }
   if (products == null) {
-    Response response;
-    response = await get(Uri.parse(Urls.ROOT_URL + slug));
+    HttpResponse response = await HttpClient.get(Urls.ROOT_URL + slug);
     int statusCode = response.statusCode;
-    final body = json.decode(response.body);
+    final body = json.decode(response.body!);
     if (statusCode == 200) {
       products = ProductsModels.fromJson(body);
       return products;
@@ -87,17 +85,18 @@ Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
   List<Results> results = values.results!;
   return GridView.count(
     crossAxisCount: 2,
-//    physics: NeverScrollableScrollPhysics(),
+    //    physics: NeverScrollableScrollPhysics(),
     padding: EdgeInsets.all(1.0),
     childAspectRatio: 8.0 / 12.0,
     children: List<Widget>.generate(results.length, (index) {
       return GridTile(
-          child: GridTilesProducts(
-        name: results[index].name,
-        imageUrl: results[index].imageUrls[0],
-        slug: results[index].slug,
-        price: results[index].maxPrice,
-      ));
+        child: GridTilesProducts(
+          name: results[index].name,
+          imageUrl: results[index].imageUrls[0],
+          slug: results[index].slug,
+          price: results[index].maxPrice,
+        ),
+      );
     }),
   );
 }

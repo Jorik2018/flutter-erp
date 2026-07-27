@@ -13,7 +13,7 @@ class S extends WidgetsLocalizations {
   }
 
   static final GeneratedLocalizationsDelegate delegate =
-      new GeneratedLocalizationsDelegate();
+      GeneratedLocalizationsDelegate();
 
   static S of(BuildContext context) {
     var s = Localizations.of<S>(context, WidgetsLocalizations);
@@ -23,49 +23,79 @@ class S extends WidgetsLocalizations {
 
   @override
   TextDirection get textDirection => TextDirection.ltr;
-  
+
   @override
   // TODO: implement reorderItemDown
   String get reorderItemDown => 'Reorder Item Down';
-  
+
   @override
   // TODO: implement reorderItemLeft
   String get reorderItemLeft => 'Reorder Item Left';
-  
+
   @override
   // TODO: implement reorderItemRight
   String get reorderItemRight => 'Reorder Item Right';
-  
+
   @override
   // TODO: implement reorderItemToEnd
   String get reorderItemToEnd => 'Reorder Item To End';
-  
+
   @override
   // TODO: implement reorderItemToStart
   String get reorderItemToStart => throw UnimplementedError();
-  
+
   @override
   // TODO: implement reorderItemUp
   String get reorderItemUp => throw UnimplementedError();
 
+  @override
+  // TODO: implement copyButtonLabel
+  String get copyButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement cutButtonLabel
+  String get cutButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement lookUpButtonLabel
+  String get lookUpButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement pasteButtonLabel
+  String get pasteButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement radioButtonUnselectedLabel
+  String get radioButtonUnselectedLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement searchWebButtonLabel
+  String get searchWebButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement selectAllButtonLabel
+  String get selectAllButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement shareButtonLabel
+  String get shareButtonLabel => throw UnimplementedError();
 }
 
 class en extends S {
   en(Locale locale) : super(locale);
 }
 
-class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocalizations> {
+class GeneratedLocalizationsDelegate
+    extends LocalizationsDelegate<WidgetsLocalizations> {
   const GeneratedLocalizationsDelegate();
 
   List<Locale> get supportedLocales {
-    return [
-      new Locale("en", ""),
-    ];
+    return [Locale("en", "")];
   }
 
   LocaleResolutionCallback resolution({Locale? fallback}) {
     return (Locale? locale, Iterable<Locale>? supported) {
-      var languageLocale = new Locale(locale!.languageCode, "");
+      var languageLocale = Locale(locale!.languageCode, "");
       if (supported!.contains(locale))
         return locale;
       else if (supported.contains(languageLocale))
@@ -81,9 +111,9 @@ class GeneratedLocalizationsDelegate extends LocalizationsDelegate<WidgetsLocali
     String lang = getLang(locale);
     switch (lang) {
       case "en":
-        return new SynchronousFuture<WidgetsLocalizations>(new en(locale));
+        return SynchronousFuture<WidgetsLocalizations>(en(locale));
       default:
-        return new SynchronousFuture<WidgetsLocalizations>(new S(locale));
+        return SynchronousFuture<WidgetsLocalizations>(S(locale));
     }
   }
 

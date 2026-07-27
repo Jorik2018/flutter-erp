@@ -7,8 +7,11 @@ part 'create_member_request.g.dart';
 
 @JsonSerializable(nullable: false)
 class CreateMemberRequest {
-  CreateMemberRequest(
-      {@required this.fullName, @required this.email, @required this.password});
+  CreateMemberRequest({
+    required this.fullName,
+    required this.email,
+    required this.password,
+  });
 
   factory CreateMemberRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateMemberRequestFromJson(json);

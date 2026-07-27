@@ -34,7 +34,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         create: (context) {
           return CategoryBloc()..add(
             CategoryShowListEvent(
-              widget.parameters == null ? 0 : widget.parameters.categoryId,
+              widget.parameters == null ? 0 : widget.parameters!.categoryId,
             ),
           );
         },

@@ -12,7 +12,7 @@ class RoundedButton extends StatelessWidget {
   Color? splashcolor;
   Color? highlightColor;
 
-  TextStyle textStyle = new TextStyle(
+  TextStyle textStyle = TextStyle(
     color: Color.fromRGBO(255, 255, 255, 0.4),
     fontSize: 16.0,
     fontWeight: FontWeight.bold,
@@ -33,7 +33,7 @@ class RoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (borderWidth != 0.0)
-      return (new InkWell(
+      return (InkWell(
         onTap: onTap,
         child: Container(
           width: width,
@@ -54,7 +54,7 @@ class RoundedButton extends StatelessWidget {
         //highlightColor:highlightColor,
       ));
     else
-      return (new InkWell(
+      return (InkWell(
         onTap: onTap,
         child: Container(
           width: width,

@@ -57,9 +57,9 @@ class login extends State<Login_Screen> {
 
   bool _formWasEdited = false;
 
-  String _validateName(String value) {
+  String? _validateName(String? value) {
     _formWasEdited = true;
-    if (value.isEmpty) return 'Name is required.';
+    if (value!.isEmpty) return 'Name is required.';
     final RegExp nameExp = RegExp(r'^[A-Za-z ]+$');
     if (!nameExp.hasMatch(value))
       return 'Please enter only alphabetical characters.';
@@ -130,7 +130,9 @@ class login extends State<Login_Screen> {
                   elevation: 5.0,
                   child: Form(
                     key: formKey,
-                    autovalidate: _autovalidate,
+                    autovalidateMode: _autovalidate
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.disabled,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(

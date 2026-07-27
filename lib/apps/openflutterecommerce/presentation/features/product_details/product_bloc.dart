@@ -20,7 +20,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final AddProductToCartUseCase addProductToCartUseCase;
   final int productId;
 
-  ProductBloc({this.productId})
+  ProductBloc({required this.productId})
     : getProductByIdUseCaseImpl = sl(),
       addProductToCartUseCase = sl(),
       addToFavoriteUseCase = sl(),
@@ -39,8 +39,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             ),
           );
       yield ProductLoadedState(
-        product: data.productDetails,
-        similarProducts: data.similarProducts,
+        product: data.productDetails!,
+        similarProducts: data.similarProducts!,
         productAttributes: SelectedProductAttributes(
           selectedAttributes: HashMap<ProductAttribute, String>(),
         ),
@@ -76,7 +76,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
                 currentState.productAttributes.selectedAttributes,
           ),
         );
-        if (!addToCartResult.result) {
+        if (!addToCartResult.result!) {
           //TODO: show SnackBar with error
         }
       }

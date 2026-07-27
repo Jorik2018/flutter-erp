@@ -22,8 +22,8 @@ class SystemUtils {
     Function? onOnline,
     Function? onOffline,
   }) {
-    html.window.addEventListener('online', onOnline);
-    html.window.addEventListener('offline', onOffline);
+    //html.window.addEventListener('online', onOnline);
+    //html.window.addEventListener('offline', onOffline);
   }
 }
 

@@ -14,9 +14,9 @@ class GetProductByIdUseCaseImpl implements GetProductByIdUseCase {
     ProductRepository productRepository = sl();
     //TODO:
     List<Product> products = await productRepository.getProducts(
-      categoryId: params.categoryId,
+      categoryId: params.categoryId!,
     );
-    Product product;
+    Product? product;
     products.forEach(
       (Product f) => {if (f.id == params.productId) product = f},
     );
@@ -28,15 +28,15 @@ class GetProductByIdUseCaseImpl implements GetProductByIdUseCase {
 }
 
 class ProductDetailsResults {
-  final Product productDetails;
-  final List<Product> similarProducts;
+  final Product? productDetails;
+  final List<Product>? similarProducts;
 
   ProductDetailsResults({this.productDetails, this.similarProducts});
 }
 
 class ProductDetailsParams {
-  final int productId;
-  final int categoryId;
+  final int? productId;
+  final int? categoryId;
 
   ProductDetailsParams({this.productId, this.categoryId});
 }

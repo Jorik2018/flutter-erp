@@ -46,7 +46,7 @@ class OpenFlutterPaymentCardPreview extends StatelessWidget {
               height: 38,
               child: Text(
                 cardNumber,
-                style: _theme.textTheme.headline6.copyWith(
+                style: _theme.textTheme.headlineLarge!.copyWith(
                   fontSize: 24,
                   color: AppColors.white,
                   letterSpacing: 6,
@@ -60,7 +60,7 @@ class OpenFlutterPaymentCardPreview extends StatelessWidget {
               height: 38,
               child: Text(
                 cardHolderName,
-                style: _theme.textTheme.headline2.copyWith(
+                style: _theme.textTheme.headlineSmall!.copyWith(
                   //fontSize: 34,
                   color: AppColors.white,
                 ),
@@ -75,7 +75,7 @@ class OpenFlutterPaymentCardPreview extends StatelessWidget {
                 expirationMonth.toString().padLeft(2, '0') +
                     '/' +
                     expirationYear.toString().padLeft(2, '0'),
-                style: _theme.textTheme.headline2.copyWith(
+                style: _theme.textTheme.headlineSmall!.copyWith(
                   //fontSize: 34,
                   color: AppColors.white,
                 ),

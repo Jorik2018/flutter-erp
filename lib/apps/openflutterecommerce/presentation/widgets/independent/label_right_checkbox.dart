@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/theme.dart';
 
 class OpenFlutterLabelRightCheckbox extends StatefulWidget {
-  final bool checked;
-  final String title;
-  final Function(bool?) onChanged;
-  final double width;
+  final bool? checked;
+  final String? title;
+  final Function(bool)? onChanged;
+  final double? width;
 
   const OpenFlutterLabelRightCheckbox({
     Key? key,
@@ -22,7 +22,7 @@ class OpenFlutterLabelRightCheckbox extends StatefulWidget {
 
 class _OpenFlutterLabelRightCheckboxState
     extends State<OpenFlutterLabelRightCheckbox> {
-  bool _checked;
+  bool? _checked;
 
   @override
   void initState() {
@@ -34,16 +34,18 @@ class _OpenFlutterLabelRightCheckboxState
   Widget build(BuildContext context) {
     var _theme = Theme.of(context);
     return InkWell(
-      onTap: (() => {changeCheckboxValue(!_checked)}),
+      onTap: (() => {changeCheckboxValue(!_checked!)}),
       child: Container(
         child: Row(
           children: <Widget>[
             Container(
-              width: widget.width - 50,
+              width: widget.width! - 50,
               child: Text(
-                widget.title,
-                style: _theme.textTheme.headlineLarge.copyWith(
-                  color: _checked ? _theme.accentColor : _theme.primaryColor,
+                widget.title!,
+                style: _theme.textTheme.headlineLarge!.copyWith(
+                  color: _checked!
+                      ? _theme.highlightColor
+                      : _theme.primaryColor,
                 ),
               ),
             ),
@@ -62,8 +64,8 @@ class _OpenFlutterLabelRightCheckboxState
     );
   }
 
-  void changeCheckboxValue(bool? newValue) {
-    widget.onChanged(newValue);
+  void changeCheckboxValue(newValue) {
+    widget.onChanged!(newValue!);
     setState(() {
       _checked = newValue;
     });

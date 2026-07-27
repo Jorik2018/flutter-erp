@@ -1,10 +1,9 @@
-import 'package:fluro/fluro.dart';
+//import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/bloc.dart';
 import '../constants/constant.dart';
-import '../routes/application.dart';
 import '../utils/utils.dart';
 
 class ModalApp extends StatefulWidget {
@@ -33,17 +32,17 @@ class _ModalAppState extends State<ModalApp> {
         debugShowCheckedModeBanner: false,
         title: Strings.appName,
         theme: AppTheme.theme,
-        initialRoute: Routes.root,
-        onGenerateRoute: Application.router.generator,
-        navigatorObservers: [Application.routeObserver],
+        //initialRoute: Routes.root,
+        //onGenerateRoute: Application.router.generator,
+        //navigatorObservers: [Application.routeObserver],
       ),
     );
   }
 
   void _initRouter() {
-    final router = Router();
+    /*final router = Router();
     Routes.configureRoutes(router);
-    Application.router = router;
+    Application.router = router;*/
   }
 
   void _subscriberForConnectivity() {

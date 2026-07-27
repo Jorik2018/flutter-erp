@@ -5,6 +5,6 @@ import 'package:flutter_erp/apps/openflutterecommerce/data/model/product_attribu
 class ColorAttribute extends ProductAttribute {
   final Map<String, Color> visibleColors;
 
-  ColorAttribute({int? id, String? info, this.visibleColors})
-    : super(id: id, name: 'Color', info: info, options: visibleColors.keys);
+  ColorAttribute({int? id, String? info, required this.visibleColors})
+    : super(id: id, name: 'Color', info: info /* options: visibleColors.keys*/);
 }

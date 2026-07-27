@@ -63,8 +63,9 @@ class _MyDialogState extends State<MyDialog> {
                     ),
                     onTap: () async {
                       //
-                      final DateTime pick = await showDatePicker(
+                      final DateTime? pick = await showDatePicker(
                         context: context,
+
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2017),
                         lastDate: DateTime(2021),
@@ -95,14 +96,14 @@ class _MyDialogState extends State<MyDialog> {
                       style: TextStyle(fontSize: 24.0, color: Colors.black),
                     ),
                     onTap: () async {
-                      final TimeOfDay pick = (await showTimePicker(
+                      final TimeOfDay? pick = (await showTimePicker(
                         context: context,
                         initialTime: TimeOfDay.now(),
                       ));
                       setState(() {
                         var _timetmp = TimeOfDay(
-                          hour: pick.hour,
-                          minute: pick.minute,
+                          hour: pick!.hour,
+                          minute: pick!.minute,
                         );
                         final now = DateTime.now();
                         final selectedTime = DateTime(
@@ -137,8 +138,6 @@ class _MyDialogState extends State<MyDialog> {
                       Fluttertoast.showToast(msg: "Ride is scheduled");
                       Navigator.pop(context);
                     },
-                    textColor: Colors.white,
-                    color: Colors.brown[600],
                     child: Text(
                       "SET PICKUP TIME",
                       textAlign: TextAlign.center,

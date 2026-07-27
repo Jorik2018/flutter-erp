@@ -1,7 +1,3 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,9 +13,7 @@ class FlutterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter View',
-      theme: ThemeData(
-        primarySwatch: Colors.grey,
-      ),
+      theme: ThemeData(primarySwatch: Colors.grey),
       home: const MyHomePage(),
     );
   }
@@ -67,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Center(
               child: Text(
-                'Platform button tapped $_counter time${ _counter == 1 ? '' : 's' }.',
+                'Platform button tapped $_counter time${_counter == 1 ? '' : 's'}.',
                 style: const TextStyle(fontSize: 17.0),
               ),
             ),

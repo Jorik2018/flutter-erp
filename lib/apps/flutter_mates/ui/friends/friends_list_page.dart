@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_erp/apps/flutter_mates/ui/frienddetails/friend_details_page.dart';
 import 'package:flutter_erp/apps/flutter_mates/ui/friends/friend.dart';
 
 class FriendsListPage extends StatefulWidget {
   @override
-  _FriendsListPageState createState() =>  _FriendsListPageState();
+  _FriendsListPageState createState() => _FriendsListPageState();
 }
 
 class _FriendsListPageState extends State<FriendsListPage> {
@@ -20,35 +20,34 @@ class _FriendsListPageState extends State<FriendsListPage> {
   }
 
   Future<void> _loadFriends() async {
-    http.Response response =
-        await http.get(Uri.parse('https://randomuser.me/api/?results=25'));
+    Response response = await Dio().get(
+      'https://randomuser.me/api/?results=25',
+    );
 
     setState(() {
-      _friends = Friend.allFromResponse(response.body);
+      _friends = Friend.allFromResponse(response.data);
     });
   }
 
   Widget _buildFriendListTile(BuildContext context, int index) {
     var friend = _friends[index];
 
-    return  ListTile(
+    return ListTile(
       onTap: () => _navigateToFriendDetails(friend, index),
-      leading:  Hero(
+      leading: Hero(
         tag: index,
-        child:  CircleAvatar(
-          backgroundImage:  NetworkImage(friend.avatar),
-        ),
+        child: CircleAvatar(backgroundImage: NetworkImage(friend.avatar)),
       ),
-      title:  Text(friend.name),
-      subtitle:  Text(friend.email),
+      title: Text(friend.name),
+      subtitle: Text(friend.email),
     );
   }
 
   void _navigateToFriendDetails(Friend friend, Object avatarTag) {
     Navigator.of(context).push(
-       MaterialPageRoute(
+      MaterialPageRoute(
         builder: (c) {
-          return  FriendDetailsPage(friend, avatarTag: avatarTag);
+          return FriendDetailsPage(friend, avatarTag: avatarTag);
         },
       ),
     );
@@ -59,18 +58,16 @@ class _FriendsListPageState extends State<FriendsListPage> {
     Widget content;
 
     if (_friends.isEmpty) {
-      content =  Center(
-        child:  CircularProgressIndicator(),
-      );
+      content = Center(child: CircularProgressIndicator());
     } else {
-      content =  ListView.builder(
+      content = ListView.builder(
         itemCount: _friends.length,
         itemBuilder: _buildFriendListTile,
       );
     }
 
-    return  Scaffold(
-      appBar:  AppBar(title:  Text('Friends')),
+    return Scaffold(
+      appBar: AppBar(title: Text('Friends')),
       body: content,
     );
   }

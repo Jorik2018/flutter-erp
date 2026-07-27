@@ -27,7 +27,7 @@ class ProductsBloc extends Bloc<ProductsListEvent, ProductsState> {
 
   final ProductCategory category;
 
-  ProductsBloc({@required this.category})
+  ProductsBloc({required this.category})
     : findProductsByFilterUseCase = sl(),
       getFavoriteProductsUseCase = sl(),
       removeFromFavoritesUseCase = sl(),
@@ -59,14 +59,14 @@ class ProductsBloc extends Bloc<ProductsListEvent, ProductsState> {
               sortBy: event.sortBy,
             ),
           );
-      final List<Product> filteredData = productResults.products;
+      final List<Product> filteredData = productResults.products!;
       yield state.copyWith(
         sortBy: event.sortBy,
-        data: state.data.copyWith(filteredData),
+        data: state.data!.copyWith(filteredData),
       );
     } else if (event is ProductChangeHashTagEvent) {
       yield state.getLoading();
-      state.filterRules.selectedHashTags[event.hashTag] = event.isSelected;
+      state.filterRules!.selectedHashTags[event.hashTag] = event.isSelected;
       ProductsByFilterResult productResults = await findProductsByFilterUseCase
           .execute(
             ProductsByFilterParams(
@@ -75,9 +75,9 @@ class ProductsBloc extends Bloc<ProductsListEvent, ProductsState> {
               sortBy: state.sortBy,
             ),
           );
-      final List<Product> filteredData = productResults.products;
+      final List<Product> filteredData = productResults.products!;
       yield state.copyWith(
-        data: state.data.copyWith(filteredData),
+        data: state.data!.copyWith(filteredData),
         sortBy: state.sortBy,
       );
     } else if (event is ProductChangeFilterRulesEvent) {
@@ -90,26 +90,26 @@ class ProductsBloc extends Bloc<ProductsListEvent, ProductsState> {
               sortBy: state.sortBy,
             ),
           );
-      final List<Product> filteredData = productResults.products;
+      final List<Product> filteredData = productResults.products!;
       yield state.copyWith(
         filterRules: event.filterRules,
-        data: state.data.copyWith(filteredData),
+        data: state.data!.copyWith(filteredData),
       );
     } else if (event is ProductMakeFavoriteEvent) {
       if (event.isFavorite) {
         await addToFavoritesUseCase.execute(
-          FavoriteProduct(event.product, event.favoriteAttributes),
+          FavoriteProduct(event.product, event.favoriteAttributes!),
         );
       } else {
         await removeFromFavoritesUseCase.execute(
           RemoveFromFavoritesParams(
-            FavoriteProduct(event.product, event.favoriteAttributes),
+            FavoriteProduct(event.product, event.favoriteAttributes!),
           ),
         );
       }
-      final List<Product> data = state.data.products;
+      final List<Product> data = state.data!.products;
       yield state.copyWith(
-        data: state.data.copyWith(
+        data: state.data!.copyWith(
           data
               .map((item) {
                 if (event.product.id == item.id) {
@@ -128,9 +128,9 @@ class ProductsBloc extends Bloc<ProductsListEvent, ProductsState> {
     ProductsByFilterResult productResults = await findProductsByFilterUseCase
         .execute(ProductsByFilterParams(categoryId: category.id));
     return ProductListData(
-      productResults.products,
+      productResults.products!,
       category,
-      productResults.filterRules,
+      productResults.filterRules!,
     );
   }
 }

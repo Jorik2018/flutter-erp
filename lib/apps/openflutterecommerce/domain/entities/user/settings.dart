@@ -7,10 +7,11 @@ class UserSettingsEntity {
   bool notifyArrivals;
   bool notifyDelivery;
 
-  UserSettingsEntity(
-      {@required this.fullName,
-      @required this.dateOfBirth,
-      @required this.notifySales,
-      @required this.notifyArrivals,
-      @required this.notifyDelivery});
+  UserSettingsEntity({
+    required this.fullName,
+    required this.dateOfBirth,
+    required this.notifySales,
+    required this.notifyArrivals,
+    required this.notifyDelivery,
+  });
 }

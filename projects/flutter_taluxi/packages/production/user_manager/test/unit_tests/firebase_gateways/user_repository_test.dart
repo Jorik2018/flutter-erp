@@ -25,72 +25,80 @@ void main() {
     sharedPreferences = MockSharedPreferences();
     firebaseFirestore = MockFirestoreInstance();
     userDataRepository = FirebaseUserDataRepository.forTest(
-        firestoreDatabase: firebaseFirestore,
-        sharedPreferences: sharedPreferences);
-    userAdditionalDataCollection = await firebaseFirestore
-        .collection(FirebaseUserDataRepository.usersAdditionalDataKey);
+      firestoreDatabase: firebaseFirestore,
+      sharedPreferences: sharedPreferences,
+    );
+    userAdditionalDataCollection = await firebaseFirestore.collection(
+      FirebaseUserDataRepository.usersAdditionalDataKey,
+    );
     await userAdditionalDataCollection.doc(userUid).set(userAdditionalData);
   });
   group('Users Additional data : ', () {
     test(
-        'Should be returns additional data of user which uid is given in parameter.',
-        () async {
-      expect(
-        await userDataRepository.getAdditionalData(userUid),
-        equals(userAdditionalData),
-      );
-    });
+      'Should be returns additional data of user which uid is given in parameter.',
+      () async {
+        expect(
+          await userDataRepository.getAdditionalData(userUid),
+          equals(userAdditionalData),
+        );
+      },
+    );
 
     test(
-        'Should returns null when nonexistent document id is passed in parameter.',
-        () async {
-      expect(await userDataRepository.getAdditionalData('fakeId'), isNull);
-    });
+      'Should returns null when nonexistent document id is passed in parameter.',
+      () async {
+        expect(await userDataRepository.getAdditionalData('fakeId'), isNull);
+      },
+    );
 
     test(
-        'Should initialize additional data of user which uid is given in parameter.',
-        () async {
-      final getNewUserData = () async =>
-          await userAdditionalDataCollection.doc(otherUserUid).get();
-      expect(
-        (await getNewUserData()).exists,
-        isFalse,
-        reason: "Document with ID '$otherUserUid' should'nt exists yet.",
-      );
-      await userDataRepository.initAdditionalData(otherUserUid);
-      expect(
-        (await getNewUserData()).exists,
-        isTrue,
-        reason:
-            "Document with ID '$otherUserUid' should be created by the above instruction.",
-      );
-      expect((await getNewUserData()).data(),
-          equals(FirebaseUserDataRepository.initialAdditionalData));
-    });
+      'Should initialize additional data of user which uid is given in parameter.',
+      () async {
+        final getNewUserData = () async =>
+            await userAdditionalDataCollection.doc(otherUserUid).get();
+        expect(
+          (await getNewUserData()).exists,
+          isFalse,
+          reason: "Document with ID '$otherUserUid' should'nt exists yet.",
+        );
+        await userDataRepository.initAdditionalData(otherUserUid);
+        expect(
+          (await getNewUserData()).exists,
+          isTrue,
+          reason:
+              "Document with ID '$otherUserUid' should be created by the above instruction.",
+        );
+        expect(
+          (await getNewUserData()).data(),
+          equals(FirebaseUserDataRepository.initialAdditionalData),
+        );
+      },
+    );
 
     test(
-        'Should update additional data of user which uid is given in parameter',
-        () async {
-      const updatedUserAdditionalData = {
-        FirebaseUserDataRepository.totalRideCountKey: 645,
-        FirebaseUserDataRepository.trophiesKey: 'other_Ac4',
-      };
-      final getUserData =
-          () async => await userAdditionalDataCollection.doc(userUid).get();
-      expect((await getUserData()).data(), equals(userAdditionalData));
-      await userDataRepository.updateAdditionalData(
-        data: updatedUserAdditionalData,
-        userUid: userUid,
-      );
-      expect((await getUserData()).data(), equals(updatedUserAdditionalData));
-      expect((await getUserData()).data(), isNot(userAdditionalData));
-      //we never know  ^  ;-)
-    });
+      'Should update additional data of user which uid is given in parameter',
+      () async {
+        const updatedUserAdditionalData = {
+          FirebaseUserDataRepository.totalRideCountKey: 645,
+          FirebaseUserDataRepository.trophiesKey: 'other_Ac4',
+        };
+        final getUserData = () async =>
+            await userAdditionalDataCollection.doc(userUid).get();
+        expect((await getUserData()).data(), equals(userAdditionalData));
+        await userDataRepository.updateAdditionalData(
+          data: updatedUserAdditionalData,
+          userUid: userUid,
+        );
+        expect((await getUserData()).data(), equals(updatedUserAdditionalData));
+        expect((await getUserData()).data(), isNot(userAdditionalData));
+        //we never know  ^  ;-)
+      },
+    );
   });
 
-/******************************************************************************/
-/****************************** [ New Group ] *********************************/
-/******************************************************************************/
+  /******************************************************************************/
+  /****************************** [ New Group ] *********************************/
+  /******************************************************************************/
 
   group('Cache data (SharedPreferences) :', () {
     setUp(() {
@@ -114,9 +122,13 @@ void main() {
         FirebaseUserDataRepository.totalRideCountKey: 4,
       });
       await sharedPreferences.setString(
-          FirebaseUserDataRepository.usersAdditionalDataKey, dataJson);
-      expect(await userDataRepository.getAdditionalData(userUid),
-          equals(json.decode(dataJson)));
+        FirebaseUserDataRepository.usersAdditionalDataKey,
+        dataJson,
+      );
+      expect(
+        await userDataRepository.getAdditionalData(userUid),
+        equals(json.decode(dataJson)),
+      );
     });
 
     test('Should get remote data if local data is not available', () async {
@@ -129,21 +141,28 @@ void main() {
       final remoteData = await userDataRepository.getAdditionalData(userUid);
       await Future.delayed(Duration.zero);
       expect(
-          json.decode(MockSharedPreferences
-              .data[FirebaseUserDataRepository.usersAdditionalDataKey]),
-          equals(remoteData));
-    });
-
-    test('Local data should be initialized while initializing remote data',
-        () async {
-      expect(MockSharedPreferences.data, isEmpty);
-      await userDataRepository.initAdditionalData(userUid);
-      expect(
-        json.decode(MockSharedPreferences
-            .data[FirebaseUserDataRepository.usersAdditionalDataKey]),
-        equals(FirebaseUserDataRepository.initialAdditionalData),
+        json.decode(
+          MockSharedPreferences.data[FirebaseUserDataRepository
+              .usersAdditionalDataKey],
+        ),
+        equals(remoteData),
       );
     });
+
+    test(
+      'Local data should be initialized while initializing remote data',
+      () async {
+        expect(MockSharedPreferences.data, isEmpty);
+        await userDataRepository.initAdditionalData(userUid);
+        expect(
+          json.decode(
+            MockSharedPreferences.data[FirebaseUserDataRepository
+                .usersAdditionalDataKey],
+          ),
+          equals(FirebaseUserDataRepository.initialAdditionalData),
+        );
+      },
+    );
 
     test('Local data should be updated while updating remote data', () async {
       expect(MockSharedPreferences.data, isEmpty);
@@ -152,61 +171,66 @@ void main() {
         data: userAdditionalData,
       );
       expect(
-        json.decode(MockSharedPreferences
-            .data[FirebaseUserDataRepository.usersAdditionalDataKey]),
+        json.decode(
+          MockSharedPreferences.data[FirebaseUserDataRepository
+              .usersAdditionalDataKey],
+        ),
         equals(userAdditionalData),
       );
     });
 
     test(
-        'Exception thrown when getting local data should not affect the program execution',
-        () async {
-      MockSharedPreferences.throwException = true;
-      expect(MockSharedPreferences.thrownExceptionCount, equals(0));
-      expect(
-        () async => await userDataRepository.getAdditionalData(userUid),
-        returnsNormally,
-      );
-      await Future.delayed(Duration.zero);
-      // [thrownExceptionCount] must be incremented the first time when
-      // fetching local data and the second time when updating local data
-      // because fetching local data should fail so [thrownExceptionCount] must contain 2;
-      expect(MockSharedPreferences.thrownExceptionCount, 2);
-    });
+      'Exception thrown when getting local data should not affect the program execution',
+      () async {
+        MockSharedPreferences.throwException = true;
+        expect(MockSharedPreferences.thrownExceptionCount, equals(0));
+        expect(
+          () async => await userDataRepository.getAdditionalData(userUid),
+          returnsNormally,
+        );
+        await Future.delayed(Duration.zero);
+        // [thrownExceptionCount] must be incremented the first time when
+        // fetching local data and the second time when updating local data
+        // because fetching local data should fail so [thrownExceptionCount] must contain 2;
+        expect(MockSharedPreferences.thrownExceptionCount, 2);
+      },
+    );
 
     test(
-        'Exception thrown when updating local data should not affect the program execution',
-        () async {
-      MockSharedPreferences.throwException = true;
-      expect(MockSharedPreferences.thrownExceptionCount, equals(0));
-      expect(
-        () async => await userDataRepository.updateAdditionalData(
-          userUid: userUid,
-          data: userAdditionalData,
-        ),
-        returnsNormally,
-      );
-      await Future.delayed(Duration.zero);
-      expect(MockSharedPreferences.thrownExceptionCount, 1);
-    });
+      'Exception thrown when updating local data should not affect the program execution',
+      () async {
+        MockSharedPreferences.throwException = true;
+        expect(MockSharedPreferences.thrownExceptionCount, equals(0));
+        expect(
+          () async => await userDataRepository.updateAdditionalData(
+            userUid: userUid,
+            data: userAdditionalData,
+          ),
+          returnsNormally,
+        );
+        await Future.delayed(Duration.zero);
+        expect(MockSharedPreferences.thrownExceptionCount, 1);
+      },
+    );
 
     test(
-        'Exception thrown when initializing local data should not affect the program execution',
-        () async {
-      MockSharedPreferences.throwException = true;
-      expect(MockSharedPreferences.thrownExceptionCount, equals(0));
-      expect(
-        () async => await userDataRepository.initAdditionalData(userUid),
-        returnsNormally,
-      );
-      await Future.delayed(Duration.zero);
-      expect(MockSharedPreferences.thrownExceptionCount, 1);
-    });
+      'Exception thrown when initializing local data should not affect the program execution',
+      () async {
+        MockSharedPreferences.throwException = true;
+        expect(MockSharedPreferences.thrownExceptionCount, equals(0));
+        expect(
+          () async => await userDataRepository.initAdditionalData(userUid),
+          returnsNormally,
+        );
+        await Future.delayed(Duration.zero);
+        expect(MockSharedPreferences.thrownExceptionCount, 1);
+      },
+    );
   });
 
-/******************************************************************************/
-/****************************** [ New Group ] *********************************/
-/******************************************************************************/
+  /******************************************************************************/
+  /****************************** [ New Group ] *********************************/
+  /******************************************************************************/
 
   group('Trophies and ride count history management :', () {
     //! In this group we need to use some methods that is not publicly exposed
@@ -214,8 +238,10 @@ void main() {
     //! userDataRepository initialized in the global [setUp] function and cast it to
     //! [FirebaseUserDataRepository] which expose needed methods publicly for tests.
     FirebaseUserDataRepository userDataRepository2;
-    Map<String, dynamic> rideCountHistory() => jsonDecode(MockSharedPreferences
-        .data[FirebaseUserDataRepository.rideCountHistoryKey]);
+    Map<String, dynamic> rideCountHistory() => jsonDecode(
+      MockSharedPreferences.data[FirebaseUserDataRepository
+          .rideCountHistoryKey],
+    );
     String dateOfXDaysAgo(int daysAgo) {
       final historyDate = DateTime.now().subtract(Duration(days: daysAgo));
       return generateKeyFromDateTime(historyDate);
@@ -224,15 +250,15 @@ void main() {
     setUp(() {
       userDataRepository2 = userDataRepository;
       MockSharedPreferences.enabled = true;
-      MockSharedPreferences
-          .data[FirebaseUserDataRepository.rideCountHistoryKey] = json.encode({
+      MockSharedPreferences.data[FirebaseUserDataRepository
+          .rideCountHistoryKey] = json.encode({
         dateOfXDaysAgo(0): 14,
         dateOfXDaysAgo(1): 6,
         dateOfXDaysAgo(2): 0,
         dateOfXDaysAgo(3): 23,
         dateOfXDaysAgo(4): 17,
         dateOfXDaysAgo(5): 0,
-        dateOfXDaysAgo(6): 04
+        dateOfXDaysAgo(6): 04,
       });
       MockSharedPreferences.data[FirebaseUserDataRepository.totalRideCountKey] =
           100;
@@ -245,14 +271,17 @@ void main() {
 
       final now = DateTime.now();
       final generatedDate = generateKeyFromDateTime(now);
-      expect(generatedDate,
-          '${now.year}-${fixeTo2Digit(now.month)}-${fixeTo2Digit(now.day)}');
+      expect(
+        generatedDate,
+        '${now.year}-${fixeTo2Digit(now.month)}-${fixeTo2Digit(now.day)}',
+      );
     });
 
     test('Should increment ride count', () async {
       await userDataRepository.incrmentRideCount(userUid);
-      final additionalData =
-          await userDataRepository.getAdditionalData(userUid);
+      final additionalData = await userDataRepository.getAdditionalData(
+        userUid,
+      );
       expect(
         additionalData[FirebaseUserDataRepository.totalRideCountKey],
         (userAdditionalData[FirebaseUserDataRepository.totalRideCountKey]
@@ -272,12 +301,15 @@ void main() {
         '2020-12-01': 23,
         '2020-12-03': 17,
         '2012-12-30': 0,
-        '2017-12-29': 04
+        '2017-12-29': 04,
       });
-      expect(rideCountHistoryContainingOld.length,
-          greaterThan(rideCountHistory().length));
-      userDataRepository2
-          .clearHistoryOlderThanOneMonth(rideCountHistoryContainingOld);
+      expect(
+        rideCountHistoryContainingOld.length,
+        greaterThan(rideCountHistory().length),
+      );
+      userDataRepository2.clearHistoryOlderThanOneMonth(
+        rideCountHistoryContainingOld,
+      );
       expect(rideCountHistoryContainingOld, equals(rideCountHistory()));
     });
 
@@ -295,8 +327,10 @@ void main() {
       var rideCountFrom3Days = rideCountHistory()[dateOfXDaysAgo(0)];
       rideCountFrom3Days += rideCountHistory()[dateOfXDaysAgo(1)];
       rideCountFrom3Days += rideCountHistory()[dateOfXDaysAgo(2)];
-      expect(userDataRepository2.userRideCountFromFewDaysToToday(3),
-          equals(rideCountFrom3Days));
+      expect(
+        userDataRepository2.userRideCountFromFewDaysToToday(3),
+        equals(rideCountFrom3Days),
+      );
     });
 
     test('Should return trophies that the user has recently won', () {
@@ -304,15 +338,25 @@ void main() {
       //! the tests, see the [UserDataRepository] class which has a static
       //! [Map<String, _Trophy>].
       expect(
-          userDataRepository.getTheRecentlyWonTrophies(''), equals('ABCDEF'));
+        userDataRepository.getTheRecentlyWonTrophies(''),
+        equals('ABCDEF'),
+      );
       expect(
-          userDataRepository.getTheRecentlyWonTrophies('A'), equals('BCDEF'));
+        userDataRepository.getTheRecentlyWonTrophies('A'),
+        equals('BCDEF'),
+      );
       expect(
-          userDataRepository.getTheRecentlyWonTrophies('AB'), equals('CDEF'));
+        userDataRepository.getTheRecentlyWonTrophies('AB'),
+        equals('CDEF'),
+      );
       expect(
-          userDataRepository.getTheRecentlyWonTrophies('DFA'), equals('BCE'));
+        userDataRepository.getTheRecentlyWonTrophies('DFA'),
+        equals('BCE'),
+      );
       expect(
-          userDataRepository.getTheRecentlyWonTrophies('CDEF'), equals('AB'));
+        userDataRepository.getTheRecentlyWonTrophies('CDEF'),
+        equals('AB'),
+      );
     });
 
     test('Should return ride count history', () {
@@ -331,14 +375,14 @@ void main() {
 /****************************** [ New Group ] *********************************/
 /******************************************************************************/
 
-// group('Firestore network handling', () {
+// group('FirebaseFirestore network handling', () {
 //   setUp(() {
 //     _MockFirestoreInstance.networkStateLog.clear();
 //     MockSharedPreferences.enabled =
 //         false; //local data must not be fetched otherwire network state will not change.
 //   });
 //   test(
-//       'Firestore network should be disabled when initializing [FirebaseUserDataRepository]',
+//       'FirebaseFirestore network should be disabled when initializing [FirebaseUserDataRepository]',
 //       () {
 //     expect(_MockFirestoreInstance.networkStateLog, isEmpty);
 //     final _ = FirebaseUserDataRepository.forTest(

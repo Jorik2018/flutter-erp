@@ -18,7 +18,7 @@ class CartRepositoryImpl extends CartRepository {
   Future addProductToCart(
     Product product,
     int quantity,
-    Map<ProductAttribute, String> selectedAttributes,
+    Map<ProductAttribute, String>? selectedAttributes,
   ) async {
     cartProductDataStorage.items.add(
       CartItem(
@@ -42,7 +42,7 @@ class CartRepositoryImpl extends CartRepository {
 
   @override
   Future<Promo> getAppliedPromo() async {
-    return cartProductDataStorage.appliedPromo;
+    return cartProductDataStorage.appliedPromo!;
   }
 
   @override
@@ -68,7 +68,7 @@ class CartRepositoryImpl extends CartRepository {
   double getCalculatedPrice() {
     final totalPrice = getTotalPrice();
     final calculatedTotalPrice = cartProductDataStorage.appliedPromo != null
-        ? totalPrice * (1 - cartProductDataStorage.appliedPromo.discount / 100)
+        ? totalPrice * (1 - cartProductDataStorage.appliedPromo!.discount / 100)
         : totalPrice;
     return calculatedTotalPrice;
   }
@@ -76,5 +76,5 @@ class CartRepositoryImpl extends CartRepository {
 
 class CartProductDataStorage {
   List<CartItem> items = [];
-  Promo appliedPromo;
+  Promo? appliedPromo;
 }

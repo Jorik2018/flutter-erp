@@ -6,7 +6,7 @@ List<PopularProductModel> getProducts() {
   PopularProductModel productModel;
 
   //1
-  productModel = new PopularProductModel();
+  productModel = PopularProductModel();
   productModel.title = "Classic Pizza";
   productModel.description = "Classic house sauce";
   productModel.fav = "assets/icons/heart.svg";
@@ -14,7 +14,7 @@ List<PopularProductModel> getProducts() {
   myProducts.add(productModel);
 
   //2
-  productModel = new PopularProductModel();
+  productModel = PopularProductModel();
   productModel.title = "Burger mix";
   productModel.description = "Double meat with cheese";
   productModel.fav = "assets/icons/heart2.svg";
@@ -22,7 +22,7 @@ List<PopularProductModel> getProducts() {
   myProducts.add(productModel);
 
   //3
-  productModel = new PopularProductModel();
+  productModel = PopularProductModel();
   productModel.title = "Classic Pizza";
   productModel.description = "Classic house sauce";
   productModel.fav = "assets/icons/heart.svg";

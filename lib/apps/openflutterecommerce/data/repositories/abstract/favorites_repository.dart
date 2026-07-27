@@ -20,7 +20,7 @@ abstract class FavoritesRepository {
     int pageIndex = 0,
     int pageSize = AppConsts.page_size,
     SortRules sortRules = const SortRules(),
-    FilterRules filterRules,
+    FilterRules? filterRules,
   });
 
   ///adds product with [productId] to the list of favorites. It is required

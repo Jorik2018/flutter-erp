@@ -15,17 +15,17 @@ import 'managers/UsersManager.dart';
 import 'core/OldUser.dart';
 
 bool userexists = false;
-OldUser user1 = new OldUser();
+OldUser user1 = OldUser();
 const jsonCodec = const JsonCodec(reviver: _reviver);
 
 _reviver(key, value) {
   if (key != null && value is Map && key.contains('-')) {
-    return new OldUser.fromJson(value);
+    return OldUser.fromJson(value);
   }
   return value;
 }
 
-TextStyle textStyle = new TextStyle(
+TextStyle textStyle = TextStyle(
   color: const Color.fromRGBO(255, 255, 255, 0.4),
   fontSize: 16.0,
   fontWeight: FontWeight.bold,
@@ -33,14 +33,14 @@ TextStyle textStyle = new TextStyle(
 
 class SignupLayout extends StatefulWidget {
   @override
-  SignupLayoutState createState() => new SignupLayoutState();
+  SignupLayoutState createState() => SignupLayoutState();
 }
 
 class SignupLayoutState extends State<SignupLayout> {
   @override
   Widget build(BuildContext context) =>
       defaultTargetPlatform == TargetPlatform.iOS
-      ? new CupertinoPageScaffold(
+      ? CupertinoPageScaffold(
           child: Signup(),
           //        ,navigationBar:CupertinoNavigationBar(middle:Text("Sign-up"),backgroundColor:const Color.fromRGBO(0, 0, 0, 0.7),),
         )
@@ -49,15 +49,15 @@ class SignupLayoutState extends State<SignupLayout> {
 
 class Signup extends StatefulWidget {
   @override
-  signupstate createState() => new signupstate();
+  signupstate createState() => signupstate();
 }
 
 class signupstate extends State<Signup> {
   final GlobalKey<ScaffoldState> _scaffoldKeySecondary =
-      new GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKeySeondary = new GlobalKey<FormState>();
+      GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKeySeondary = GlobalKey<FormState>();
   final GlobalKey<FormFieldState<String>> _passwordFieldKeySecondary =
-      new GlobalKey<FormFieldState<String>>();
+      GlobalKey<FormFieldState<String>>();
 
   bool _autovalidate1 = false;
   bool _formWasEdited = false;
@@ -112,7 +112,7 @@ class signupstate extends State<Signup> {
   String? _validateName(String? value) {
     _formWasEdited = true;
     if (value!.isEmpty) return 'EmailID is required.';
-    final RegExp nameExp = new RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
+    final RegExp nameExp = RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
     if (!nameExp.hasMatch(value!)) return 'Please enter correct EmailID';
     return null;
   }
@@ -130,7 +130,7 @@ class signupstate extends State<Signup> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKeySecondary,
       body: Container(
         child: Form(
@@ -139,7 +139,7 @@ class signupstate extends State<Signup> {
           child: ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: <Widget>[
-              new Container(
+              Container(
                 child: TextFormField(
                   decoration: InputDecoration(
                     hintText: 'Name',
@@ -164,7 +164,7 @@ class signupstate extends State<Signup> {
                   style: TextStyle(color: Colors.red, fontSize: 16),
                 ),
               ),
-              new Container(
+              Container(
                 child: TextFormField(
                   decoration: InputDecoration(
                     icon: Icon(mail),
@@ -178,7 +178,7 @@ class signupstate extends State<Signup> {
                 ),
                 padding: const EdgeInsets.only(top: 10.0),
               ),
-              new Container(
+              Container(
                 child: Container(
                   child: TextFormField(
                     key: _passwordFieldKeySecondary,
@@ -200,7 +200,7 @@ class signupstate extends State<Signup> {
                 ),
                 padding: const EdgeInsets.only(top: 10.0),
               ),
-              new Container(
+              Container(
                 child: Container(
                   child: TextFormField(
                     decoration: InputDecoration(
@@ -234,7 +234,7 @@ class signupstate extends State<Signup> {
                   );
                 },
               ),
-              new Container(
+              Container(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Text(
                   '* indicates required field' /*style: Theme.of(context).textTheme.caption*/,

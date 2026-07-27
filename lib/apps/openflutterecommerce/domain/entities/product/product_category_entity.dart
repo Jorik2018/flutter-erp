@@ -1,16 +1,16 @@
 import 'package:flutter_erp/apps/openflutterecommerce/domain/entities/entity.dart';
 
-class ProductCategoryEntity extends Entity<int> {
-  final String title;
-  final String description;
-  final String image;
-  final String thumb;
-  final int parentId;
-  final int orderNumber;
-  final int count;
+class ProductCategoryEntity extends Entity<int?> {
+  final String? title;
+  final String? description;
+  final String? image;
+  final String? thumb;
+  final int? parentId;
+  final int? orderNumber;
+  final int? count;
 
   ProductCategoryEntity({
-    int id,
+    int? id,
     this.title,
     this.description,
     this.image,
@@ -35,7 +35,7 @@ class ProductCategoryEntity extends Entity<int> {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     id,
     title,
     description,

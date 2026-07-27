@@ -1,13 +1,7 @@
-/*
- * @author Martin Appelmann <exlo89@gmail.com>
- * @copyright 2020 Open E-commerce App
- * @see user_repository.dart
- */
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/config/server_addresses.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/model/app_user.dart';
 import 'package:flutter_erp/apps/openflutterecommerce/data/repositories/abstract/user_repository.dart';
@@ -17,14 +11,15 @@ import '../utils.dart';
 class RemoteUserRepository extends UserRepository {
   @override
   Future<String> signIn({
-    @required String email,
-    @required String password,
+    required String email,
+    required String password,
   }) async {
-    var route = HttpClient().createUri(ServerAddresses.authToken);
     var data = <String, String>{'username': email, 'password': password};
 
-    var response = await http.post(route, body: data);
-    Map jsonResponse = json.decode(response.body);
+    var response = await Dio().post(ServerAddresses.authToken, data: data);
+    var jsonResponse = response.data is String
+        ? json.decode(response.data)
+        : response.data;
     if (response.statusCode != 200) {
       throw jsonResponse['message'];
     }
@@ -33,20 +28,22 @@ class RemoteUserRepository extends UserRepository {
 
   @override
   Future<String> signUp({
-    @required String name,
-    @required String email,
-    @required String password,
+    required String name,
+    required String email,
+    required String password,
   }) async {
     try {
-      var route = HttpClient().createUri(ServerAddresses.signUp);
+      var dio = Dio();
       var data = <String, String>{
         'name': name,
         'username': email,
         'password': password,
       };
 
-      var response = await http.post(route, body: data);
-      Map jsonResponse = json.decode(response.body);
+      var response = await dio.post(ServerAddresses.signUp, data: data);
+      Map jsonResponse = response.data is String
+          ? json.decode(response.data)
+          : response.data;
       if (response.statusCode != 200) {
         throw jsonResponse['message'];
       }
@@ -69,13 +66,15 @@ class RemoteUserRepository extends UserRepository {
   }
 
   @override
-  Future<void> forgotPassword({@required String email}) async {
+  Future<void> forgotPassword({required String email}) async {
     try {
-      var route = HttpClient().createUri(ServerAddresses.forgotPassword);
+      var dio = Dio();
       var data = <String, String>{'email': email};
 
-      var response = await http.post(route, body: data);
-      Map jsonResponse = json.decode(response.body);
+      var response = await dio.post(ServerAddresses.forgotPassword, data: data);
+      Map jsonResponse = response.data is String
+          ? json.decode(response.data)
+          : response.data;
       if (response.statusCode != 200) {
         throw jsonResponse['message'];
       }
