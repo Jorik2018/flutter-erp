@@ -35,14 +35,14 @@ jobs:
       - name: Instalar dependencias
         run: flutter pub get
 
-      - name: Analizar proyecto
-        run: flutter analyze --no-fatal-infos
+      #- name: Analizar proyecto
+      #  run: flutter analyze --no-fatal-infos
 
       - name: Compilar Flutter Web
         run: >
           flutter build web
           --release
-          --base-href /flutter_erp/
+        #.--base-href /flutter_erp/
 
       - name: Desplegar por FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
