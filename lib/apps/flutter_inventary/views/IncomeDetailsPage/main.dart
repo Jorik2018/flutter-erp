@@ -1,0 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_erp/apps/flutter_inventary/views/IncomeDetailsPage/components/data_details.dart';
+
+class IncomeDetailsPage extends StatelessWidget {
+  String title;
+  Map dataMovement;
+  IncomeDetailsPage(this.title, this.dataMovement);
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text(title)),
+    body: Column(children: const <Widget>[Expanded(child: DataDetails())]),
+  );
+}

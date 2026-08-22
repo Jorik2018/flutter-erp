@@ -1,0 +1,225 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_erp/apps/flutter_inventary/main.dart';
+import 'package:flutter_erp/apps/flutter_inventary/views/IncomeMovementPage/detail_screen.dart';
+import 'package:go_router/go_router.dart';
+//HomePage
+import 'package:flutter_erp/apps/flutter_inventary/views/HomePage/main.dart';
+//DetailsPage
+import 'package:flutter_erp/apps/flutter_inventary/views/DetailsPage/main.dart';
+//MovementPage
+//IncomeMovementPage
+import 'package:flutter_erp/apps/flutter_inventary/views/IncomeMovementPage/main.dart';
+//IncomeDetailsPage
+import 'package:flutter_erp/apps/flutter_inventary/views/IncomeDetailsPage/main.dart';
+//OutputMovementPage
+//OutputDetailsPage
+import 'package:flutter_erp/apps/flutter_inventary/views/OutputDetailsPage/main.dart';
+//ConfirmationPage
+import 'package:flutter_erp/apps/flutter_inventary/views/ConfirmationPage/main.dart';
+
+Map routes = {
+  "home": "/",
+  "details": "details",
+  "ins": "in",
+  "in_create": "in/create",
+  "in_detail_create": "in/:id/detail/create",
+  "out_create": "out/create",
+  "out": "out/:id",
+  "outs": "out",
+  "outputDetails": "output_details",
+  "confirmation": "confirmation",
+};
+
+Map titles = {
+  "home": "Pagina Principal",
+  "details": "Detalles",
+  "movement": "Movimientos",
+  "incomeMovement": "Registrar Ingreso",
+  "incomeDetails": "Registrar Detalles de Ingreso",
+  "outputMovement": "Registrar Salida",
+  "outputDetails": "Registrar Detalles de Salida",
+  "confirmation": "Pagina de Confirmación",
+};
+
+getRouter() {
+  return GoRouter(
+    routes: <GoRoute>[
+      GoRoute(
+        path: "/",
+        /*builder: (BuildContext context, GoRouterState state) {
+          return FutureBuilder(
+            future: storage.ready,
+            builder: (BuildContext context, snapshot) {
+              return HomePage(title: "home");
+            },
+          );
+        },*/
+        routes: <GoRoute>[
+          //Detalles
+          GoRoute(
+            path: "details",
+            builder: (BuildContext context, GoRouterState state) =>
+                DetailsPage("details"),
+          ),
+          //Detalles
+          GoRoute(
+            path: 'in/:id/detail/create',
+            builder: (BuildContext context, GoRouterState state) =>
+                DetailFragment(
+                  movementId: int.parse(state.pathParameters['id']!),
+                ),
+          ),
+          GoRoute(
+            path: routes["ins"],
+            builder: (BuildContext context, GoRouterState state) =>
+                HomePage(title: "Ingresos"),
+          ),
+          //Detalles
+          GoRoute(
+            path: "in/create",
+            builder: (BuildContext context, GoRouterState state) =>
+                IncomeMovementPage("Crear Ingreso"),
+          ),
+          GoRoute(
+            path: "in/:id",
+            builder: (BuildContext context, GoRouterState state) =>
+                IncomeMovementPage(
+                  "Ver Ingreso",
+                  id: int.parse(state.pathParameters['id']!),
+                ),
+          ),
+          //Detalles
+          GoRoute(
+            path: "incomeDetails",
+            builder: (BuildContext context, GoRouterState state) {
+              final query = state.uri.queryParametersAll;
+              final Map data = {
+                "fullname": "",
+                "document": "",
+                "email": "",
+                "unit": "",
+                "local": "",
+                "reference": "",
+                "date": "",
+                "cod": "",
+              };
+              final fullname = query["fullname"],
+                  document = query["document"],
+                  email = query["email"],
+                  unit = query["unit"],
+                  local = query["local"],
+                  reference = query["reference"],
+                  date = query["date"],
+                  cod = query["cod"];
+              //Valida la estructura del JSON
+              if (fullname != null &&
+                  document != null &&
+                  email != null &&
+                  unit != null &&
+                  local != null &&
+                  reference != null &&
+                  date != null &&
+                  cod != null) {
+                if (fullname.isNotEmpty &&
+                    document.isNotEmpty &&
+                    email.isNotEmpty &&
+                    unit.isNotEmpty &&
+                    local.isNotEmpty &&
+                    reference.isNotEmpty &&
+                    date.isNotEmpty &&
+                    cod.isNotEmpty) {
+                  data["fullname"] = fullname[0];
+                  data["document"] = document[0];
+                  data["email"] = email[0];
+                  data["unit"] = unit[0];
+                  data["local"] = local[0];
+                  data["reference"] = reference[0];
+                  data["date"] = date[0];
+                  data["cod"] = cod[0];
+                  return IncomeDetailsPage(titles["incomeDetails"], data);
+                } else {
+                  return ConfirmationPage(titles["confirmation"], const {
+                    "success": false,
+                    "message": "Error 404",
+                    "redirection": "",
+                    "redirection_message": "",
+                  });
+                }
+              } else {
+                return ConfirmationPage(titles["confirmation"], const {
+                  "success": false,
+                  "message": "Error 404",
+                  "redirection": "",
+                  "redirection_message": "",
+                });
+              }
+            },
+          ),
+          //Detalles
+          GoRoute(
+            path: "out",
+            builder: (BuildContext context, GoRouterState state) =>
+                HomePage(title: "Salidas"),
+          ),
+          //Detalles
+          GoRoute(
+            path: "outputDetails",
+            builder: (BuildContext context, GoRouterState state) =>
+                OutputDetailsPage("outputDetails"),
+          ),
+          //Detalles
+          GoRoute(
+            path: "confirmation",
+            builder: (BuildContext context, GoRouterState state) {
+              /**The getter 'queryParametersAll' isn't defined for the type 'GoRouterState'.
+Try importing the library that defines 'queryParametersAll', correcting the name to the name of an existing getter, or defining a getter or field named 'queryParametersAll'.dartundefined_getter
+ */
+              final query = state.uri.queryParametersAll;
+              final Map data = {
+                "success": false,
+                "message": "",
+                "redirection": "",
+                "redirection_message": "",
+              };
+              final success = query["success"],
+                  message = query["message"],
+                  redirection = query["redirection"],
+                  redirection_message = query["redirection_message"];
+              //Valida la estructura del JSON
+              if (success != null &&
+                  message != null &&
+                  redirection != null &&
+                  redirection_message != null) {
+                if (success.isNotEmpty &&
+                    message.isNotEmpty &&
+                    redirection.isNotEmpty &&
+                    redirection_message.isNotEmpty) {
+                  data["success"] = success[0] == "true" ? true : false;
+                  data["message"] = message[0];
+                  data["redirection"] = redirection[0];
+                  data["redirection_message"] = redirection_message[0];
+                  return ConfirmationPage(titles["confirmation"], data);
+                } else {
+                  /*Manda a la ruta de error*/
+                  return ConfirmationPage(titles["confirmation"], const {
+                    "success": false,
+                    "message": "Error 404",
+                    "redirection": "",
+                    "redirection_message": "",
+                  });
+                }
+              } else {
+                return ConfirmationPage("confirmation", const {
+                  "success": false,
+                  "message": "Error 404",
+                  "redirection": "",
+                  "redirection_message": "",
+                });
+              }
+            },
+          ),
+        ],
+      ),
+    ],
+  );
+}

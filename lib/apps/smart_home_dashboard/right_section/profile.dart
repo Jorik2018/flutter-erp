@@ -5,14 +5,11 @@ import '../constants/constant.dart';
 import '../model/profile.dart';
 
 class ProfileListWidget extends StatelessWidget {
-  const ProfileListWidget({
-    required this.profiles,
-    this.onProfileSelect,
-    Key? key,
-  })  : assert(profiles != null, 'Profiles cannot be null'),
-        super(key: key);
+  const ProfileListWidget({this.profiles, this.onProfileSelect, Key? key})
+    : assert(profiles != null, 'Profiles cannot be null'),
+      super(key: key);
 
-  final List<Profile> profiles;
+  final List<Profile>? profiles;
   final ValueChanged<Profile>? onProfileSelect;
 
   Widget _avatar(String avatar) {
@@ -58,7 +55,7 @@ class ProfileListWidget extends StatelessWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () => onProfileSelect!(profiles[index]),
+              onTap: () => onProfileSelect!(profiles![index]),
               hoverColor: AppColors.buttonHover,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,7 +71,11 @@ class ProfileListWidget extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 8, right: 8, top: 4, bottom: 8),
+                      left: 8,
+                      right: 8,
+                      top: 4,
+                      bottom: 8,
+                    ),
                     child: _role(profile.role),
                   ),
                 ],
@@ -94,9 +95,9 @@ class ProfileListWidget extends StatelessWidget {
         height: 108,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: profiles.length,
+          itemCount: profiles!.length,
           itemBuilder: (context, index) =>
-              _listViewItem(context, profiles[index], index),
+              _listViewItem(context, profiles![index], index),
         ),
       ),
     );

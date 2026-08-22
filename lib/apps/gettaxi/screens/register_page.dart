@@ -189,7 +189,11 @@ class _RegisterPageState extends State<RegisterPage> {
       newUserRef.set(userMap);
 
       //apos salvar, ir para main page
-      Navigator.pushNamedAndRemoveUntil(context, MainPage.id, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        GetTaxiPage.id,
+        (route) => false,
+      );
     }
   }
 }

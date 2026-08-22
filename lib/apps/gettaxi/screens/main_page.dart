@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/gettaxi/helpers/brand_colors.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MainPage extends StatefulWidget {
+class GetTaxiPage extends StatefulWidget {
   static const String id = "mainpage";
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _GetTaxiPageState createState() => _GetTaxiPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _GetTaxiPageState extends State<GetTaxiPage> {
   //start google_map
   Completer<GoogleMapController> _controller = Completer();
 

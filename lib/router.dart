@@ -1,6 +1,9 @@
 import 'package:flutter_erp/AppShell.dart';
 import 'package:flutter_erp/apps/covid/screens/covid_screen.dart';
 import 'package:flutter_erp/apps/flutter_chat_demo/GoogleContactScreen.dart';
+import 'package:flutter_erp/apps/gettaxi/screens/main_page.dart';
+import 'package:flutter_erp/apps/netflix_clone/presentation/screens/on_boarding_screen.dart';
+import 'package:flutter_erp/apps/smart_home_dashboard/main.dart';
 import 'package:flutter_erp/screens/HomeScreen.dart';
 import 'package:flutter_erp/screens/LoginScreen.dart';
 import 'package:flutter_erp/screens/car_rental_screen.dart';
@@ -51,6 +54,16 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/screen2',
             builder: (context, state) => const Screen2(),
+          ),
+          GoRoute(path: '/gettaxi', builder: (context, state) => GetTaxiPage()),
+          GoRoute(
+            path: '/smart-home-dashboard',
+            builder: (context, state) => const SmartHomeDashboardPage(),
+          ),
+
+          GoRoute(
+            path: '/flutter_taxi_app_onboarding',
+            builder: (context, state) => OnBoardingScreen(),
           ),
           GoRoute(
             path: '/car-rental',
