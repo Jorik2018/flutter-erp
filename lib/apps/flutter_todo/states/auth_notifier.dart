@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_erp/apps/flutter_todo/models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/flutter_todo/states/auth_state.dart';
 
 import 'dart:async';
@@ -38,7 +38,7 @@ class AuthNotifier extends Notifier<AuthState> {
       final data = res.data is String ? json.decode(res.data) : res.data;
 
       if (data.containsKey('idToken')) {
-        final user = User(
+        final user = app_user.User(
           id: data['localId'],
           email: data['email'],
           token: data['idToken'],
@@ -78,7 +78,7 @@ class AuthNotifier extends Notifier<AuthState> {
       final data = res.data is String ? json.decode(res.data) : res.data;
 
       if (data.containsKey('idToken')) {
-        final user = User(
+        final user = app_user.User(
           id: data['localId'],
           email: data['email'],
           token: data['idToken'],
@@ -130,7 +130,7 @@ class AuthNotifier extends Notifier<AuthState> {
     }
 
     state = state.copyWith(
-      user: User(
+      user: app_user.User(
         id: prefs.getString('userId')!,
         email: prefs.getString('email')!,
         token: token,
@@ -166,7 +166,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
       if (data.containsKey('id_token')) {
         state = state.copyWith(
-          user: User(
+          user: app_user.User(
             id: prefs.getString('userId')!,
             email: prefs.getString('email')!,
             token: data['id_token'],

@@ -1,4 +1,4 @@
-import 'package:flutter_erp/apps/pak_tourism/model/user_model.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 import '../firebase_remote_data_source_impl.dart';
 
@@ -6,7 +6,7 @@ class GetCreateCurrentUserUseCase {
   final FirebaseRemoteDataSourceImpl repository =
       FirebaseRemoteDataSourceImpl();
 
-  Future<void> call(UserModel user) async {
+  Future<void> call(app_user.User user) async {
     return repository.getCreateCurrentUser(user);
   }
 }

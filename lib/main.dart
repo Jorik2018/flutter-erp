@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/providers/theme_provider.dart';
 import 'package:flutter_erp/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_erp/apps/delivery_app/main.dart';
@@ -17,10 +18,13 @@ class ERPApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
-
+    final isDarkThemeUsed = ref.watch(themeProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: router,
+      theme: ThemeData(
+        brightness: isDarkThemeUsed ? Brightness.dark : Brightness.light,
+      ),
     );
   }
 }

@@ -29,12 +29,32 @@ class AppShell extends ConsumerWidget {
               onTap: () => navigate(context, "/screen2"),
             ),
             ListTile(
+              title: const Text("Verido"),
+              onTap: () => navigate(context, "/verido"),
+            ),
+            ListTile(
+              title: const Text("Shop"),
+              onTap: () => navigate(context, "/shop"),
+            ),
+            ListTile(
               title: const Text("GetTaxi"),
               onTap: () => navigate(context, "/gettaxi"),
             ),
             ListTile(
               title: const Text("Taxi Onboarding"),
               onTap: () => navigate(context, "/flutter_taxi_app_onboarding"),
+            ),
+            ListTile(
+              title: const Text("Plantly"),
+              onTap: () => navigate(context, "/plantly"),
+            ),
+            ListTile(
+              title: const Text("LMS"),
+              onTap: () => navigate(context, "/lms"),
+            ),
+            ListTile(
+              title: const Text("Todo"),
+              onTap: () => navigate(context, "/todo"),
             ),
             ListTile(
               title: const Text("SmartHome"),

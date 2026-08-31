@@ -6,7 +6,7 @@ import 'package:flutter_erp/apps/pak_tourism/credentials_usecases/forgot_passwor
 import 'package:flutter_erp/apps/pak_tourism/credentials_usecases/get_create_current_user_usecase.dart';
 import 'package:flutter_erp/apps/pak_tourism/credentials_usecases/sign_in_usecase.dart';
 import 'package:flutter_erp/apps/pak_tourism/credentials_usecases/sign_up_usecase.dart';
-import 'package:flutter_erp/apps/pak_tourism/model/user_model.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 part 'credential_state.dart';
 
@@ -28,7 +28,7 @@ class CredentialCubit extends Cubit<CredentialState> {
     }
   }
 
-  Future<void> signInSubmit({required UserModel userEntity}) async {
+  Future<void> signInSubmit({required app_user.User userEntity}) async {
     emit(CredentialLoading());
     try {
       await signInUseCase.call(userEntity);
@@ -40,7 +40,7 @@ class CredentialCubit extends Cubit<CredentialState> {
     }
   }
 
-  Future<void> signUpSubmit({required UserModel userEntity}) async {
+  Future<void> signUpSubmit({required app_user.User userEntity}) async {
     emit(CredentialLoading());
     try {
       await signUpUseCase.call(userEntity);

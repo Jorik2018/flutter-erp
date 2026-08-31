@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_orientdb_app/Message_screen.dart';
-import 'package:flutter_erp/apps/flutter_orientdb_app/UserModel.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:dio/dio.dart';
 import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
 
@@ -22,7 +22,7 @@ class list_data extends State<List_data> {
   String usename = '';
   /**A value of type 'List<dynamic>' can't be assigned to a variable of type 'List<UserModel>'.
 Try changing the type of the variable, or casting the right-hand type to 'List<UserModel>'. */
-  List<UserModel> useData = [];
+  List<app_user.User> useData = [];
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ Try changing the type of the variable, or casting the right-hand type to 'List<U
                             child: Container(
                               padding: EdgeInsets.all(10.0),
                               child: Text(
-                                useData[index].Username!,
+                                useData[index].name!,
                                 style: TextStyle(fontSize: 20.0),
                               ),
                             ),
@@ -66,14 +66,11 @@ Try changing the type of the variable, or casting the right-hand type to 'List<U
 Try moving the argument to the end of the argument list.dartsort_child_properties_last
 The method 'setString' can't be unconditionally invoked because the receiver can be 'null'.
 Try making the call conditional (using '?.') or adding a null check to the target ('!'). */
-                        prf!.setString(
+                        /*prf!.setString(
                           'reciver_id',
                           useData[index].rid!.replaceAll('#', ''),
-                        );
-                        prf!.setString(
-                          'reciver_name',
-                          useData[index].Username!,
-                        );
+                        );*/
+                        prf!.setString('reciver_name', useData[index].name!);
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -139,7 +136,7 @@ Try making the call conditional (using '?.') or adding a null check to the targe
               .replaceAll('#', '');
           prf!.setString('sender_name', res1[i]['username']);
         } else if (res1[i]['username'] != usename) {
-          useData.add(UserModel.fromJson(res1[i]));
+          useData.add(app_user.User.fromJson(res1[i]));
         }
       }
 

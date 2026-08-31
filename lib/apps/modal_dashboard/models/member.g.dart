@@ -7,14 +7,14 @@ part of 'member.dart';
 // **************************************************************************
 
 Member _$MemberFromJson(Map<String, dynamic> json) => Member(
-  id: json['id'] as String,
-  firstName: json['first_name'] as String,
-  lastName: json['last_name'] as String,
-  gender: json['gender'] as String,
-  email: json['email'] as String,
-  status: json['status'] as String,
-  username: json['username'] as String,
-  avatar: json['avatar'] as String,
+  id: json['id'] as String?,
+  firstName: json['first_name'] as String?,
+  lastName: json['last_name'] as String?,
+  gender: json['gender'] as String?,
+  email: json['email'] as String?,
+  status: json['status'] as String?,
+  username: json['username'] as String?,
+  avatar: json['avatar'] as String?,
 );
 
 Map<String, dynamic> _$MemberToJson(Member instance) => <String, dynamic>{

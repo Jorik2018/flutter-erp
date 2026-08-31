@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_erp/apps/whatsapp_clone/domain/entities/user_entity.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/my_chat/my_chat_cubit.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/pages/sub_pages/select_contact_page.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/pages/sub_pages/single_communication_page.dart';
@@ -9,20 +9,18 @@ import 'package:flutter_erp/apps/whatsapp_clone/presentation/widgets/theme/style
 import 'package:intl/intl.dart';
 
 class ChatPage extends StatefulWidget {
-
-  final UserEntity userInfo;
+  final app_user.User userInfo;
 
   const ChatPage({Key? key, required this.userInfo}) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
-
 }
 
 class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
-    BlocProvider.of<MyChatCubit>(context).getMyChat(uid: widget.userInfo.uid!);
+    BlocProvider.of<MyChatCubit>(context).getMyChat(uid: widget.userInfo.id!);
     super.initState();
   }
 
@@ -41,11 +39,11 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: primaryColor,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => SelectContactPage(
-                        userInfo: widget.userInfo,
-                      )));
+            context,
+            MaterialPageRoute(
+              builder: (_) => SelectContactPage(userInfo: widget.userInfo),
+            ),
+          );
         },
         child: Icon(Icons.chat),
       ),
@@ -75,8 +73,10 @@ class _ChatPageState extends State<ChatPage> {
             child: Text(
               "Start chat with your friends and family,\n on WhatsApp Clone",
               textAlign: TextAlign.center,
-              style:
-                  TextStyle(fontSize: 14, color: Colors.black.withOpacity(.4)),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black.withOpacity(.4),
+              ),
             ),
           ),
         ),
@@ -90,19 +90,22 @@ class _ChatPageState extends State<ChatPage> {
         : ListView.builder(
             itemCount: myChatData.myChat.length,
             itemBuilder: (_, index) {
-              final myChat=myChatData.myChat[index];
+              final myChat = myChatData.myChat[index];
               return InkWell(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (_) => SingleCommunicationPage(
-                      senderPhoneNumber: myChat.senderPhoneNumber,
-                      senderUID: widget.userInfo.uid,
-                      senderName: myChat.senderName,
-                      recipientUID: myChat.recipientUID,
-                      recipientPhoneNumber: myChat.recipientPhoneNumber,
-                      recipientName: myChat.recipientName,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SingleCommunicationPage(
+                        senderPhoneNumber: myChat.senderPhoneNumber,
+                        senderUID: widget.userInfo.id,
+                        senderName: myChat.senderName,
+                        recipientUID: myChat.recipientUID,
+                        recipientPhoneNumber: myChat.recipientPhoneNumber,
+                        recipientName: myChat.recipientName,
+                      ),
                     ),
-                  ));
+                  );
                 },
                 child: SingleItemChatUserPage(
                   name: myChat.recipientName,
@@ -115,8 +118,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _loadingWidget() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(child: CircularProgressIndicator());
   }
 }

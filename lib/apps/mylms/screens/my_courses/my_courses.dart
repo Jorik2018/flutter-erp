@@ -11,7 +11,7 @@ class MyCourses extends StatefulWidget {
 }
 
 class _MyCoursesState extends State<MyCourses> {
-  Future<List<Course>>? _future;
+  late Future<List<Course>> _future;
   @override
   void initState() {
     _future = CourseService.getMyCourses();
@@ -35,10 +35,23 @@ class _MyCoursesState extends State<MyCourses> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             }
+
             if (snapshot.hasError) {
-              print(snapshot.error);
-              return const Text("Something went wrong");
+              debugPrint('Course error: ${snapshot.error}');
+              debugPrint('Stack: ${snapshot.stackTrace}');
+
+              return Text(
+                'Something went wrong\n${snapshot.error}',
+                textAlign: TextAlign.center,
+              );
             }
+
+            final courses = snapshot.data ?? [];
+
+            if (courses.isEmpty) {
+              return const Text('No courses available');
+            }
+
             return ListView(
               children: snapshot.data!
                   .map(

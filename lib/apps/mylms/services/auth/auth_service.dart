@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_erp/apps/mylms/config/env.dart';
-import 'package:flutter_erp/apps/mylms/modules/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/mylms/services/auth/auth_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,12 +17,17 @@ class AuthService {
 
   static SharedPreferences? _prefs;
 
-  static User? get user {
+  static Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  static app_user.User? get user {
+    print("User: ${_prefs}");
     final data = _prefs!.getString(_userDatakey);
     if (data == null) {
       return null;
     }
-    return User.fromJson(jsonDecode(data));
+    return app_user.User.fromJson(jsonDecode(data));
   }
 
   static bool get isLoggedIn => user != null;
@@ -44,7 +49,7 @@ class AuthService {
         throw AuthException(res.body);
       }
 
-      await _saveUser(User.fromJson(jsonDecode(res.body)));
+      await _saveUser(app_user.User.fromJson(jsonDecode(res.body)));
     } on SocketException catch (e) {
       throw AuthException("Network Error");
     }
@@ -73,7 +78,7 @@ class AuthService {
       if (res.statusCode != 200) {
         throw AuthException(res.body);
       }
-      await _saveUser(User.fromJson(jsonDecode(res.body)));
+      await _saveUser(app_user.User.fromJson(jsonDecode(res.body)));
     } on SocketException catch (e) {
       throw AuthException("Network Error");
     }
@@ -83,11 +88,7 @@ class AuthService {
     await _prefs!.remove(_userDatakey);
   }
 
-  static Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
-  }
-
-  static Future<void> _saveUser(User user) async {
+  static Future<void> _saveUser(app_user.User user) async {
     await _prefs!.setString(_userDatakey, jsonEncode(user.toJson()));
   }
 }

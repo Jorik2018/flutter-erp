@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_erp/apps/flutter_todo/models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/flutter_todo/states/user_state.dart';
 
 class UserNotifier extends Notifier<UserState> {
@@ -14,16 +14,9 @@ class UserNotifier extends Notifier<UserState> {
     try {
       // API CALL (igual que antes)
 
-      final user = User(
-        id: "1",
-        email: email,
-        token: "token",
-      );
+      final user = app_user.User(id: "1", email: email, token: "token");
 
-      state = state.copyWith(
-        user: user,
-        isLoading: false,
-      );
+      state = state.copyWith(user: user, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);
     }

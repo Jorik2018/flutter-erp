@@ -40,7 +40,7 @@ class _SignUpState extends State<SignUp> {
           .then((v) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => const AppNavigation()),
+              MaterialPageRoute(builder: (_) => const LMSAppNavigation()),
               (route) => false,
             );
           })

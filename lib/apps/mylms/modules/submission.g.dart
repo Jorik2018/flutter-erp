@@ -7,13 +7,13 @@ part of 'submission.dart';
 // **************************************************************************
 
 Submission _$SubmissionFromJson(Map<String, dynamic> json) => Submission(
-      id: json['id'] as int,
-      comment: json['comment'] as String?,
-      marks: json['marks'] as int,
-      fileURL: json['fileURL'] as String?,
-      markedDate: json['markedDate'] as String?,
-      submittedDate: json['submittedDate'] as String?,
-    );
+  id: (json['id'] as num).toInt(),
+  comment: json['comment'] as String?,
+  marks: (json['marks'] as num).toInt(),
+  fileURL: json['fileURL'] as String?,
+  markedDate: json['markedDate'] as String?,
+  submittedDate: json['submittedDate'] as String?,
+);
 
 Map<String, dynamic> _$SubmissionToJson(Submission instance) =>
     <String, dynamic>{

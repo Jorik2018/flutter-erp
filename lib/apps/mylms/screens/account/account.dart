@@ -35,7 +35,7 @@ class Account extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.email),
-              title: Text(user!.email),
+              title: Text(user!.email!),
             ),
             const Divider(),
             ListTile(

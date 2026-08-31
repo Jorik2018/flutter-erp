@@ -1,5 +1,4 @@
-
-import 'package:flutter_erp/apps/fttq/login/domain/models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/fttq/fttq.dart';
 
 import 'events.dart';
@@ -20,7 +19,7 @@ class LoginHandler extends CommandHandler<LoginCmd> {
   @override
   handle(LoginCmd command) {
     if (command.username == "admin") {
-      store.setUser(User("admin@admin.com", "admin"));
+      store.setUser(app_user.User(email: "admin@admin.com", name: "admin"));
       fire(LoginOk());
     } else {
       fire(LoginFailed("not an admin"));

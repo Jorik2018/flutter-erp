@@ -8,9 +8,9 @@ part of 'generic_response.dart';
 
 GenericResponse _$GenericResponseFromJson(Map<String, dynamic> json) =>
     GenericResponse(
-      success: json['success'] as bool,
-      error: json['error'] as String,
-      errorCode: (json['errorCode'] as num).toInt(),
+      success: json['success'] as bool?,
+      error: json['error'] as String?,
+      errorCode: (json['errorCode'] as num?)?.toInt(),
       result: json['result'],
     );
 

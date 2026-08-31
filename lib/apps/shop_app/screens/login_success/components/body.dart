@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/shop_app/components/default_button.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_erp/apps/shop_app/screens/home/home_screen.dart';
 import 'package:flutter_erp/apps/shop_app/size_config.dart';
+import 'package:go_router/go_router.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -28,7 +30,7 @@ class Body extends StatelessWidget {
           child: DefaultButton(
             text: "Back to home",
             press: () {
-              Navigator.pushNamed(context, HomeScreen.routeName);
+              context.push('${Configs.pathParent}${HomeScreen.routeName}');
             },
           ),
         ),

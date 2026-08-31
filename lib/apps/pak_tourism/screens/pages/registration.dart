@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_erp/apps/pak_tourism/cubit/auth/auth_cubit.dart';
 import 'package:flutter_erp/apps/pak_tourism/cubit/credential/credential_cubit.dart';
-import 'package:flutter_erp/apps/pak_tourism/model/user_model.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 import '../home_screen.dart';
 import 'home_page.dart';
@@ -216,11 +216,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           BlocProvider.of<CredentialCubit>(context).signUpSubmit(
-            userEntity: UserModel(
+            userEntity: app_user.User(
               email: emailEditingController.text,
-              password: passwordEditingController.text,
+              pass: passwordEditingController.text,
               firstName: firstNameEditingController.text,
-              secondName: secondNameEditingController.text,
+              lastName: secondNameEditingController.text,
             ),
           );
         },

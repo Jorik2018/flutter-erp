@@ -1,8 +1,8 @@
-import 'todo.dart';
+import 'task.dart';
 import 'priority.dart';
 
-extension TodoCopyWith on Todo {
-  Todo copyWith({
+extension TaskCopyWith on Task {
+  Task copyWith({
     String? id,
     String? title,
     String? content,
@@ -10,7 +10,7 @@ extension TodoCopyWith on Todo {
     bool? isDone,
     String? userId,
   }) {
-    return Todo(
+    return Task(
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,

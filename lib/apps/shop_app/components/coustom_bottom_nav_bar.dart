@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_erp/apps/shop_app/screens/home/home_screen.dart';
 import 'package:flutter_erp/apps/shop_app/screens/profile/profile_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../constants.dart';
 import '../enums.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
-  const CustomBottomNavBar({
-    Key? key,
-    required this.selectedMenu,
-  }) : super(key: key);
+  const CustomBottomNavBar({Key? key, required this.selectedMenu})
+    : super(key: key);
 
   final MenuState selectedMenu;
 
@@ -34,40 +34,45 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
       ),
       child: SafeArea(
-          top: false,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/Shop Icon.svg",
-                  color: MenuState.home == selectedMenu
+        top: false,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: SvgPicture.asset(
+                "assets/icons/Shop Icon.svg",
+                colorFilter: ColorFilter.mode(
+                  MenuState.home == selectedMenu
                       ? kPrimaryColor
                       : inActiveIconColor,
+                  BlendMode.srcIn,
                 ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, HomeScreen.routeName),
               ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
-                onPressed: () {},
+              onPressed: () =>
+                  context.push('${Configs.pathParent}${HomeScreen.routeName}'),
+            ),
+            IconButton(
+              icon: SvgPicture.asset("assets/icons/Heart Icon.svg"),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: SvgPicture.asset(
+                "assets/icons/User Icon.svg",
+                color: MenuState.profile == selectedMenu
+                    ? kPrimaryColor
+                    : inActiveIconColor,
               ),
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/Chat bubble Icon.svg"),
-                onPressed: () {},
+              onPressed: () => context.push(
+                '${Configs.pathParent}${ProfileScreen.routeName}',
               ),
-              IconButton(
-                icon: SvgPicture.asset(
-                  "assets/icons/User Icon.svg",
-                  color: MenuState.profile == selectedMenu
-                      ? kPrimaryColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushNamed(context, ProfileScreen.routeName),
-              ),
-            ],
-          )),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

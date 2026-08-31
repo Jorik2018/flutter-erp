@@ -1,9 +1,11 @@
 import 'package:flutter_erp/apps/day16_shopping/model/category.dart';
-import 'package:flutter_erp/apps/day16_shopping/model/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:rxdart/rxdart.dart';
 
 class AppState {
-  final user = BehaviorSubject<User>.seeded(User(isLogged: false));
+  final user = BehaviorSubject<app_user.User>.seeded(
+    app_user.User(isLogged: false),
+  );
   //TODO CHANGE THIS MOCK TO APP CLASS
   final List<CategoryData> categories = [
     CategoryData(

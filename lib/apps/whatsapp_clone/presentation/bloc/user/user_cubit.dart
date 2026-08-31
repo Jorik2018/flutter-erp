@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_erp/apps/whatsapp_clone/domain/entities/user_entity.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/whatsapp_clone/domain/usecases/create_one_to_one_chat_channel_usecase.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/domain/usecases/get_all_user_usecase.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/domain/usecases/get_one_to_one_single_user_chat_channel_usecase.dart';
@@ -18,24 +18,28 @@ class UserCubit extends Cubit<UserState> {
     required this.createOneToOneChatChannelUseCase,
   }) : super(UserInitial());
 
-  Future<void> getAllUsers()async{
-   try{
-     final userStreamData=getAllUserUseCase.call();
-     userStreamData.listen((users) {
-       emit(UserLoaded(users));
-     });
-   }on SocketException catch(_){
-     emit(UserFailure());
-   }catch(_){
-     emit(UserFailure());
-   }
-  }
-  Future<void> createChatChannel({required String uid, required String otherUid})async{
-    try{
-      await createOneToOneChatChannelUseCase.call(uid, otherUid);
-    }on SocketException catch(_){
+  Future<void> getAllUsers() async {
+    try {
+      final userStreamData = getAllUserUseCase.call();
+      userStreamData.listen((users) {
+        emit(UserLoaded(users));
+      });
+    } on SocketException catch (_) {
       emit(UserFailure());
-    }catch(_){
+    } catch (_) {
+      emit(UserFailure());
+    }
+  }
+
+  Future<void> createChatChannel({
+    required String uid,
+    required String otherUid,
+  }) async {
+    try {
+      await createOneToOneChatChannelUseCase.call(uid, otherUid);
+    } on SocketException catch (_) {
+      emit(UserFailure());
+    } catch (_) {
       emit(UserFailure());
     }
   }

@@ -152,10 +152,14 @@ dependencies:
   intl: ^0.20.2
   google_maps_flutter: ^2.18.0
   shimmer: ^3.0.0
-  timelines_plus: ^2.0.1
+  timelines_plus: ^1.0.8
   timeago: ^3.7.1
   scroll_snap_list: ^0.9.1
   rubber: ^1.1.0
+  rive: ^0.13.20
+  intl_phone_number_input: ^0.7.5
+  animated_text_kit: ^4.3.0
+  sqflite_common_ffi_web: ^1.1.1
   
 dev_dependencies:
   flutter_test:

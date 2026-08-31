@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/shop_app/components/custom_surfix_icon.dart';
 import 'package:flutter_erp/apps/shop_app/components/default_button.dart';
 import 'package:flutter_erp/apps/shop_app/components/form_error.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_erp/apps/shop_app/screens/complete_profile/complete_profile_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
-
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -54,7 +55,9 @@ class _SignUpFormState extends State<SignUpForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
-                Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                context.push(
+                  '${Configs.pathParent}${CompleteProfileScreen.routeName}',
+                );
               }
             },
           ),

@@ -33,7 +33,7 @@ class _LogInState extends State<LogIn> {
           .then((v) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => const AppNavigation()),
+              MaterialPageRoute(builder: (_) => const LMSAppNavigation()),
               (route) => false,
             );
           })

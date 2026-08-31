@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_erp/apps/shop_app/models/Product.dart';
 import 'package:flutter_erp/apps/shop_app/screens/details/details_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../constants.dart';
 import '../size_config.dart';
@@ -24,10 +26,9 @@ class ProductCard extends StatelessWidget {
       child: SizedBox(
         width: getProportionateScreenWidth(width),
         child: GestureDetector(
-          onTap: () => Navigator.pushNamed(
-            context,
-            DetailsScreen.routeName,
-            arguments: ProductDetailsArguments(product: product),
+          onTap: () => context.push(
+            '${Configs.pathParent}${DetailsScreen.routeName}',
+            extra: product,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +86,7 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

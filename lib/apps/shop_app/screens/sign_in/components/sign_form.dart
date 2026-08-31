@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/shop_app/components/custom_surfix_icon.dart';
 import 'package:flutter_erp/apps/shop_app/components/form_error.dart';
 import 'package:flutter_erp/apps/shop_app/helper/keyboard.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_erp/apps/shop_app/screens/forgot_password/forgot_password_screen.dart';
 import 'package:flutter_erp/apps/shop_app/screens/login_success/login_success_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
@@ -59,13 +61,14 @@ class _SignFormState extends State<SignForm> {
               Text("Remember me"),
               Spacer(),
               GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
+                onTap: () => context.push(
+                  '${Configs.pathParent}${ForgotPasswordScreen.routeName}',
+                ),
                 child: Text(
                   "Forgot Password",
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
-              )
+              ),
             ],
           ),
           FormError(errors: errors),
@@ -77,7 +80,9 @@ class _SignFormState extends State<SignForm> {
                 _formKey.currentState!.save();
                 // if all are valid then go to success screen
                 KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                context.push(
+                  '${Configs.pathParent}${LoginSuccessScreen.routeName}',
+                );
               }
             },
           ),

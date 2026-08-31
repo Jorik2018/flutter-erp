@@ -4,7 +4,7 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_erp/apps/whatsapp_clone/data/model/user_model.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/auth/auth_cubit.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/phone_auth/phone_auth_cubit.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/user/user_cubit.dart';
@@ -14,14 +14,11 @@ import 'package:flutter_erp/apps/whatsapp_clone/presentation/screens/home_screen
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/widgets/theme/style.dart';
 
 class RegistrationScreen extends StatefulWidget {
-
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
-
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-
   static Country _selectedFilteredDialogCountry =
       CountryPickerUtils.getCountryByPhoneCode("92");
 
@@ -81,8 +78,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     builder: (context, userState) {
                       if (userState is UserLoaded) {
                         final currentUserInfo = userState.users.firstWhere(
-                          (user) => user.uid == authState.uid,
-                          orElse: () => UserModel(),
+                          (user) => user.id == authState.uid,
+                          orElse: () => app_user.User(),
                         );
                         return HomeScreen(userInfo: currentUserInfo);
                       }

@@ -1,24 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_erp/apps/pak_tourism/model/user_model.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 class FirebaseRemoteDataSourceImpl {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<void> getCreateCurrentUser(UserModel user) async {
+  Future<void> getCreateCurrentUser(app_user.User user) async {
     final userCollection = fireStore.collection("users");
     final uid = await getCurrentUId();
     userCollection
         .doc(uid)
         .get()
         .then((userDoc) {
-          final newUser = UserModel(
-            uid: uid,
+          final newUser = app_user.User(
+            id: uid,
             firstName: user.firstName,
-            secondName: user.secondName,
             email: user.email,
-          ).toMap();
+            /**The method 'toMap' isn't defined for the type 'User'.
+Try correcting the name to the name of an existing method, or defining a method named 'toMap'. */
+          ).toJson();
           if (!userDoc.exists) {
             userCollection.doc(uid).set(newUser);
             return;
@@ -45,17 +46,17 @@ class FirebaseRemoteDataSourceImpl {
     await auth.sendPasswordResetEmail(email: email);
   }
 
-  Future<void> signIn(UserModel user) async {
+  Future<void> signIn(app_user.User user) async {
     await auth.signInWithEmailAndPassword(
       email: user.email!,
-      password: user.password!,
+      password: user.pass!,
     );
   }
 
-  Future<void> signUp(UserModel user) async {
+  Future<void> signUp(app_user.User user) async {
     await auth.createUserWithEmailAndPassword(
       email: user.email!,
-      password: user.password!,
+      password: user.pass!,
     );
   }
 }

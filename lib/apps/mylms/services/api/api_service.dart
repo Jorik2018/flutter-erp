@@ -1,43 +1,67 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_erp/apps/mylms/config/env.dart';
 import 'package:flutter_erp/apps/mylms/services/api/api_exception.dart';
 import 'package:flutter_erp/apps/mylms/services/auth/auth_service.dart';
 
-class ApiService {
-  static final _headres = {
-    "Content-type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer ${AuthService.user!.token}",
-  };
+typedef JsonMap = Map<String, dynamic>;
 
-  static Future<dynamic> post(String path, Map<String, dynamic> data) async {
-    final url = Uri.parse("${Env.baseUrl}$path");
+class ApiService {
+  static Map<String, String> get _headers {
+    final token = AuthService.user?.token;
+
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
+  }
+
+  static Future<T> post<T>(
+    String path,
+    JsonMap data, {
+    required T Function(dynamic json) fromJson,
+  }) async {
+    final url = Uri.parse('${Env.baseUrl}$path');
+
     try {
-      final res = await http.post(url, headers: _headres, body: data);
-      if (res.statusCode != 200) {
-        throw ApiException("Something went wrong");
-      }
-      return jsonDecode(res.body);
-    } on SocketException catch (e) {
-      throw ApiException("Network Erorr");
+      final response = await http.post(
+        url,
+        headers: _headers,
+        body: jsonEncode(data),
+      );
+
+      _validateResponse(response);
+
+      return fromJson(jsonDecode(response.body));
+    } on http.ClientException {
+      throw ApiException('Network error');
     }
   }
 
-  static Future<dynamic> get(String path) async {
-    final url = Uri.parse("${Env.baseUrl}$path");
+  static Future<T> get<T>(
+    String path, {
+    required T Function(dynamic json) fromJson,
+  }) async {
+    print("GET: ${Env.baseUrl}$path");
+    final url = Uri.parse('${Env.baseUrl}$path');
     try {
-      final res = await http.get(url, headers: _headres);
-      if (res.statusCode != 200) {
-        throw ApiException("Something went wrong");
-      }
-      return jsonDecode(res.body);
-    } on SocketException catch (e) {
-      throw ApiException("Network Erorr");
+      final response = await http.get(url, headers: _headers);
+
+      _validateResponse(response);
+
+      return fromJson(jsonDecode(response.body));
+    } on http.ClientException {
+      throw ApiException('Network error');
+    }
+  }
+
+  static void _validateResponse(http.Response response) {
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw ApiException('Request failed with status ${response.statusCode}');
     }
   }
 

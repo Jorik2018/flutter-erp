@@ -4,7 +4,7 @@ import 'package:flutter_erp/apps/fu_uber/UI/widgets/PredictionItemView.dart';
 
 /// An list picker like Widget with textField to show
 /// AutoComplete just like Google Maps,
-/// @Required : TextField
+/// required : TextField
 /// @Optional Data and onTap Callback
 typedef onListItemTap = void Function(Prediction prediction);
 

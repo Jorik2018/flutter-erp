@@ -6,12 +6,10 @@ part of 'level.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Level _$LevelFromJson(Map<String, dynamic> json) => Level(
-      id: json['id'] as int,
-      level: json['level'] as String,
-    );
+Level _$LevelFromJson(Map<String, dynamic> json) =>
+    Level(id: (json['id'] as num).toInt(), level: json['level'] as String);
 
 Map<String, dynamic> _$LevelToJson(Level instance) => <String, dynamic>{
-      'id': instance.id,
-      'level': instance.level,
-    };
+  'id': instance.id,
+  'level': instance.level,
+};

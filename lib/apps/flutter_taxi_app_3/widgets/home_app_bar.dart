@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_erp/apps/flutter_taxi_app_3/bloc/taxi_booking_bloc.dart';
 import 'package:flutter_erp/apps/flutter_taxi_app_3/bloc/taxi_booking_state.dart';
 import 'package:flutter_erp/apps/flutter_taxi_app_3/controllers/user_controller.dart';
-import 'package:flutter_erp/apps/flutter_taxi_app_3/models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/flutter_taxi_app_3/widgets/ease_in_widget.dart';
 
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -28,7 +28,7 @@ class _HomeAppBarState extends State<HomeAppBar> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    User user = UserController.getUser();
+    app_user.User user = UserController.getUser();
     return BlocListener<TaxiBookingBloc, TaxiBookingState>(
       listener: (context, state) {
         if (state is TaxiBookingNotSelectedState) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/shop_app/constants.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_erp/apps/shop_app/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter_erp/apps/shop_app/size_config.dart';
+import 'package:go_router/go_router.dart';
 
 // This is the best practice
 import 'splash_content.dart';
@@ -17,16 +19,16 @@ class _BodyState extends State<Body> {
   List<Map<String, String>> splashData = [
     {
       "text": "Welcome to Tokoto, Let’s shop!",
-      "image": "assets/images/splash_1.png"
+      "image": "assets/images/splash_1.png",
     },
     {
       "text":
           "We help people conect with store \naround United State of America",
-      "image": "assets/images/splash_2.png"
+      "image": "assets/images/splash_2.png",
     },
     {
       "text": "We show the easy way to shop. \nJust stay at home with us",
-      "image": "assets/images/splash_3.png"
+      "image": "assets/images/splash_3.png",
     },
   ];
   @override
@@ -55,7 +57,8 @@ class _BodyState extends State<Body> {
               flex: 2,
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(20)),
+                  horizontal: getProportionateScreenWidth(20),
+                ),
                 child: Column(
                   children: <Widget>[
                     Spacer(),
@@ -70,7 +73,9 @@ class _BodyState extends State<Body> {
                     DefaultButton(
                       text: "Continue",
                       press: () {
-                        Navigator.pushNamed(context, SignInScreen.routeName);
+                        context.push(
+                          '${Configs.pathParent}${SignInScreen.routeName}',
+                        );
                       },
                     ),
                     Spacer(),

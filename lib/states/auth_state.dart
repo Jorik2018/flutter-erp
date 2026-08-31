@@ -3,15 +3,18 @@ import 'dart:convert';
 
 //import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_erp/apps/wonders/logic/common/http_client.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final authProvider = AsyncNotifierProvider<AuthController, bool>(
+final authProvider = AsyncNotifierProvider<AuthController, app_user.User?>(
   AuthController.new,
 );
 
-class AuthController extends AsyncNotifier<bool> {
+class AuthController extends AsyncNotifier<app_user.User?> {
+  static const _userKey = 'current_user';
+
   final List<String> scopes = <String>[
     'https://www.googleapis.com/auth/contacts.readonly',
   ];
@@ -27,15 +30,30 @@ class AuthController extends AsyncNotifier<bool> {
   bool _googleSignInInitialized = false;
 
   @override
-  Future<bool> build() async {
+  Future<app_user.User?> build() async {
     //await _initializeGoogleSignIn();
 
     // Aquí también podrías comprobar:
     // - una sesión guardada de tu API
     // - FirebaseAuth.currentUser
     // - una sesión ligera de Google
+    final prefs = await SharedPreferences.getInstance();
 
-    return false;
+    final jsonUser = prefs.getString(_userKey);
+
+    if (jsonUser == null) {
+      return null;
+    }
+    try {
+      return app_user.User.fromJson(
+        jsonDecode(jsonUser) as Map<String, dynamic>,
+      );
+    } catch (_) {
+      // Si quedó basura/corrupto en SharedPreferences,
+      // eliminamos la sesión.
+      await prefs.remove(_userKey);
+      return null;
+    }
   }
 
   Future<void> _initializeGoogleSignIn() async {
@@ -175,13 +193,16 @@ class AuthController extends AsyncNotifier<bool> {
       // Sustituir por tu API REST, Firebase, Appwrite, etc.
       await Future<void>.delayed(const Duration(seconds: 1));
 
+      final user = app_user.User(name: normalizedName, id: '123');
       // Si las credenciales no son válidas:
       //
       // throw const AuthException(
       //   'Usuario o contraseña incorrectos',
       // );
-
-      return true;
+      await SharedPreferences.getInstance().then(
+        (prefs) => prefs.setString(_userKey, jsonEncode(user.toJson())),
+      );
+      return user;
     });
   }
 
@@ -216,7 +237,7 @@ class AuthController extends AsyncNotifier<bool> {
         _ = name;
         _ = photoUrl;
 */
-        return true;
+        return null;
       } on GoogleSignInException catch (error) {
         if (error.code == GoogleSignInExceptionCode.canceled) {
           throw const AuthCancelledException('Inicio de sesión cancelado.');
@@ -245,7 +266,7 @@ class AuthController extends AsyncNotifier<bool> {
       // También puedes cerrar aquí la sesión de tu API:
       // await authRepository.logout();
 
-      return false;
+      return null;
     });
   }
 

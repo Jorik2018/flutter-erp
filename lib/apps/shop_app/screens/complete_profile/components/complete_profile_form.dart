@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/shop_app/components/custom_surfix_icon.dart';
 import 'package:flutter_erp/apps/shop_app/components/default_button.dart';
 import 'package:flutter_erp/apps/shop_app/components/form_error.dart';
+import 'package:flutter_erp/apps/shop_app/router.dart';
 import 'package:flutter_erp/apps/shop_app/screens/otp/otp_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -53,7 +55,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
             text: "continue",
             press: () {
               if (_formKey.currentState!.validate()) {
-                Navigator.pushNamed(context, OtpScreen.routeName);
+                context.push('${Configs.pathParent}${OtpScreen.routeName}');
               }
             },
           ),

@@ -1,18 +1,12 @@
-import 'package:flutter_erp/apps/flutter_todo/models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 class UserState {
-  final User? user;
+  final app_user.User? user;
   final bool isLoading;
 
-  const UserState({
-    this.user,
-    this.isLoading = false,
-  });
+  const UserState({this.user, this.isLoading = false});
 
-  UserState copyWith({
-    User? user,
-    bool? isLoading,
-  }) {
+  UserState copyWith({app_user.User? user, bool? isLoading}) {
     return UserState(
       user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,

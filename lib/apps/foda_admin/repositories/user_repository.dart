@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/result.dart';
-import '../models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import '../services/authentication_service.dart';
 import '../utils/common.dart';
 
@@ -15,7 +15,8 @@ class UserRepository {
 
   final usersCollection = FirebaseFirestore.instance.collection("users");
 
-  ValueNotifier<User?> currentUserNotifier = ValueNotifier<User?>(null);
+  ValueNotifier<app_user.User?> currentUserNotifier =
+      ValueNotifier<app_user.User?>(null);
 
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>?
   _userStreamSubscriptions;
@@ -24,7 +25,7 @@ class UserRepository {
 
   String? get currentUserUID => _authService.auth.currentUser?.uid;
 
-  set setCurrentUser(User? user) {
+  set setCurrentUser(app_user.User? user) {
     currentUserNotifier.value = user;
     currentUserNotifier.notifyListeners();
   }
@@ -48,28 +49,27 @@ class UserRepository {
     });
   }
 
-  Future<Result<User>> getCurrentUser(String uid) async {
+  Future<Result<app_user.User>> getCurrentUser(String uid) async {
     try {
       final userSnapshot = await usersCollection.doc(uid).get();
       if (!userSnapshot.exists) {
         return const Failure(UserNotFoundError());
       }
-      final data = userSnapshot.data() as Map<String, dynamic>;
-      final User user = User.fromMap(data);
-      if (!user.isAdmin) {
+      final app_user.User user = app_user.User.fromDocument(userSnapshot);
+      if (user.name != 'admin') {
         await logout();
         fodaPrint("user is not an admin");
         return const Failure(UserNotAdminError());
       }
       setCurrentUser = user;
-      listenToCurrentUser(user.uid);
+      listenToCurrentUser(user.id!);
       return Success(user);
     } catch (e) {
       return Failure(UnexpectedError(e.toString()));
     }
   }
 
-  Future<Result<User>> login(String email, String password) async {
+  Future<Result<app_user.User>> login(String email, String password) async {
     try {
       final logIn = await _authService.logIn(email, password);
       switch (logIn) {
@@ -83,7 +83,7 @@ class UserRepository {
     }
   }
 
-  Stream<User?> listenToCurrentUser(String uid) async* {
+  Stream<app_user.User?> listenToCurrentUser(String uid) async* {
     try {
       _userStreamSubscriptions?.cancel();
       _userStreamSubscriptions = null;
@@ -92,8 +92,7 @@ class UserRepository {
 
       _userStreamSubscriptions = snapshots.listen((document) {
         if (document.exists) {
-          final data = document.data() as Map<String, dynamic>;
-          final user = User.fromMap(data);
+          final user = app_user.User.fromDocument(document);
           setCurrentUser = user;
         }
       });

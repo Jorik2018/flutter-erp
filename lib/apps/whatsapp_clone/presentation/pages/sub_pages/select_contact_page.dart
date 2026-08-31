@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/domain/entities/contact_entity.dart';
-import 'package:flutter_erp/apps/whatsapp_clone/domain/entities/user_entity.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/get_device_number/get_device_numbers_cubit.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/user/user_cubit.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/pages/sub_pages/single_communication_page.dart';
@@ -10,18 +10,15 @@ import 'package:flutter_erp/apps/whatsapp_clone/presentation/widgets/theme/style
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SelectContactPage extends StatefulWidget {
-
-  final UserEntity userInfo;
+  final app_user.User userInfo;
 
   const SelectContactPage({Key? key, required this.userInfo}) : super(key: key);
 
   @override
   _SelectContactPageState createState() => _SelectContactPageState();
-
 }
 
 class _SelectContactPageState extends State<SelectContactPage> {
-
   @override
   void initState() {
     BlocProvider.of<GetDeviceNumbersCubit>(context).getDeviceNumbers();
@@ -38,22 +35,22 @@ class _SelectContactPageState extends State<SelectContactPage> {
               if (userState is UserLoaded) {
                 final List<ContactEntity> contacts = [];
                 final dbUsers = userState.users
-                    .where((user) => user.uid != widget.userInfo.uid)
+                    .where((user) => user.id != widget.userInfo.id)
                     .toList();
                 contactNumberState.contacts.forEach((deviceUserNumber) {
-                  dbUsers.forEach(
-                    (dbUser) {
-                      if (dbUser.phoneNumber ==
-                          deviceUserNumber.phoneNumber!.replaceAll(' ', '')) {
-                        contacts.add(ContactEntity(
+                  dbUsers.forEach((dbUser) {
+                    if (dbUser.phoneNumber ==
+                        deviceUserNumber.phoneNumber!.replaceAll(' ', '')) {
+                      contacts.add(
+                        ContactEntity(
                           label: dbUser.name,
                           phoneNumber: dbUser.phoneNumber,
-                          uid: dbUser.uid,
+                          uid: dbUser.id,
                           status: dbUser.status,
-                        ));
-                      }
-                    },
-                  );
+                        ),
+                      );
+                    }
+                  });
                 });
                 return Scaffold(
                   appBar: AppBar(
@@ -67,34 +64,23 @@ class _SelectContactPageState extends State<SelectContactPage> {
                         ),
                       ],
                     ),
-                    actions: [
-                      Icon(Icons.search),
-                      Icon(Icons.more_vert),
-                    ],
+                    actions: [Icon(Icons.search), Icon(Icons.more_vert)],
                   ),
                   body: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Column(
                       children: [
                         _newGroupButtonWidget(),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         _newContactButtonWidget(),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         _listContact(contacts),
                       ],
                     ),
                   ),
                 );
               }
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
             },
           );
         }
@@ -111,22 +97,15 @@ class _SelectContactPageState extends State<SelectContactPage> {
             height: 45,
             width: 45,
             decoration: BoxDecoration(
-                color: greenColor,
-                borderRadius: BorderRadius.all(Radius.circular(40))),
-            child: Icon(
-              Icons.people,
-              color: Colors.white,
+              color: greenColor,
+              borderRadius: BorderRadius.all(Radius.circular(40)),
             ),
+            child: Icon(Icons.people, color: Colors.white),
           ),
-          SizedBox(
-            width: 15,
-          ),
+          SizedBox(width: 15),
           Text(
             "New Group",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -144,29 +123,19 @@ class _SelectContactPageState extends State<SelectContactPage> {
                 height: 45,
                 width: 45,
                 decoration: BoxDecoration(
-                    color: greenColor,
-                    borderRadius: BorderRadius.all(Radius.circular(40))),
-                child: Icon(
-                  Icons.person_add,
-                  color: Colors.white,
+                  color: greenColor,
+                  borderRadius: BorderRadius.all(Radius.circular(40)),
                 ),
+                child: Icon(Icons.person_add, color: Colors.white),
               ),
-              SizedBox(
-                width: 15,
-              ),
+              SizedBox(width: 15),
               Text(
                 "New contact",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
-          Icon(
-            FontAwesomeIcons.qrcode.data,
-            color: greenColor,
-          )
+          Icon(FontAwesomeIcons.qrcode.data, color: greenColor),
         ],
       ),
     );
@@ -179,18 +148,23 @@ class _SelectContactPageState extends State<SelectContactPage> {
         itemBuilder: (ctx, index) {
           return InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (_) => SingleCommunicationPage(
-                  recipientName: contacts[index].label,
-                  recipientPhoneNumber: contacts[index].phoneNumber,
-                  recipientUID: contacts[index].uid,
-                  senderName: widget.userInfo.name,
-                  senderUID: widget.userInfo.uid,
-                  senderPhoneNumber: widget.userInfo.phoneNumber,
-                )
-              ));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SingleCommunicationPage(
+                    recipientName: contacts[index].label,
+                    recipientPhoneNumber: contacts[index].phoneNumber,
+                    recipientUID: contacts[index].uid,
+                    senderName: widget.userInfo.name,
+                    senderUID: widget.userInfo.id,
+                    senderPhoneNumber: widget.userInfo.phoneNumber,
+                  ),
+                ),
+              );
               BlocProvider.of<UserCubit>(context).createChatChannel(
-                  uid: widget.userInfo.uid!, otherUid: contacts[index].uid!);
+                uid: widget.userInfo.id!,
+                otherUid: contacts[index].uid!,
+              );
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 5),
@@ -204,13 +178,11 @@ class _SelectContactPageState extends State<SelectContactPage> {
                         height: 55,
                         width: 55,
                         decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
                         child: Image.asset('assets/profile_default.png'),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
+                      SizedBox(width: 10),
                       Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,20 +190,20 @@ class _SelectContactPageState extends State<SelectContactPage> {
                             Text(
                               "${contacts[index].label}",
                               style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
+                            SizedBox(height: 5),
                             Text(
                               "Hey there! I am Using WhatsApp Clone.",
                               overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

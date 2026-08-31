@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_erp/apps/whatsapp_clone/domain/entities/user_entity.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/bloc/auth/auth_cubit.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/pages/calls_page.dart';
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/pages/camera_page.dart';
@@ -10,8 +10,7 @@ import 'package:flutter_erp/apps/whatsapp_clone/presentation/widgets/custom_tab_
 import 'package:flutter_erp/apps/whatsapp_clone/presentation/widgets/theme/style.dart';
 
 class HomeScreen extends StatefulWidget {
-
-  final UserEntity userInfo;
+  final app_user.User userInfo;
 
   const HomeScreen({Key? key, required this.userInfo}) : super(key: key);
   @override
@@ -24,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   PageController _pageViewController = PageController(initialPage: 1);
   List<Widget> get _pages => [
     CameraPage(),
-    ChatPage(userInfo: widget.userInfo,),
+    ChatPage(userInfo: widget.userInfo),
     StatusPage(),
     CallsPage(),
   ];
@@ -33,12 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       height: 45,
       margin: EdgeInsets.only(top: 25),
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
-        BoxShadow(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
             color: Colors.black.withOpacity(.3),
             spreadRadius: 1,
-            offset: Offset(0.0, 0.50))
-      ]),
+            offset: Offset(0.0, 0.50),
+          ),
+        ],
+      ),
       child: TextField(
         decoration: InputDecoration(
           hintText: "Search...",
@@ -55,61 +58,57 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _currentPageIndex !=0?AppBar(
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-        backgroundColor: _isSearch == false ? primaryColor : Colors.transparent,
-        title: _isSearch == false
-            ? Text("WhatsApp Clone")
-            : Container(
-                height: 0.0,
-                width: 0.0,
-              ),
-        flexibleSpace: _isSearch == false
-            ? Container(
-                height: 0.0,
-                width: 0.0,
-              )
-            : _buildSearch(),
-        actions: <Widget>[
-          InkWell(
-              onTap: () {
-                setState(() {
-                  _isSearch = true;
-                });
-              },
-              child: Icon(Icons.search)),
-          SizedBox(
-            width: 5,
-          ),
-          InkWell(onTap: (){
-            BlocProvider.of<AuthCubit>(context).loggedOut();
-          },child: Icon(Icons.more_vert))
-        ],
-      ):null,
+      appBar: _currentPageIndex != 0
+          ? AppBar(
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              backgroundColor: _isSearch == false
+                  ? primaryColor
+                  : Colors.transparent,
+              title: _isSearch == false
+                  ? Text("WhatsApp Clone")
+                  : Container(height: 0.0, width: 0.0),
+              flexibleSpace: _isSearch == false
+                  ? Container(height: 0.0, width: 0.0)
+                  : _buildSearch(),
+              actions: <Widget>[
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      _isSearch = true;
+                    });
+                  },
+                  child: Icon(Icons.search),
+                ),
+                SizedBox(width: 5),
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<AuthCubit>(context).loggedOut();
+                  },
+                  child: Icon(Icons.more_vert),
+                ),
+              ],
+            )
+          : null,
       body: Column(
         children: <Widget>[
           //TODO:CustomTabBar
           _isSearch == false
               ? _currentPageIndex != 0
-                  ? CustomTabBar(index: _currentPageIndex)
-                  : Container(height: 0.0, width: 0.0,)
-              : Container(
-                  height: 0.0,
-                  width: 0.0,
-                ),
+                    ? CustomTabBar(index: _currentPageIndex)
+                    : Container(height: 0.0, width: 0.0)
+              : Container(height: 0.0, width: 0.0),
           DropdownButtonHideUnderline(
             child: DropdownButton(
               icon: Icon(Icons.more_vert),
               isDense: true,
-              onChanged: (value){},
+              onChanged: (value) {},
               isExpanded: false,
-              items: [
-
-              ],
+              items: [],
             ),
           ),
           Expanded(
@@ -125,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 return _pages[index];
               },
             ),
-          )
+          ),
         ],
       ),
     );

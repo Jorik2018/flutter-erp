@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_erp/apps/flutter_taxi_app_3/controllers/user_controller.dart';
-import 'package:flutter_erp/apps/flutter_taxi_app_3/models/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    User user = UserController.getUser();
+    app_user.User user = UserController.getUser();
     return Drawer(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -27,7 +27,7 @@ class HomeDrawer extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12.0),
                       child: Image.network(
-                        user.photoUrl,
+                        user.photoUrl!,
                         width: 42,
                         height: 42,
                         fit: BoxFit.fill,
@@ -49,7 +49,7 @@ class HomeDrawer extends StatelessWidget {
                         ),
                         SizedBox(height: 4.0),
                         Text(
-                          user.mobileNumber ?? "",
+                          user.phoneNumber ?? "",
                           style: TextStyle(
                             color: Colors.white60,
                             fontSize: 12.0,

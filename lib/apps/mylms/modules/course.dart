@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter_erp/apps/mylms/modules/level.dart';
 import 'package:flutter_erp/apps/mylms/modules/subject.dart';
-import 'package:flutter_erp/apps/mylms/modules/user.dart';
+import 'package:flutter_erp/models/user.dart' as app_user;
 
 part 'course.g.dart';
 
@@ -12,7 +12,7 @@ class Course {
   String description;
   String? thumbnailURL;
   int duration;
-  User lecturer;
+  app_user.User lecturer;
   Level level;
   Subject subject;
 

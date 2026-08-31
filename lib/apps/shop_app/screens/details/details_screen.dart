@@ -5,22 +5,18 @@ import 'components/body.dart';
 import 'components/custom_app_bar.dart';
 
 class DetailsScreen extends StatelessWidget {
-  static String routeName = "/details";
+  static const String routeName = '/details';
+
+  final Product product;
+
+  const DetailsScreen({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments
-    as ProductDetailsArguments;
     return Scaffold(
-      backgroundColor: Color(0xFFF5F6F9),
-      appBar: CustomAppBar(rating: args.product.rating),
-      body: Body(product: args.product),
+      backgroundColor: const Color(0xFFF5F6F9),
+      appBar: CustomAppBar(rating: product.rating),
+      body: Body(product: product),
     );
   }
-}
-
-class ProductDetailsArguments {
-  final Product product;
-
-  ProductDetailsArguments({required this.product});
 }
